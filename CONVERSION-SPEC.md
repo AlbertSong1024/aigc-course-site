@@ -233,7 +233,25 @@ A. ……
 **其他要求**：
 - 题型**只出单选 / 多选 / 判断**。
 - **解析要讲清「为什么错」**，不能只给答案——这一点和随堂自测一致。
-- 用 `codeblock--plain` 承载，标题写「第 N 次课作业 · 一键复制」。
+- **作业块默认折叠**（2026-09-18 教师要求：「课后作业那部分的内容默认处于折叠状态，
+  单击一下它才会展开」）。用 `div.fold` 包住 `codeblock--plain`：
+
+```html
+<div class="fold">
+  <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+  <div class="fold__bd">
+    <div class="codeblock codeblock--plain" data-lang="text" data-name="第 N 次课作业 · 一键复制">
+      <div class="codeblock__bar"></div>
+<pre><code>1.（单选）……
+</code></pre>
+    </div>
+  </div>
+</div>
+```
+
+> 页面上的正文引导语也随之改成「**点一下展开**，再点框内右上角「复制」就能整段拿走」。
+> 折叠状态由 `site.js` 的 `bindFold()` 切换 `.fold.on` 控制，无需额外 JS。
+
 - **与「随堂自测」不重复**：自测偏概念理解（供课后自查），作业偏操作与应用（供提交）；
   两套合计 **10 题左右**。
 - ❌ 不要填空式模板（`【名称】____`）——已被明确否决。
