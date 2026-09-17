@@ -1,0 +1,26 @@
+# 换行符规范：仓库内文本统一存 LF，检出时按本地配置决定。
+# 配套设置：git config core.autocrlf input（提交时 CRLF→LF，工作区不动）
+* text=auto
+
+*.html   text
+*.css    text
+*.js     text
+*.json   text
+*.md     text
+*.py     text
+*.yml    text
+*.yaml   text
+
+# 二进制资源，禁止做换行/合并处理
+*.webp   binary
+*.gif    binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.ico    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+
+# 语言统计：站点内容视为 HTML
+*.html   linguist-documentation=false

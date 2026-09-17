@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第9次课 专家与专家团｜AIGC应用与实践</title>
+<meta name="description" content="专家是什么、专家团怎么分工、怎么选、怎么自己造一个专家，以及哪些环节必须由人把关。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="9" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        上一课你给 AI 装上了「手艺」。但同一个工具，站在不同人的角度用，结果差很远。
+        这一课学<strong>专家</strong>——让 AI 带着一个明确的<strong>岗位和立场</strong>干活；
+        事情复杂的时候，还能叫上<strong>专家团</strong>一起做。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">本课上法：边讲边做</span>
+        页面里<strong>橙色边框的方块</strong>都是要你在 WorkBuddy 里<strong>实际完成任务</strong>的环节，
+        一共 4 个、合计约 40 分钟。<strong>看到就停下来做。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出「专家」和「专家团」分别是什么机制，各解决哪类问题；</li>
+          <li>独立完成一次「召唤专家 → 派活 → 验收」的完整操作；</li>
+          <li>用一句话判断一件事该用普通对话、技能、专家还是专家团；</li>
+          <li>自己创建 1 个专家，配置项写得对、边界说得清；</li>
+          <li>指出一个 AI 协作流程里哪几步<strong>必须由人来做</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-what"><b>01</b>专家：有岗位的 AI <em>＋实操①</em></a>
+        <a href="#s-team"><b>02</b>专家团：会自己分工的队伍 <em>＋实操②</em></a>
+        <a href="#s-choose"><b>03</b>怎么选：四种方式</a>
+        <a href="#s-make"><b>04</b>自己造一个专家 <em>＋实操③</em></a>
+        <a href="#s-duty"><b>05</b>这三关必须人来守 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素、
+        <a class="xref" data-lesson="8">第 8 次课</a>的技能。<br>
+        <strong>后续</strong>：从 <a class="xref" data-lesson="10">第 10 次课</a>起进入办公实战（Word / Excel / PPT），
+        那些批量任务都要用到今天这套「专业身份 + 分工」的思路。
+      </div>
+    </section>
+
+    <section class="sec" id="s-what">
+      <h2>一、专家：有岗位的 AI 同事<span class="sec__tag">概念</span></h2>
+      <p>
+        WorkBuddy 本身是个「什么都能干」的通用助手。但<strong>什么都能干，往往意味着什么都干得一般</strong>。
+      </p>
+      <p>
+        <strong>专家是「角色切换」机制</strong>——用「<strong>人设 + 方法论 + 工具链</strong>」，
+        让它以某个领域专家的身份来做事。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>普通 WorkBuddy</th><th>专家</th></tr></thead>
+          <tbody>
+            <tr><td><strong>它是什么</strong></td><td>通用 AI 同事</td><td>有明确岗位和专业经验的 AI 同事</td></tr>
+            <tr><td><strong>分析销售数据</strong></td><td>读数据、出图、总结趋势</td><td>先问清业务目标，再定指标、查数据质量、找异常、给可执行建议</td></tr>
+            <tr><td><strong>写小红书文案</strong></td><td>关注内容本身</td><td>还会考虑选题、标题、开头留存、种草逻辑、互动设计</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>差别不在工具，在<strong>它有没有一套既定的专业流程</strong>。</p>
+
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch06-01.webp" alt="专家中心" loading="lazy">
+        <figcaption><b>专家中心：左侧栏点「专家」进入</b>　专家和专家团都在这里，按行业分类浏览，点卡片进去就能召唤。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch06-02.webp" alt="浏览专家与专家团" loading="lazy">
+        <figcaption><b>浏览专家与专家团</b>　卡片上会标明是「专家」还是「专家团」，以及擅长领域——先看擅长领域，别只看名字。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+      </figure>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·召唤一个专家，让它真的做一件事 <em>约 10 分钟</em></div>
+        <p>下面这份实习协议条款有问题，我们要请一位「懂行的人」来看。</p>
+        <p><strong>第 1 步 · 把下面这段协议条款存成文件</strong>（在 <code>wb-试验/input</code> 里新建 <code>实习协议.txt</code>）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 待审的协议条款">
+          <div class="codeblock__bar"></div>
+<pre><code>实习协议（节选）
+
+第四条 责任划分
+实习期间，学生因工作原因发生意外伤害的，由学生自行承担责任。
+企业不承担任何赔偿责任。
+
+第五条 工作时间
+实习学生应服从企业安排，工作时间由企业根据业务需要确定，
+学生不得提出异议。
+
+第六条 解除条件
+企业有权根据经营情况随时解除本协议，无需提前通知，
+也无需说明理由。
+
+第七条 报酬
+实习报酬为每月 800 元，于实习结束后一次性支付。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 去专家中心挑一个</strong>：左侧栏点「专家」，找一个跟「法务 / 合同 / 文书审核」
+          沾边的专家（分类里没有就搜关键词），点<strong>召唤</strong>。</p>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch06-03.webp" alt="对话区的专家入口" loading="lazy">
+          <figcaption><b>召唤入口在对话区上方</b>　跳过专家中心直接聊天也行，点输入框上方那排里的「专家」就能切换或召唤。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+        </figure>
+        <p><strong>第 3 步 · 派活</strong>（把下面这句发给它）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请逐条审阅我上传的实习协议，站在保护学生的立场，
+找出对实习学生不利的条款，按「条款原文 → 风险点 → 建议改法」三列输出。</code></pre>
+        </div>
+        <p><strong>第 4 步 · 验收</strong>：对着下面三条核一遍——</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>四条都审了吗</td><td>第四、五、六、七条各有一条意见</td></tr>
+              <tr><td>有没有立场</td><td>指出的是「对学生不利」，而不是泛泛的「注意风险」</td></tr>
+              <tr><td>有没有编条款</td><td>引用的原文跟素材一字不差</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>要交的成果</strong>：这份审阅意见（三条不合规条款 + 改法）。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-team">
+      <h2>二、专家团：一支会自己分工的队伍<span class="sec__tag">机制</span></h2>
+      <p>
+        一件事需要几个人配合时，你不用自己找人、自己拆活——
+        <strong>专家团由团长自动拆解、并行执行、整合交付</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>专家</th><th>专家团</th></tr></thead>
+          <tbody>
+            <tr><td><strong>机制</strong></td><td>角色切换</td><td>协作执行</td></tr>
+            <tr><td><strong>你得到什么</strong></td><td>一个专业视角的答案</td><td>一份整合好的完整交付</td></tr>
+            <tr><td><strong>适合</strong></td><td>一个明确的单点问题</td><td>要拆解、并行、汇总的复杂项目</td></tr>
+            <tr><td><strong>成本</strong></td><td>—</td><td>积分约为单专家的 <strong>3–5 倍</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·用专家团做一份活动宣传材料 <em>约 12 分钟</em></div>
+        <p><strong>第 1 步 · 召唤专家团</strong>：左侧栏点「专家」→ 切到「<strong>专家团</strong>」，
+          挑一个内容创作类或综合类的团，点<strong>召唤</strong>。</p>
+        <p><strong>第 2 步 · 派活</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请为校园摄影社做一套招新宣传材料，包含三部分：
+1. 一段 120 字以内的招新文案，面向大一新生，语气真诚
+2. 一张报名信息表（含姓名、专业、联系方式三列，用模拟数据填 3 行）
+3. 发布前的合规检查意见
+
+注意：活动时间、地点等我还没定，一律写成【待确认】，不要自己编。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 看它怎么分工</strong>：注意观察它是不是<strong>把任务拆成了几块</strong>分别处理，
+          而不是一口气写一段。</p>
+        <p><strong>第 4 步 · 验收</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>三部分齐了吗</td><td>文案、表格、检查意见都在</td></tr>
+              <tr><td>有没有替你编时间地点</td><td>应该全是【待确认】——编了就是不守约束</td></tr>
+              <tr><td>表格是不是模拟数据</td><td>姓名、联系方式不能是真人信息</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>要交的成果</strong>：这套宣传材料。</p>
+        <p class="note">它跑起来会比单专家慢一些，这是正常的——它在并行做几件事。
+          所以<strong>简单任务别用专家团</strong>，杀鸡不用牛刀。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-choose">
+      <h2>三、怎么选：四种方式<span class="sec__tag">判断</span></h2>
+      <p>到这你已经见过四种做法了。放在一起看，选哪个一目了然：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>方式</th><th>本质</th><th>适合什么样的问题</th></tr></thead>
+          <tbody>
+            <tr><td><strong>普通任务</strong></td><td>通用的理解与执行</td><td>一次性的、说清楚就能做的事</td></tr>
+            <tr><td><strong>技能（Skill）</strong></td><td>特定工具能力</td><td>需要稳定执行某个动作</td></tr>
+            <tr><td><strong>专家</strong></td><td>人设 + 方法论 + 工具链</td><td>明确领域的单点专业问题</td></tr>
+            <tr><td><strong>专家团</strong></td><td>多位专家 + 协作流程</td><td>需要拆解、并行、汇总的复杂项目</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">记这三句就够</span>
+        <strong>技能是能力；专家是能力 + 经验；专家团是多位专家 + 协作流程。</strong><br>
+        拿不准的时候问自己：<strong>这件事缺的是工具、是专业判断，还是缺人手？</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-make">
+      <h2>四、自己造一个专家<span class="sec__tag">动手</span></h2>
+      <p>
+        现成的专家不满足你的需求时，可以自己造一个。
+        入口在专家页面右上角的<strong>「我的专家」</strong>→「创建专家」，
+        后面的配置由它引导你一步步填。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>配置项</th><th>怎么写</th><th>要避免</th></tr></thead>
+          <tbody>
+            <tr><td><strong>显示名称</strong></td><td>短角色名，便于召唤，如「公文评审官」</td><td>「专家1」「助手」</td></tr>
+            <tr><td><strong>人设身份</strong></td><td>「是谁 + 有什么背景」</td><td>写成任务本身，如「帮我写代码」</td></tr>
+            <tr><td><strong>擅长领域</strong></td><td>写清<strong>做什么</strong>，也写<strong>不做什么</strong></td><td>「什么都行」</td></tr>
+            <tr><td><strong>提示词</strong></td><td>工作流程、输出格式、约束，能举例最好</td><td>只写「您是一个专家」</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch06-08.webp" alt="我的专家" loading="lazy">
+        <figcaption><b>自己建的专家都在「我的专家」里</b>　创建完成后回到这里就能找到它，也可以分享给同学。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+      </figure>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·造一个你自己的专家，用它完成一件事 <em>约 15 分钟 · 本课重点</em></div>
+        <p><strong>第 1 步 · 想清楚要它干什么</strong>：挑一件<strong>你经常需要、而且要求固定</strong>的事。例如——</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>候选</th><th>它的岗位</th></tr></thead>
+            <tbody>
+              <tr><td>检查实训报告格式</td><td>实训报告格式审查员</td></tr>
+              <tr><td>把课程笔记整理成复习提纲</td><td>复习提纲整理师</td></tr>
+              <tr><td>给社团活动写通知</td><td>学生活动文案</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>第 2 步 · 把下面这段填完，发给它</strong>（「添加技能」旁边就是「我的专家」；创建时它也会问你要这些）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="配置模板（横线填完再发）">
+          <div class="codeblock__bar"></div>
+<pre><code>【我是谁】
+你是一位 ____________，有 ____________ 的经验。
+
+【我擅长什么】——把「不做什么」也写清楚
+擅长：____________
+不处理：____________
+
+【我按什么流程做事】
+1. ____________
+2. ____________
+3. 涉及事实、数据的地方要说明依据；不确定的明确说不确定，不要编。
+
+【输出格式】
+____________（例如：用 Markdown 表格列问题，用有序列表列改法）</code></pre>
+        </div>
+        <p><strong>第 3 步 · 建好后用它做一件真事</strong>：拿你手上真实的一份材料（作业、笔记、活动稿），
+          让这个专家处理一遍。</p>
+        <p><strong>第 4 步 · 检查它守不守规矩</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>不合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>有没有按你写的格式输出</td><td>该用表格的地方写成了大白话段落</td></tr>
+              <tr><td>有没有越界</td><td>碰了你写「不处理」的那类事</td></tr>
+              <tr><td>有没有编</td><td>你没给的信息它自己补上了</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>要交的成果</strong>：你创建的专家 + 它处理过的那份材料。</p>
+        <p><strong>完成标准</strong>：三条都过关。哪条不过，就回去改配置里对应的那一项——
+          <strong>改的是专家的说明，不是重写任务</strong>。</p>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch06-06.webp" alt="创建专家的对话过程" loading="lazy">
+          <figcaption><b>创建过程就是一段对话</b>　它问、你答，配置项在对话里一项项定下来，不用你手写文件。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch06-04.gif" alt="创建专家" loading="lazy">
+          <figcaption><b>从「我的专家」创建一位专家（动图）</b>　创建过程由内置的专家管理工具引导，你只需要回答它的提问。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+        </figure>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">一条不可逆的坑</span>
+        官方明确说明：<strong>创建前请确认专家名称，创建后无法修改。</strong>
+        需要换名字只能重新创建。所以别急着点提交，先把名字想好。
+      </div>
+    </section>
+
+    <section class="sec" id="s-duty">
+      <h2>五、这三关必须人来守<span class="sec__tag">责任</span></h2>
+      <p>
+        专家团能把流程跑得很漂亮，但它最容易带来一个错判：
+        <strong>「最后有审核角色，所以我不必再看。」</strong>
+      </p>
+      <p>
+        官方对这件事说得很直白：生成内容<strong>仅供参考，不构成专业意见</strong>；
+        专家是 AI 角色化辅助能力，与具备法定资质的专业服务存在差异。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>审校点</th><th>查什么</th><th>为什么不能交给 AI</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>事实核验</strong></td>
+              <td>时间、地点、联系人、政策条款是不是真的</td>
+              <td>它可能把「看起来合理」当成事实，自己分不清</td>
+            </tr>
+            <tr>
+              <td><strong>隐私检查</strong></td>
+              <td>有没有真实姓名、电话、身份证号混进去</td>
+              <td>发出去就收不回来，事前判断只能由人做</td>
+            </tr>
+            <tr>
+              <td><strong>对外确认</strong></td>
+              <td>发布、提交、发送前的最后一道签字</td>
+              <td>责任主体是人，不是角色名称</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·回去审一遍你自己交的成果 <em>约 6 分钟</em></div>
+        <p>把你前面三个实操的成果各拿出来过一遍——<strong>这次不是看它做得好不好，是看你能不能把它拦住</strong>。</p>
+        <ol class="steps">
+          <li><b>事实核验</b><span>实习协议那份审阅意见里，它引用的<strong>条款原文</strong>，逐字跟素材对一遍。
+            <strong>改一个字都算它错</strong>——这是最容易被忽略的失守点。</span></li>
+          <li><b>隐私检查</b><span>招新材料里那张报名表，三行数据里的姓名、联系方式——
+            是模拟的，还是它从别处搬来的真实信息？</span></li>
+          <li><b>对外确认</b><span>这三份成果，如果直接发出去会有什么问题？各找一处。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：三条检查各写一句结论——<strong>过了，还是没过；没过的话，问题在哪一处</strong>。</p>
+        <p><strong>完成标准</strong>：至少找出<strong>一处</strong>真实问题。
+          一路全是「没问题」的，多半是没认真查。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">本课最想让你记住的一句</span>
+        <strong>角色名称替代不了责任。</strong>AI 可以当「审核角色」，但签字的人还是你。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 4 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>按官方定义，专家和专家团分别是什么机制？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 专家是「协作执行」，专家团是「角色切换」</li>
+            <li>B. 专家是「角色切换」，专家团是「协作执行」</li>
+            <li>C. 两者都是「角色切换」，只是人数不同</li>
+            <li>D. 两者都是「协作执行」，只是速度快慢不同</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>官方文档写明：<strong>专家是「角色切换」机制</strong>——用「人设 + 方法论 + 工具链」
+            让 AI 以特定领域专家身份执行任务；<strong>专家团是「协作执行」机制</strong>——由多位专家分工协作，
+            团长自动拆解、并行执行并整合交付。A 把两者说反了。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>你要给一份实习协议做风险排查，只需要一个人从专业角度看。该用哪个？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 专家团，角色多看得全</li>
+            <li>B. 专家，这是一个明确的单点问题</li>
+            <li>C. 技能，只要能读文档就够了</li>
+            <li>D. 都不需要，普通对话就行</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>选择标准是：<strong>明确的单点问题用专家，多角色配合才用专家团</strong>。
+            A 属于过度使用，还要多花 3–5 倍积分；C 把「能读文件」和「会做专业判断」混为一谈；
+            D 忽略了这个问题需要明确立场和检查标准。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>创建一个自定义专家时，下面哪一项属于「要避免的写法」？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 人设身份写「有 8 年公文写作经验的办公室秘书」</li>
+            <li>B. 擅长领域写「擅长公文结构诊断；不处理代替领导决策」</li>
+            <li>C. 提示词写「您是一个专家」</li>
+            <li>D. 显示名称写「公文评审官」</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>官方给出的「避免」项正是：提示词<strong>只写「您是一个专家」</strong>。
+            提示词要写工作流程、输出格式与约束，能举例最好——空泛的身份声明等于没写。
+            B 正是「同时说明做什么和不做什么」的正确写法。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：流程里已经设了「审核角色」，最终发布前就不需要人再确认了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，审核角色就是干这个的</li>
+            <li>B. 错误，对外发布这类动作必须由人确认</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>官方在专家功能里写明：生成内容<strong>仅供参考，不构成专业意见</strong>；
+            专家与具备法定资质的专业服务存在差异。<strong>最终责任不能交给角色名称</strong>——
+            事实核验、隐私检查、对外确认这三关必须由人来做。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>专家 = 角色切换</strong>（人设 + 方法论 + 工具链）；
+            <strong>专家团 = 协作执行</strong>（团长拆解、并行、整合）；</li>
+          <li>选择标准：<strong>普通任务 / 技能 / 专家 / 专家团</strong>——缺工具找技能，单点问题找专家，多角色才用专家团；</li>
+          <li>自己造专家看四项：<strong>名称要短、人设要有背景、擅长要写边界、提示词要有流程和格式</strong>；</li>
+          <li>专家本身<strong>不主动获取系统权限</strong>，能碰文件的是它背后的技能与连接器；</li>
+          <li>三关必须人来守：<strong>事实核验、隐私检查、对外确认</strong>——角色名称替代不了责任。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：到这里你已经能让 AI 按专业方式干活了。
+        下一课 <a class="xref" data-lesson="10">办公实战：Word 文档生成与批量处理</a> 开始拿真实办公场景练手——
+        从一份通知写起。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。点右上角「复制」可以整段拿走。</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="第 9 次课作业 · 一键复制">
+        <div class="codeblock__bar"></div>
+<pre><code>1.（单选）按官方定义，专家是什么机制？
+A. 协作执行机制，由多位专家分工
+B. 角色切换机制，用人设、方法论和工具链执行任务
+C. 一种可以读取本地文件的权限机制
+D. 一种专门用来自动发布内容的机制
+【答案】B
+【解析】专家是「角色切换」机制，靠人设 + 方法论 + 工具链让 AI 以特定领域专家身份做事。A 说的是专家团；C、D 都属于凭空编造——专家本身不主动获取系统权限，也不负责发布。
+
+2.（单选）有一个明确的单点专业问题要解决，用哪种方式最合适？
+A. 专家团，人多力量大
+B. 专家，正好对应单点专业问题
+C. 普通对话就行，不用麻烦
+D. 先建一个技能再说
+【答案】B
+【解析】选择标准是：单一专业问题用专家，需拆解并行汇总的复杂项目才用专家团。A 属于过度使用，积分消耗约为单专家的 3–5 倍；C 忽略了问题需要专业立场和检查标准；D 把「工具能力」和「专业判断」混为一谈。
+
+3.（多选）创建一个自定义专家时，下面哪些写法是对的？
+A. 显示名称用短角色名，比如「公文评审官」
+B. 人设身份写「有 8 年公文写作经验的办公室秘书」
+C. 擅长领域只写「什么都行」，显得能力全面
+D. 提示词里写清工作流程、输出格式和约束
+【答案】ABD
+【解析】C 是官方明确列出的「要避免」写法——擅长领域要写清做什么、也写清不做什么，「什么都行」等于没有边界，用起来反而不可控。A、B、D 分别对应「名称要短」「人设要交代背景」「提示词要有流程和格式」。
+
+4.（判断）专家团在专家中心里由团长自动拆解任务、并行执行并整合交付，不需要你自己拆任务。
+A. 正确
+B. 错误
+【答案】A（正确）
+【解析】这正是专家团「协作执行」机制的含义。不过要注意：任务开始前仍应确认成员分工是否覆盖完整、哪些步骤有依赖、什么时候需要人拍板、最终由谁整合。
+
+5.（多选）下面哪些环节必须由人来做，不能交给 AI？
+A. 核实活动通知里的时间、地点是否与学校通知一致
+B. 检查材料里有没有混入真实学生的姓名和电话
+C. 把最终材料发布到社团公众号
+D. 把三条报名信息整理成表格
+【答案】ABC
+【解析】三关是人不能省的：事实核验、隐私检查、对外确认。A 是事实核验，AI 分不清「看起来合理」和「真的如此」；B 是隐私检查，一旦发出去就收不回来；C 是对外发布，不可逆。D 属于 AI 擅长的结构化整理，用模拟数据即可。
+
+6.（单选）专家团与单专家相比，官方提示的积分消耗情况是？
+A. 完全相同
+B. 约为单专家的 3–5 倍
+C. 约为单专家的 1.5 倍
+D. 官方未作说明
+【答案】B
+【解析】官方明确提示：专家团会并行调用多位专家、涉及多轮模型交互，积分消耗通常为单专家的 3–5 倍（以实际任务为准），并建议召唤前关注积分余额，避免任务中途因积分不足中断。</code></pre>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 4 题，本课合计 10 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+</body>
+</html>

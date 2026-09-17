@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIGC应用与实践 · 课程教程站</title>
+<meta name="description" content="广州城建职业学院《AIGC应用与实践》课程教程站：第6次课起的全部课程内容，结构清晰、含代码示例与可运行演示。">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-root="./" data-home="1">
+
+<!-- 顶栏（由 site.js 生成） -->
+<div id="site-topbar"></div>
+
+<div class="layout">
+
+  <!-- 左侧课程目录（由 site.js 生成） -->
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <!-- 正文 -->
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <div class="hero">
+      <h1>AIGC 应用与实践 · 课程教程站</h1>
+      <p>
+        把《AIGC应用与实践》<strong>第 6 次课起</strong>的全部课程内容，重排成一份可以直接照着做的教程：
+        每课固定结构，先讲原理、再给命令与代码、然后是能当场跑起来的演示，最后是自测与作业。
+        全部页面<strong>纯静态、无外部依赖、断网可用</strong>，双击任意页面即可打开。
+      </p>
+      <div class="hero__kpis" id="home-kpis"></div>
+    </div>
+
+    <section class="sec">
+      <h2 id="s-howto">怎么用这个站</h2>
+      <!-- 入口列表由本页脚本按 course-map 动态生成：已上线的课会自动出现在这里 -->
+      <div class="knav" id="home-quick"></div>
+      <div class="callout callout--tip">
+        <span class="callout__t">给同学</span>
+        每课的「可运行演示」都是纯前端模拟，<strong>不联网、不装环境</strong>也能看懂机制；
+        真正的命令请在你自己电脑上照抄执行。每课最后的「随堂小测」不计分，是给你课后自检用的。
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">给老师（本项目维护者）</span>
+        本站是<strong>教程站</strong>，不是课堂投屏底本：案例和机制讲解忠实于备课材料，
+        但学习通题号、计分口径、时间账等课堂要素<strong>不在本站呈现</strong>（那部分以《05_正式教案》《逐字稿》为准）。
+        批量转化请严格按 <code>CONVERSION-SPEC.md</code> 执行。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2 id="s-map">课程地图</h2>
+      <p class="lead">本站收录第 6 次课至第 32 次课，共 27 课、54 课时。模块划分沿用课程三大模块口径。</p>
+      <div id="home-mods"></div>
+    </section>
+
+    <section class="sec">
+      <h2 id="s-assess">课程考核口径（供参考）</h2>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>类别</th><th>占比</th><th>构成</th></tr></thead>
+          <tbody>
+            <tr><td><strong>形成性评价</strong></td><td>60%</td><td id="home-formative"></td></tr>
+            <tr><td><strong>终结性评价</strong></td><td>40%</td><td id="home-summative"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12.5px;color:#94A3B8;margin-top:10px">
+        口径出自《AIGC应用与实践_32次课授课安排.docx》。本站不承担成绩与计分说明，具体以任课教师当堂宣布为准。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <!-- 本页目录（由 site.js 生成） -->
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="assets/js/course-map.js"></script>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+/* 首页专属渲染 */
+(function () {
+  var CM = window.COURSE_MAP, flat = CM.flat();
+  var ready = flat.filter(function (l) { return l.status === "ready"; }).length;
+  var hours = flat.reduce(function (s, l) { return s + l.theory + l.practice; }, 0);
+
+  document.getElementById("home-kpis").innerHTML =
+    kpi(CM.modules.length, "个课程模块") +
+    kpi(flat.length, "课教程页") +
+    kpi(hours, "课时内容") +
+    kpi(ready + " / " + flat.length, "已上线 / 计划", true);
+
+  function kpi(v, l, acc) {
+    return '<div class="hero__kpi"><b class="' + (acc ? "acc" : "") + '">' + v + "</b><span>" + l + "</span></div>";
+  }
+
+  /* 快捷入口：按 course-map 自动列出已上线的课（最近转化的排前面），
+     以后每转化一课，这里自动出现，不需要手改首页。 */
+  var READY_MAX = 6;
+  var readyList = flat.filter(function (l) { return l.status === "ready"; })
+    .sort(function (a, b) { return b.no - a.no; });
+  var quickItems = [
+    '<a href="#s-map"><b>想找某一课</b>左侧目录 / 顶部课次下拉，或按 <kbd>/</kbd> 搜索</a>'
+  ];
+  readyList.slice(0, READY_MAX).forEach(function (l) {
+    quickItems.push('<a href="' + l.file + '"><b>第 ' + l.no + " 次课</b>" + esc(l.title) + "</a>");
+  });
+  if (readyList.length > READY_MAX) {
+    quickItems.push('<a href="#s-map"><b>其余 ' + (readyList.length - READY_MAX) + " 课</b>见下方课程地图</a>");
+  }
+  quickItems.push('<a href="templates/lesson-template.html"><b>要转化新的一课</b>打开页面骨架模板</a>');
+  document.getElementById("home-quick").innerHTML = quickItems.join("");
+
+  document.getElementById("home-formative").textContent = CM.grading.formative.replace(/^形成性评价\s*60%（|）$/g, "");
+  document.getElementById("home-summative").textContent = CM.grading.summative.replace(/^终结性评价\s*40%（|）$/g, "");
+
+  document.getElementById("home-mods").innerHTML = CM.modules.map(function (m) {
+    var ok = m.lessons.filter(function (l) { return l.status === "ready"; }).length;
+    var cards = m.lessons.map(function (l) {
+      var todo = l.status !== "ready";
+      var inner =
+        '<span class="lcard__no">第 ' + l.no + " 次课 · 第 " + l.week + " 周</span>" +
+        "<h3>" + esc(l.title) + "</h3>" +
+        "<p>" + esc(l.subtitle) + "</p>" +
+        '<div class="lcard__foot">' +
+          '<span class="badge ' + (l.type === "实操" ? "badge--a" : "badge--p") + '">' +
+            (l.type === "实操" ? "实操" : "理论") + " " + (l.type === "实操" ? l.practice : l.theory) + " 课时</span>" +
+          '<span class="badge">' + esc(l.lms ? "学习通 " + l.lms : l.sections) + "</span>" +
+          (todo ? '<span class="badge badge--todo">待转化</span>' : '<span class="badge badge--ok">已上线</span>') +
+        "</div>";
+      return todo
+        ? '<a class="lcard pending" href="#" data-todo="' + l.no + '">' + inner + "</a>"
+        : '<a class="lcard" href="' + l.file + '">' + inner + "</a>";
+    }).join("");
+
+    return '<div class="modblock">' +
+      '<div class="modblock__hd">' +
+        '<span class="mod__no ' + (m.id === "m3" ? "m3" : "") + '">' + m.no + "</span>" +
+        "<h2>" + esc(m.name) + "</h2>" +
+        '<span class="badge">' + esc(m.range) + "　已上线 " + ok + " / " + m.lessons.length + "</span>" +
+      "</div>" +
+      '<p style="font-size:13px;color:#64748B;margin:-6px 0 13px">' + esc(m.note) + "</p>" +
+      '<div class="lesson-grid">' + cards + "</div>" +
+    "</div>";
+  }).join("");
+
+  document.querySelectorAll("[data-todo]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      alert("第 " + a.getAttribute("data-todo") + " 次课还没有转化上线。");
+    });
+  });
+
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+})();
+</script>
+</body>
+</html>

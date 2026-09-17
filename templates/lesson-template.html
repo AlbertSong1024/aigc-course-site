@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第{{NO}}次课 {{TITLE}}｜AIGC应用与实践</title>
+<meta name="description" content="{{SUBTITLE}}">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="{{NO}}" data-root="../">
+
+<!-- 顶栏 / 侧边栏 / 面包屑 / 页面标题区 / 本页目录 / 上下课导航 / 页脚
+     全部由 assets/js/site.js 按 course-map.js 自动生成。
+     课时页里【不要】再写这些结构，否则会重复。 -->
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始 —— 转化时只写这一段
+     硬性要求：
+       1. 每个知识点一个小节：<section class="sec" id="s-语义名">
+       2. 小节的 <h2> 不带 id，锚点 id 落在 section 上
+       3. 需要单独跳转的三级标题（h3）才带 id，命名 s-xxx-yyy
+       4. 本页全部小节都要在 search-index.js 里登记
+     标准小节清单（除本课确有需要外，顺序不要变、不要增删）：
+       s-guide    本课导读
+       s-goal     学习目标（含知识点导航）
+       s-…        正文小节 2–8 个，一节讲透一个概念
+       s-quiz     随堂自测
+       s-recap    本课要点回顾
+       s-hw       课后作业
+     ============================================================ -->
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        用一段话讲清楚「这一课解决什么真实问题」，以及它接在前一课的哪一步之后。
+      </p>
+      <p>然后给 2–4 条具体的问题或现象，让学生立刻知道这课跟他有关。</p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        把本课最容易踩的坑、或者最容易产生的误解，在这里先打预防针。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>目标要写成<strong>可观察的行为</strong>：「能说出」「能独立完成」「能判断」，不要写「了解」「掌握」。</li>
+          <li>4–6 条为宜，不要超过 6 条。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-demo"><b>01</b>第一个知识点</a>
+        <a href="#s-quiz"><b>02</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：本课要用到前面哪几课的什么知识。<br>
+        <strong>后续</strong>：本课为后面哪一课打什么底。
+      </div>
+    </section>
+
+    <!-- ── 正文小节 ─────────────────────────────────────────────
+         每个概念一节。写作顺序固定为：
+         现象/痛点 → 机制（配表格或图示） → 操作/代码 → 提醒或结论
+         ──────────────────────────────────────────────────────── -->
+
+    <section class="sec" id="s-demo">
+      <h2>一、第一个知识点</h2>
+      <p>先用一个「你身边就在发生」的现象切入，不要一上来就下定义。</p>
+      <p>然后再给定义。</p>
+
+      <!-- 【可运行演示】容器。class 与结构照抄，改 id、标题与内容即可。
+           纯前端实现，不联网；演示逻辑放在页面最后那段内联脚本里。 -->
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 演示标题：一句话说清这个演示让人看懂什么</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <!-- 控件随便选：.btngroup（配合 data-tabs）、.btn、.range、input/select -->
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="a" class="on">选项 A</button>
+              <button type="button" data-tab="b">选项 B</button>
+            </div>
+            <button class="btn btn--main" type="button" id="d1-go">运行</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="demo__stage" data-tabpanel="a">
+            面板 A 的内容：指标卡 .kpis / .kpi、流向图 .flow、界面模拟 .mock 都可以往里放
+            <div class="kpis">
+              <div class="kpi"><b id="d1-k1">—</b><span>指标名</span></div>
+              <div class="kpi"><b class="acc" id="d1-k2">—</b><span>指标名</span></div>
+            </div>
+          </div>
+          <div class="demo__stage" data-tabpanel="b" style="display:none">面板 B 的内容</div>
+          <div class="demo__out" id="d1-out"></div>
+          <div class="demo__note">
+            凡是用到示意数据、非实测数据，必须在这里写明「<strong>教学示意，非实测数值</strong>」。
+          </div>
+        </div>
+      </div>
+
+      <h3 id="s-demo-table">对照表（能用表格就不要用段落）</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>方案 A</th><th>方案 B</th></tr></thead>
+          <tbody>
+            <tr><td><strong>关键差异</strong></td><td>…</td><td>…</td></tr>
+            <tr><td>适用场景</td><td>…</td><td>…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="s-demo-code">命令 / 代码</h3>
+      <div class="codeblock" data-lang="bash" data-name="PowerShell / 终端">
+        <div class="codeblock__bar"></div>
+<pre><code>> ollama --version    # 行首 > 会被渲染成提示符
+</code></pre>
+      </div>
+      <p class="note">lang 可选：bash / powershell / cmd / python / json / sql / ini / modelfile / text。</p>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">提示</span>
+        四类提示框：<code>callout--tip</code>（绿，经验/技巧）、
+        <code>callout--warn</code>（橙，注意）、
+        <code>callout--danger</code>（红，风险/红线）、
+        <code>callout--quote</code>（灰，金句/结论）。
+      </div>
+    </section>
+
+    <!-- ── 收尾三节：自测 → 回顾 → 作业 ── -->
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这些题不计分，是给你自己查漏用的。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>题干</span></div>
+          <ul class="quiz__opts">
+            <li>A. 选项</li>
+            <li>B. 选项</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B。</b>解析要写清<strong>为什么错</strong>，不要只给答案。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走几件事</h4>
+        <ol>
+          <li>要点用 <b>加粗关键词</b>，一条不超过两行。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业</h2>
+      <p><strong>要求</strong>：写清做什么、交什么。</p>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        明确写出 2–3 条评价维度，标准要具体、可判断。
+      </div>
+    </section>
+
+<!-- ============================================================
+     内容区结束
+     ============================================================ -->
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑
+     可用工具：
+       window.Site.esc(str)                  —— HTML 转义
+       window.Site.highlight(code, lang)     —— 语法高亮，返回 HTML
+       window.Site.type(node, lines, done)   —— 逐行「打字」输出到 node（数组元素可含 HTML）
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  $("d1-go").addEventListener("click", function () {
+    $("d1-k1").textContent = "42";
+    $("d1-out").innerHTML = "<span class='ok'>✓ 运行完成</span>";
+  });
+})();
+</script>
+</body>
+</html>

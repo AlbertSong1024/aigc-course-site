@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第6次课 Ollama实战｜AIGC应用与实践</title>
+<meta name="description" content="把大模型装进自己的电脑：Ollama 安装、五条命令、按内存选档位、三种调用方式、Modelfile 定人设与本地/云端边界判断。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="6" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始：转化新课时，只写这一段（section.sec，h2/h3 必须带 id）
+     ============================================================ -->
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块一收尾</span></h2>
+      <p class="lead">
+        前面五次课，我们一直在用别人家的电脑算 AI：你提问题，它算完把答案送回来。
+        这一课把这件事反过来——<strong>把模型下载到你自己的电脑上，用你自己的 CPU 算。</strong>
+      </p>
+      <p>先回答三个很具体的问题，它们决定了这课值不值得学：</p>
+      <ul>
+        <li><strong>断网了，你的 AI 还能用吗？</strong>——云端模型不能。它断网即废。</li>
+        <li><strong>你输入的内容，存在谁那里？</strong>——云端模型存在厂商的服务器上。</li>
+        <li><strong>同一个问题问几百遍，你会心疼吗？</strong>——云端按量计费会，本地不会。</li>
+      </ul>
+      <p>
+        本地部署换来的三样东西是：<strong>数据不出门、断网也能用、反复调用不要钱</strong>。
+        代价也很明确：<strong>能力明显更弱</strong>。所以本课的结论不是「本地更好」，
+        而是——<strong>各有各的位置，知道什么时候该用哪个，才是真的会用工具。</strong>
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课默认从 <code>qwen3:1.7b</code>（17 亿参数）起步。它答得不会很聪明，<strong>这很正常</strong>。
+        它的价值不出在「聪明」上，而出在前面那三样东西上。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说清本地模型与云端模型的<strong>三点核心差异</strong>，并能在具体场景里做出选择；</li>
+          <li>独立完成 Ollama 的<strong>安装、模型目录整改与三步环境自查</strong>；</li>
+          <li>按自己电脑的<strong>内存大小选对模型档位</strong>，并理解「先小后大」这条铁律；</li>
+          <li>用<strong>三种方式</strong>调用本地模型：交互式、一次性提问、程序 API 调用；</li>
+          <li>用 <code>Modelfile</code> 做一个<strong>有固定人设的专属助手</strong>；</li>
+          <li>遇到「跑得慢」「命令找不到」「下载失败」时，能自己判断原因并对症处理。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-why"><b>01</b>为什么要本地模型</a>
+        <a href="#s-ollama"><b>02</b>Ollama 是什么</a>
+        <a href="#s-install"><b>03</b>安装与环境核查</a>
+        <a href="#s-cmd"><b>04</b>五条命令</a>
+        <a href="#s-pit"><b>05</b>四个必知坑位</a>
+        <a href="#s-tier"><b>06</b>按内存选档位</a>
+        <a href="#s-run"><b>07</b>拉模型与第一次对话</a>
+        <a href="#s-usage"><b>08</b>三种调用方式</a>
+        <a href="#s-api"><b>09</b>用程序调用本地模型</a>
+        <a href="#s-speed"><b>10</b>速度体感与硬件</a>
+        <a href="#s-mf"><b>11</b>Modelfile 定人设</a>
+        <a href="#s-bound"><b>12</b>边界与权衡</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：第 5 次课做过「参数（档位）决定行为」的对照实验——本课「按内存选档位」是同一套心智模型的直接迁移。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="7">第 7 次课</a>起进入 WorkBuddy 实战，你会反复用到本课的判断——<strong>哪些任务该交给本地跑，哪些必须上云</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-why">
+      <h2>一、为什么要本地模型<span class="sec__tag">认知地基</span></h2>
+      <p>
+        先说一个日常现象：你在网页里打开豆包、千问、DeepSeek，输入一句话，几秒后答案就出来了。
+        这个过程里，<strong>你的电脑几乎没有做什么计算</strong>——它只是把问题发出去，再把答案收回来。
+        真正干活的是厂商机房里的服务器。
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 本地 vs 云端：你的问题到底去了哪里</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="cloud" class="on">云端模型（豆包 / 千问 / DeepSeek）</button>
+              <button type="button" data-tab="local">本地模型（Ollama）</button>
+            </div>
+            <button class="btn" type="button" id="d1-net">切断网络</button>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="cloud">
+            <div class="flow">
+              <div class="flow__node mine"><b>💻</b>你的电脑<br><span class="dim">只负责输入输出</span></div>
+              <div class="flow__path"><span class="flow__dot run" id="d1-dot-cloud"></span></div>
+              <div class="flow__node cloud"><b class="cloud-on">☁️</b>厂商服务器<br><span class="dim">真正在这里算</span></div>
+            </div>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="local" style="display:none">
+            <div class="flow">
+              <div class="flow__node mine"><b>💻</b>你的电脑<br><span class="dim">算也在你自己这儿</span></div>
+              <div class="flow__path"><span class="flow__dot run" id="d1-dot-local"></span></div>
+              <div class="flow__node"><b>🔌</b>网络<br><span class="dim">可以不用</span></div>
+            </div>
+          </div>
+
+          <div class="demo__out" id="d1-out"></div>
+          <div class="demo__note">教学示意：真实链路还有 DNS 解析、负载均衡、限流排队等环节，这里只保留「谁在算、数据去哪」这一层。</div>
+        </div>
+      </div>
+
+      <h3>本地与云端的三点对照</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead>
+            <tr><th>维度</th><th>云端模型（豆包 / 千问 / DeepSeek）</th><th>本地模型（Ollama）</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>数据去向</strong></td><td>提问内容要传到厂商服务器</td><td><strong>数据不出本机</strong>，只有你自己的电脑知道</td></tr>
+            <tr><td><strong>网络依赖</strong></td><td>断网即不可用；高峰期可能要排队</td><td><strong>装好之后可离线使用</strong></td></tr>
+            <tr><td><strong>能力水平</strong></td><td>能力强，能联网查最新资料</td><td><strong>受参数规模限制，明显更弱</strong>；不能联网查新</td></tr>
+            <tr><td>成本</td><td>按量计费或订阅</td><td>一次性硬件投入，之后反复调用不花钱</td></tr>
+            <tr><td>最适合</td><td>复杂任务、需要最新信息</td><td>隐私敏感、要求离线、需要批量重复调用</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课要反复念的一句话</span>
+        <strong>本地不是「更好」，是「各有位置」。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-ollama">
+      <h2>二、Ollama 是什么</h2>
+      <p>
+        <strong>Ollama 是一个在本地运行开源大模型的运行时（runtime）</strong>。
+        说人话：它像「大模型的应用商店 + 播放器」——装好之后，<strong>一条命令下载模型，一条命令开始对话</strong>。
+      </p>
+      <p>它把原本很麻烦的事情都替你办了：</p>
+      <ul>
+        <li>不用配 CUDA，不用编译源码，不用 Docker，也不用先装 Python 环境；</li>
+        <li>有可用显卡时<strong>自动用显卡加速</strong>，没有显卡时<strong>自动切成 CPU 推理</strong>（结果正确，但明显更慢）；</li>
+        <li>装好后会在本机开一个服务，默认监听 <code>http://localhost:11434</code>，供你自己的程序调用。</li>
+      </ul>
+      <div class="callout callout--warn">
+        <span class="callout__t">注意</span>
+        本课<strong>不讲具体版本号</strong>。Ollama 迭代很快，讲了就容易过期。
+        我们只教一条自查命令：<code>ollama --version</code>——<strong>版本号会变，命令不会变</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-install">
+      <h2>三、安装与环境核查<span class="sec__tag">10 分钟兜底</span></h2>
+      <p>到 Ollama 官网下载对应系统的安装包（Windows / macOS / Linux），双击安装即可。装完之后先做三步自查。</p>
+
+      <ol class="steps">
+        <li><b>装好了吗</b><span>打开 PowerShell（Windows 键 → 输入 <code>powershell</code> → 回车），输入 <code>ollama --version</code>。<strong>有版本号输出就说明装好了。</strong></span></li>
+        <li><b>模型装在哪</b><span>Ollama 默认把模型放在系统盘：<code>C:\Users\你的用户名\.ollama\models</code>。一个模型 1~5 个 GB，装三四个 C 盘就红了。解决办法见下一节「坑位①」。</span></li>
+        <li><b>我有多少内存</b><span>「此电脑」右键 → 属性，或任务管理器 → 性能页。内存（RAM）那一行。<strong>记住这个数字，选模型档位要用它。</strong></span></li>
+      </ol>
+
+      <div class="codeblock" data-lang="powershell" data-name="三步自查（逐行执行）">
+        <div class="codeblock__bar"></div>
+<pre><code>> ollama --version          # ① 有版本号 = 装好了
+> ollama list               # ② 看本地已经有哪些模型（刚装完是空的）
+> echo $env:OLLAMA_MODELS   # ③ 看模型目录是否已改到非系统盘（没输出=还没配）
+</code></pre>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">跑不通怎么办（三种情况及对策）</span>
+        <ul>
+          <li>提示「不是内部或外部命令」 → <strong>关掉终端重新打开</strong>，让环境变量生效；还不行就重装一次并勾选「添加到 PATH」。</li>
+          <li>模型一直下不动 → <strong>降到最小那一档</strong> <code>qwen3:0.6b</code>（约 500 MB）。</li>
+          <li>确实装不上 → 和邻座<strong>共用一台</strong>，作业里注明「共用设备」即可。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" id="s-cmd">
+      <h2>四、五条命令<span class="sec__tag">命令卡片</span></h2>
+      <p>真正每天要用的，只有这几条。建议把它们抄在便签上，或者截图放在屏幕一角。</p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>命令</th><th>作用</th><th>什么时候用</th></tr></thead>
+          <tbody>
+            <tr><td><code>ollama --version</code></td><td>查看版本，验证是否装好</td><td>装完第一件事</td></tr>
+            <tr><td><code>ollama pull &lt;模型名&gt;</code></td><td>只下载模型，不进入对话</td><td>提前把模型下好，避免课上干等</td></tr>
+            <tr><td><code>ollama run &lt;模型名&gt;</code></td><td>下载（如未下载）并进入交互式对话</td><td>最常用的聊天入口</td></tr>
+            <tr><td><code>ollama run &lt;模型名&gt; "问题"</code></td><td>一次性提问，答完即退出</td><td>写脚本、批量处理</td></tr>
+            <tr><td><code>ollama list</code></td><td>看本地已下载了哪些模型</td><td>忘了模型名的时候</td></tr>
+            <tr><td><code>ollama ps</code></td><td>看当前哪些模型正加载在内存里</td><td>排查「为什么吃内存」</td></tr>
+            <tr><td><code>ollama rm &lt;模型名&gt;</code></td><td>删除本地某个模型</td><td>腾磁盘空间</td></tr>
+            <tr><td><code>ollama stop &lt;模型名&gt;</code></td><td>把模型从内存里卸下来</td><td>跑完大模型释放内存</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="codeblock" data-lang="bash" data-name="最常用的一条龙">
+        <div class="codeblock__bar"></div>
+<pre><code># 只想下载，不聊天
+ollama pull qwen3:1.7b
+
+# 看看下载成功没有
+ollama list
+
+# 进入对话（进去之后打字就能聊，输入 /bye 退出）
+ollama run qwen3:1.7b
+</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">命令不用背</span>
+        Ollama 支持 Tab 风格的习惯：记不住模型名，就用 <code>ollama list</code> 把名字抄下来；
+        记不住有哪些命令，直接敲 <code>ollama</code> 回车，它会列出所有子命令。
+      </div>
+    </section>
+
+    <section class="sec" id="s-pit">
+      <h2>五、四个必知坑位</h2>
+      <p>这四个坑，几乎每个第一次装 Ollama 的人都会踩至少一个。提前知道，能省你半小时。</p>
+
+      <h3 id="s-pit-1">坑位① 模型默认装在系统盘</h3>
+      <p>
+        <strong>现象</strong>：C 盘空间莫名其妙少了几个 G，甚至变红。<br>
+        <strong>原因</strong>：模型文件默认存在 <code>C:\Users\&lt;用户名&gt;\.ollama\models</code>（macOS / Linux 是 <code>~/.ollama/models</code>）。<br>
+        <strong>解决</strong>：<strong>装完的第一时间</strong>就配置环境变量 <code>OLLAMA_MODELS</code>，把目录改到非系统盘，然后<strong>重启 Ollama 才生效</strong>。
+      </p>
+      <div class="codeblock" data-lang="powershell" data-name="Windows 改模型目录（图形界面操作）">
+        <div class="codeblock__bar"></div>
+<pre><code># 方式一：图形界面（推荐给第一次做的人）
+# 1) Win 键搜索"环境变量" → 打开"编辑系统环境变量"
+# 2) 点"环境变量" → 在"用户变量"里点"新建"
+# 3) 变量名填 OLLAMA_MODELS，变量值填 D:\OllamaModels
+# 4) 确定后，右下角托盘图标右键退出 Ollama，再重新打开
+
+# 方式二：命令行为当前用户永久写入（改完同样要重启 Ollama）
+[Environment]::SetEnvironmentVariable("OLLAMA_MODELS", "D:\OllamaModels", "User")
+
+# 验证：新开一个终端，应该能打印出路径
+echo $env:OLLAMA_MODELS
+</code></pre>
+      </div>
+
+      <h3 id="s-pit-2">坑位② 运行卡顿、响应极慢</h3>
+      <p>
+        <strong>先确认一件事</strong>：你的电脑有没有独立显卡？<br>
+        <strong>没有独显，就是 CPU 推理，慢是正常的，不是你装错了。</strong>
+        想变快，最快的办法是<strong>换更小参数的模型</strong>，而不是重装 Ollama。
+      </p>
+
+      <h3 id="s-pit-3">坑位③ 命令找不到</h3>
+      <p>
+        输入 <code>ollama</code> 提示「不是内部或外部命令」。<br>
+        <strong>解决</strong>：重启终端（或重新打开 PowerShell）；仍不行则卸载后重新安装，安装时勾选「Add to PATH」。
+      </p>
+
+      <h3 id="s-pit-4">坑位④ 一口气拉一个太大的模型</h3>
+      <p>
+        <strong>现象</strong>：下载几 GB 要很久，下完了内存不够，跑不起来。<br>
+        <strong>解决</strong>：<strong>先拉最小的一档跑通，再按需换大的。</strong>
+        跑不起来的大模型，等于没有模型。
+      </p>
+    </section>
+
+    <section class="sec" id="s-tier">
+      <h2>六、按内存选档位<span class="sec__tag">本课核心</span></h2>
+      <p>
+        模型的「档位」指的是<strong>参数量</strong>（0.6b = 6 亿参数，7b = 70 亿参数）。
+        参数越大越聪明，也越吃内存和显存。<strong>所以选模型的唯一依据，是你电脑的内存。</strong>
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 按内存选档位：拖一下，看该拉哪个模型</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="range">
+              <span>我的电脑内存</span>
+              <input type="range" id="d2-mem" min="4" max="32" step="4" value="8">
+              <span class="range__val" id="d2-mem-val">8 GB</span>
+            </div>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d2-model">qwen3:1.7b</b><span>推荐档位</span></div>
+              <div class="kpi"><b id="d2-size">1.4 GB</b><span>模型文件大小</span></div>
+              <div class="kpi"><b id="d2-need">4 GB+</b><span>所需内存</span></div>
+              <div class="kpi"><b class="acc" id="d2-speed">12–18 字/秒</b><span>CPU 推理速度（示意）</span></div>
+            </div>
+            <div class="kvlist" id="d2-detail"></div>
+          </div>
+          <div class="demo__out" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>速度受 CPU 型号、内存带宽、是否后台占用影响很大，这里只用来建立「参数越小越快」的定性认识。
+          </div>
+        </div>
+      </div>
+
+      <h3>档位对照表</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>模型标签</th><th>文件大小</th><th>所需内存 / 显存</th><th>适合</th></tr></thead>
+          <tbody>
+            <tr><td><code>gemma3:270m</code></td><td>292 MB</td><td>1 GB+</td><td>极低配机器、边缘设备</td></tr>
+            <tr><td><code>qwen3:0.6b</code></td><td>约 500 MB</td><td>约 2 GB</td><td><strong>4 GB 内存机器的兜底档</strong></td></tr>
+            <tr><td><code>llama3.2:1b</code></td><td>1.3 GB</td><td>4 GB+</td><td>轻量、快</td></tr>
+            <tr><td><code>qwen3:1.7b</code></td><td>1.4 GB</td><td>4 GB+</td><td><strong>本课默认档</strong>：中文好、体积小</td></tr>
+            <tr><td><code>llama3.2:3b</code></td><td>2.0 GB</td><td>4 GB+</td><td>8 GB 笔记本通用聊天</td></tr>
+            <tr><td><code>qwen3:4b</code></td><td>2.5 GB</td><td>6 GB+</td><td>多语言、长上下文</td></tr>
+            <tr><td><code>gemma3:4b</code></td><td>3.3 GB</td><td>6 GB+</td><td>支持图片输入（多模态）</td></tr>
+            <tr><td><code>deepseek-r1:7b</code></td><td>4.7 GB</td><td>8 GB+</td><td>推理链、数学与逻辑题</td></tr>
+            <tr><td><code>llama3.1:8b</code></td><td>4.9 GB</td><td>8 GB+</td><td>工具调用、128K 上下文</td></tr>
+            <tr><td><code>qwen3:14b</code></td><td>9.3 GB</td><td>12 GB+</td><td>16 GB 内存可尝试</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>为什么「文件大小」能当内存参考</h3>
+      <p>
+        Ollama 默认使用 <strong>Q4 量化</strong>——把模型的权重压缩存储，体积大幅缩小、回答质量损失有限。
+        压缩之后，<strong>模型文件大小就是估算所需内存的可靠参考</strong>：一个约 2.5 GB 的文件，基本就要 6 GB 左右内存才跑得舒服。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">铁律</span>
+        <strong>先拉最小的一档跑通，再按需换大的。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-run">
+      <h2>七、拉模型与第一次对话</h2>
+      <p>就三行。跟着敲一遍，注意每行之后终端会输出什么。</p>
+
+      <div class="codeblock" data-lang="bash" data-name="终端实录">
+        <div class="codeblock__bar"></div>
+<pre><code>> ollama pull qwen3:1.7b
+pulling manifest
+pulling 74701a8c35f6... 100%  ▕████████████████████▏ 1.4 GB
+pulling 966de95ca8a6... 100%  ▕████████████████████▏  1.4 KB
+success
+
+> ollama list
+NAME           ID              SIZE      MODIFIED
+qwen3:1.7b     a1b2c3d4e5f6    1.4 GB    10 seconds ago
+
+> ollama run qwen3:1.7b
+>>> 用一句话解释什么是人工智能
+人工智能是让机器模拟人类智能行为的技术。
+>>> /bye
+</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">第一次会慢，是正常的</span>
+        模型要先从磁盘加载进内存，第一次提问通常要等几秒到十几秒。后面几轮会明显变快。
+        <strong>不要因为第一次慢就以为装错了。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-usage">
+      <h2>八、三种调用方式</h2>
+      <p>同一个模型，有三种用法，对应三种完全不同的场景。</p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>方式</th><th>命令形态</th><th>有记忆吗</th><th>典型场景</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 交互式</strong></td><td><code>ollama run qwen3:1.7b</code></td><td>有，记得住上一轮</td><td>自己聊天、调试人设</td></tr>
+            <tr><td><strong>② 一次性</strong></td><td><code>ollama run qwen3:1.7b "问题"</code></td><td>没有，答完即退</td><td>脚本、批处理</td></tr>
+            <tr><td><strong>③ 程序 API</strong></td><td>发 HTTP 请求到 <code>localhost:11434</code></td><td>看你自己怎么传</td><td>写进自己的程序</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="codeblock" data-lang="bash" data-name="用法①②">
+        <div class="codeblock__bar"></div>
+<pre><code># ① 交互式：进去一直聊，/bye 退出
+ollama run qwen3:1.7b
+
+# ② 一次性：命令后面直接带问题，答完就退出，不占着终端
+ollama run qwen3:1.7b "用一句话解释什么是机器学习"
+</code></pre>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">「一次性」是给脚本用的</span>
+        它的价值在于可以<strong>放进循环里</strong>：批量处理 100 个文件、100 条评论、100 份简历，
+        不用手动点 100 次。下面的 API 方式能力更强，一次性方式是它最省事的替代品。
+      </div>
+    </section>
+
+    <section class="sec" id="s-api">
+      <h2>九、用程序调用本地模型</h2>
+      <p>
+        Ollama 装好之后，在你的电脑上开了一个服务，地址是 <code>http://localhost:11434</code>。
+        <code>localhost</code> 的意思就是「你这台机器」。程序只要往这个地址发请求，就能用到你的本地模型。
+      </p>
+      <p>它提供了<strong>两个端点</strong>：</p>
+      <ul>
+        <li><code>POST /api/generate</code> —— Ollama 自己的原生接口，简单直接；</li>
+        <li><code>POST /v1/chat/completions</code> —— <strong>OpenAI 兼容接口</strong>，请求体格式和 OpenAI 完全一致。</li>
+      </ul>
+      <div class="callout callout--tip">
+        <span class="callout__t">为什么「兼容 OpenAI」这句话很值钱</span>
+        它意味着——<strong>任何支持自定义 base_url 的客户端或代码，都能直接接过来用，一行代码都不用改。</strong>
+        你以前写的调用云端的程序，只要把地址换成 <code>http://localhost:11434/v1</code>，就变成在调你自己的模型了。
+      </div>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ API 调用全流程：请求长什么样、返回长什么样</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo3">
+              <button type="button" data-tab="curl" class="on">curl 命令行</button>
+              <button type="button" data-tab="py">Python</button>
+              <button type="button" data-tab="resp">返回结果</button>
+            </div>
+            <button class="btn btn--main" type="button" id="d3-send">发送请求</button>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="curl">
+            <div class="codeblock" data-lang="bash" data-name="PowerShell / 终端">
+              <div class="codeblock__bar"></div>
+<pre><code>curl http://localhost:11434/api/generate -d "{\"model\":\"qwen3:1.7b\",\"prompt\":\"用一句话解释什么是神经网络\",\"stream\":false}"
+</code></pre>
+            </div>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="py" style="display:none">
+            <div class="codeblock" data-lang="python" data-name="ask_local_once.py">
+              <div class="codeblock__bar"></div>
+<pre><code>import requests
+
+resp = requests.post(
+    "http://localhost:11434/api/generate",
+    json={"model": "qwen3:1.7b", "prompt": "用一句话解释什么是神经网络", "stream": False},
+    timeout=120,
+)
+print(resp.json()["response"])
+</code></pre>
+            </div>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="resp" style="display:none">
+            <div class="demo__out log" id="d3-log" style="max-height:260px"></div>
+          </div>
+
+          <div class="demo__note">演示里的返回内容是<strong>示意数据</strong>，用于说明字段结构；真实回答由你本机的模型生成，每次都会不一样。</div>
+        </div>
+      </div>
+
+      <h3>两个端点的请求与返回长什么样</h3>
+      <div class="codeblock" data-lang="json" data-name="请求体：POST http://localhost:11434/v1/chat/completions">
+        <div class="codeblock__bar"></div>
+<pre><code>{
+  "model": "qwen3:1.7b",
+  "messages": [
+    { "role": "system", "content": "你是一个简洁的助手。" },
+    { "role": "user",   "content": "用一句话解释什么是神经网络" }
+  ],
+  "stream": false,
+  "temperature": 0.7
+}
+</code></pre>
+      </div>
+      <div class="codeblock" data-lang="json" data-name="返回体（节选）">
+        <div class="codeblock__bar"></div>
+<pre><code>{
+  "id": "chatcmpl-1027",
+  "object": "chat.completion",
+  "model": "qwen3:1.7b",
+  "choices": [
+    {
+      "index": 0,
+      "message": { "role": "assistant", "content": "神经网络是……" },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": { "prompt_tokens": 24, "completion_tokens": 42, "total_tokens": 66 }
+}
+</code></pre>
+      </div>
+      <p class="note">
+        注意返回结构：<code>choices[0].message.content</code> 才是回答正文。
+        这套字段名和 OpenAI 完全一致——这就是「兼容」的全部含义。
+      </p>
+
+      <h3>完整可运行脚本</h3>
+      <p>下面这份脚本两种接口都封装好了，保存成 <code>ask_local.py</code> 就能直接跑。</p>
+
+      <div class="codeblock" data-lang="python" data-name="ask_local.py（完整可运行）">
+        <div class="codeblock__bar"></div>
+<pre><code># -*- coding: utf-8 -*-
+"""
+用 Python 调用本地 Ollama 模型 —— 完整可运行示例
+依赖安装：pip install requests
+运行前提：本机已启动 Ollama（装好后自动在后台运行），且 ollama list 里有 qwen3:1.7b
+"""
+
+import sys
+import requests
+
+OLLAMA = "http://localhost:11434"   # 本地服务地址：装好 Ollama 就有
+MODEL = "qwen3:1.7b"                # 换成你 ollama list 里实际有的模型名
+
+
+def ask(prompt, model=MODEL, timeout=120):
+    """方式一：原生 /api/generate 接口，问一句答一句。"""
+    resp = requests.post(
+        f"{OLLAMA}/api/generate",
+        json={"model": model, "prompt": prompt, "stream": False},
+        timeout=timeout,
+    )
+    resp.raise_for_status()          # 出错时直接抛出，方便定位
+    return resp.json()["response"]
+
+
+def chat(question, model=MODEL, timeout=120):
+    """方式二：OpenAI 兼容接口。把地址换成云端就能无缝迁移到别的模型。"""
+    resp = requests.post(
+        f"{OLLAMA}/v1/chat/completions",
+        json={
+            "model": model,
+            "messages": [
+                {"role": "system", "content": "你是一个简洁的助手，回答不超过两句话。"},
+                {"role": "user", "content": question},
+            ],
+            "stream": False,
+        },
+        timeout=timeout,
+    )
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"]
+
+
+def batch(questions, model=MODEL):
+    """批处理：一个循环跑完一堆问题，这是本地模型最划算的用法（不花钱、不限次）。"""
+    for i, q in enumerate(questions, 1):
+        print(f"[{i}/{len(questions)}] {q}")
+        print("   →", ask(q, model=model).strip().replace("\n", " "))
+        print()
+
+
+if __name__ == "__main__":
+    # 首次使用先体检：连不上服务时给出人话提示，而不是一串报错
+    try:
+        requests.get(f"{OLLAMA}/api/tags", timeout=5).raise_for_status()
+    except Exception as e:
+        print("连不上本地 Ollama 服务，请检查：")
+        print("  1) 托盘里 Ollama 图标在不在（没有就去启动它）")
+        print("  2) 端口 11434 有没有被别的程序占用")
+        print(f"  原始错误：{e}")
+        sys.exit(1)
+
+    q = "用一句话解释什么是人工智能"
+    print("【原生接口 /api/generate】", ask(q))
+    print("【兼容接口 /v1/chat/completions】", chat(q))
+
+    # 批处理示例：把下面这行注释取消即可体验
+    # batch(["什么是过拟合", "过拟合怎么解决", "举一个生活中的例子"])
+</code></pre>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">API 连不上，先查三件事</span>
+        <ul>
+          <li><strong>服务起来了吗</strong>——托盘里有没有 Ollama 图标；</li>
+          <li><strong>端口被占了吗</strong>——<code>11434</code> 是否被别的程序占用；</li>
+          <li><strong>模型名拼对了吗</strong>——用 <code>ollama list</code> 复制粘贴，别手打。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" id="s-speed">
+      <h2>十、速度体感与硬件</h2>
+      <p>很多同学第一次跑本地模型的第一反应是：「怎么这么慢，是不是装错了？」——不是。先看这张表。</p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>档位</th><th>8 GB 内存 + 纯 CPU 的大致速度</th><th>体感</th></tr></thead>
+          <tbody>
+            <tr><td>Qwen3 0.6B</td><td>20–30 字/秒</td><td>飞快</td></tr>
+            <tr><td>Llama3.2 1B</td><td>15–20 字/秒</td><td>流畅</td></tr>
+            <tr><td>Qwen3 1.7B</td><td>12–18 字/秒</td><td>流畅</td></tr>
+            <tr><td>Phi4-mini 3.8B</td><td>8–12 字/秒</td><td>可用</td></tr>
+            <tr><td>Qwen3 4B</td><td>6–10 字/秒</td><td>可用</td></tr>
+            <tr><td>Gemma3 4B</td><td>5–8 字/秒</td><td>稍慢</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        以上为参考社区自述的 CPU 环境数据，<strong>标注「教学示意，非实测数值」</strong>，只用于建立定性认识，不构成承诺。
+      </p>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">慢的真相</span>
+        <strong>没有独立显卡 = CPU 推理，慢是硬件决定的，不是你装错了。</strong>
+        想快，<strong>降档位比什么都管用</strong>——换一个参数量更小的模型，速度立刻上一个台阶。
+      </div>
+    </section>
+
+    <section class="sec" id="s-mf">
+      <h2>十一、Modelfile：给模型定人设<span class="sec__tag">成果物</span></h2>
+      <p>
+        每次开一个新对话，都要重新交代一遍「你是什么角色、该怎么回答」，很烦。
+        <strong>Modelfile</strong> 就是解决这件事的：把规矩一次写清楚，之后随叫随到。
+      </p>
+      <p>它最简的结构只有两行：</p>
+      <ul>
+        <li><code>FROM</code> —— 告诉它<strong>「你是谁的孩子」</strong>，基于哪个模型；</li>
+        <li><code>SYSTEM</code> —— 告诉它<strong>「你要守什么规矩」</strong>：人设、口吻、边界。</li>
+      </ul>
+
+      <div class="demo" id="demo4">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">④ Modelfile 定人设：写规矩，看它守不守规矩</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo4">
+              <button type="button" data-tab="a" class="on">课程答疑助手</button>
+              <button type="button" data-tab="b">Python 代码审查</button>
+              <button type="button" data-tab="c">英语口语陪练</button>
+              <button type="button" data-tab="d">情绪树洞</button>
+            </div>
+          </div>
+
+          <div class="demo__stage">
+            <div class="codeblock" data-lang="modelfile" data-name="Modelfile（随选项自动生成，可自行编辑）">
+              <div class="codeblock__bar"></div>
+              <pre><code id="d4-file"></code></pre>
+            </div>
+            <span class="demo__label">模型名（创建之后用它来启动）</span>
+            <input type="text" id="d4-name" value="mybot" spellcheck="false">
+          </div>
+
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d4-create">创建模型</button>
+            <button class="btn btn--accent" type="button" id="d4-run">测试问一句</button>
+            <button class="btn btn--ghost" type="button" id="d4-reset">重置</button>
+          </div>
+          <div class="demo__out log" id="d4-log"></div>
+          <div class="demo__note">
+            演示里的回答是<strong>离线预置的示意文本</strong>，用于让你看清「人设写得不同，回答的边界就不同」。真实效果请在你自己电脑上跑。
+          </div>
+        </div>
+      </div>
+
+      <h3>创建与运行</h3>
+      <div class="codeblock" data-lang="bash" data-name="创建自定义模型">
+        <div class="codeblock__bar"></div>
+<pre><code># 假设 Modelfile 就放在当前目录（文件名可以就叫 Modelfile，无扩展名）
+ollama create mybot -f Modelfile
+
+# 之后只要这一行，它就永远是你定好的那个角色
+ollama run mybot
+
+# 看看自己创建过哪些模型（自定义模型也会出现在列表里）
+ollama list
+
+# 不想要了
+ollama rm mybot
+</code></pre>
+      </div>
+
+      <div class="fold">
+        <button class="fold__hd" type="button">四个可直接抄的 Modelfile 模板（点开复制）</button>
+        <div class="fold__bd">
+          <div class="codeblock" data-lang="modelfile" data-name="① 课程答疑助手">
+            <div class="codeblock__bar"></div>
+<pre><code>FROM qwen3:1.7b
+
+SYSTEM """
+你是《AIGC应用与实践》课程的答疑助手。
+只回答与本课程相关的问题；答不上来就直说"这个我不确定"，不许编。
+回答要简短，一次不超过 5 句话。
+"""
+</code></pre>
+          </div>
+          <div class="codeblock" data-lang="modelfile" data-name="② Python 代码审查助手">
+            <div class="codeblock__bar"></div>
+<pre><code>FROM qwen3:1.7b
+
+SYSTEM """
+你是一个 Python 代码审查助手。
+只指出代码里的问题并给出修改建议，不要重写整段代码。
+每次最多指出 3 个问题，按严重程度排序。
+"""
+</code></pre>
+          </div>
+          <div class="codeblock" data-lang="modelfile" data-name="③ 英语口语陪练">
+            <div class="codeblock__bar"></div>
+<pre><code>FROM qwen3:1.7b
+
+SYSTEM """
+你是我的英语口语陪练。
+只用简单句和我对话；发现语法错误就立刻纠正，并用中文解释原因。
+每次对话都要主动抛出一个新话题让我接。
+"""
+</code></pre>
+          </div>
+          <div class="codeblock" data-lang="modelfile" data-name="④ 情绪树洞">
+            <div class="codeblock__bar"></div>
+<pre><code>FROM qwen3:1.7b
+
+SYSTEM """
+你是一个倾听者，只做共情和陪伴。
+不做任何诊断、不开药方、不给医疗建议。
+如果用户出现自我伤害的念头，请建议他联系学校心理咨询中心或专业机构。
+"""
+</code></pre>
+          </div>
+          <div class="callout callout--tip callout--last">
+            <span class="callout__t">规律</span>
+            <strong>人设写得越具体，模型越好用。</strong>
+            只写「你是个助手」等于什么都没说；把边界（只答什么、答不上来怎么办、一次说几句）写清楚，它就真的守规矩。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-bound">
+      <h2>十二、边界与权衡：该用本地还是上云</h2>
+      <p>这是本课最终要落到的能力——不是「会装」，而是<strong>会选</strong>。遇到一个具体任务，问自己三个问题：</p>
+      <ol class="steps">
+        <li><b>数据敏不敏感？</b><span>涉及学生隐私、公司内部资料、个人信息 → <strong>优先本地</strong>。</span></li>
+        <li><b>要不要联网查新？</b><span>需要最新资讯、实时行情、最新政策 → <strong>必须上云</strong>，本地模型查不了。</span></li>
+        <li><b>对能力要求高不高？</b><span>复杂推理、长文写作、代码重构 → <strong>上云</strong>；简单分类、批量改写、格式转换 → 本地够用。</span></li>
+      </ol>
+
+      <div class="compare">
+        <div class="compare__col">
+          <h5>选本地</h5>
+          <ul>
+            <li>学生的心理咨询倾诉内容</li>
+            <li>公司还没发布的内部文案</li>
+            <li>几百份简历的批量初筛打标签</li>
+            <li>断网环境下的演示与教学</li>
+            <li>要做上千次的重复性文本处理</li>
+          </ul>
+        </div>
+        <div class="compare__col b">
+          <h5>选云端</h5>
+          <ul>
+            <li>需要查最新资讯、实时数据</li>
+            <li>写一篇有深度、要引用的长文</li>
+            <li>复杂代码重构与调试</li>
+            <li>多模态任务（看图、生成图/视频）</li>
+            <li>偶尔用一次，不想占本机资源</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">回到主线</span>
+        你们今天跑的 1.7b 确实不如云端聪明。但它是你的——<strong>数据不出门、断网能用、反复调用不要钱</strong>。
+        <strong>知道什么时候该用本地、什么时候该上云，才是真的会用工具。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这些题不计分，是给你自己查漏用的。</p>
+
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>本地模型相比云端模型，最准确的说法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 本地模型更聪明，所以更好</li>
+            <li>B. 本地模型数据不出本机、可离线，但能力明显更弱</li>
+            <li>C. 本地模型和云端模型完全一样</li>
+            <li>D. 本地模型不需要任何硬件条件</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>三点差异是「数据不出本机 / 可离线 / 能力明显更弱」。
+            落点是<strong>「各有位置」</strong>，不是「本地更好」。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>判断：模型文件默认装在 C 盘，所以装完第一件事应该配 <code>OLLAMA_MODELS</code> 把目录改到别的盘。</span></div>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：正确。</b>默认路径是 <code>C:\Users\&lt;用户名&gt;\.ollama\models</code>。
+            配好环境变量后<strong>必须重启 Ollama 才生效</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>你的电脑内存是 4 GB，应该先拉哪个模型？</span></div>
+          <ul class="quiz__opts">
+            <li>A. <code>qwen3:0.6b</code></li>
+            <li>B. <code>qwen3:4b</code></li>
+            <li>C. <code>deepseek-r1:7b</code></li>
+            <li>D. <code>qwen3:14b</code></li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A。</b>约 500 MB，是 4 GB 内存机器的兜底档。
+            铁律：<strong>先拉最小的一档跑通，再按需换大的。</strong>
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>本地 Ollama 服务的默认地址与端口是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. <code>127.0.0.1:8080</code></li>
+            <li>B. <code>localhost:11434</code></li>
+            <li>C. <code>localhost:3000</code></li>
+            <li>D. <code>localhost:6379</code></li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b><code>http://localhost:11434</code>。
+            它同时提供 <code>/api/generate</code> 与 OpenAI 兼容的 <code>/v1/chat/completions</code>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：本地模型回答慢，说明装错了，应该重新安装。</span></div>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：错误。</b>没有独立显卡就是 CPU 推理，<strong>慢是正常的</strong>。
+            正确的处理是<strong>降低模型档位</strong>，不是重装。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>学校心理咨询中心要做「情绪树洞」机器人，学生的倾诉内容绝不能外传。应该选本地还是云端？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 云端，因为云端更聪明</li>
+            <li>B. 本地，因为数据不出本机</li>
+            <li>C. 都行，反正内容会加密</li>
+            <li>D. 都不用，人工回复最安全</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>判断三问的第一问就是「数据敏不敏感」。
+            倾诉内容属于高度敏感数据，<strong>本地部署是唯一能让数据不出门的方案</strong>。
+            （能力弱一点可以接受，也可以用 Modelfile 把边界写死。）
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课我们做了六件事</h4>
+        <ol>
+          <li>说清了本地与云端的三点差异——<b>数据不出门 / 断网能用 / 能力更弱</b>；</li>
+          <li>装了 Ollama，<b>第一时间把模型目录改到非系统盘</b>（不然 C 盘会被撑爆）；</li>
+          <li>学会按内存选档位，记住铁律<b>「先小后大」</b>；</li>
+          <li>跑通了三种调用方式——<b>交互式 / 一次性 / API</b>；</li>
+          <li>用 Modelfile 做了自己的专属助手，<b>规矩写得越具体越好用</b>；</li>
+          <li>最后落到<b>边界判断</b>：这三问决定什么时候该用本地、什么时候必须上云。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业</h2>
+      <p><strong>场景</strong>：你同时接到两个需求——</p>
+      <ul>
+        <li>学校心理咨询中心要做「<strong>情绪树洞</strong>」机器人，学生的倾诉内容<strong>绝对不能外传</strong>；</li>
+        <li>社团要做「<strong>活动策划脑暴助手</strong>」，需要<strong>联网查最新热点</strong>。</li>
+      </ul>
+      <p><strong>交付四样</strong>：</p>
+      <ol>
+        <li>一份<strong>选型说明</strong>：哪个用本地、哪个用云端，各写至少 2 条理由；</li>
+        <li>一份按「情绪树洞」定位写好的 <strong>Modelfile</strong>；</li>
+        <li><strong>3 组真实对话截图</strong>，其中至少 1 组能体现人设生效；</li>
+        <li><strong>200 字以上分析</strong>：说清你自己的判断标准。</li>
+      </ol>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        不看代码多漂亮，看三点：<strong>理由是否具体</strong>（能指到「数据敏感性/联网需求/调用频次」）、
+        <strong>人设是否真的约束住了模型</strong>（截图能证明）、
+        <strong>判断标准是否可复用</strong>（换一个场景你还能判断）。
+      </div>
+    </section>
+
+<!-- ============================================================
+     内容区结束
+     ============================================================ -->
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑（其它课不要复制这一段，各写各的）
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 数据流向 ---------- */
+  var d1 = { mode: "cloud", net: true };
+  function d1Render() {
+    var dotCloud = $("d1-dot-cloud"), dotLocal = $("d1-dot-local"), out = $("d1-out");
+    var isCloud = d1.mode === "cloud";
+    var dot = isCloud ? dotCloud : dotLocal;
+    if (!dot) return;
+
+    dot.className = "flow__dot";
+    if (!d1.net) {
+      if (isCloud) { dot.classList.add("bad"); } else { dot.classList.add("hold"); }
+    } else {
+      dot.classList.add("run");
+    }
+
+    var lines = [];
+    if (isCloud && d1.net) {
+      lines.push('<span class="dim">状态：联网中</span>');
+      lines.push('你的电脑 ──请求──▶ 厂商服务器 ──计算──▶ 返回答案');
+      lines.push('<span class="no">⚠ 你输入的每一个字，都离开了你的电脑</span>');
+    } else if (isCloud && !d1.net) {
+      lines.push('<span class="dim">状态：已断网</span>');
+      lines.push('你的电脑 ──✕──▶ 厂商服务器　　<span class="no">连接失败</span>');
+      lines.push('<span class="no">✕ 无法连接服务器，请检查网络 —— 云端模型断网即废</span>');
+    } else if (!isCloud && d1.net) {
+      lines.push('<span class="dim">状态：联网中</span>');
+      lines.push('你的电脑 ──计算（本机 CPU）──▶ 答案');
+      lines.push('<span class="ok">✓ 数据一个字节都没有出门</span>');
+    } else {
+      lines.push('<span class="dim">状态：已断网</span>');
+      lines.push('你的电脑 ──计算（本机 CPU）──▶ 答案');
+      lines.push('<span class="ok">✓ 断网照样跑得动 —— 这就是本地部署的意义</span>');
+    }
+    out.innerHTML = lines.join("<br>");
+  }
+  document.querySelectorAll("#demo1 [data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () { d1.mode = b.getAttribute("data-tab"); d1Render(); });
+  });
+  $("d1-net").addEventListener("click", function () {
+    d1.net = !d1.net;
+    this.textContent = d1.net ? "切断网络" : "恢复网络";
+    this.classList.toggle("btn--accent", !d1.net);
+    d1Render();
+  });
+  d1Render();
+
+  /* ---------- 演示② 档位选择 ---------- */
+  var TIERS = [
+    { mem: 2,  model: "gemma3:270m",    size: "292 MB", need: "1 GB+",  speed: "25–40 字/秒", note: "极低配机器、边缘设备" },
+    { mem: 4,  model: "qwen3:0.6b",     size: "约 500 MB", need: "约 2 GB", speed: "20–30 字/秒", note: "4 GB 内存机器的兜底档" },
+    { mem: 6,  model: "llama3.2:1b",    size: "1.3 GB",  need: "4 GB+",  speed: "15–20 字/秒", note: "轻量、快" },
+    { mem: 8,  model: "qwen3:1.7b",     size: "1.4 GB",  need: "4 GB+",  speed: "12–18 字/秒", note: "本课默认档：中文好、体积小" },
+    { mem: 12, model: "qwen3:4b",       size: "2.5 GB",  need: "6 GB+",  speed: "6–10 字/秒",  note: "多语言、长上下文（256K）" },
+    { mem: 16, model: "deepseek-r1:7b", size: "4.7 GB",  need: "8 GB+",  speed: "4–7 字/秒",   note: "推理链、数学与逻辑题" },
+    { mem: 24, model: "llama3.1:8b",    size: "4.9 GB",  need: "8 GB+",  speed: "3–6 字/秒",   note: "工具调用、128K 上下文" },
+    { mem: 32, model: "qwen3:14b",      size: "9.3 GB",  need: "12 GB+", speed: "2–4 字/秒",   note: "16 GB 内存以上可尝试" },
+  ];
+  function d2Render() {
+    var mem = parseInt($("d2-mem").value, 10);
+    var t = TIERS[0];
+    for (var i = 0; i < TIERS.length; i++) { if (mem >= TIERS[i].mem) t = TIERS[i]; }
+    $("d2-mem-val").textContent = mem + " GB";
+    $("d2-model").textContent = t.model;
+    $("d2-size").textContent = t.size;
+    $("d2-need").textContent = t.need;
+    $("d2-speed").textContent = t.speed;
+    $("d2-detail").innerHTML =
+      "<dt>推荐理由</dt><dd>" + t.note + "</dd>" +
+      "<dt>运行方式</dt><dd>" + (mem >= 16 ? "优先用独立显卡；无独显则 CPU（会明显慢）" : "基本是 CPU 推理，慢属正常") + "</dd>" +
+      "<dt>下载命令</dt><dd>ollama pull " + t.model + "</dd>";
+    var ratio = parseFloat(t.size) || 0;
+    var warn = mem <= 4 && !/270m|0\.6b/.test(t.model);
+    $("d2-out").innerHTML =
+      "根据 " + mem + " GB 内存，建议先拉：<span class='hl'>ollama pull " + t.model + "</span><br>" +
+      (warn ? "<span class='no'>⚠ 该档位对 " + mem + " GB 内存偏紧，建议先退到 qwen3:0.6b 跑通。</span>"
+            : "<span class='ok'>✓ 该档位与你的内存匹配。首次运行会明显慢，属正常现象。</span>");
+  }
+  $("d2-mem").addEventListener("input", d2Render);
+  d2Render();
+
+  /* ---------- 演示③ API 调用 ---------- */
+  var D3_SEQ = [
+    '<span class="dim">$ curl http://localhost:11434/api/generate -d "{...}"</span>',
+    '<span class="dim">→ 正在连接 localhost:11434 …</span>',
+    '<span class="ok">✓ 服务已响应（HTTP 200）</span>',
+    "",
+    "{",
+    '  "model": "qwen3:1.7b",',
+    '  "created_at": "2026-09-15T12:00:00.000000000Z",',
+    '  "response": "神经网络是一种受人脑神经元结构启发的计算模型，",',
+    '                它通过多层节点的连接与权重调整来学习数据中的规律。",',
+    '  "done": true,',
+    '  "done_reason": "stop",',
+    '  "total_duration": 4820000000,',
+    '  "eval_count": 42,',
+    '  "eval_duration": 3210000000',
+    "}",
+    "",
+    '<span class="dim">字段含义：response 就是回答正文；eval_count / eval_duration 可算出速度</span>',
+    '<span class="dim">（本机实际回答由你的模型生成，内容和长度都会不同）</span>',
+  ];
+  $("d3-send").addEventListener("click", function () {
+    var scope = $("demo3");
+    scope.querySelectorAll("button[data-tab]").forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-tab") === "resp"); });
+    scope.querySelectorAll("[data-tabpanel]").forEach(function (p) { p.style.display = p.getAttribute("data-tabpanel") === "resp" ? "" : "none"; });
+    window.Site.type($("d3-log"), D3_SEQ);
+  });
+
+  /* ---------- 演示④ Modelfile ---------- */
+  var MF = {
+    a: {
+      file: 'FROM qwen3:1.7b\n\nSYSTEM """\n你是《AIGC应用与实践》课程的答疑助手。\n只回答与本课程相关的问题；答不上来就直说"这个我不确定"，不许编。\n回答要简短，一次不超过 5 句话。\n"""',
+      label: "课程答疑助手",
+      q: "我期末要考什么？",
+      a: ['<span class="dim">>>> 我期末要考什么？</span>',
+          '本学期期末考核以模块二、模块三的综合项目为主。',
+          '但具体考试范围我这边不确定，请以任课教师当堂宣布为准。',
+          '<span class="ok">✓ 人设生效：只答本课程、答不上来明确说不确定、不超过 5 句</span>'],
+    },
+    b: {
+      file: 'FROM qwen3:1.7b\n\nSYSTEM """\n你是一个 Python 代码审查助手。\n只指出代码里的问题并给出修改建议，不要重写整段代码。\n每次最多指出 3 个问题，按严重程度排序。\n"""',
+      label: "Python 代码审查助手",
+      q: "帮我看看这段代码：for i in range(len(lst)): print(lst[i])",
+      a: ['<span class="dim">>>> 帮我看看这段代码：for i in range(len(lst)): print(lst[i])</span>',
+          '1（中）可以直接遍历元素：for item in lst: print(item)',
+          '2（轻）若确实需要下标，用 enumerate(lst) 更清晰',
+          '<span class="ok">✓ 人设生效：只指出问题+建议，没有重写整段代码，且≤3 条</span>'],
+    },
+    c: {
+      file: 'FROM qwen3:1.7b\n\nSYSTEM """\n你是我的英语口语陪练。\n只用简单句和我对话；发现语法错误就立刻纠正，并用中文解释原因。\n每次对话都要主动抛出一个新话题让我接。\n"""',
+      label: "英语口语陪练",
+      q: "I go to school yesterday.",
+      a: ['<span class="dim">>>> I go to school yesterday.</span>',
+          '纠正：I went to school yesterday.（go 要改成过去式 went，因为说的是昨天）',
+          'Good try! What did you do at school?',
+          '<span class="ok">✓ 人设生效：纠正 + 用中文解释原因 + 主动抛出新话题</span>'],
+    },
+    d: {
+      file: 'FROM qwen3:1.7b\n\nSYSTEM """\n你是一个倾听者，只做共情和陪伴。\n不做任何诊断、不开药方、不给医疗建议。\n如果用户出现自我伤害的念头，请建议他联系学校心理咨询中心或专业机构。\n"""',
+      label: "情绪树洞",
+      q: "我最近很焦虑，睡不着，是不是得了什么病？",
+      a: ['<span class="dim">>>> 我最近很焦虑，睡不着，是不是得了什么病？</span>',
+          '听起来这段时间你确实很不好受，能说出来已经很不容易了。',
+          '不过我不能给你任何诊断——这超出我能做的范围。',
+          '如果这种状态持续，建议联系学校心理咨询中心或专业机构。',
+          '<span class="ok">✓ 人设生效：只共情、明确不诊断、触发安全建议</span>'],
+    },
+  };
+  var d4cur = "a";
+  function d4Render() {
+    var m = MF[d4cur];
+    $("d4-file").textContent = m.file;
+    $("d4-file").setAttribute("data-raw", m.file);
+    $("d4-file").innerHTML = window.Site.highlight(m.file, "modelfile");
+    $("d4-log").innerHTML = '<span class="dim">当前人设：' + m.label + '　— 点「创建模型」把规矩写进模型，再点「测试问一句」。</span>';
+  }
+  document.querySelectorAll("#demo4 [data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () { d4cur = b.getAttribute("data-tab"); d4Render(); });
+  });
+  $("d4-create").addEventListener("click", function () {
+    var name = ($("d4-name").value || "mybot").trim();
+    window.Site.type($("d4-log"), [
+      '<span class="dim">$ ollama create ' + name + ' -f Modelfile</span>',
+      "transferring model data",
+      "using existing layer sha256:74701a8c35f6",
+      "creating new layer sha256:9f2a1c7e4b0d",
+      'writing manifest',
+      '<span class="ok">success</span>',
+      "",
+      '<span class="dim">现在可以用以下命令启动你的专属助手：</span>',
+      '<span class="hl">ollama run ' + name + "</span>",
+    ]);
+  });
+  $("d4-run").addEventListener("click", function () {
+    var m = MF[d4cur];
+    var name = ($("d4-name").value || "mybot").trim();
+    var seq = ['<span class="dim">$ ollama run ' + name + "</span>", ""].concat(m.a);
+    window.Site.type($("d4-log"), seq);
+  });
+  $("d4-reset").addEventListener("click", function () {
+    $("d4-name").value = "mybot";
+    d4cur = "a";
+    document.querySelectorAll("#demo4 [data-tab]").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-tab") === "a");
+    });
+    d4Render();
+  });
+  d4Render();
+})();
+</script>
+</body>
+</html>

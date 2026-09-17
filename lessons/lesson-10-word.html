@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第10次课 办公实战——Word 文档生成与批量处理｜AIGC应用与实践</title>
+<meta name="description" content="文档指令五要素、大纲先行、把初稿改到能用、模板加变量批量生成、在 WorkBuddy 里直接改文档。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="10" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 办公实战</span></h2>
+      <p class="lead">
+        前面几课你学会了指挥 AI。从这一课开始，进入<strong>真实的办公场景</strong>。
+        第一站是 Word——通知、总结、方案、申请，这些文体的共同点是：
+        <strong>有固定结构，而且要经得起人看</strong>。
+      </p>
+      <p>
+        这一课你会真的生成三样东西：<strong>一份通知、一份实习总结、三份邀请函</strong>。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">本课上法：边讲边做</span>
+        页面里<strong>橙色边框的方块</strong>都是要你在 WorkBuddy 里<strong>实际做出一份文档</strong>的环节，
+        一共 4 个、合计约 45 分钟。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>写出<strong>完整的文档生成指令</strong>，说清类型、主题、对象、结构、字数、语气；</li>
+          <li>用<strong>大纲先行</strong>的办法写长文档，避免整篇返工；</li>
+          <li>把一份 AI 初稿改到「能发出去」，并说清空话词在哪；</li>
+          <li>用<strong>模板 + 变量</strong>批量生成多份文档，并知道该抽查什么；</li>
+          <li>说清在 WorkBuddy 里改文档时，哪些操作不消耗积分、哪些要注意。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-what"><b>01</b>为什么 AI 写的文档「一眼假」 <em>＋实操①</em></a>
+        <a href="#s-outline"><b>02</b>长文档：先要大纲 <em>＋实操②</em></a>
+        <a href="#s-fix"><b>03</b>把初稿改到能用 <em>＋实操③</em></a>
+        <a href="#s-batch"><b>04</b>批量生成：模板 + 变量 <em>＋实操④</em></a>
+        <a href="#s-inapp"><b>05</b>在 WorkBuddy 里直接改</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素
+        （本课把它收窄到「文档」这个场景里）、<a class="xref" data-lesson="9">第 9 次课</a>的「先定标准」。<br>
+        <strong>后续</strong>：本课这套「先结构、后内容、再审校」的流程是通用的——
+        后面 Excel、PPT 两次课换的只是载体。
+      </div>
+    </section>
+
+    <section class="sec" id="s-what">
+      <h2>一、为什么 AI 写的文档「一眼假」<span class="sec__tag">问题</span></h2>
+      <p>先读一段。这是让 AI 写「旧书交换通知」时，它最可能给你的东西：</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="典型的「AI 味」文档">
+        <div class="codeblock__bar"></div>
+<pre><code>为了进一步丰富校园文化生活，切实营造良好的学习氛围，有效促进同学之间的交流与沟通，
+经研究决定，特举办本次旧书交换活动。希望广大同学能够积极参与，共同感受阅读的魅力，
+在书的海洋中汲取知识与力量。让我们携手共进，共同营造书香校园的良好氛围！</code></pre>
+      </div>
+      <p>
+        读完你发现问题了吗——<strong>它说了很多话，但没告诉你任何一件事</strong>：
+        几号？几点？在哪？怎么参加？一个都没有。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>症状</th><th>长什么样</th><th>根本原因</th></tr></thead>
+          <tbody>
+            <tr><td><strong>空话堆砌</strong></td><td>「进一步」「切实」「有效」「积极」成串出现</td><td>它用套话填补了它不知道的信息</td></tr>
+            <tr><td><strong>信息缺失</strong></td><td>通篇找不到具体时间、地点、人名</td><td>你没给，它不敢编，就用空话绕过去</td></tr>
+            <tr><td><strong>结构均等</strong></td><td>每段差不多长，像填空题</td><td>它按「平均分配」生成，分不出重点</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">记住这个结论</span>
+        <strong>「AI 味」主要不是文笔问题，是信息问题。</strong>
+        你给的原料越具体，它填的空话就越少。
+        所以解药不是「让它写得自然点」，而是<strong>把该给的信息给全</strong>。
+      </div>
+
+      <h3>文档指令的五要素</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>要交代什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>类型与主题</strong></td><td>通知？总结？方案？讲的是哪件事</td></tr>
+            <tr><td><strong>对象</strong></td><td>写给谁看——这决定语气和详略</td></tr>
+            <tr><td><strong>结构</strong></td><td>分几块、按什么顺序</td></tr>
+            <tr><td><strong>字数与语气</strong></td><td>多少字、什么调子</td></tr>
+            <tr><td><strong>兜底</strong></td><td>没有的信息写成【待确认】，不许自己编</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·生成一份能用的通知 <em>约 12 分钟</em></div>
+        <p><strong>场景</strong>：校园旧书交换活动，你要发一份通知。信息如下——</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 活动信息（已知的就这些）">
+          <div class="codeblock__bar"></div>
+<pre><code>活动：校园旧书交换
+对象：全校学生
+时间：2026 年 9 月 18 日 15:00
+地点：图书馆前广场（下雨改到图书馆一楼大厅）
+参与方式：携带 1 本完整旧书，现场交换
+联系人：（还没定）</code></pre>
+        </div>
+        <p><strong>第 1 步 · 先自己写一句「草稿」</strong>——不用完整，把「几点在哪干什么」写清楚就行，
+          写在记事本里，等下要和 AI 的对比。</p>
+        <p><strong>第 2 步 · 把下面这段指令发给 WorkBuddy</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="任务说明 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请为高职学生写一则校园旧书交换通知。
+必须包含：标题、对象、时间、地点、参与方式、温馨提醒。
+篇幅 200 字以内，语气平实，不要用「进一步」「切实」这类套话。
+资料里没有的信息（比如联系人）写成【待确认】，不要自己编。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 验收</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>五件事齐了吗</td><td>时间、地点、对象、怎么参加、温馨提醒都在</td></tr>
+              <tr><td>有没有套话</td><td>搜「进一步 / 切实 / 有效 / 积极」——应该一个都没有</td></tr>
+              <tr><td>联系人怎么写的</td><td>应该是【待确认】，不是它编的一个名字</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>要交的成果</strong>：这份通知初稿，<strong>存好别改</strong>——下一节还要用它。</p>
+        <p><strong>完成标准</strong>：上面三条都过关。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-outline">
+      <h2>二、长文档：先要大纲<span class="sec__tag">方法</span></h2>
+      <p>
+        短通知可以一步到位。但长文档（一千字以上的总结、方案）直接让它写，
+        十有八九要<strong>整篇返工</strong>：结构不对、重点偏了、该有的章节没有。
+      </p>
+      <p>
+        更省事的做法就四个字：<strong>大纲先行</strong>。
+        把它想成盖房子——<strong>先定几层几间，再往房间里搬家具</strong>。骨架错了，改骨架比改装修便宜得多。
+      </p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>阶段</th><th>你要什么</th><th>只盯两件事</th></tr></thead>
+          <tbody>
+            <tr><td>第一步</td><td>只要大纲，不要正文</td><td><strong>有没有漏</strong>、<strong>顺序对不对</strong></td></tr>
+            <tr><td>第二步</td><td>确认后按大纲展开</td><td>每一节的比例、语气对不对</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·写一份 1500 字的实习总结 <em>约 15 分钟</em></div>
+        <p><strong>第 1 步 · 先只要大纲</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第一步 · 只要大纲">
+          <div class="codeblock__bar"></div>
+<pre><code>我要写一份实习总结，大约 1500 字，交给学校指导老师。
+先只给我大纲，不要展开正文。
+我自己会补具体单位和数据，所以大纲里涉及具体信息的地方标【待确认】。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 检查大纲，重点看有没有漏</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>该有的章节</th><th>有了吗</th></tr></thead>
+            <tbody>
+              <tr><td>实习基本情况（时间、单位、岗位）</td><td></td></tr>
+              <tr><td>主要工作内容</td><td></td></tr>
+              <tr><td><strong>遇到的问题与解决办法</strong>（最容易漏）</td><td></td></tr>
+              <tr><td>收获与体会</td><td></td></tr>
+              <tr><td>下一步改进方向</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>少了就在这一步补——<strong>现在改几乎不花时间，等正文写完再改就是重写</strong>。</p>
+        <p><strong>第 3 步 · 确认后展开</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第二步 · 按这个大纲展开">
+          <div class="codeblock__bar"></div>
+<pre><code>按这个大纲展开正文，总共 1500 字左右，各节比例按重要性分配。
+所有我不提供的具体信息（单位、日期、同事姓名、数据）一律写【待确认】，
+不要推测，不要编造。语气平实，不要套话。</code></pre>
+        </div>
+        <p><strong>第 4 步 · 验收</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>结构</td><td>和你确认的大纲一节不差</td></tr>
+              <tr><td>字数</td><td>1300–1700 之间都算合格</td></tr>
+              <tr><td>有没有编</td><td>搜一遍「【待确认】」——数量应该不少，这才是对的</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>要交的成果</strong>：实习总结的<strong>大纲</strong> + 展开后的<strong>正文</strong>（两个文件都要）。</p>
+        <p><strong>完成标准</strong>：三条都过关。<strong>如果它给你编了单位和数据，说明你的兜底那句没写住</strong>——
+          记下来，这比结果本身更值得说。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-fix">
+      <h2>三、把初稿改到能用<span class="sec__tag">打磨</span></h2>
+      <p>初稿出来之后，接下来是三件<strong>很容易混在一起的事</strong>。混着提要求，结果就是三件都没做好。</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>动作</th><th>解决什么</th><th>怎么检查</th></tr></thead>
+          <tbody>
+            <tr><td><strong>润色</strong></td><td>句子太长、表达不顺、重点不突出</td><td>读一遍，有没有要读第二次的句子</td></tr>
+            <tr><td><strong>审校</strong></td><td>事实错误、格式不统一、错别字</td><td>对着原始资料逐条核，不凭印象</td></tr>
+            <tr><td><strong>去 AI 味</strong></td><td>空话多、信息少、不像人说的</td><td>删掉形容词后，还剩多少实际内容</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>去 AI 味不是换词。</strong>把「进一步」换成「更」，本质没变。真正有效的只有三个动作，顺序不能反：</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>顺序</th><th>动作</th><th>为什么是这个顺序</th></tr></thead>
+          <tbody>
+            <tr><td>①</td><td><strong>删空话</strong></td><td>先把位置腾出来</td></tr>
+            <tr><td>②</td><td><strong>补具体</strong></td><td>空出来的位置要用真实信息填上——<strong>这一步只能你来</strong></td></tr>
+            <tr><td>③</td><td><strong>换语气</strong></td><td>按使用场景调整正式程度</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·把实操①的通知改到能发出去 <em>约 10 分钟</em></div>
+        <p><strong>第 1 步 · 先审校，再润色</strong>（顺序别反）：</p>
+        <ol class="steps">
+          <li><b>核事实</b><span>拿实操①的通知，对着那份活动信息表逐条核：
+            <strong>日期、时间、地点有没有错一个字</strong>。对不上的地方圈出来。</span></li>
+          <li><b>补【待确认】</b><span>联系人那处还是【待确认】——这是对的，<strong>不要去编一个</strong>。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 去 AI 味，照清单圈</strong>：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="空话词清单（见到就圈）">
+          <div class="codeblock__bar"></div>
+<pre><code>进一步　切实　有效　积极　深入贯彻落实　相关精神　营造氛围
+紧紧围绕　形式多样　内容丰富　特色鲜明　潜移默化
+携手共进　共同感受　汲取力量　踊跃参与</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>删空话</b><span>圈出来的全删掉，一个字不留。</span></li>
+          <li><b>补具体</b><span>空出的位置用活动信息表里的真实内容填上（时间、地点、怎么参加）。</span></li>
+          <li><b>换语气</b><span>现在读一遍——发给同学的通知，短句比长句好用。</span></li>
+        </ol>
+        <p><strong>第 3 步 · 和你的草稿比一比</strong>：翻出你第 1 步写的那句草稿，
+          看两版哪个更清楚。<strong>如果 AI 那版还不如你手写的一句，那就用你的。</strong></p>
+        <p><strong>要交的成果</strong>：<strong>两个版本</strong>——初稿（不要改）和修订稿，文件名分开写清。</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>检查项</th><th>过 / 不过</th></tr></thead>
+            <tbody>
+              <tr><td>空话词一个不剩</td><td></td></tr>
+              <tr><td>五件事（时间/地点/对象/方式/提醒）都在</td><td></td></tr>
+              <tr><td>事实与素材核对无误</td><td></td></tr>
+              <tr><td>初稿保留、没被覆盖</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-batch">
+      <h2>四、批量生成：模板 + 变量<span class="sec__tag">进阶</span></h2>
+      <p>
+        一份文档好办。但现实里经常要写<strong>一批</strong>：30 份邀请函、50 份证书、一个班的评语，
+        内容大同小异，只有姓名、日期在变。
+      </p>
+      <p>复制粘贴 30 遍当然能做，但<strong>错一份你都不知道</strong>。更靠谱的是拆成两部分：</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>部分</th><th>特点</th><th>邀请函里的例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>模板</strong></td><td>每份都一样，一个字都不该变</td><td>称呼格式、正文结构、落款</td></tr>
+            <tr><td><strong>变量</strong></td><td>每份都不同，从数据表取值</td><td>姓名、专业、受邀事项</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·批量生成 3 份邀请函 <em>约 12 分钟</em></div>
+        <p><strong>第 1 步 · 先建数据表</strong>：在 <code>wb-试验/input</code> 里新建 <code>名单.xlsx</code>，
+          填下面三行（<strong>都是虚构的，不要用真人信息</strong>）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 名单（照抄这三行）">
+          <div class="codeblock__bar"></div>
+<pre><code>序号　姓名　专业　　　　　　　受邀事项
+1　　张明　计算机应用技术　　校友经验分享
+2　　李婷　数字媒体技术　　　技能竞赛颁奖
+3　　王海　人工智能技术应用　实训成果展示</code></pre>
+        </div>
+        <p><strong>第 2 步 · 发指令</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="任务说明 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>根据 input/名单.xlsx 里的 3 条记录，批量生成 3 份邀请函（Word 文档）。
+模板固定：标题「邀请函」+ 称呼「尊敬的 ___ 同学」+ 正文邀请其参加 ___ 活动
++ 落款「校园活动组委会」+ 日期。
+变量从表格取值：姓名、专业、受邀事项。
+每份文件名格式：邀请函_序号_姓名.docx
+输出到 output/ 目录。
+验收：3 个文件都生成，且每份里的姓名、专业、受邀事项与表格一一对应。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 抽查（这一步绝不能省）</strong>：</p>
+        <ol class="steps">
+          <li><b>抽第 2 份</b><span>打开它，核三样：<strong>姓名对不对、专业对不对、受邀事项对不对</strong>。</span></li>
+          <li><b>再抽首份和末份</b><span>边界最容易出错，中间反倒不容易。</span></li>
+          <li><b>看文件名</b><span>三个文件名是不是分别对应三个人——出现「未命名(1)」就等于没做。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：3 份邀请函文件 + 一句抽查结论。</p>
+        <p><strong>完成标准</strong>：抽查的每一份都对得上；文件名规范。</p>
+        <div class="callout callout--warn">
+          <span class="callout__t">转成 PDF 不能代替核验</span>
+          很多人习惯批量转 PDF 再发出去，觉得「格式定了就保险」。不是的——
+          <strong>转格式只改文件类型，不修内容错误</strong>。字段错了照样是错的，只是错在了 PDF 里。
+          核验必须在转格式<strong>之前</strong>做完。
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-inapp">
+      <h2>五、在 WorkBuddy 里直接改<span class="sec__tag">工具</span></h2>
+      <p>
+        文档生成出来之后就是改。传统做法是「复制出来 → 打开 WPS → 手改 → 再贴回去」，
+        一来一回很费事。WorkBuddy 提供了一条更顺的路，官方叫<strong>人机双写</strong>：
+        <strong>在它内部直接编辑 Word / Excel / PPT / Markdown 及腾讯文档</strong>，
+        阅读、手动修改与 AI 辅助在同一个界面完成。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>方式</th><th>适合做什么</th><th>消耗积分吗</th></tr></thead>
+          <tbody>
+            <tr><td><strong>手动编辑</strong></td><td>错别字、字号、个别措辞这类细节</td><td><strong>不消耗</strong></td>
+            </tr>
+            <tr><td><strong>AI 编辑</strong></td><td>整段润色、排版重构、内容生成</td><td>消耗</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>官方给的原则很好记：<strong>细节微调手动改最快，大块重构交给 AI。</strong></p>
+
+      <h3>怎么用：选区精调</h3>
+      <ol class="steps">
+        <li><b>打开文件</b><span>在任务流里点文件，右侧展开预览，可以直接手动编辑。</span></li>
+        <li><b>选中内容</b><span>划词选中某段文字，会出现工具栏。</span></li>
+        <li><b>下达指令</b><span>点工具栏的「AI 编辑」，输入修改要求。<strong>支持批量添加多处修改，最后一次性发送。</strong></span></li>
+        <li><b>核对改动</b><span>改完它会告诉你改了哪里，所有改写<strong>都可以核对和撤销</strong>。</span></li>
+      </ol>
+      <p>
+        相比「把整篇复制给 AI 让它重写」，选区精调<strong>只改你选中的部分、不碰其他地方</strong>，
+        也更省 Token。
+      </p>
+      <div class="callout callout--danger">
+        <span class="callout__t">两条边界，记住少踩坑</span>
+        <strong>一、它只动你打开的那份文件。</strong>官方说明：人机双写仅对用户主动打开的文档操作，
+        不主动扫描或读取其他文件，修改范围也限于你的选区或明确指令。<br>
+        <strong>二、重要文档先另存一份。</strong>官方建议先「另存为新文件」再让 AI 改写，保留原始版本以便回溯；
+        并定期通过「变更」面板检查修改记录。<strong>改错了能回退，比改对了更重要。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 4 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>「AI 味」最根本的原因是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. AI 的文笔不够好</li>
+            <li>B. 你给的信息不够具体，它只能用套话填空</li>
+            <li>C. 模型版本太旧</li>
+            <li>D. 中文不适合 AI 写作</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>空话多、信息少、结构均等，根子都在<strong>原料不足</strong>——
+            它不知道具体的时间地点，又不敢编，就用「进一步」「切实」把位置占了。
+            所以解药不是「让它写得自然点」，而是<strong>把该给的信息给全</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>写一份 1500 字的实习总结，哪种做法更省事？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 直接说「写一份 1500 字实习总结」，一次生成到位</li>
+            <li>B. 先让它只给大纲，确认章节和顺序后再展开正文</li>
+            <li>C. 一次生成三份，挑最好的那份</li>
+            <li>D. 让它每写一段就问你要不要继续</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>这就是「大纲先行」——<strong>先搭骨架再填肉</strong>。
+            长文档直接生成，一旦结构不对就要<strong>整篇返工</strong>；而在大纲阶段改，成本几乎为零。
+            C 是碰运气，改三份比改一份还费事。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>「去 AI 味」的三个动作，正确顺序是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 换语气 → 补具体 → 删空话</li>
+            <li>B. 补具体 → 删空话 → 换语气</li>
+            <li>C. 删空话 → 补具体 → 换语气</li>
+            <li>D. 删空话 → 换语气 → 补具体</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>顺序是<strong>先删、再补、最后调语气</strong>。
+            先删空话是为了<strong>腾出位置</strong>，再补进真实信息，最后按场景调整腔调。
+            反过来先调语气，会发现调完还是空的。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：批量生成的邀请函转成 PDF 之后，就不用再核内容了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，格式定了就保险</li>
+            <li>B. 错误，转格式不修内容错误，核验必须在转格式之前做完</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>转 PDF 只改文件类型，<strong>该错的字段照样错，只是错在了 PDF 里</strong>。
+            批量最危险的是<strong>字段错位</strong>（第 2 份里写着第 3 个人的专业），一错就是一整批。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>「AI 味」是信息问题，不是文笔问题</strong>——原料给全，空话自然少；</li>
+          <li>文档指令五要素：<strong>类型与主题 / 对象 / 结构 / 字数与语气 / 兜底</strong>，
+            兜底那句就是「没信息写【待确认】」；</li>
+          <li><strong>长文档大纲先行</strong>：先要大纲、确认结构、再展正文，避免整篇返工；</li>
+          <li>去 AI 味三步：<strong>删空话 → 补具体 → 换语气</strong>，顺序不能反；</li>
+          <li>批量靠<strong>模板 + 变量</strong>，出稿后必须抽查<strong>字段错位</strong>，转 PDF 不能代替核验。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天处理的是「文字型」文档，讲究的是结构和语气。
+        下一课换成<strong>表格</strong>：Excel 数据处理——同样的流程，但难点从「读着顺不顺」
+        变成了<strong>「数字对不对」</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。点右上角「复制」可以整段拿走。</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="第 10 次课作业 · 一键复制">
+        <div class="codeblock__bar"></div>
+<pre><code>1.（单选）AI 写的文档之所以「一眼假」，最根本的原因是？
+A. AI 的文笔不够好
+B. 给它的信息不够具体，它只能用套话填空
+C. 模型版本太旧
+D. 中文不适合 AI 写作
+【答案】B
+【解析】空话多、信息少、结构均等，根子都在原料不足。它不知道具体时间地点，又不敢编，就用「进一步」「切实」这类词把位置占了。所以解药是「把信息给全」，而不是「让它写得自然点」。
+
+2.（单选）写一份 1500 字的实习总结，下面哪种做法最不容易返工？
+A. 直接说「写一份 1500 字实习总结」，一次生成到位
+B. 先只要大纲，确认章节和顺序后再让它展开正文
+C. 一次生成三份，从中挑最好的
+D. 让它每写一段都停下来问你要不要继续
+【答案】B
+【解析】这就是「大纲先行」——先搭骨架再填肉。长文档直接生成，一旦结构不对就得整篇返工；在大纲阶段改，成本几乎为零。C 是碰运气，改三份比改一份还费事；D 交互太重，也没解决结构问题。
+
+3.（多选）文档生成指令里应该交代清楚的有哪些？
+A. 文档类型和主题
+B. 写给谁看（对象）
+C. 分几块、什么顺序（结构）
+D. 用哪个大模型
+【答案】ABC
+【解析】还要加上「字数与语气」和「兜底要求」——没信息写【待确认】。D 是环境配置，不是任务描述，默认用自动模式即可。
+
+4.（单选）「去 AI 味」的正确操作顺序是？
+A. 换语气 → 补具体 → 删空话
+B. 补具体 → 删空话 → 换语气
+C. 删空话 → 补具体 → 换语气
+D. 删空话 → 换语气 → 补具体
+【答案】C
+【解析】先删是为了腾出位置，再补进真实信息，最后按使用场景调整语气。顺序反了会发现白干——比如先调语气，调完内容还是空的。
+
+5.（判断）批量生成的邀请函转成 PDF 之后，就不需要再核对内容了。
+A. 正确，格式定了就保险
+B. 错误，转格式不修内容错误，核验必须在转格式之前完成
+【答案】B（错误）
+【解析】转 PDF 只改变文件类型，该错的字段照样错，只是错在了 PDF 里。批量处理最危险的就是字段错位，一错就是一整批，而且肉眼不容易发现。
+
+6.（多选）关于在 WorkBuddy 里直接编辑文档，下面说法正确的是？
+A. 手动编辑错别字、字号不消耗积分
+B. AI 编辑整段润色会消耗积分
+C. 它可以主动扫描你电脑里的其他文件并一起修改
+D. 改重要文档前建议先「另存为新文件」
+【答案】ABD
+【解析】C 与官方说明相反——人机双写仅对用户主动打开的文档操作，不主动扫描或读取其他文件，修改范围也限于你的选区或明确指令。ABD 都是官方口径：手动编辑不耗积分，AI 编辑消耗；重要文档先另存，保留原始版本以便回溯。</code></pre>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 4 题，本课合计 10 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+</body>
+</html>

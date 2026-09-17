@@ -1,0 +1,32 @@
+# ── 过程备份 ─────────────────────────────────────────
+# .cache/ 里是课时页面改版过程中的历史快照（如 lesson-08-旧版备份.html）。
+# 版本管理本身就在管历史，这些副本不必入库；如需留存请自行去掉本行。
+.cache/
+
+# ── 依赖与构建缓存 ────────────────────────────────────
+node_modules/
+package-lock.json
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.sass-cache/
+
+# ── 编辑器 / 系统 ─────────────────────────────────────
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# ── 日志与临时文件 ────────────────────────────────────
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej

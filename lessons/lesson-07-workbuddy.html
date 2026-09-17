@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第7次课 WorkBuddy 入门与第一个任务｜AIGC应用与实践</title>
+<meta name="description" content="WorkBuddy 是什么、怎么开一个新任务、任务说明怎么写、亲手完成第一个整理文件的任务。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="7" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二开局</span></h2>
+      <p class="lead">
+        前面六次课，你让 AI <strong>回答问题</strong>。这一次开始，你要让它<strong>动手干活</strong>——
+        读你的文件、整理你的文件夹、生成你要的东西。
+        这节课结束，你会交出自己的<strong>第一个由 AI 完成的任务</strong>。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">本课上法：边讲边做</span>
+        页面里凡是<strong>橙色边框的方块</strong>，都是要你在 WorkBuddy 里实际操作的任务。
+        一共 6 个，合计约 40 分钟。<strong>看到就停下来做，不要往下翻。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 WorkBuddy 和聊天机器人最本质的区别；</li>
+          <li>独立走完「新建任务 → 选工作目录 → 下指令 → 验收」整个流程；</li>
+          <li>按<strong>六要素</strong>写出一条让人（和 AI）都看得懂的任务说明；</li>
+          <li>完成至少 1 个真实任务，并说清产物放在哪里；</li>
+          <li>说清为什么第一次操作必须用试验目录、而不是自己的桌面。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-what"><b>01</b>WorkBuddy 是什么</a>
+        <a href="#s-install"><b>02</b>下载与安装 <em>＋实操①</em></a>
+        <a href="#s-start"><b>03</b>开一个新任务：8 步 <em>＋实操②</em></a>
+        <a href="#s-say"><b>04</b>任务说明怎么写：六要素 <em>＋实操③</em></a>
+        <a href="#s-do"><b>05</b>完成第一个任务：整理文件 <em>＋实操④</em></a>
+        <a href="#s-more"><b>06</b>再试两个任务 <em>＋实操⑤⑥</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="6">第 6 次课</a>的「本地 vs 云端」判断力——
+        WorkBuddy 需要联网，所以你要知道哪些数据根本不该交给任何联网工具。<br>
+        <strong>后续</strong>：下一课 <a class="xref" data-lesson="8">Skill 技能</a> 讲怎么把今天这套做法固化成可复用的技能。
+      </div>
+    </section>
+
+    <section class="sec" id="s-what">
+      <h2>一、WorkBuddy 是什么<span class="sec__tag">概念</span></h2>
+      <p>
+        一句话：<strong>聊天机器人给你建议，WorkBuddy 给你结果。</strong>
+      </p>
+      <p>
+        你在对话框里说一句话，它会自己拆解步骤、读取你授权的文件夹、动手改文件，
+        最后把成品放到结果区给你验收。
+      </p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch01-02.webp" alt="从回答问题到交付结果" loading="lazy">
+        <figcaption><b>左边是执行过程，右边是它交付的成品</b>　这就是「交结果」长什么样——不是一段回答，是一份可以直接用的文件。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch01-01.webp" alt="它打开之后长这样" loading="lazy">
+        <figcaption><b>它打开之后长这样</b>　左边是任务列表，中间是你说话的地方，右边放成品。装好之后会带你逐个认识。</figcaption>
+      </figure>
+    </section>
+
+    <section class="sec" id="s-install">
+      <h2>二、下载与安装<span class="sec__tag">上手第一步</span></h2>
+      <p class="lead">
+        先把工具装上。只有一个官方入口，Windows 和 Mac 各有几步，跟着图走就行。
+      </p>
+
+      <h3>下载：只从官方入口进</h3>
+      <p>
+        <strong>下载页</strong>：<a href="https://www.codebuddy.cn/work/" target="_blank" rel="noopener">www.codebuddy.cn/work</a>
+        　<strong>产品官网</strong>：<a href="https://www.workbuddy.cn/" target="_blank" rel="noopener">www.workbuddy.cn</a>
+      </p>
+      <p>
+        进下载页后选择 WorkBuddy，点「下载 WorkBuddy」。页面会<strong>自动识别你的设备</strong>，
+        给出 Mac ARM64 / Mac x64 / Windows x64 三个版本，不用自己判断。
+      </p>
+      <div class="callout callout--danger">
+        <span class="callout__t">切记：从官方入口下载</span>
+        不要从网盘、不明镜像或第三方站点拿安装包。
+        这个软件能读你的文件、能执行命令——<strong>来路不明的安装包不要装</strong>。
+      </div>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-01.webp" alt="① 官网首页" loading="lazy">
+        <figcaption><b>① 官网首页</b>　点「立即下载」进入下载页。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-02.webp" alt="② 下载页：选对你的版本" loading="lazy">
+        <figcaption><b>② 下载页：选对你的版本</b>　红框处是版本选择——Mac ARM64 / Mac x64 / Windows x64，页面会自动帮你选中。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-03.webp" alt="③ 浏览器里确认下载完成" loading="lazy">
+        <figcaption><b>③ 浏览器里确认下载完成</b>　红箭头指的就是刚下好的安装包。</figcaption>
+      </figure>
+
+
+      <h3>Windows 安装（约 3 分钟）</h3>
+      <ol class="steps">
+        <li><b>双击安装文件</b><span>如果系统弹出安全提示，<strong>先核对发布者与下载来源</strong>，确认是
+          Tencent Technology 再继续。</span></li>
+        <li><b>选择安装范围</b><span>选「仅为我安装」即可，不需要管理员权限。若给整台电脑装才选「所有用户」。</span></li>
+        <li><b>选择安装位置</b><span>默认装在 C 盘即可（需要约 1.1 GB 空间）。想换盘就点「浏览」。</span></li>
+        <li><b>等待安装完成</b><span>进度条走完，勾选「运行 WorkBuddy」直接启动。</span></li>
+        <li><b>准备工作环境</b><span>首次启动会做一次环境准备，稍等片刻，完成后自动进入主界面。</span></li>
+      </ol>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-04.webp" alt="第 1 步：系统安全提示" loading="lazy">
+        <figcaption><b>第 1 步：系统安全提示</b>　先看「发布者」是不是 Tencent Technology (Shenzhen) Company Limited —— 对得上再点「运行」。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-05.webp" alt="第 2 步：安装选项" loading="lazy">
+        <figcaption><b>第 2 步：安装选项</b>　选「仅为我安装（Administrator）」，这样不需要管理员权限，也不会影响其他用户。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-06.webp" alt="第 3 步：选择安装位置" loading="lazy">
+        <figcaption><b>第 3 步：选择安装位置</b>　默认路径即可，所需空间 1.1 GB。要换盘就点「浏览」。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-08.webp" alt="第 4 步：安装完成" loading="lazy">
+        <figcaption><b>第 4 步：安装完成</b>　勾选「运行 WorkBuddy」，点「完成」直接启动。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-09.webp" alt="第 5 步：准备工作环境" loading="lazy">
+        <figcaption><b>第 5 步：准备工作环境</b>　首次启动会准备运行环境，等它转完就进主界面了。这一步慢一点是正常的。</figcaption>
+      </figure>
+
+
+      <h3>macOS 安装（两步）</h3>
+      <ol class="steps">
+        <li><b>把图标拖进「应用程序」</b><span>打开下载好的 .dmg，把 WorkBuddy 拖到 Applications 文件夹。</span></li>
+        <li><b>从启动台打开</b><span>在「应用程序」里找到它，双击启动。首次打开若提示来源不明，
+          去「系统设置 → 隐私与安全性」里允许一次即可。</span></li>
+      </ol>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-10.webp" alt="① 找到下载好的 dmg 文件" loading="lazy">
+        <figcaption><b>① 找到下载好的 dmg 文件</b>　Mac 用户按芯片选版本：M 系列芯片选 arm64，Intel 芯片选 x64。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-11.webp" alt="② 拖进「应用程序」" loading="lazy">
+        <figcaption><b>② 拖进「应用程序」</b>　把左边的图标拖到右边的 Applications 上，松手即可。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-12.webp" alt="③ 从「应用程序」启动" loading="lazy">
+        <figcaption><b>③ 从「应用程序」启动</b>　别在 dmg 里直接双击运行，那样每次都要重新挂载。</figcaption>
+      </figure>
+
+
+      <h3>登录</h3>
+      <p>
+        启动后点「登录」，会<strong>自动跳转到网页</strong>完成认证——
+        支持<strong>微信扫码</strong>，也可以用<strong>手机号</strong>登录。登录完成后回到客户端就能用了。
+      </p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-13.webp" alt="① 启动画面" loading="lazy">
+        <figcaption><b>① 启动画面</b>　点「开始」进入登录。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-14.webp" alt="② 点登录按钮" loading="lazy">
+        <figcaption><b>② 点登录按钮</b>　它会自动打开浏览器跳转登录页。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-15.webp" alt="③ 网页登录：微信扫码或手机号" loading="lazy">
+        <figcaption><b>③ 网页登录：微信扫码或手机号</b>　微信扫码最快，手机号也行。登录页是官方域名，认一下再扫。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-16.webp" alt="④ 登录成功后的主界面" loading="lazy">
+        <figcaption><b>④ 登录成功后的主界面</b>　看到这个界面就装好了。左边任务、中间对话、右边结果，下一节带你认。</figcaption>
+      </figure>
+
+
+      <div class="callout callout--warn">
+        <span class="callout__t">如果你的电脑是公司或学校的</span>
+        若终端安全策略禁止安装软件，<strong>不要想办法绕过</strong>。
+        应该联系 IT 管理员确认是否可以加白名单，或走企业统一部署的方式。
+      </div>
+
+      <h3>以后怎么更新</h3>
+      <p>左下角点<strong>个人中心</strong>→ 选「<strong>检查更新</strong>」，有新版本就能直接升级。</p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch02-17.webp" alt="检查更新在左下角" loading="lazy">
+        <figcaption><b>检查更新在左下角</b>　红箭头指的「个人中心」里就有「检查更新」。</figcaption>
+      </figure>
+
+
+      <h3>装不上怎么办</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>症状</th><th>怎么处理</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>安装包打不开 / 提示损坏</strong></td>
+              <td>删掉重新从官网下载，核对系统和芯片版本。仍失败就记录系统版本、安装包名和报错截图，
+                走官方反馈渠道。<strong>不要随意关闭系统安全功能。</strong></td>
+            </tr>
+            <tr>
+              <td><strong>登录后没有反应</strong></td>
+              <td>检查默认浏览器有没有拦截登录回跳、网络代理是否影响认证、系统时间是否准确。
+                退出应用重试，并保留日志与截图。</td>
+            </tr>
+            <tr>
+              <td><strong>无法读取或写入文件</strong></td>
+              <td>确认任务选的工作目录对不对、系统有没有授予该目录权限、文件是不是被别的程序占着。
+                <strong>先用一个空白文本文件测试，别拿重要文件反复试。</strong></td>
+            </tr>
+            <tr>
+              <td><strong>更新前要不要备份</strong></td>
+              <td>应用更新一般不动你的工作文件，但长期项目仍建议把输入、产物、配置纳入定期备份。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·装好、登录，然后认一认三个区 <em>约 12 分钟</em></div>
+        <ol class="steps">
+          <li><b>从官网下载</b><span>打开下载页，按自动识别的版本下载。</span></li>
+          <li><b>按图装好</b><span>Windows / Mac 照着上面的步骤走，遇到安全提示先核对发布者。</span></li>
+          <li><b>登录</b><span>用微信扫码或手机号登录，进到主界面。</span></li>
+          <li><b>顺手检查一次更新</b><span>左下角个人中心 → 检查更新，确认自己用的是最新版。</span></li>
+          <li><b>认一认三个区</b><span>看着主界面找三块地方：
+            <strong>侧边栏</strong>（最左，管任务）、<strong>对话区</strong>（中间，下需求）、
+            <strong>结果区</strong>（右侧，看成品）。</span></li>
+        </ol>
+        <p><strong>完成标准</strong>：能看到主界面；能对着屏幕指出这三个区分别在哪——后面的实操要全程用到它们。</p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch03-01.webp" alt="三个区域用红框标出来了" loading="lazy">
+        <figcaption><b>三个区域用红框标出来了</b>　左框侧边栏、中框对话区、右框结果区。对着你自己的界面对一遍。</figcaption>
+      </figure>
+
+        <p class="note">如果课堂里网络受限装不上，先跟同桌共用一台已完成安装的电脑往下做——
+          另外几个实操都在这台机器上完成，别卡在安装这一步。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-start">
+      <h2>三、开一个新任务：8 步走完<span class="sec__tag">上手</span></h2>
+      <p>所有任务都从「新建任务」开始。完整流程就是下面 8 步：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>#</th><th>做什么</th><th>要点</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>点「新建任务」</td><td>侧边栏顶部</td></tr>
+            <tr><td>2</td><td>选择或创建<strong>工作目录</strong></td><td>它只能在<strong>你指定的这个文件夹</strong>里干活</td></tr>
+            <tr><td>3</td><td>判断用哪种模式</td><td>默认 Craft（直接干）；拿不准就用 Plan（先看计划）</td></tr>
+            <tr><td>4</td><td>选择模型</td><td>默认自动就行</td></tr>
+            <tr><td>5</td><td>输入<strong>任务说明</strong></td><td>这一步决定成败，下一节专门讲</td></tr>
+            <tr><td>6</td><td>按需指定技能 / 专家 / 连接器</td><td>新手先跳过</td></tr>
+            <tr><td>7</td><td>发送，观察它的计划和文件变更</td><td>不满意可以随时叫停</td></tr>
+            <tr><td>8</td><td>在<strong>结果区</strong>预览产物并验收</td><td>没问题才算做完</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch04-01.webp" alt="第 1 步：点左侧栏的「新建任务」" loading="lazy">
+        <figcaption><b>第 1 步：点左侧栏的「新建任务」</b>　所有任务都从这里开始。</figcaption>
+      </figure>
+      <p>其中第 2、3、4 步都是在对话区里点选，界面长这样：</p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch03-02.webp" alt="第 2 步：选工作目录" loading="lazy">
+        <figcaption><b>第 2 步：选工作目录</b>　位置在输入框左下角。每建一个任务都要确认一次——它决定了 AI 能碰哪些文件。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch03-03.webp" alt="第 3 步：选模式" loading="lazy">
+        <figcaption><b>第 3 步：选模式</b>　点输入框上方的「模式」展开。都不开就是默认的 Craft；拿不准就用 Plan，先看计划再动手。</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch03-04.webp" alt="第 4 步：选模型" loading="lazy">
+        <figcaption><b>第 4 步：选模型</b>　默认「自动」就行。列表里每项后面的倍率是相对积分消耗，清单会随版本更新。</figcaption>
+      </figure>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·给你的第一个任务准备一个「试验场」 <em>约 7 分钟</em></div>
+        <p>第一次用，<strong>不要拿自己的桌面或重要文件夹试</strong>。我们专门造一个试验文件夹。</p>
+        <ol class="steps">
+          <li><b>在桌面新建一个文件夹</b><span>命名就叫 <code>wb-试验</code>。<br>
+            <em>为什么？因为 WorkBuddy 的操作权限是按文件夹给的——目录划得小，出问题也只影响这一个文件夹。</em></span></li>
+          <li><b>在里面建一个 input 子文件夹</b><span>路径是 <code>桌面/wb-试验/input</code>。</span></li>
+          <li><b>往 input 里放这 6 个文件</b><span>内容随便写，<strong>文件名要一模一样</strong>：</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="照着建这 6 个文件（复制右上角）">
+          <div class="codeblock__bar"></div>
+<pre><code>会议记录.docx
+产品图-01.png
+产品图-02.png
+销售数据.xlsx
+未命名文档1.txt
+2026-09-15 客户反馈.md
+</code></pre>
+        </div>
+        <ol class="steps" start="4">
+          <li><b>回到 WorkBuddy，点「新建任务」</b><span>把工作目录选成刚才的 <code>桌面/wb-试验</code>。</span></li>
+          <li><b>确认目录选对了</b><span>看对话区左下角显示的是不是 <code>wb-试验</code>——选错目录，后面全白做。</span></li>
+        </ol>
+        <p><strong>完成标准</strong>：任务建好了，左下角显示的正是 <code>wb-试验</code>。</p>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch04-02.webp" alt="选择工作空间" loading="lazy">
+          <figcaption><b>工作空间就在对话区左下角</b>　每建一个任务都要确认一次——这是你给它的权限边界。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="sec" id="s-say">
+      <h2>四、任务说明怎么写：六要素<span class="sec__tag">关键</span></h2>
+      <p>
+        任务做得好不好，八成取决于你这段话写得清不清楚。把下面六样说全，基本不会翻车：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>要回答的问题</th></tr></thead>
+          <tbody>
+            <tr><td><strong>目标</strong></td><td>最终要解决什么问题</td></tr>
+            <tr><td><strong>输入</strong></td><td>用哪些文件、目录或链接</td></tr>
+            <tr><td><strong>动作</strong></td><td>要分析、整理、转换，还是生成</td></tr>
+            <tr><td><strong>约束</strong></td><td>哪些不能改，要遵守什么规范</td></tr>
+            <tr><td><strong>输出</strong></td><td>交付什么文件，放到哪里</td></tr>
+            <tr><td><strong>验收</strong></td><td>用什么标准判断合格</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">最容易漏的是「约束」和「验收」</span>
+        <strong>约束</strong>写不写，决定它会不会顺手删掉你的东西；
+        <strong>验收</strong>写不写，决定你事后能不能判断它做没做好。
+        这两条宁可多写一句。
+      </div>
+
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch04-05.webp" alt="任务说明就是敲在这个输入框里" loading="lazy">
+        <figcaption><b>任务说明就是敲在这个输入框里</b>　六要素写完，整段贴进去发送。</figcaption>
+      </figure>
+      <div class="task">
+        <div class="task__hd">实操 ③·把一条任务说明补成六要素 <em>约 5 分钟</em></div>
+        <p>下面是很多人的真实写法——一句话就发出去了：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="✗ 这样的指令，结果全靠猜">
+          <div class="codeblock__bar"></div>
+<pre><code>帮我整理一下这个文件夹
+</code></pre>
+        </div>
+        <ol class="steps">
+          <li><b>先自己改成六要素版</b><span>在纸上或记事本里，把「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六行补齐。</span></li>
+          <li><b>发给 WorkBuddy 试试</b><span>用 <strong>Plan 模式</strong>发出去，看它给你的计划里有没有你没交代的事。</span></li>
+          <li><b>比一比</b><span>再用原来那句「帮我整理一下这个文件夹」发一次，对比两次的计划有什么不同。</span></li>
+        </ol>
+        <p><strong>完成标准</strong>：能说出「补了哪几行之后，它的计划变靠谱了」——具体是哪一行起了作用。</p>
+        <div class="fold">
+          <button class="fold__hd" type="button">参考答案：一份写全的指令长什么样（自己改完再看）</button>
+          <div class="fold__bd">
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="六要素版（下一节的正式任务就用这版）">
+              <div class="codeblock__bar"></div>
+<pre><code>目标：整理 input 目录中的练习文件，便于按类型查找。
+输入：仅处理当前工作区的 input 目录。
+动作：识别文件类型，提出分类和重命名方案。
+约束：不删除、不覆盖原文件；重名时保留两份并标记序号。
+输出：先生成 inventory.xlsx 和 proposed-actions.md。
+验收：清单文件数与 input 实际文件数一致，所有动作可追溯。
+在我确认 proposed-actions.md 前，不移动文件。</code></pre>
+            </div>
+            <p class="note">最后那句「在我确认前不移动文件」是关键——它把<strong>动手的决定权留给了你</strong>。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-do">
+      <h2>五、完成第一个任务：整理文件<span class="sec__tag">本课主线</span></h2>
+      <p>现在正式做。这是你这节课要交出去的东西。</p>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·让 WorkBuddy 整理 input 文件夹 <em>约 15 分钟 · 本课重点</em></div>
+
+        <p><strong>你要完成的任务</strong>：把它整理成按类型分好的文件夹，并且<strong>先给方案、你同意后再动手</strong>。</p>
+
+        <p><strong>第 1 步 · 把下面这段原样发给它</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="任务说明 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>目标：整理 input 目录中的练习文件，便于按类型查找。
+输入：仅处理当前工作区的 input 目录。
+动作：识别文件类型，提出分类和重命名方案。
+约束：不删除、不覆盖原文件；重名时保留两份并标记序号。
+输出：先生成 inventory.xlsx 和 proposed-actions.md。
+验收：清单文件数与 input 实际文件数一致，所有动作可追溯。
+在我确认 proposed-actions.md 前，不移动文件。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 看它的计划，别急着点确认</strong></p>
+        <ol class="steps">
+          <li><b>它应该先列出 6 个文件</b><span>对着你的 input 文件夹数一遍：<strong>是不是正好 6 个</strong>。少了就是漏了。</span></li>
+          <li><b>看它打算怎么分类</b><span>比如「文档 / 图片 / 表格」——这个分法你认可吗？不认可现在就说。</span></li>
+          <li><b>确认它没打算删东西</b><span>计划里只要出现「删除」「覆盖」，立刻叫停，重新交代约束。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 确认方案，让它执行</strong></p>
+        <ol class="steps">
+          <li><b>同意后再说「按这个方案执行」</b><span>它会真的动手建文件夹、移动文件。</span></li>
+          <li><b>盯着「变更」看</b><span>结果区的「变更」会列出它改动了哪些文件——<strong>这是你唯一能看清它干了什么的窗口</strong>。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 验收（这一步最容易偷懒，但最关键）</strong></p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>怎么查</th></tr></thead>
+            <tbody>
+              <tr><td>文件少了没有？</td><td>整理后总共还是 6 个文件（不算新建的两个清单）</td></tr>
+              <tr><td>清单准不准？</td><td>打开 inventory.xlsx，数一数是不是 6 行</td></tr>
+              <tr><td>有没有被删？</td><td>去「变更」里找有没有 delete 类操作</td></tr>
+              <tr><td>放在哪了？</td><td>说得清每个文件被移到了哪个文件夹</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>要交的成果</strong>：整理好的 <code>wb-试验</code> 文件夹 + 一份「整理前后对比截图」。</p>
+        <p><strong>完成标准</strong>：上面四条都能答「是」，且<strong>没有任何文件被删除</strong>。</p>
+
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch04-07.webp" alt="观察计划与执行" loading="lazy">
+          <figcaption><b>发送之后，先看它拆了几步</b>　它会告诉你打算怎么做、要动哪些文件。这一步不满意就直接说，别等它做完。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch04-08.webp" alt="结果区验收" loading="lazy">
+          <figcaption><b>做完之后，产物在结果区</b>　点开每个产物核对一遍，确认无误再算完成。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+        </figure>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">三条红线（现在就要记住）</span>
+        <strong>① 不授权大范围目录</strong>——只给它任务真正需要的那个文件夹；<br>
+        <strong>② 不把删除当成任务</strong>——「清理」这两个字对它来说太模糊，说清「移动到哪」而不是「删掉」；<br>
+        <strong>③ 不看产物不签收</strong>——它说做完了不算，你去结果区看过了才算。
+      </div>
+    </section>
+
+    <section class="sec" id="s-more">
+      <h2>六、再试两个任务<span class="sec__tag">选做</span></h2>
+      <p>第一个任务做完，你已经会用了。另外两个任务换一种类型练手，素材我都准备好了。</p>
+
+      <div class="task">
+        <div class="task__hd">实操 ⑤·把一段会议记录整理成纪要 <em>约 10 分钟</em></div>
+        <p><strong>第 1 步 · 把这段会议记录存成文件</strong>：在 <code>wb-试验/input</code> 里新建一个 <code>meeting.txt</code>，
+          把下面的内容复制进去（会议记录有点乱，很正常）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 会议记录原文">
+          <div class="codeblock__bar"></div>
+<pre><code>2026 年 9 月 15 日 项目周会 记录
+
+参会：张伟（项目负责人）、李娜（设计）、王强（开发）、赵敏（运营）
+
+上周进度
+王强说登录模块开发完成，已提交测试。支付模块进度延后两天，因为第三方接口文档不完整。
+李娜说首页改版设计稿已出，等张伟确认。
+赵敏说上周新增注册用户 320 人，比前一周下降 8%。
+
+讨论
+张伟指出支付模块延期会影响上线时间，要求王强本周五前给出新的排期。
+李娜提出首页改版需要补充一个「新用户引导」页面，张伟同意加入本期范围。
+赵敏反馈用户流失集中在注册第二步，怀疑是验证码等待时间过长。
+
+待办
+1. 王强：9 月 19 日前提交支付模块新排期
+2. 李娜：9 月 18 日前补齐新用户引导页设计稿
+3. 赵敏：本周内出一份注册流程流失分析
+4. 张伟：确认是否调整上线日期，下次周会前给结论
+
+未决事项
+支付模块第三方接口问题是否需要更换服务商，暂未确定。
+上线日期是否顺延，待张伟确认。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 发这段指令</strong>（新开一个任务，或直接用当前任务）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="任务说明 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请把 input/meeting.txt 整理为结构化会议纪要。
+必须包含：会议结论、待办事项、负责人、截止日期、待确认问题。
+不能从原文确认的负责人或日期写「待确认」，不要自行补全。
+输出 output/会议纪要.md 和 output/待办清单.xlsx。
+验收：每一项结论可以在原文找到依据；待办不遗漏负责人和时间状态。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 验收，重点查这两条</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>待办有没有漏</td><td>原文有 4 条待办，纪要里应该也是 4 条，且每条都有负责人和日期</td></tr>
+              <tr><td>有没有自己编</td><td>原文没写的地方，它应该老老实实写「待确认」，<strong>而不是给你编一个</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>完成标准</strong>：上面两条都过关。如果它编了负责人或日期，说明「不要自行补全」这句约束没被遵守——
+          <strong>把结果和问题一起记下来，这就是你的发现</strong>。</p>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ⑥·把一份汇报文档转成 PPT <em>约 10 分钟</em></div>
+        <p><strong>第 1 步 · 建素材文件</strong>：在 <code>wb-试验/input</code> 里新建 <code>项目汇报.docx</code>，
+          把下面的内容粘进去存好：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 项目汇报原文">
+          <div class="codeblock__bar"></div>
+<pre><code>《校园二手交易平台》项目汇报
+
+一、背景
+学校每年有大量闲置物品流转需求，现有微信群交易效率低、无信用保障。
+2026 年 3 月启动校园二手交易平台开发。
+
+二、现状
+已完成用户注册、商品发布、站内消息三个模块，累计注册用户 1847 人，
+日活约 260 人，累计成交 412 笔。
+
+三、问题
+1. 商品纠纷处理依赖人工，平均处理时长 3.2 天
+2. 无信用评价体系，重复卖家占比高
+3. 支付环节仍走线下转账，流程繁琐
+
+四、方案
+1. 引入信用分体系，按交易完成率和纠纷率计算
+2. 增加平台内支付（对接第三方支付）
+3. 建立纠纷仲裁流程，明确举证责任
+
+五、计划
+2026 年 10 月：信用分体系上线
+2026 年 11 月：平台内支付测试
+2026 年 12 月：纠纷仲裁流程试运行
+
+六、需要决策
+1. 平台内支付的手续费由谁承担
+2. 是否引入学生勤工助学岗参与纠纷仲裁</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 发这段指令</strong>：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="任务说明 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>把 input/项目汇报.docx 转成 10 页以内的内部汇报 PPT。
+受众：部门负责人；汇报时长：8 分钟。
+保持原文事实和数字，不新增未经证实的数据。
+结构：背景、现状、问题、方案、计划、需要决策。
+输出 output/项目汇报.pptx，同时提供逐页内容清单。
+验收：每页只有一个核心观点，数字与原文一致，正文在投影状态可读。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 验收</strong>：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>页数</td><td>10 页以内</td></tr>
+              <tr><td>数字</td><td>1847 / 260 / 412 / 3.2 天——和原文一字不差</td></tr>
+              <tr><td>有没有编</td><td>原文没提的数据、案例，不该出现</td></tr>
+              <tr><td>能不能投屏</td><td>把页面缩小到 50% 看，正文还能不能看清</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>完成标准</strong>：四个都过关。<strong>数字对不上是最常见的失败</strong>——一定要逐个核。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 4 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>WorkBuddy 和聊天机器人最本质的区别是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 它的回答更长</li>
+            <li>B. 它能真的动手操作文件、交付可验收的结果</li>
+            <li>C. 它不需要联网</li>
+            <li>D. 它不会出错</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>聊天机器人只能给建议，你还要自己动手做；
+            WorkBuddy 能读取授权目录、执行操作、生成文件，最后交给你验收。
+            C 错在它<strong>需要联网</strong>调用模型服务。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>第一次用 WorkBuddy 练手，工作目录应该选哪里？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 整个 C 盘，方便它找文件</li>
+            <li>B. 我的桌面，文件都在那儿</li>
+            <li>C. 专建的一个试验文件夹</li>
+            <li>D. 不用选，让它自己决定</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>工作目录既是效率设置，也是<strong>安全边界</strong>。
+            授权范围划得越小，万一出错影响也越小。A 和 B 都属于「授权大范围目录」，
+            是三条红线里的第一条。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>下面哪一项<strong>不属于</strong>任务说明的六要素？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 目标与输入</li>
+            <li>B. 动作与约束</li>
+            <li>C. 输出与验收</li>
+            <li>D. 用哪个大模型</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：D。</b>六要素是<strong>目标 / 输入 / 动作 / 约束 / 输出 / 验收</strong>。
+            「用哪个模型」是环境配置，不是任务描述——而且默认用自动模式就够了。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：它说「任务已完成」，你就可以直接关掉去交作业了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，它不会骗人</li>
+            <li>B. 错误，必须先去结果区核对产物再签收</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>「它说做完了」和「它真的做对了」是两回事。
+            正确做法：<strong>先看「变更」看它改了什么，再看「产物」核对交付物</strong>，
+            对不上就继续追问，不用重开任务。这是三条红线的第三条。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>聊天机器人给建议，WorkBuddy 交结果</strong>——它会真的动手改你的文件；</li>
+          <li>开任务八步，核心是<strong>第 2 步（选工作目录）</strong>和<strong>第 5 步（写任务说明）</strong>；</li>
+          <li>任务说明六要素：<strong>目标 / 输入 / 动作 / 约束 / 输出 / 验收</strong>，后两个最容易被漏掉；</li>
+          <li>三条红线：<strong>不授权大范围目录、不把删除当任务、不看产物不签收</strong>；</li>
+          <li>验收看两处：<strong>先看「变更」看它改了什么，再看「产物」核对交付物</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天你是每次手写一段任务说明。
+        下一课 <a class="xref" data-lesson="8">Skill 技能</a> 会把这段说明固化成文件——
+        <strong>写一次，以后一句话调用</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。点右上角「复制」可以整段拿走。</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="第 7 次课作业 · 一键复制">
+        <div class="codeblock__bar"></div>
+<pre><code>1.（单选）WorkBuddy 和聊天机器人最本质的区别是？
+A. 它的回答更长更详细
+B. 它能真的动手操作文件、交付可验收的结果
+C. 它不需要联网
+D. 它从来不会出错
+【答案】B
+【解析】聊天机器人只能给建议，剩下的活还得你自己干；WorkBuddy 能读取授权目录、执行操作、生成文件，最后交给你验收。C 说反了，它需要联网调用模型服务。
+
+2.（单选）第一次用 WorkBuddy 练手，工作目录应该选哪里？
+A. 整个 C 盘，方便它找文件
+B. 我的桌面，文件都在那儿
+C. 专门建的一个试验文件夹
+D. 不用选，让它自己决定
+【答案】C
+【解析】工作目录既是效率设置，也是安全边界。授权范围划得越小，万一出错影响也越小。A、B 都是「授权大范围目录」，属于三条红线里的第一条。
+
+3.（多选）任务说明的六要素包括下面哪些？
+A. 目标与输入
+B. 动作与约束
+C. 输出与验收
+D. 使用哪个大模型
+【答案】ABC
+【解析】六要素是目标 / 输入 / 动作 / 约束 / 输出 / 验收。D 是环境配置，不是任务描述，而且默认用自动模式就够了。其中「约束」和「验收」最容易被漏掉，也最容易导致返工。
+
+4.（多选）下面哪些做法属于「红线」，不能做？
+A. 给 WorkBuddy 授权整个 C 盘
+B. 让它把试验文件夹里的文件按类型整理好
+C. 只说一句「帮我清理一下电脑」就发出去
+D. 它说做完了就直接交作业，不去核对
+【答案】ACD
+【解析】三条红线：不授权大范围目录、不把删除当任务、不看产物不签收。C 的「清理」两个字太模糊，它可能理解成删除；D 则是跳过了验收这一步。B 是正确做法——范围明确、动作清楚。
+
+5.（判断）任务做完后，先看「变更」再看「产物」，比直接看产物更保险。
+A. 正确
+B. 错误
+【答案】A（正确）
+【解析】「变更」告诉你它改了哪些文件、怎么改的，「产物」只告诉你交付了什么。只看产物就签收，容易漏掉被误改或误删的文件，这是新人最常犯的错。
+
+6.（单选）它给的执行计划里出现了你没交代过的操作，最应该怎么做？
+A. 先让它跑完再说
+B. 立刻叫停，补充约束后重新交代
+C. 不管它，反正能撤销
+D. 换个模型重试
+【答案】B
+【解析】计划阶段是唯一能在「文件被改之前」叫停你的机会。像删除、覆盖这类操作一旦执行，有些是不可逆的。A、C 都在赌，D 则没解决问题本身。</code></pre>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 4 题，本课合计 10 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+</body>
+</html>
