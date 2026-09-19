@@ -166,29 +166,137 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ①·装一个你真正需要的技能 <em>约 6 分钟</em></div>
+        <div class="task__hd">动手做 ①·装一个技能，并用它真的干完一件活 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份整理好的成果（纪要 / 群发言稿 / 复习表，三选一）。
+          <span class="task__warn">只装不用 = 没做完。</span></p>
+
+        <p><strong>第 1 步 · 挑一件活，复制对应素材（2 分钟）</strong></p>
         <ol class="steps">
-          <li><b>先选一件你这周真要做的活</b><span>从下面勾一个（或换成你自己的）：<br>
-            □ 把一份 PDF 转成 Word<br>
-            □ 把一张表里的重复行去掉<br>
-            □ 把一段会议录音转成文字</span></li>
-          <li><b>把这句话原样打进去搜</b><span>点右上角「<strong>添加技能</strong>」→ 选「<strong>查找技能</strong>」，
-            把你刚勾的那句话<strong>整句</strong>敲进去，例如「把 PDF 转成 Word」。</span></li>
-          <li><b>挑一个之前，先看三样</b><span>
-            ① 是不是<strong>官方 / 推荐</strong>标记？<br>
-            ② 它要什么<strong>权限</strong>？（只要读文件，还是要联网、要登录账号？）<br>
-            ③ 描述里说的，跟你那件活<strong>对得上</strong>吗？</span></li>
-          <li><b>装上，然后回去核一遍</b><span>回到「已安装」，点开刚装的技能，把它的描述读一遍——
-            用一句话说出它到底能干什么。</span></li>
+          <li><b>从下面三件里勾一件</b><span>□ A：把杂乱会议记录整理成带待办的纪要
+            □ B：把生硬通知改写成班级群发言稿
+            □ C：把流水账笔记排成按科目的复习表</span></li>
+          <li><b>复制你勾的那一份素材</b><span>点代码块右上角「复制」，粘进记事本暂存。</span></li>
         </ol>
-        <p><strong>完成标准</strong>：能完整说出下面两句话——</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="把你的答案写成这两句">
+
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>素材</th><th>内容概括</th><th>点右边复制</th></tr></thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td>一段没格式、有口语、缺信息的工作 meeting 记录</td><td>见下方代码块①</td></tr>
+              <tr><td><strong>B</strong></td><td>一份全是空话、关键时间地点都写「另行通知」的通知</td><td>见下方代码块②</td></tr>
+              <tr><td><strong>C</strong></td><td>四天混记、科目交叉的课程笔记</td><td>见下方代码块③</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fold">
+          <button class="fold__hd" type="button">点开拿素材：① 会议记录 / ② 通知原文 / ③ 课程笔记</button>
+          <div class="fold__bd">
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 A · 杂乱会议记录 · 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>周三下午的会 地点在实训楼三楼好像
+到的人：老王 小李 张老师请假
+聊的事：
+1、下周要交的那个实训报告 老师说格式不对 要重弄
+   李说他那里有一版新的模板 回头发群里
+2、机房电脑有五台开不了机 报修了没人来
+   王说先让学生两人一台 凑合着上
+3、下个月有个技能比赛 报名截止15号
+   张不在没法定 下次再议
+4、卫生的事 值日表要重排
+   没人管 拖到下礼拜再说
+</code></pre>
+            </div>
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 B · 生硬通知 · 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>关于组织开展2026年秋季学期学生体质健康测试工作的通知
+
+各班级：
+为深入贯彻落实相关精神，进一步切实提高学生体质健康水平，营造良好氛围，
+经研究决定，开展本次体质健康测试工作，现将有关事项通知如下：
+一、测试时间：另行通知
+二、测试地点：另行通知
+三、参加人员：全体学生
+四、有关要求：请各班级高度重视，积极组织学生参加，确保测试工作顺利开展。
+
+特此通知。
+</code></pre>
+            </div>
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 C · 流水账笔记 · 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>9月15号 周一
+机器学习课 讲了线性回归
+老师说重点是损失函数 用的那个最小二乘法
+作业是第三章第2题 周五交
+
+9月16号 周二
+Python课 讲pandas怎么读excel
+read_excel() 那个函数
+练习没做完 明天继续
+
+9月17号 周三
+英语课 听力练习 unit3
+
+9月18号 周四
+机器学习课 接着讲逻辑回归
+提到梯度下降 好像和下节课的内容连着
+作业: 第三章第3题 下周一交
+</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>第 2 步 · 让 WorkBuddy 自己去找技能（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>左侧边栏点「技能」</b><span>进入技能页。</span></li>
+          <li><b>点右上角「添加技能」→ 选「查找技能」</b><span>会弹出一个输入框。</span></li>
+          <li><b>把下面这句整句粘进去，回车</b><span>⚠️ 用<strong>原句</strong>，不要自己改写——
+            它匹配靠的是关键词，你换说法就可能搜不到。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="搜索用的句子（按你选的素材挑一句）· 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>① 我装的是 ____________，它能 ____________。
-② 它跟我要做的那件事（对得上 / 对不上），因为 ____________。
+<pre><code>把会议记录整理成带待办事项的纪要
+把正式通知改写成口语化的群消息
+把学习笔记整理成表格
 </code></pre>
         </div>
-        <p class="note">如果第 ② 句写的是「对不上」，那你其实已经学会判断了——换个技能再试，比装错强。</p>
+
+        <p><strong>第 3 步 · 挑一个装上（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在结果里先看三样，再决定装哪个</b><span>
+            ① 有没有<strong>官方 / 推荐</strong>标记？有的优先；<br>
+            ② 它申请什么<strong>权限</strong>？（只读文件？还是要联网、要登录账号？能不给的就不给）；<br>
+            ③ 它的描述跟你那件活<strong>对得上</strong>吗？（比如你要「整理成纪要」，它写「音视频转写」就不对路）</span></li>
+          <li><b>点「安装」</b><span>装完会进「已安装」列表。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 用它把活干完（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话</b><span>⚠️ 必须新开——刚装好的技能在旧对话里常常不生效，
+            这是新手最常卡住的地方。</span></li>
+          <li><b>先贴素材，空一行，再贴下面这句指令，一起发送</b><span>
+            没自动调用也没关系——在指令开头加上「用刚装的技能」点名它就行。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 WorkBuddy 的指令（挑对应的一句）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用刚装的技能，把上面这段会议记录整理成纪要，输出三块：① 会议基本信息（时间/地点/参会人）② 待办清单，每条写清「事项 / 负责人 / 截止时间」，没有的写「待定」③ 这次没定下来、下次要再议的事。素材里没有的信息不要自己编。
+
+用刚装的技能，把上面这份通知改写成能直接发班级群的版本：口语化、去掉空话套话、把缺的时间地点用【待确认】标出来。不许编造具体时间地点。
+
+用刚装的技能，把上面这段笔记整理成一张表格，按科目分组，列出「科目 / 日期 / 讲了什么 / 作业与截止时间」。笔记里没写的就空着，不要补。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>手上多了一份成形的结果</b><span>不是「我装好了」，而是真的有一份纪要 / 发言稿 / 表格。<br>
+            <em>还没做到</em>：检查你有没有把<strong>素材和指令一起</strong>发出去——只发指令不给素材，它做不出来。</span></li>
+          <li><b>没有凭空出现的信息</b><span>对照素材原句查一遍：人名、时间、地点有没有它自己加上去的。<br>
+            <em>发现它编了</em>：把那段删掉，在指令末尾补一句「素材里没有的信息一律写『待定』，不许自己编」，再发一次。</span></li>
+          <li><b>格式能直接用</b><span>待办清单能直接照着派活，表格能直接看清哪科有作业。<br>
+            <em>还要自己重排一遍</em>：说明指令没写清输出形式，补一句「用表格输出，列名是……」再发一次。</span></li>
+        </ol>
+        <p class="note">三选一就够了，不用做完三份。<strong>把一件活从头做到能交付，比装十个技能有用。</strong></p>
       </div>
     </section>
 
@@ -218,55 +326,115 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
 
       <div class="task">
         <div class="task__hd">动手做 ②·把一篇「AI 味」稿子改掉 <em>约 15 分钟 · 本课重点</em></div>
-        <p>素材是上面那段通知稿，点它右上角的「复制」拿走。</p>
+        <p><strong>做完你手上会有</strong>：一版能直接发出去的通知正文，外加一份「删了哪些词」的清单。</p>
 
-        <p><strong>第 1 步 · 先自己改（5 分钟，不许用 AI）</strong></p>
+        <p><strong>第 1 步 · 复制素材（1 分钟）</strong></p>
+        <p>下面是一份典型的「AI 味」通知——全是套话、关键信息一个没有。点右上角「复制」拿走。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="待改的 AI 味稿子 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>校园读书节系列活动通知
+
+各班级、全体同学：
+
+为深入学习贯彻落实全民阅读相关精神，进一步切实提升我校学生文化素养，
+营造浓厚的校园书香氛围，紧紧围绕立德树人根本任务，经研究决定，
+开展我校2026年校园读书节系列活动，现将有关事项通知如下：
+
+一、活动时间
+另行通知
+
+二、活动地点
+另行通知
+
+三、活动内容
+本次活动形式多样、内容丰富、特色鲜明，主要包括：
+（一）开展好书推荐活动；
+（二）举办读书分享交流会；
+（三）组织经典诵读活动。
+
+四、活动对象
+全体在校学生
+
+五、相关要求
+1. 各班级要高度重视，积极组织，认真落实，确保活动取得实效；
+2. 广大同学要踊跃报名，广泛参与，共同感受阅读的魅力，在阅读中汲取力量；
+3. 各班要精心组织、周密安排，努力营造爱读书、读好书、善读书的良好氛围。
+
+让我们携手共进，在阅读中遇见更好的自己！
+
+特此通知。
+
+校团委
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 先自己改一遍（5 分钟，不许用 AI）</strong></p>
         <ol class="steps">
-          <li><b>粘进记事本或 Word</b><span>把原文贴进去，先别动。</span></li>
+          <li><b>粘进记事本或 Word</b><span>把素材贴进去，先别动。</span></li>
           <li><b>照着清单圈空话词</b><span>下面这些词，见到就圈出来：<br>
             <em>进一步　切实　有效　积极　深入贯彻落实　相关精神　营造氛围　紧紧围绕<br>
-            形式多样　内容丰富　特色鲜明　潜移默化　携手共进　共同感受　汲取力量</em></span></li>
-          <li><b>全删掉</b><span>圈出来的词一个不留。</span></li>
+            形式多样　内容丰富　特色鲜明　潜移默化　携手共进　共同感受　汲取力量<br>
+            高度重视　认真落实　确保实效　精心组织　周密安排　踊跃报名　良好氛围</em></span></li>
+          <li><b>全删掉</b><span>圈出来的词一个不留，包括「具有重要意义」这种整句。</span></li>
           <li><b>把空位补上具体信息</b><span>时间、地点、怎么参加、带什么——编的也行，
             但要在后面标上「<strong>【模拟】</strong>」。</span></li>
         </ol>
 
-        <p><strong>第 2 步 · 再用技能改（5 分钟）</strong></p>
+        <p><strong>第 3 步 · 再用技能改一遍（5 分钟）</strong></p>
         <ol class="steps">
-          <li><b>新开一个对话</b><span>不要在刚才那个对话里做——新对话才能让技能生效。</span></li>
-          <li><b>打一个 <kbd>/</kbd></b><span>输入框里敲斜杠，从弹出的列表里选「<strong>文章去 AI 味</strong>」这一类技能。</span></li>
-          <li><b>把原文贴进去发送</b><span>注意：贴<strong>原文</strong>，不要贴你改好的那版。</span></li>
+          <li><b>新建一个对话</b><span>⚠️ 不要在刚才那个对话里做——新对话技能才会生效。</span></li>
+          <li><b>在输入框敲一个 <kbd>/</kbd></b><span>弹出技能列表后，选「<strong>文章去 AI 味</strong>」这一类技能
+            （你在动手做 ① 里已经装过一个，用那个也行）。</span></li>
+          <li><b>把下面这段指令粘进去</b><span>指令在前，素材在后——如上，中间空一行。</span></li>
+          <li><b>发送，然后看它怎么改的</b><span>注意它是<strong>先读技能里的规则</strong>，再照着规则逐条执行，
+            不是凭感觉润色。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 WorkBuddy 的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用「文章去 AI 味」技能帮我改下面这篇通知。要求：
+1. 删掉所有空话套话（例如"形式多样""内容丰富""汲取力量""携手共进""高度重视"这类一律删）；
+2. 原文没写的时间、地点、联系方式，不要自己编，统一标成【待补】；
+3. 活动怎么参加要能一眼看明白；
+4. 改完之后，附一张清单，列出你删掉了哪些词句。
+
+【下面是待改的稿子】
+
+</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 两份并排比一比（4 分钟）</strong></p>
+        <p>拿你手改的版本和技能改的版本放一起，逐条对：</p>
+        <ol class="steps">
+          <li><b>空话词应该一个不剩</b><span>拿第 2 步那份词清单再扫一遍技能改的版本。<br>
+            <em>还有漏网的</em>：手工补删，并在指令里把那几个词点名写出来（「这类词一律删」），再发一次。</span></li>
+          <li><b>该留的信息必须还在</b><span>「活动对象」「主办单位」这类内容如果也被删了，就是删过头。<br>
+            <em>被删过头</em>：在指令里加一句「保留活动对象、主办单位等事实性信息」，再发一次。</span></li>
+          <li><b>不允许出现素材里没有的信息</b><span>时间、地点、联系人——素材里本来就没写，它却给了具体答案，那就是它编的。<br>
+            <em>发现它编了</em>：把那段删掉，补一句「没有的信息标【待补】，绝不许自己编」，再发一次。
+            ⚠️ 这一条最重要。</span></li>
+          <li><b>别人读一遍就能懂</b><span>随便找个人读你改完的版本，能立刻答出「什么时候、在哪、怎么参加」。<br>
+            <em>对方还要追问</em>：说明还缺关键信息，把缺的那几项列出来补进稿子。</span></li>
         </ol>
 
-        <p><strong>第 3 步 · 两份放一起比（5 分钟）</strong></p>
+        <p><strong>改到什么程度算合格</strong>：</p>
         <div class="tablewrap">
           <table class="data tight">
-            <thead><tr><th>比什么</th><th>我的发现</th></tr></thead>
+            <thead><tr><th>看哪里</th><th>✗ 不合格</th><th>✓ 合格</th></tr></thead>
             <tbody>
-              <tr><td>它删空话词，删得比我干净还是不如我？</td><td></td></tr>
-              <tr><td>它<strong>多删</strong>了什么？（该留的被删了）</td><td></td></tr>
-              <tr><td>它<strong>少删</strong>了什么？（残留的空话）</td><td></td></tr>
-              <tr><td>它有没有<strong>编造</strong>具体信息？</td><td></td></tr>
+              <tr><td>开头</td><td>为深入贯彻落实相关精神，营造良好氛围……</td><td>直接说事：读书节定在 4 月 12 日</td></tr>
+              <tr><td>地点</td><td>地点另行通知</td><td>地点：图书馆一楼大厅【待补】</td></tr>
+              <tr><td>怎么参加</td><td>请广大同学踊跃报名，广泛参与</td><td>现场签到即可，不用提前报名</td></tr>
+              <tr><td>结尾</td><td>让我们携手共进，在阅读中汲取力量！</td><td>联系人：图书馆值班老师【待补】</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="note">最后一行是重点。技能照着规则改文字没问题，但<strong>时间、地点这些它不知道的事，
-          它不该自己编</strong>——如果编了，说明这个技能的规则还不够严。</p>
 
-        <p><strong>完成标准</strong>：拿你改后的稿子逐条对——</p>
-        <div class="tablewrap">
-          <table class="data tight">
-            <thead><tr><th>检查项</th><th>过 / 不过</th></tr></thead>
-            <tbody>
-              <tr><td>一眼能看到「什么时候、在哪、怎么参加」</td><td></td></tr>
-              <tr><td>清单里的空话词一个不剩</td><td></td></tr>
-              <tr><td>自己编的信息都标了「【模拟】」</td><td></td></tr>
-            </tbody>
-          </table>
-        </div>
+        <p class="note">第 3 步那条「有没有编造」是重点。技能照着规则改文字没问题，
+          但<strong>时间、地点这些它不知道的事，它不该自己编</strong>——如果编了，
+          说明你指令里那句「不要自己编」没写，或者这个技能的规则还不够严。补上那句话再发一次。</p>
         <figure class="figure">
           <img src="../assets/img/bluebook/bb-ch05-09.webp" alt="修改前后对比" loading="lazy">
-          <figcaption><b>对照参考：技能改稿的前后对比</b>　左边原文、右边改后。你做完自己的版本，可以拿这张图比一比差距在哪。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+          <figcaption><b>对照参考：改前改后差在哪</b>　左边原文、右边改后。你做完自己的版本，可以拿这张图比一比差距在哪。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
         </figure>
         <div class="fold">
           <button class="fold__hd" type="button">参考答案：改完大概长什么样（自己做完再看）</button>
@@ -345,25 +513,50 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       </figure>
 
       <div class="task">
-        <div class="task__hd">动手做 ③·亲手验证「关闭 ≠ 卸载」 <em>约 4 分钟</em></div>
-        <ol class="steps">
-          <li><b>关掉它</b><span>回「已安装」，找到刚才装的那个技能，把开关拨到<strong>关闭</strong>。</span></li>
-          <li><b>试第一次</b><span><strong>新建一个对话</strong>，把你原来那句需求原样打进去，看它还触发吗。记下结果。</span></li>
-          <li><b>开回来</b><span>回到技能页，把开关再拨回<strong>开启</strong>。</span></li>
-          <li><b>试第二次</b><span>再新建一个对话，重复第 2 步，记下结果。</span></li>
-        </ol>
-        <p><strong>完成标准</strong>：把这四个空填出来——</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="填完这四个空，就算真懂了">
+        <div class="task__hd">动手做 ③·亲手验证「关闭 ≠ 卸载」 <em>约 5 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一句指令在「关 / 开」两种状态下的两份回答——
+          差别摆在那里，不用凭印象。</p>
+
+        <p><strong>第 1 步 · 准备一句固定的测试指令（1 分钟）</strong></p>
+        <p>复制下面这句备着。<span class="task__warn">四次都用这一句</span>——只有变量被控制住了，结果才有可比性。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="测试指令（四次都用这句）· 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>① 关掉之后，它还在「已安装」列表里吗？　　答：______
-② 关掉之后，第一次试的结果是：　　　　　　答：______
-③ 开回来之后，第二次试的结果是：　　　　　答：______
-④ 两次结果如果不一样，说明「关闭」到底做了什么？
-　　　　　　　　　　　　　　　　　　　　　答：______
+<pre><code>用「文章去 AI 味」技能，把下面这句话改一遍，并列出你删掉了哪些词：
+本次活动形式多样、内容丰富、特色鲜明，请广大同学踊跃报名、广泛参与。
 </code></pre>
         </div>
-        <p class="note">参考答案：① 在；② 不触发；③ 触发；④ 关闭只是让它<strong>不再被自动调用</strong>，
-          技能文件和配置都还在，随时能开回来——所以「关闭」和「卸载」完全是两件事。</p>
+
+        <p><strong>第 2 步 · 关掉它，再试一次（1.5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>回技能页 →「已安装」，找到你在动手做 ① 里装的技能</b><span>把开关拨到<strong>关闭</strong>。</span></li>
+          <li><b>新建一个对话</b><span>⚠️ 必须新建，旧对话会沿用原来的状态。</span></li>
+          <li><b>贴第 1 步那句测试指令，发送</b><span>看它这次怎么答。</span></li>
+        </ol>
+        <p><strong>✅ 你应该看到</strong>：它<strong>没有调用技能</strong>，只是按普通聊天给了一段话，
+          不会去查什么空话词清单。</p>
+
+        <p><strong>第 3 步 · 回去确认它还在不在（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>不用关掉对话，直接回技能页</b><span>点左侧边栏「技能」→「已安装」，找到它。</span></li>
+        </ol>
+        <p><strong>✅ 你应该看到</strong>：它<strong>还好好地躺在列表里</strong>，只是开关变成了灰色。
+          <span class="task__warn">这一步最容易被想错——很多人以为关了就是没了。</span></p>
+
+        <p><strong>第 4 步 · 开回来，再试一次（1.5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把开关拨回「开启」</b><span>什么都不用重新装。</span></li>
+          <li><b>再新建一个对话，贴同一句测试指令，发送</b><span>跟你第 2 步做的完全一样。</span></li>
+        </ol>
+        <p><strong>✅ 你应该看到</strong>：它又<strong>照着技能规则干活</strong>了——会先读规则，
+          再逐条删词，这通常比第 2 步的回答明显更「有章法」。</p>
+
+        <div class="callout callout--tip">
+          <span class="callout__t">把三次看到的现象串起来，就是结论</span>
+          关掉以后 → 它<strong>不再被自动调用</strong>，但技能文件、配置、开关全都还在，
+          所以你拨回来它就能立刻开工。<br>
+          <strong>「关闭」只是停用一次马甲，「卸载」才是把人开除</strong>——卸载会删掉技能文件，要用得重新装。
+          所以平时嫌技能太多互相干扰，关掉就够了，不必卸载。
+        </div>
       </div>
 
       <figure class="figure">
@@ -372,51 +565,141 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       </figure>
 
       <div class="task">
-        <div class="task__hd">动手做 ④·让它给你造一个技能（挑战） <em>约 8 分钟</em></div>
+        <div class="task__hd">动手做 ④·造一个技能，并用它真跑一次（挑战） <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个自己造的技能 + 它跑出来的一份成果，
+          外加一句「这技能哪里写得不够好」的判断。</p>
+
+        <p><strong>第 1 步 · 挑一件「每周都要做、步骤还固定」的活（1 分钟）</strong></p>
         <ol class="steps">
-          <li><b>挑一件事</b><span>从下面勾一个，或者自己想一个同类的：<br>
-            □ 把每周课程笔记按科目整理成一份清单<br>
-            □ 把社团活动照片按日期重命名<br>
-            □ 把一周的作业要求汇总成一张待办表<br>
-            <em>选择标准：这件事你<strong>每周都要做一次，而且步骤基本固定</strong>。</em></span></li>
-          <li><b>把下面这个句式填完，发给它</b><span>点「添加技能」→「<strong>创建技能</strong>」，
-            照这个结构说清楚：</span></li>
+          <li><b>从下面三件里勾一件</b><span>□ A：把每周课程笔记按科目整理成清单
+            □ B：把社团活动照片按日期重命名　□ C：把一周的作业要求汇总成一张待办表</span></li>
+          <li><b>确认它符合标准</b><span>「<strong>每周做一次 + 步骤基本固定</strong>」——
+            一次性的活不值得做成技能，写一次指令就够了。</span></li>
         </ol>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="句式模板（把横线填完再发）">
+
+        <p><strong>第 2 步 · 复制这条指令，把方括号里的换成你自己的（1 分钟）</strong></p>
+        <p>下面三条对应上面三件事，勾了哪件就复制哪条。<span class="task__warn">方括号部分必须替换</span>，
+          其余保持原样——尤其是最后那句「什么时候用」，它决定 AI 以后认不认得出该不该召唤这个技能。</p>
+        <div class="fold">
+          <button class="fold__hd" type="button">点开：三条完整指令（A / B / C），挑一条复制</button>
+          <div class="fold__bd">
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 A · 整理课程笔记 · 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个技能，要求如下。
+
+【这个技能用来做什么】
+把每周的课程笔记，按科目整理成一份清单。
+
+【我希望它输出什么】
+一张表格，列出：科目 / 日期 / 讲了什么 / 作业与截止时间。
+
+【必须遵守的规则】
+1. 只读不写，不许修改或删除我的原笔记文件；
+2. 笔记里没写的内容就留空，绝对不许自己补或编；
+3. 看不懂的科目名原样保留，不要猜。
+
+【它什么时候该被使用】
+当我说"整理笔记""笔记整理成表格"这类话的时候。
+
+请帮我写好这个技能的说明文件，特别是「它是做什么的、什么时候用」那一栏
+要把触发场景写清楚，不能只写三个字"整理笔记"。
+</code></pre>
+            </div>
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 B · 照片按日期重命名 · 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个技能，要求如下。
+
+【这个技能用来做什么】
+把［社团活动］的照片文件，按"拍摄日期-活动名-序号"的格式重命名。
+
+【我希望它输出什么】
+一份重命名前后对照表，列出原文件名和新文件名。
+
+【必须遵守的规则】
+1. 先列出打算怎么改，我确认之后才动手；
+2. 遇到同名冲突，在文件名末尾加序号，绝对不许直接覆盖；
+3. 只读 EXIF 里的拍摄日期，读不到就标【无日期】，不要拿今天日期充数。
+
+【它什么时候该被使用】
+当我说"照片重命名""整理活动照片"这类话的时候。
+
+请帮我写好这个技能的说明文件，把「它是做什么的、什么时候用」写清楚。
+</code></pre>
+            </div>
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 C · 汇总一周作业 · 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个技能，要求如下。
+
+【这个技能用来做什么】
+把一周里各门课提到的作业要求，汇总成一张待办表。
+
+【我希望它输出什么】
+一张按截止时间排序的表格，列出：科目 / 作业内容 / 截止时间 / 完成状态（未完成）。
+
+【必须遵守的规则】
+1. 只读不写，不许改动我的原始文件；
+2. 没说截止时间的写"待确认"，不许自己定一个；
+3. 同一件事被提到多次，合并成一条，不要重复列出。
+
+【它什么时候该被使用】
+当我说"汇总作业""这周的作业有哪些"这类话的时候。
+
+请帮我写好这个技能的说明文件，把「它是做什么的、什么时候用」写清楚。
+</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>第 3 步 · 让它造（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>点「添加技能」→「创建技能」</b><span>在技能页右上角。</span></li>
+          <li><b>把复制好的指令整段粘进去，回车</b><span>它会先跟你确认几个细节，如实回答就行。</span></li>
+          <li><b>造完之后，点开它，把「它是做什么的、什么时候用」读一遍</b><span>这就是它的 <code>description</code>，
+            后面第 5 步要用。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 用它真跑一次（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话</b><span>同上，新对话技能才生效。</span></li>
+          <li><b>先把下面这段测试素材贴进去</b><span>素材对应你勾的那件事；用不上就换成自己的真实内容。</span></li>
+          <li><b>再贴一行「整理一下」，一起发送</b><span>看它有没有按你定的规矩来。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="测试素材 · 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>我需要一个技能，用来 ____________（做什么）。
-我希望它输出 ____________（什么形式的结果）。
-有两点必须注意：
-第一，____________（必须怎么做）；
-第二，绝对不能 ____________（不许做什么）。
+<pre><code>9月22号 周一
+机器学习 讲决策树，作业是第四章第1题，下周一交
+
+9月23号 周二
+Python 课讲列表推导式，没留作业
+
+9月24号 周三
+职业生涯规划课，要交一份简历，老师说月底前交，具体日期没定
 </code></pre>
         </div>
-        <p><strong>照着这个例子写</strong>：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="示范">
-          <div class="codeblock__bar"></div>
-<pre><code>我需要一个技能，用来把每周的课程笔记按科目整理成清单。
-我希望它输出一份 Markdown 表格，列出科目、笔记标题、页数。
-有两点必须注意：
-第一，只读不写，不要修改我的原笔记；
-第二，绝对不能删除任何文件。
-</code></pre>
-        </div>
-        <ol class="steps" start="3">
-          <li><b>读它造出来的技能说明，找出一个不足</b><span>照这三条来找，命中率最高：<br>
-            ① <strong>描述太笼统</strong>——只说「整理笔记」，以后 AI 认不出该什么时候用它；<br>
-            ② <strong>没写「不能做什么」</strong>——红线缺失；<br>
-            ③ <strong>没写出错怎么办</strong>——比如「文件不存在时该怎么做」。</span></li>
+
+        <p><strong>第 5 步 · 给它挑一个毛病（2 分钟）</strong></p>
+        <p>照这三条去找，命中率最高——找到<strong>任意一条</strong>就算过关：</p>
+        <ol class="steps">
+          <li><b>「它是做什么的」那一栏太空泛</b><span>是不是只有「整理笔记」四个字？只写这个，
+            以后 AI 认不出什么时候该叫它——<strong>必须把触发词写进去</strong>。<br>
+            <em>怎么改</em>：让它重写成「把课程笔记按科目整理成表格，当我说『整理笔记』时使用」。</span></li>
+          <li><b>规则里没写「不许做什么」</b><span>有没有「不许修改原文件」「不许编造」这类红线？没有就是缺陷。<br>
+            <em>怎么改</em>：补一条「只读不写，不许改动或删除我的原始文件」。</span></li>
+          <li><b>没写出错时怎么办</b><span>比如素材里没有日期时该怎么办——没写，它就会自己编一个。<br>
+            <em>怎么改</em>：补一条「读不到日期就标【无日期】，不要拿今天的日期充数」。</span></li>
         </ol>
-        <p><strong>完成标准</strong>：用一句话说清「它哪一处不够好、应该改成什么」。例如——</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="合格的答案长这样">
+        <p><strong>合格的说法长这样</strong>（把这三句话读完，你就知道该怎么说了）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="挑毛病的合格表达 · 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>它的 description 只写了「整理笔记」，太笼统。
-应该写成：「把课程笔记按科目整理成清单，当我说『整理笔记』时使用」——
+<pre><code>它把 description 写成了"整理笔记"，太笼统。
+应该写成："把课程笔记按科目整理成表格，当我说『整理笔记』时使用"——
 把触发词写进去，AI 才认得出我什么时候需要它。
+
+另外规则里没写"不许修改原文件"，这条是红线，必须补上。
 </code></pre>
         </div>
-        <p class="note">这个任务不看结果多漂亮，只看你<strong>能不能指出它一个毛病</strong>——
-          能挑出毛病，说明你真读懂了技能在干什么。</p>
+        <p class="note">这个任务不看你的技能做得多漂亮，只看你<strong>能不能指出它一个毛病，并说出该怎么改</strong>。
+          能挑出毛病，说明你真读懂了技能在干什么——这比造出十个技能都值钱。</p>
       </div>
     </section>
 

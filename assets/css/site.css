@@ -510,6 +510,13 @@ figure.figure--sm{max-width:420px;}
 .task .steps > li > span{color:#3F3A2E;}
 .task codeblock,.task .codeblock{margin:11px 0 0;}
 .task > :last-child{margin-bottom:0;}
+/* 实操步骤里标出「这一步最容易做错」的短语（如「必须新建对话」「整句粘贴不要改写」）。
+   白底描边，让它在橙色实操块背景里跳出来；只用强调色系，不引入第三个主色。 */
+.task__warn{
+  display:inline-block;margin:0 2px;padding:0 8px;border-radius:999px;
+  background:#fff;border:1px solid var(--c-accent-b);
+  color:var(--c-accent-d);font-weight:700;font-size:12.5px;line-height:1.85;
+}
 
 /* 知识点导航里标注「该节含实操」 */
 .knav a em{font-style:normal;color:var(--c-accent-d);font-weight:700;font-size:11.5px;margin-left:5px;}
