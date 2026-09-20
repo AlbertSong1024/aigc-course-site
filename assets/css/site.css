@@ -218,6 +218,9 @@ img{max-width:100%;}
 .toc__i a:hover{color:var(--c-primary-d);background:var(--c-bg);text-decoration:none;}
 .toc__i a.on{color:var(--c-primary-d);font-weight:700;border-left-color:var(--c-primary);background:var(--c-primary-l);}
 .toc__i--3 a{padding-left:26px;font-size:12px;color:var(--c-text-3);}
+/* 本页目录里的「动手做」条目：强调色 + 小方块，学生一眼能找到实操入口 */
+.toc__i--task a{padding-left:24px;font-size:12px;color:var(--c-accent-d);font-weight:600;}
+.toc__i--task a::before{content:"▪";margin-right:5px;color:var(--c-accent);}
 
 /* ---------- 6. 正文区 ---------- */
 .main{min-width:0;}

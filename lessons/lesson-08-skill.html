@@ -450,16 +450,6 @@ read_excel() 那个函数
           <li><b>发送，然后看它怎么改的</b><span>注意它是<strong>先读技能里的规则</strong>，再照着规则逐条执行，
             不是凭感觉润色。</span></li>
         </ol>
-        <figure class="figure">
-          <img src="../assets/img/bluebook/bb-ch05-06.webp" alt="输入框上方挂着技能引用与文件引用的标签" loading="lazy">
-          <figcaption><b>敲 <kbd>/</kbd> 选好技能之后，长这样</b>　看输入框上方那两个标签：
-            <code>/文章去AI味工具</code> 是<strong>技能引用</strong>，<code>#…</code> 是<strong>文件引用</strong>。
-            输入框里的提示文字也写着「<strong>@ 引用对话文件，/ 调用技能与指令</strong>」——
-            记住这两个符号就够了。<br>
-            下方「深度思考 / humanizer / 深度思考」是它的执行过程，
-            <code>humanizer</code> 就是「去 AI 味」这个技能的内部名。<br>
-            截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
-        </figure>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 WorkBuddy 的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>用「文章去 AI 味」技能帮我改下面这篇通知。要求：
@@ -472,6 +462,16 @@ read_excel() 那个函数
 
 </code></pre>
         </div>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch05-06.webp" alt="输入框上方挂着技能引用与文件引用的标签" loading="lazy">
+          <figcaption><b>敲 <kbd>/</kbd> 选好技能之后、把指令和素材发出去，长这样</b>　看输入框上方那两个标签：
+            <code>/文章去AI味工具</code> 是<strong>技能引用</strong>，<code>#…</code> 是<strong>文件引用</strong>。
+            输入框里的提示文字也写着「<strong>@ 引用对话文件，/ 调用技能与指令</strong>」——
+            记住这两个符号就够了。<br>
+            下方「深度思考 / humanizer / 深度思考」是它的执行过程，
+            <code>humanizer</code> 就是「去 AI 味」这个技能的内部名。<br>
+            截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+        </figure>
 
         <p><strong>第 4 步 · 两份并排比一比（4 分钟）</strong></p>
         <p>拿你手改的版本和技能改的版本放一起，逐条对：</p>
@@ -640,19 +640,44 @@ read_excel() 那个函数
         <p><strong>做完你手上会有</strong>：一个自己造的技能 + 它跑出来的一份成果，
           外加一句「这技能哪里写得不够好」的判断。</p>
 
-        <p><strong>第 1 步 · 挑一件「每周都要做、步骤还固定」的活（1 分钟）</strong></p>
+        <p><strong>第 1 步 · 先看一个例子：什么活值得做成技能（1 分钟）</strong></p>
+        <p>这次就拿这件事来练手：<strong>把一周的作业要求汇总成一张待办表</strong>。</p>
         <ol class="steps">
-          <li><b>从下面三件里勾一件</b><span>□ A：把每周课程笔记按科目整理成清单
-            □ B：把社团活动照片按日期重命名　□ C：把一周的作业要求汇总成一张待办表</span></li>
-          <li><b>确认它符合标准</b><span>「<strong>每周做一次 + 步骤基本固定</strong>」——
-            一次性的活不值得做成技能，写一次指令就够了。</span></li>
+          <li><b>它值得做成技能，因为两个条件都占</b><span>
+            <strong>每周都要做</strong>——周一翻上周遗留的、周三补新布置的、周日理一遍下周的；
+            <strong>步骤基本固定</strong>——找齐各科作业 → 排截止时间 → 标完成状态。</span></li>
+          <li><b>反过来看，什么不值得做</b><span>「帮我写一篇实训报告」这种一次性的活，
+            直接下指令就行——<strong>做成技能也很少再打开</strong>。</span></li>
         </ol>
 
-        <p><strong>第 2 步 · 复制这条指令，把方括号里的换成你自己的（1 分钟）</strong></p>
-        <p>下面三条对应上面三件事，勾了哪件就复制哪条。<span class="task__warn">方括号部分必须替换</span>，
-          其余保持原样——尤其是最后那句「什么时候用」，它决定 AI 以后认不认得出该不该召唤这个技能。</p>
+        <p><strong>第 2 步 · 复制这条指令，整段发给它（1 分钟）</strong></p>
+        <p>入口在技能页右上角「<strong>添加技能</strong>」→「<strong>创建技能</strong>」，
+          把下面整段贴进去。<span class="task__warn">技能名称按你自己的习惯改</span>，
+          其余保持原样——尤其最后那句「什么时候用」，它决定 AI 以后认不认得出该不该召唤这个技能。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 作业待办汇总 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个技能，要求如下。
+
+【这个技能用来做什么】
+把一周里各门课提到的作业要求，汇总成一张待办表。
+
+【我希望它输出什么】
+一张按截止时间排序的表格，列出：科目 / 作业内容 / 截止时间 / 完成状态（未完成）。
+
+【必须遵守的规则】
+1. 只读不写，不许改动我的原始文件；
+2. 没说截止时间的写"待确认"，不许自己定一个；
+3. 同一件事被提到多次，合并成一条，不要重复列出。
+
+【它什么时候该被使用】
+当我说"汇总作业""这周的作业有哪些"这类话的时候。
+
+请帮我写好这个技能的说明文件，特别是「它是做什么的、什么时候用」那一栏，
+写清楚不能只写"汇总作业"三个字。
+</code></pre>
+        </div>
         <div class="fold">
-          <button class="fold__hd" type="button">点开：三条完整指令（A / B / C），挑一条复制</button>
+          <button class="fold__hd" type="button">想换成别的活？另外两份配置在这里（整理笔记 / 照片重命名）</button>
           <div class="fold__bd">
             <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 A · 整理课程笔记 · 点右上角复制">
               <div class="codeblock__bar"></div>
@@ -697,27 +722,6 @@ read_excel() 那个函数
 请帮我写好这个技能的说明文件，把「它是做什么的、什么时候用」写清楚。
 </code></pre>
             </div>
-            <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 C · 汇总一周作业 · 点右上角复制">
-              <div class="codeblock__bar"></div>
-<pre><code>帮我创建一个技能，要求如下。
-
-【这个技能用来做什么】
-把一周里各门课提到的作业要求，汇总成一张待办表。
-
-【我希望它输出什么】
-一张按截止时间排序的表格，列出：科目 / 作业内容 / 截止时间 / 完成状态（未完成）。
-
-【必须遵守的规则】
-1. 只读不写，不许改动我的原始文件；
-2. 没说截止时间的写"待确认"，不许自己定一个；
-3. 同一件事被提到多次，合并成一条，不要重复列出。
-
-【它什么时候该被使用】
-当我说"汇总作业""这周的作业有哪些"这类话的时候。
-
-请帮我写好这个技能的说明文件，把「它是做什么的、什么时候用」写清楚。
-</code></pre>
-            </div>
           </div>
         </div>
 
@@ -732,8 +736,8 @@ read_excel() 那个函数
         <p><strong>第 4 步 · 用它真跑一次（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>新建一个对话</b><span>同上，新对话技能才生效。</span></li>
-          <li><b>先把下面这段测试素材贴进去</b><span>素材对应你勾的那件事；用不上就换成自己的真实内容。</span></li>
-          <li><b>再贴一行「整理一下」，一起发送</b><span>看它有没有按你定的规矩来。</span></li>
+          <li><b>先把下面这段作业记录贴进去</b><span>这就是你这一周零散的作业信息——有定了截止时间的，也有没定的。</span></li>
+          <li><b>再贴一行「汇总一下」，一起发送</b><span>看它有没有按你定的规矩来。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="测试素材 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -751,9 +755,9 @@ Python 课讲列表推导式，没留作业
         <p><strong>第 5 步 · 给它挑一个毛病（2 分钟）</strong></p>
         <p>照这三条去找，命中率最高——找到<strong>任意一条</strong>就算过关：</p>
         <ol class="steps">
-          <li><b>「它是做什么的」那一栏太空泛</b><span>是不是只有「整理笔记」四个字？只写这个，
+          <li><b>「它是做什么的」那一栏太空泛</b><span>是不是只有「汇总作业」四个字？只写这个，
             以后 AI 认不出什么时候该叫它——<strong>必须把触发词写进去</strong>。<br>
-            <em>怎么改</em>：让它重写成「把课程笔记按科目整理成表格，当我说『整理笔记』时使用」。</span></li>
+            <em>怎么改</em>：让它重写成「把一周各科作业汇总成待办表，当我说『汇总作业』时使用」。</span></li>
           <li><b>规则里没写「不许做什么」</b><span>有没有「不许修改原文件」「不许编造」这类红线？没有就是缺陷。<br>
             <em>怎么改</em>：补一条「只读不写，不许改动或删除我的原始文件」。</span></li>
           <li><b>没写出错时怎么办</b><span>比如素材里没有日期时该怎么办——没写，它就会自己编一个。<br>

@@ -209,14 +209,22 @@
     return /^\s*(\d+(\.\d+)*[、.．]?|[①②③④⑤⑥⑦⑧⑨⑩⑪⑫]|[一二三四五六七八九十]+[、.]|（[一二三四五六七八九十]+）|[（(]\d+[)）])/.test(text);
   }
 
+  /* 动手做（div.task）的标题：去掉末尾的 <em>约 X 分钟</em>，只留标题本身 */
+  function taskTitle(hd) {
+    if (!hd) return "";
+    var c = hd.cloneNode(true);
+    c.querySelectorAll("em").forEach(function (t) { t.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  }
+
   function collectTOCNodes() {
     var main = $("main");
     if (!main) return [];
     var out = [];
 
     function ensureId(n, txt) {
-      // 页面里没写 id 的 h3：用标题文字生成一个稳定锚点，保证目录点得动
-      // （课时页源码始终不需要手写 h3 id）
+      // 页面里没写 id 的 h3 / 动手做块：用标题文字生成一个稳定锚点，
+      // 保证目录点得动（课时页源码始终不需要手写这些 id）
       if (n.id) return n.id;
       var base = "s-" + String(cataSlug(txt)).replace(/^-+|-+$/g, "").slice(0, 30);
       if (base === "s-") base = "s-sec";
@@ -226,28 +234,37 @@
       return cand;
     }
 
-    // 按文档顺序扫描全部 h2 / h3
-    main.querySelectorAll("h2, h3").forEach(function (n) {
+    // 按文档顺序扫描全部 h2 / h3 / 动手做
+    main.querySelectorAll("h2, h3, .task").forEach(function (n) {
       var sec = n.closest("section.sec");
-      var txt = tocTitle(n);
+      var txt;
       if (n.tagName === "H2") {
         // 锚点优先用小节 id；没有小节 id 时退回 h2 自己的 id
+        txt = tocTitle(n);
         var id = (sec && sec.id) || n.id || "";
         if (!id) return;
         out.push({ id: id, lvl: 2, text: txt || id, node: sec && sec.id ? sec : n });
-      } else {
+      } else if (n.tagName === "H3") {
         // 只收「小节直属的 h3」和「完全不在小节内的 h3」。
         // 卡片、折叠面板、演示区等嵌套结构里的 h3 不算页面小节，不进目录
         // （首页课程地图有 27 张课次卡片，标题也是 h3，靠这条挡掉）
         if (sec && n.parentNode !== sec) return;
+        txt = tocTitle(n);
         out.push({ id: ensureId(n, txt), lvl: 3, text: txt, node: n });
+      } else {
+        // 动手做：单独作为一条列出来，学生可以直接从目录跳到实操，不用滚页面
+        var hd = n.querySelector(".task__hd");
+        txt = taskTitle(hd);
+        if (!txt) return;
+        out.push({ id: ensureId(n, txt), lvl: 3, type: "task", text: txt, node: n });
       }
     });
 
-    // h3 自动编号：在每个一级小节内从 1 开始重数；自己已带序号的不动
+    // h3 自动编号：在每个一级小节内从 1 开始重数；动手做自带「①②③」不参与编号
     var seq = 0;
     out.forEach(function (x) {
       if (x.lvl === 2) { seq = 0; return; }
+      if (x.type === "task") return;
       seq++;
       if (!hasOwnIndex(x.text)) x.text = seq + ". " + x.text;
     });
@@ -266,7 +283,8 @@
       '<div class="sidebar__hd" style="padding-left:12px">本页目录</div>' +
       '<ul class="toc__list">' +
       items.map(function (x) {
-        return '<li class="toc__i toc__i--' + x.lvl + '"><a href="#' + x.id + '">' + esc(x.text) + "</a></li>";
+        return '<li class="toc__i toc__i--' + x.lvl + (x.type === "task" ? " toc__i--task" : "") +
+          '"><a href="#' + x.id + '">' + esc(x.text) + "</a></li>";
       }).join("") +
       "</ul>";
 
