@@ -263,6 +263,12 @@ tutorial-site/
 中间不能夹配图、不能等到整串步骤列完再补。
 需要把内容块插进步骤列表中间时，**拆成两个 `ol`**，后一段用 `start="N"` 续号，
 保证编号连续（`<ol class="steps">…1-3…</ol>` + 内容块 + `<ol class="steps" start="4">…</ol>`）。
+
+> ⚠️ **`.steps` 的编号是 CSS counter 画的**（`.steps{counter-reset:st}` + `li::before{content:counter(st)}`），
+> 原生 `start` 属性对它**不生效**——不处理的话后一段会从 1 重新数。
+> 这一点由 `site.js` 的 `bindStepsStart()` 兜住：它把 `start="4"` 换算成 `counter-reset:st 3`。
+> **页面源码照常写 `start="N"` 就行**，不要为了编号去写行内 style。
+
 同理，「上面那段素材」「如下」这类指代，都要检查所指对象是不是真的在紧邻位置。
 
 **篇幅参考**：短线小实操 4–6 步 / 约 60–110 行 HTML；本课主题实操可到 150 行以上。

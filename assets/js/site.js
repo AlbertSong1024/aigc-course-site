@@ -488,6 +488,18 @@
     return idx;
   }
 
+  /* .steps 的编号是 CSS counter 画的（.steps{counter-reset:st} + li::before{content:counter(st)}），
+     原生 ol 的 start 属性对它不生效——所以「拆成两个 ol 续号」时，后一段会从 1 重新数。
+     这里把 start 换算成 counter-reset 补上：start="4" → counter-reset:st 3（下一项即第 4 项）。
+     页面源码照常写 start="N"（语义正确），展示细节由引擎兜住。 */
+  function bindStepsStart() {
+    document.querySelectorAll("ol.steps[start]").forEach(function (ol) {
+      var n = parseInt(ol.getAttribute("start"), 10);
+      if (isNaN(n) || n < 2) return;
+      ol.style.counterReset = "st " + (n - 1);
+    });
+  }
+
   function bindSearch() {
     var input = $("site-search");
     var hit = $("site-search-hit");
@@ -577,6 +589,7 @@
     bindQuiz();
     bindFold();
     bindTabs();
+    bindStepsStart();
     renderXref();
     renderTOC();
     renderPager();
