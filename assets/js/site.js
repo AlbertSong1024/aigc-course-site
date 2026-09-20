@@ -189,36 +189,69 @@
   function cataSlug(s) { return String(s).replace(/[^\w\u4e00-\u9fa5]+/g, "-").toLowerCase(); }
 
   /* ======================================================================
-     4. 本页目录（section.sec 的 h2 + 带 id 的 h3）
+     4. 本页目录（section.sec 的 h2 + 全部 h3）
      规则：小节的锚点 id 落在 <section class="sec" id="s-xxx"> 上，
-           小节标题取该 section 里第一个直属 h2（去掉 .sec__tag 徽标）。
+           小节标题取该 section 里第一个直属 h2（去掉 .sec__tag 徽标）；
+           标题里的序号（「一、」「1.」）**原样保留**，不再剥掉；
+           二级标题（h3）一律收录：页面里没写 id 的由本函数现场补一个锚点，
+           并按所属小节自动编号（h3 自己已带序号的，不重复编）。
      ====================================================================== */
-  function tocTitle(h2) {
-    if (!h2) return "";
-    var c = h2.cloneNode(true);
+  function tocTitle(node) {
+    if (!node) return "";
+    var c = node.cloneNode(true);
     c.querySelectorAll(".sec__tag").forEach(function (t) { t.remove(); });
-    return c.textContent.replace(/^\s*[一二三四五六七八九十]+[、.]\s*/, "")
-                        .replace(/^\s*\d+(\.\d+)*[、.]?\s*/, "")
-                        .trim();
+    return c.textContent.replace(/\s+/g, " ").trim();
   }
+
+  /* h3 文本里已经自带序号的情况：1. / 1.1 / ① / 一、 / （一） / (1)
+     这类不再自动编号，否则会变成「3. 坑位① …」 */
+  function hasOwnIndex(text) {
+    return /^\s*(\d+(\.\d+)*[、.．]?|[①②③④⑤⑥⑦⑧⑨⑩⑪⑫]|[一二三四五六七八九十]+[、.]|（[一二三四五六七八九十]+）|[（(]\d+[)）])/.test(text);
+  }
+
   function collectTOCNodes() {
     var main = $("main");
     if (!main) return [];
     var out = [];
-    main.querySelectorAll("section.sec, h2[id], h3[id]").forEach(function (n) {
-      if (n.tagName === "SECTION") {
-        var h2 = n.querySelector(":scope > h2");
-        var id = n.id || (h2 && h2.id) || "";
-        out.push({ id: id, lvl: 2, text: tocTitle(h2) || id, node: n.id ? n : (h2 || n) });
-      } else if (n.tagName === "H2") {
-        // 所属 section 已经有 id 时，说明这一节已由上面的分支收录，避免重复
-        var sec = n.closest("section.sec");
-        if (sec && sec.id) return;
-        out.push({ id: n.id, lvl: 2, text: tocTitle(n), node: n });
+
+    function ensureId(n, txt) {
+      // 页面里没写 id 的 h3：用标题文字生成一个稳定锚点，保证目录点得动
+      // （课时页源码始终不需要手写 h3 id）
+      if (n.id) return n.id;
+      var base = "s-" + String(cataSlug(txt)).replace(/^-+|-+$/g, "").slice(0, 30);
+      if (base === "s-") base = "s-sec";
+      var cand = base, k = 2;
+      while (document.getElementById(cand)) { cand = base + "-" + (k++); }
+      n.id = cand;
+      return cand;
+    }
+
+    // 按文档顺序扫描全部 h2 / h3
+    main.querySelectorAll("h2, h3").forEach(function (n) {
+      var sec = n.closest("section.sec");
+      var txt = tocTitle(n);
+      if (n.tagName === "H2") {
+        // 锚点优先用小节 id；没有小节 id 时退回 h2 自己的 id
+        var id = (sec && sec.id) || n.id || "";
+        if (!id) return;
+        out.push({ id: id, lvl: 2, text: txt || id, node: sec && sec.id ? sec : n });
       } else {
-        out.push({ id: n.id, lvl: 3, text: tocTitle(n), node: n });
+        // 只收「小节直属的 h3」和「完全不在小节内的 h3」。
+        // 卡片、折叠面板、演示区等嵌套结构里的 h3 不算页面小节，不进目录
+        // （首页课程地图有 27 张课次卡片，标题也是 h3，靠这条挡掉）
+        if (sec && n.parentNode !== sec) return;
+        out.push({ id: ensureId(n, txt), lvl: 3, text: txt, node: n });
       }
     });
+
+    // h3 自动编号：在每个一级小节内从 1 开始重数；自己已带序号的不动
+    var seq = 0;
+    out.forEach(function (x) {
+      if (x.lvl === 2) { seq = 0; return; }
+      seq++;
+      if (!hasOwnIndex(x.text)) x.text = seq + ". " + x.text;
+    });
+
     return out.filter(function (x) { return x.id && x.text; });
   }
 
