@@ -174,14 +174,6 @@
         <li><b>我有多少内存</b><span>「此电脑」右键 → 属性，或任务管理器 → 性能页。内存（RAM）那一行。<strong>记住这个数字，选模型档位要用它。</strong></span></li>
       </ol>
 
-      <div class="codeblock" data-lang="powershell" data-name="三步自查（逐行执行）">
-        <div class="codeblock__bar"></div>
-<pre><code>> ollama --version          # ① 有版本号 = 装好了
-> ollama list               # ② 看本地已经有哪些模型（刚装完是空的）
-> echo $env:OLLAMA_MODELS   # ③ 看模型目录是否已改到非系统盘（没输出=还没配）
-</code></pre>
-      </div>
-
       <div class="callout callout--danger">
         <span class="callout__t">跑不通怎么办（三种情况及对策）</span>
         <ul>
@@ -202,7 +194,13 @@
             <span class="task__warn">必须新开</span>，否则环境变量还没生效，命令一定找不到。</span></li>
         </ol>
 
-        <p><strong>第 2 步 · 把上面那三条命令逐行跑一遍（3 分钟）</strong></p>
+        <p><strong>第 2 步 · 把这三条命令逐行跑一遍（3 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="powershell" data-name="逐行执行 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>ollama --version          # ① 有版本号 = 装好了
+ollama list               # ② 看本地已经有哪些模型（刚装完是空的）
+echo $env:OLLAMA_MODELS   # ③ 看模型目录是否已改到非系统盘（没输出=还没配）</code></pre>
+        </div>
         <p>一条一条执行，别一次全贴进去。跑完<strong>截一张图</strong>，把三条命令和它们的结果都截进去。</p>
 
         <p><strong>第 3 步 · 对着结果确认三件事（2 分钟）</strong></p>
@@ -576,8 +574,31 @@ print(resp.json()["response"])
         这套字段名和 OpenAI 完全一致——这就是「兼容」的全部含义。
       </p>
 
-      <h3>完整可运行脚本</h3>
-      <p>下面这份脚本两种接口都封装好了，保存成 <code>ask_local.py</code> 就能直接跑。</p>
+      <h3>完整脚本在动手做里</h3>
+      <p>两种接口都封装好的完整脚本，放在下面「动手做 ③」的第 1 步里——
+        照那份做就行，不需要自己拼。</p>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">API 连不上，先查三件事</span>
+        <ul>
+          <li><strong>服务起来了吗</strong>——托盘里有没有 Ollama 图标；</li>
+          <li><strong>端口被占了吗</strong>——<code>11434</code> 是否被别的程序占用；</li>
+          <li><strong>模型名拼对了吗</strong>——用 <code>ollama list</code> 复制粘贴，别手打。</li>
+        </ul>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·把本地模型接进你的 Python 脚本 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个能跑的 <code>ask_local.py</code>——用它在终端里跟本地模型一问一答。</p>
+
+        <p><strong>第 1 步 · 把脚本存下来（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在你的 <code>wb-试验</code> 文件夹里新建 <code>ask_local.py</code></b><span>
+            VS Code 或记事本都行，保存时编码选 <strong>UTF-8</strong>，否则中文会乱码。</span></li>
+          <li><b>把下面这份脚本整段复制进去</b><span>点代码块右上角「复制」，别手抄——缩进错一处就跑不起来。</span></li>
+          <li><b>确认脚本里的模型名跟你本地的一致</b><span><span class="task__warn">这行最容易出错</span>——
+            先用 <code>ollama list</code> 把名字复制出来，再替换脚本里的 <code>MODEL = "..."</code>。</span></li>
+        </ol>
 
       <div class="codeblock" data-lang="python" data-name="ask_local.py（完整可运行）">
         <div class="codeblock__bar"></div>
@@ -651,28 +672,6 @@ if __name__ == "__main__":
     # batch(["什么是过拟合", "过拟合怎么解决", "举一个生活中的例子"])
 </code></pre>
       </div>
-
-      <div class="callout callout--danger">
-        <span class="callout__t">API 连不上，先查三件事</span>
-        <ul>
-          <li><strong>服务起来了吗</strong>——托盘里有没有 Ollama 图标；</li>
-          <li><strong>端口被占了吗</strong>——<code>11434</code> 是否被别的程序占用；</li>
-          <li><strong>模型名拼对了吗</strong>——用 <code>ollama list</code> 复制粘贴，别手打。</li>
-        </ul>
-      </div>
-
-      <div class="task">
-        <div class="task__hd">动手做 ③·把本地模型接进你的 Python 脚本 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一个能跑的 <code>ask_local.py</code>——用它在终端里跟本地模型一问一答。</p>
-
-        <p><strong>第 1 步 · 把脚本存下来（2 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>在你的 <code>wb-试验</code> 文件夹里新建 <code>ask_local.py</code></b><span>
-            VS Code 或记事本都行，保存时编码选 <strong>UTF-8</strong>，否则中文会乱码。</span></li>
-          <li><b>把上面那份「完整可运行脚本」整段复制进去</b><span>点代码块右上角「复制」，别手抄——缩进错一处就跑不起来。</span></li>
-          <li><b>确认脚本里的模型名跟你本地的一致</b><span><span class="task__warn">这行最容易出错</span>——
-            先用 <code>ollama list</code> 把名字复制出来，再替换脚本里的 <code>MODEL = "..."</code>。</span></li>
-        </ol>
 
         <p><strong>第 2 步 · 装依赖、跑起来（5 分钟）</strong></p>
         <div class="codeblock codeblock--plain" data-lang="bash" data-name="在脚本所在目录执行 · 点右上角复制">
@@ -788,26 +787,11 @@ ollama rm mybot
 </code></pre>
       </div>
 
-      <div class="fold">
-        <button class="fold__hd" type="button">点开复制：课程答疑助手的 Modelfile</button>
-        <div class="fold__bd">
-          <div class="codeblock" data-lang="modelfile" data-name="① 课程答疑助手">
-            <div class="codeblock__bar"></div>
-<pre><code>FROM qwen3:1.7b
-
-SYSTEM """
-你是《AIGC应用与实践》课程的答疑助手。
-只回答与本课程相关的问题；答不上来就直说"这个我不确定"，不许编。
-回答要简短，一次不超过 5 句话。
-"""
-</code></pre>
-          </div>
-          <div class="callout callout--tip callout--last">
-            <span class="callout__t">规律</span>
-            <strong>人设写得越具体，模型越好用。</strong>
-            只写「你是个助手」等于什么都没说；把边界（只答什么、答不上来怎么办、一次说几句）写清楚，它就真的守规矩。
-          </div>
-        </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">规律</span>
+        <strong>人设写得越具体，模型越好用。</strong>
+        只写「你是个助手」等于什么都没说；把边界（只答什么、答不上来怎么办、一次说几句）写清楚，它就真的守规矩。<br>
+        <span class="note">现成的 Modelfile 放在下面的动手做 ④ 里，照着改成你自己的。</span>
       </div>
 
       <div class="task">
@@ -819,10 +803,20 @@ SYSTEM """
           <li><b>在 <code>wb-试验</code> 里新建一个文件，名字就叫 <code>Modelfile</code></b><span>
             <span class="task__warn">没有后缀名</span>——是 <code>Modelfile</code>，不是 <code>Modelfile.txt</code>。
             用记事本保存时，文件名写 <code>"Modelfile"</code>（<strong>带引号</strong>）它就不会自动加 .txt。</span></li>
-          <li><b>把上面那份模板整段复制进去</b><span>点代码块右上角「复制」，别手打——缩进和引号错了都跑不起来。</span></li>
+          <li><b>把下面这份模板整段复制进去</b><span>点代码块右上角「复制」，别手打——缩进和引号错了都跑不起来。</span></li>
           <li><b>把 <code>FROM</code> 那行的模型名换成你本地实际有的</b><span>先 <code>ollama list</code> 把名字复制出来再改。
             <span class="task__warn">模型名不对，create 一定失败</span>。</span></li>
         </ol>
+        <div class="codeblock codeblock--plain" data-lang="modelfile" data-name="课程答疑助手 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>FROM qwen3:1.7b
+
+SYSTEM """
+你是《AIGC应用与实践》课程的答疑助手。
+只回答与本课程相关的问题；答不上来就直说"这个我不确定"，不许编。
+回答要简短，一次不超过 5 句话。
+"""</code></pre>
+        </div>
 
         <p><strong>第 2 步 · 创建并运行（3 分钟）</strong></p>
         <div class="codeblock codeblock--plain" data-lang="bash" data-name="在 Modelfile 所在目录执行 · 点右上角复制">
