@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>第9次课 专家与专家团｜AIGC应用与实践</title>
-<meta name="description" content="专家是什么、专家团怎么分工、怎么选、怎么自己造一个专家团，以及哪些环节必须由人把关。">
+<meta name="description" content="专家是什么、专家团怎么分工、怎么选、怎么自己造一个专家，以及哪些环节必须由人把关。">
 <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body data-lesson="9" data-root="../">
@@ -40,7 +40,7 @@
           <li>说出「专家」和「专家团」分别是什么机制，各解决哪类问题；</li>
           <li>独立完成一次「召唤专家 → 派活 → 验收」的完整操作；</li>
           <li>用一句话判断一件事该用普通对话、技能、专家还是专家团；</li>
-          <li>自己创建 1 个专家团，角色拆得清、团长职责定得明；</li>
+          <li>自己创建 1 个专家，配置项写得对、边界说得清；</li>
           <li>指出一个 AI 协作流程里哪几步<strong>必须由人来做</strong>。</li>
         </ol>
       </div>
@@ -49,7 +49,7 @@
         <a href="#s-what"><b>01</b>专家：有岗位的 AI <em>＋实操①</em></a>
         <a href="#s-team"><b>02</b>专家团：会自己分工的队伍 <em>＋实操②</em></a>
         <a href="#s-choose"><b>03</b>怎么选：四种方式</a>
-        <a href="#s-make"><b>04</b>自己造一个专家团 <em>＋实操③</em></a>
+        <a href="#s-make"><b>04</b>自己造一个专家 <em>＋实操③</em></a>
         <a href="#s-duty"><b>05</b>这三关必须人来守</a>
       </div>
       <div class="callout callout--quote">
@@ -127,7 +127,7 @@
             ②「<strong>擅长领域</strong>」——几个标签，看跟你要办的活对不对路；
             ③「<strong>试试这样问我</strong>」——<strong>现成的提问示例</strong>，不知道怎么开口就先抄它一句。<br>
             最下面是「召唤 XX」按钮，点了就把它挂到输入框上方开始干活。<br>
-            <span class="note">这三处也是你验收自己造的专家团里每个成员的标准——见后面的实操 ③。</span><br>
+            <span class="note">这三处也是你验收自己造的专家时的检查项——见后面的实操 ③。</span><br>
             截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
         </figure>
         <figure class="figure">
@@ -285,27 +285,15 @@
     </section>
 
     <section class="sec" id="s-make">
-      <h2>四、自己造一个专家团<span class="sec__tag">动手</span></h2>
+      <h2>四、自己造一个专家<span class="sec__tag">动手</span></h2>
       <p>
-        现成的专家团不满足需求时，可以自己造一个。
-        入口和造单个专家是<strong>同一个地方</strong>——专家页面右上角的「<strong>我的专家</strong>」，
-        点进去会看到两个选项：<strong>「创建专家」</strong>和<strong>「创建专家团」</strong>。
+        现成的专家不满足需求时，可以自己造一个。
+        入口在专家页面右上角的「<strong>我的专家</strong>」→「<strong>创建专家</strong>」，
+        点进去是<strong>一段对话</strong>——把要求讲清楚，它帮你把专家建出来。
       </p>
-      <p>
-        造单个专家，想清楚「它是谁、擅长什么」就够了；
-        <strong>造专家团要多想两件事</strong>：
-      </p>
-      <div class="tablewrap">
-        <table class="data">
-          <thead><tr><th>要多想</th><th>怎么写</th><th>要避免</th></tr></thead>
-          <tbody>
-            <tr><td><strong>这个团要干成什么事</strong></td><td>一句话说清目标，如「把毕业设计说明书从零写到能交」</td><td>「帮我干活」——目标太泛，拆不出角色</td></tr>
-            <tr><td><strong>拆成几个角色</strong></td><td>按「这件事分几个活」拆，一个活对应一个专家</td><td>拆太细（八个角色）或太粗（就一个）</td></tr>
-            <tr><td><strong>团长负责什么</strong></td><td>拆任务、派活、把各人的产出汇总成一份</td><td>忘了写团长——没人汇总就变成各说各的</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>每一个角色具体怎么写，跟单个专家的配置项是一回事：</p>
+      <p class="note">市面上那些「专家团」，目前只能召唤现成的，自己造不了。
+        想让 AI 按多角色协作，可以在普通对话里用一句话把分工说清楚（下一节的实操会用上这招）。</p>
+      <p>创建时的配置项要写清四件事，前两件最容易被写空：</p>
       <div class="tablewrap">
         <table class="data">
           <thead><tr><th>配置项</th><th>怎么写</th><th>要避免</th></tr></thead>
@@ -323,57 +311,59 @@
         <figcaption><b>自己建的专家都在「我的专家」里</b>　创建完成后回到这里就能找到它，也可以分享给同学。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
       </figure>
 
-      <div class="task">
-        <div class="task__hd">实操 ③·造一个「说明书写作团」，帮你搞定毕业设计说明书 <em>约 15 分钟 · 本课重点</em></div>
-        <p><strong>做完你手上会有</strong>：一个你自己造的专家团 + 它给说明书出的初稿和问题清单。</p>
+            <div class="task">
+        <div class="task__hd">实操 ③·造一个「说明书审查官」，帮你把毕业设计说明书改到合格 <em>约 15 分钟 · 本课重点</em></div>
+        <p><strong>做完你手上会有</strong>：一个你自己造的专家 + 它给你的说明书问题清单。</p>
 
-        <p><strong>第 1 步 · 想清楚这个团要干成什么（2 分钟）</strong></p>
-        <p>这次的目标很具体：<strong>把《毕业实践综合项目设计说明书》写到能交</strong>——
-          结构、内容、格式、引用规范都到位。</p>
+        <p><strong>第 1 步 · 想清楚这个专家要干什么（2 分钟）</strong></p>
+        <p>这次要造的专家很具体：<strong>按学校规范审查《毕业实践综合项目设计说明书》</strong>——
+          看结构全不全、格式对不对、引用规不规范。</p>
         <ol class="steps">
-          <li><b>先拆活：写好一份说明书要分几步</b><span>
-            按这个思路拆：先定结构 → 再写正文 → 有人核技术描述 → 最后查格式和合规。
-            四个活，对应四个角色。</span></li>
-          <li><b>别忘了团长</b><span>谁拆任务、谁把四份产出汇总成一份完整初稿——
-            这是团长的活。<span class="task__warn">漏了团长，就变成四个人各说各的</span>。</span></li>
+          <li><b>它为什么值得做成专家</b><span>
+            <strong>经常用</strong>——这学期要交说明书，以后写方案、写报告也要有人帮着看格式；
+            <strong>要求固定</strong>——结构、标题层级、图表编号、参考文献，学校的规定就那几条，每次判定标准一样。</span></li>
+          <li><b>反过来看，什么不值得造成专家</b><span>「帮我写一篇实训报告」这种一次性的活，
+            直接下指令就行——做成专家也很少再打开。</span></li>
         </ol>
 
-        <p><strong>第 2 步 · 复制创建指令，发给它（3 分钟）</strong></p>
+        <p><strong>第 2 步 · 复制下面这份配置，整段发给它（3 分钟）</strong></p>
         <p>入口：左侧栏「<strong>专家·技能·连接器</strong>」→ 顶部「<strong>专家</strong>」→
-          右上角「<strong>我的专家</strong>」→ 点「<strong>创建专家团</strong>」。
-          <span class="task__warn">和创建单个专家是同一个入口</span>，只是多一个选项。</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="创建指令 · 说明书写作团 · 点右上角复制">
+          右上角「<strong>我的专家</strong>」→「<strong>创建专家</strong>」。
+          <span class="task__warn">只有「创建专家」，没有「创建专家团」</span>——
+          专家团目前只能召唤现成的，自己造不了。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="创建指令 · 说明书审查官 · 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>帮我创建一个专家团，要求如下。
+<pre><code>帮我创建一个专家，配置如下。
 
-【这个团要干成什么】
-把我毕业实践项目的《设计说明书》写到能交——结构、内容、格式、引用规范都到位。
+【显示名称】
+说明书审查官
 
-【团长负责什么】
-拆解任务、分配给下面的成员、最后汇总成一份完整初稿交给我。
-每一步先告诉我你打算怎么分，我确认之后再往下做。
+【人设身份】
+你是一位熟悉高职院校毕业实践文档规范的老教师，长期审阅学生的毕业实践综合项目设计说明书，
+对结构、格式和引用规范要求很严。
 
-【成员与分工】
-1. 结构规划师：按学校《设计说明书撰写规范》列出章节大纲，每一章写清该写什么；
-2. 内容主笔：把项目做了什么、怎么做的写成正文，条理清楚，不写空话；
-3. 技术审核员：核对技术描述是否准确、有没有夸大或前后矛盾，只指出问题，不改写；
-4. 格式与合规检查员：检查标题层级、图表编号、参考文献格式，以及「AI 协作过程」一节是否写全。
+【擅长什么】
+按学校撰写规范审查《毕业实践综合项目设计说明书》：
+检查章节结构是否完整、标题层级是否规范、图表和参考文献格式是否正确、
+「AI 协作过程」一节是否记录完整；指出问题并给出改法。
 
-【必须遵守的规则】
-1. 涉及我个人的信息（单位、日期、成绩、指导老师）一律写【待你补充】，不许编造；
-2. 引用的技术名词、API 名称必须准确，不确定的标【待核实】；
-3. 正文不许写「随着……的发展」这类空话，每段不超过 5 句。
+【不处理什么】
+不替我重写说明书，不做评分，不修改我的文件。
 
-【它什么时候该被使用】
-当我说「写说明书」「改说明书」「审说明书」这类话的时候。</code></pre>
+【工作流程】
+1. 先通读全文，确认结构是否完整（封面 / 目录 / 正文各章 / 小结 / 参考文献）；
+2. 逐项对照规范检查，问题按「位置 → 问题 → 怎么改」输出；
+3. 不确定的地方明确说「不确定」，绝不编造学校规定。
+
+【输出格式】
+先用一张 Markdown 表格列出「位置 / 问题 / 怎么改」，表格后附一句总体结论。</code></pre>
         </div>
 
-        <p><strong>第 3 步 · 建好后，立刻让它处理一份真材料（6 分钟）</strong></p>
+        <p><strong>第 3 步 · 建好后，立刻用它审一份真材料（6 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这段「有问题的说明书片段」复制给它</b><span>
-            这段空话多、没有具体内容、也没写 AI 协作过程——正好看看这个团挑不挑得出来。</span></li>
-          <li><b>再发一句短指令，让它开工</b><span>重点看它<strong>会不会按分工来做</strong>——
-            是先出大纲，还是四个人一拥而上。</span></li>
+            这段空话多、没有具体内容、也没写 AI 协作过程——正好看看这个专家挑不挑得出来。</span></li>
+          <li><b>再发一句短指令，让它开工</b><span>指令很短就行，重点看它<strong>会不会按你定的规矩来</strong>。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="有问题的说明书片段 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -391,35 +381,33 @@
 三、总结
 通过这次实践，我收获满满，为以后的工作打下了坚实的基础。</code></pre>
         </div>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="发给这个团的指令 · 点右上角复制">
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="发给这个专家的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>按你设定的分工，审一遍上面这份说明书片段，然后按大纲给我一份像样的初稿。
-先告诉我你打算怎么分活。</code></pre>
+<pre><code>按你设定的流程，审一遍上面这份说明书片段，把发现的问题列出来。</code></pre>
         </div>
 
         <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
         <ol class="steps">
-          <li><b>能看到「拆解 → 分工 → 汇总」的痕迹</b><span>
-            回复里应该分别出现大纲、正文、技术意见、格式问题，而不是一大段从头写到尾的话。<br>
-            <em>它一个人全干了</em>：说明成员分工没写进配置——回去把「成员与分工」那四条补上，重新建一次团。</span></li>
-          <li><b>它挑出了这段片段的毛病</b><span>至少该指出：全是空话没有具体内容、
+          <li><b>它按你写的格式输出了</b><span>你要求用表格，它就该给表格，而不是一段大白话。<br>
+            <em>格式没照做</em>：回去改专家配置里「输出格式」那一栏，写成「必须用 Markdown 表格输出」。
+            ⚠️ 改的是<strong>专家的说明</strong>，不是重写任务。</span></li>
+          <li><b>它挑出了这份片段的毛病</b><span>至少该指出：全是空话没有具体内容、
             缺 AI 协作过程记录、没有参考文献。<br>
-            <em>一条也没挑出来</em>：在配置里给「技术审核员」加一句，要求它「必须指出具体问题，
-            不许只说写得不错」。</span></li>
-          <li><b>它没编造你的信息</b><span>单位、日期、成绩这些应该都是【待你补充】。<br>
-            <em>它自己填上了</em>：⚠️ 把配置里「一律写【待你补充】，不许编造」那句提到最前面，重新建团。</span></li>
+            <em>一条也没挑出来</em>：在配置里补一句，要求它「必须指出具体问题，不许只说写得不错」。</span></li>
+          <li><b>它没越界、也没编造</b><span>「不处理什么」那栏写了不改写不评分，它就没有插手；
+            你给的信息之外，它也没有自己补上。<br>
+            <em>越界或编了</em>：把越界那条补进「不处理什么」，把「信息不足就标【待补充】」补进规则，重新建一次。</span></li>
         </ol>
-        <p><strong>要交的成果</strong>：你创建的专家团 + 它给的说明书初稿（含问题清单）。</p>
-        <p class="note">造专家团的难点不在写提示词，在<strong>拆角色</strong>：
-          拆太细，团长协调不动；拆太粗，等于没分工。
-          标准是——<strong>每个角色手上有一个明确的、能独立交出去的活</strong>。</p>
+        <p><strong>要交的成果</strong>：你创建的专家 + 它给的说明书问题清单。</p>
+        <p class="note">第 2 步那栏「不处理什么」是新手最容易漏的——
+          只写「擅长什么」的专家，干着干着就会越权。把它写上，才是真的在教它守边界。</p>
         <figure class="figure">
-          <img src="../assets/img/bluebook/bb-ch06-06.webp" alt="创建专家团的对话过程" loading="lazy">
-          <figcaption><b>创建过程就是一段对话</b>　它问、你答，团里有哪些角色、各自负责什么，在对话里一项项定下来，不用你手写文件。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+          <img src="../assets/img/bluebook/bb-ch06-06.webp" alt="创建专家的对话过程" loading="lazy">
+          <figcaption><b>创建过程就是一段对话</b>　它问、你答，配置项在对话里一项项定下来，不用你手写文件。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
         </figure>
         <figure class="figure">
           <img src="../assets/img/bluebook/bb-ch06-04.gif" alt="创建专家" loading="lazy">
-          <figcaption><b>从「我的专家」创建（动图）</b>　「我的专家」里既有「创建专家」也有「创建专家团」，创建过程由内置的专家管理工具引导，你只需要回答它的提问。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
+          <figcaption><b>从「我的专家」创建一位专家（动图）</b>　创建过程由内置的专家管理工具引导，你只需要回答它的提问。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
         </figure>
       </div>
     </section>
