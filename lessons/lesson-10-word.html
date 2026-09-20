@@ -121,9 +121,11 @@
 参与方式：携带 1 本完整旧书，现场交换
 联系人：（还没定）</code></pre>
         </div>
-        <p><strong>第 1 步 · 先自己写一句「草稿」</strong>——不用完整，把「几点在哪干什么」写清楚就行，
-          写在记事本里，等下要和 AI 的对比。</p>
-        <p><strong>第 2 步 · 把下面这段指令发给 WorkBuddy</strong>（复制发送）：</p>
+        <p><strong>第 1 步 · 把素材和指令一起发出去（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>先把上面的活动信息复制下来</b><span>点代码块右上角「复制」。</span></li>
+          <li><b>再把下面这段指令复制过去</b><span>素材在前、指令在后，一起发送。</span></li>
+        </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="任务说明 · 直接复制发送">
           <div class="codeblock__bar"></div>
 <pre><code>请为高职学生写一则校园旧书交换通知。
@@ -131,7 +133,7 @@
 篇幅 200 字以内，语气平实，不要用「进一步」「切实」这类套话。
 资料里没有的信息（比如联系人）写成【待确认】，不要自己编。</code></pre>
         </div>
-        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
+        <p><strong>第 2 步 · 做到这三条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>五件事齐了</b><span>时间、地点、对象、怎么参加、温馨提醒都在。<br>
             <em>缺了哪样</em>：把缺的那项点名补一句，例如「再补上参与方式和温馨提醒」。</span></li>
@@ -263,49 +265,73 @@
           <strong>保留内容</strong>（明确标出哪些章节没动）、<strong>产物</strong>（新旧两份文件名都列出）。<br>
           注意开头那句「<strong>基于 V1 框架稿定点修改，未重排全篇</strong>」——
           这正是给 AI 的约束：只改该改的，别动整体。要它这样干，你得在指令里写明。<br>
-          <span class="note">本课实操③ 是你自己手改，不用写变更记录；但那份<strong>初稿必须留着</strong>——
-            它就是你的「改前」版本。</span><br>
+          <span class="note">本课实操③ 会用到变更记录——你在指令里要求它附一份，就能拿到；
+            同时那份<strong>初稿也要留着</strong>，它就是你的「改前」版本。</span><br>
           截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用。</figcaption>
       </figure>
 
-      <div class="task">
-        <div class="task__hd">实操 ③·把实操①的通知改到能发出去 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：初稿 + 修订稿两个版本，并且能说清哪一版更好、为什么。</p>
-        <p><strong>第 1 步 · 先审校，再润色</strong>（顺序别反）：</p>
+            <div class="task">
+        <div class="task__hd">实操 ③·让 AI 把实操①的通知改到能发出去 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：初稿 + 修订稿两个文件，外加一份变更记录——
+          它改了哪里、留了什么，你能一眼看见。</p>
+
+        <p><strong>第 1 步 · 发出修改指令（3 分钟）</strong></p>
         <ol class="steps">
-          <li><b>核事实</b><span>拿实操①的通知，对着那份活动信息表逐条核：
-            <strong>日期、时间、地点有没有错一个字</strong>。对不上的地方圈出来。</span></li>
-          <li><b>补【待确认】</b><span>联系人那处还是【待确认】——这是对的，<strong>不要去编一个</strong>。</span></li>
+          <li><b>回到 <code>wb-试验</code> 这个工作目录</b><span>
+            实操① 生成的通知初稿就在里面，别把它挪走。</span></li>
+          <li><b>把下面这段指令发出去</b><span>注意最后那几行要求它「附变更记录」——
+            <span class="task__warn">这是你事后能验收的前提</span>。</span></li>
         </ol>
-        <p><strong>第 2 步 · 去 AI 味，照清单圈</strong>：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="空话词清单（见到就圈）">
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="修改指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请把工作目录里的通知初稿，改到「能直接发班级群」的程度。要求：
+
+1. 删掉所有空话套话（比如"进一步""切实""内容丰富""营造氛围"这类），一个字不留；
+2. 原文没写的时间、地点、联系人不要自己编，继续写成【待确认】；
+3. 把活动信息表里的真实内容补进去（时间、地点、怎么参加）；
+4. 语气改成发给同学的口语，句子短一点。
+
+改完请附一份变更记录，写清三块：
+- 修改内容：逐条列出你改了哪里；
+- 保留内容：哪些信息你一个字没动；
+- 产物：新文件叫什么名字。
+
+不要覆盖原文件，另存一份。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 盯着它改，别急着收结果（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>看它的执行过程</b><span>它是在逐条对照要求改，还是通篇重写了一遍——
+            后者容易把你原来的信息也一起改掉。</span></li>
+          <li><b>确认它真的另存了新文件</b><span>去工作目录看：初稿还在不在、新文件叫什么。<br>
+            <em>初稿被覆盖了</em>：⚠️ 说明「不要覆盖原文件」那句没生效——
+            把它提到指令最前面，再发一次。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>变更记录拿到了</b><span>能看清它改了哪几条、留了哪些。<br>
+            <em>它没给</em>：直接说「把这次修改的变更记录补一份给我」。</span></li>
+          <li><b>空话词一个不剩</b><span>拿下面这份清单，在修订稿里搜一遍。<br>
+            <em>还有残留</em>：点出具体是哪几个词，让它<strong>只改这几个</strong>，别整篇重写。</span></li>
+          <li><b>五件事都还在</b><span>时间、地点、对象、参与方式、温馨提醒——
+            改稿最容易把这些真实信息一起删掉。<br>
+            <em>删过头了</em>：对照活动信息表，让它把缺的那几项补回来。</span></li>
+          <li><b>事实与素材核对无误</b><span>日期、时间、地点逐字对一遍。<br>
+            <em>对不上</em>：以活动信息表为准，让它改回正确的值。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="空话词清单 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>进一步　切实　有效　积极　深入贯彻落实　相关精神　营造氛围
 紧紧围绕　形式多样　内容丰富　特色鲜明　潜移默化
 携手共进　共同感受　汲取力量　踊跃参与</code></pre>
         </div>
-        <ol class="steps" start="3">
-          <li><b>删空话</b><span>圈出来的全删掉，一个字不留。</span></li>
-          <li><b>补具体</b><span>空出的位置用活动信息表里的真实内容填上（时间、地点、怎么参加）。</span></li>
-          <li><b>换语气</b><span>现在读一遍——发给同学的通知，短句比长句好用。</span></li>
-        </ol>
-        <p><strong>第 3 步 · 和你的草稿比一比</strong>：翻出你第 1 步写的那句草稿，
-          看两版哪个更清楚。<strong>如果 AI 那版还不如你手写的一句，那就用你的。</strong></p>
-        <p><strong>要交的成果</strong>：<strong>两个版本</strong>——初稿（不要改）和修订稿，文件名分开写清。</p>
-        <p><strong>做到这四条，就算做完了</strong></p>
-        <ol class="steps">
-          <li><b>空话词一个不剩</b><span>拿上面那份清单再扫一遍修订稿。<br>
-            <em>还有残留</em>：手工补删。</span></li>
-          <li><b>五件事都还在</b><span>时间、地点、对象、参与方式、温馨提醒——
-            删空话时很容易把这些真实信息一起删掉。<br>
-            <em>删过头了</em>：对照活动信息表，把缺的那几项补回去。</span></li>
-          <li><b>事实与素材核对无误</b><span>日期、时间、地点逐字对一遍。<br>
-            <em>对不上</em>：以活动信息表为准，改回正确的值。</span></li>
-          <li><b>初稿还在、没被覆盖</b><span>两个文件分开存。<br>
-            <em>被覆盖了</em>：只能重跑一次实操①——所以第 1 步才强调「存好别改」。</span></li>
-        </ol>
+        <p><strong>要交的成果</strong>：初稿 + 修订稿两份文件 + 一份变更记录。</p>
+        <p class="note">这一节的三个动作——<strong>审校、润色、去 AI 味</strong>，都可以交给 AI 做。
+          但<strong>验收必须你自己来</strong>：它删干净没有、有没有删过头、有没有编造，
+          这三条 AI 自己判不了。</p>
       </div>
-    </section>
+</section>
 
     <section class="sec" id="s-batch">
       <h2>四、批量生成：模板 + 变量<span class="sec__tag">进阶</span></h2>
