@@ -28,7 +28,7 @@
       <div class="callout callout--warn">
         <span class="callout__t">本课上法：边讲边做</span>
         页面里<strong>橙色边框的方块</strong>都是要你在 WorkBuddy 里<strong>实际完成任务</strong>的环节，
-        一共 4 个、合计约 40 分钟。<strong>看到就停下来做。</strong>
+        一共 3 个、合计约 40 分钟。<strong>看到就停下来做。</strong>
       </div>
     </section>
 
@@ -50,7 +50,7 @@
         <a href="#s-team"><b>02</b>专家团：会自己分工的队伍 <em>＋实操②</em></a>
         <a href="#s-choose"><b>03</b>怎么选：四种方式</a>
         <a href="#s-make"><b>04</b>自己造一个专家 <em>＋实操③</em></a>
-        <a href="#s-duty"><b>05</b>这三关必须人来守 <em>＋实操④</em></a>
+        <a href="#s-duty"><b>05</b>这三关必须人来守</a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
@@ -183,45 +183,113 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ②·用专家团做一份活动宣传材料 <em>约 12 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一套招新材料——文案 + 报名表 + 发布前的检查意见。</p>
-        <p><strong>第 1 步 · 召唤专家团</strong>：左侧栏点「<strong>专家·技能·连接器</strong>」→
-          顶部切到「<strong>专家团</strong>」，找<strong>内容创作</strong>类的团——
-          <span class="task__warn">列表里第一条符合的就用</span>，点<strong>召唤</strong>。</p>
+        <div class="task__hd">实操 ②·用专家团规划你的毕业实践项目 <em>约 15 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份「选哪个课题 + 为什么 + 分几步做」的规划，
+          由专家团产出，并且你逐条核过。</p>
+
+        <p><strong>第 1 步 · 把命题表放进工作空间（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在桌面新建一个文件夹，命名 <code>毕设</code></b><span>这就是你这个项目的工作目录。</span></li>
+          <li><b>把老师发的《毕业实践综合项目命题表》放进去</b><span>还没拿到就先跳过，用下面折叠里那份内容顶替。</span></li>
+          <li><b>回到 WorkBuddy 点「新建任务」，工作目录选 <code>桌面/毕设</code></b><span>
+            看对话区左下角显示的确实是这个文件夹——<span class="task__warn">选错目录，它就找不到命题表</span>。</span></li>
+        </ol>
+        <div class="fold">
+          <button class="fold__hd" type="button">手上还没有命题表？点开复制这份内容顶替</button>
+          <div class="fold__bd">
+            <div class="codeblock codeblock--plain" data-lang="text" data-name="命题表内容（示例题）· 点右上角复制">
+              <div class="codeblock__bar"></div>
+<pre><code>2026届人工智能技术应用专业毕业实践综合项目命题表
+学院：未来技术应用学院　教研室：人工智能
+
+序号：1
+课题名称：AI 智能问答助手 Web 应用
+
+课题目的与意义：
+掌握 Vibe Coding（AI 辅助编程）的基本流程——用自然语言描述需求、借助 AI 生成代码、
+测试后迭代修改；掌握提示词工程的基本技巧；熟悉国内大模型 API（DeepSeek、豆包、
+智谱等）的申请与调用方法。
+
+课题任务：
+调用国内大模型 API，开发一个 AI 智能问答助手网页应用，支持多轮对话、打字机式流式回复、
+对话历史保存，并可切换「老师」「朋友」「领域专家」等对话角色。
+
+课题要求：
+用 AI 编程工具（推荐 Trae）以 Vibe Coding 方式开发；应用为浏览器直接打开即可运行的
+网页（HTML/CSS/JavaScript），无需部署服务器与数据库；API 密钥通过配置文件管理，
+不得硬编码在代码中；设计说明书须完整记录 AI 协作过程（不少于 5 次有效的提示词示例）；
+系统功能完整、可现场运行演示。
+
+参考资料：Trae 官网、提示词工程指南（中文版）、DeepSeek 开放平台、MDN Web 开发文档。
+
+完成形式：项目源代码一份；毕业实践综合项目设计说明书电子稿和打印版各一份。
+指导老师：（此处填你实际的指导老师）</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>第 2 步 · 召唤一个专家团（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>左侧栏点「<strong>专家·技能·连接器</strong>」</b><span>顶部切到「<strong>专家团</strong>」。</span></li>
+          <li><b>找做项目规划 / 方案设计这一类的团</b><span>
+            <span class="task__warn">列表里第一条符合的就用</span>，点「召唤」。</span></li>
+        </ol>
         <p>召唤成功之后，这个团会<strong>挂在输入框上方</strong>——和引用技能用的那个 <kbd>/</kbd> 是同一处：</p>
         <figure class="figure">
-          <img src="../assets/img/bluebook/bb-ch06-09.webp" alt="输入框上方挂着「内容创作专家团」" loading="lazy">
-          <figcaption><b>召唤之后，团名就挂在输入框上方</b>　红框那处「内容创作专家团」就是刚召唤的团，
+          <img src="../assets/img/bluebook/bb-ch06-09.webp" alt="输入框上方挂着专家团" loading="lazy">
+          <figcaption><b>召唤之后，团名就挂在输入框上方</b>　红框那处就是刚召唤的团，
             直接在下面输入框写需求发出去即可。<br>
             位置和技能引用是同一处——<strong>技能用 <kbd>/</kbd> 调，专家团点「专家」挂上来</strong>，
             记不住就记「都在输入框上方那一排」。<br>
             截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
         </figure>
-        <p><strong>第 2 步 · 派活</strong>（复制发送）：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="直接复制发送">
-          <div class="codeblock__bar"></div>
-<pre><code>请为校园摄影社做一套招新宣传材料，包含三部分：
-1. 一段 120 字以内的招新文案，面向大一新生，语气真诚
-2. 一张报名信息表（含姓名、专业、联系方式三列，用模拟数据填 3 行）
-3. 发布前的合规检查意见
 
-注意：活动时间、地点等我还没定，一律写成【待确认】，不要自己编。</code></pre>
-        </div>
-        <p><strong>第 3 步 · 看它怎么分工</strong>：注意观察它是不是<strong>把任务拆成了几块</strong>分别处理，
-          而不是一口气写一段。</p>
-        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <p><strong>第 3 步 · 派活，让它给你出一份规划（5 分钟）</strong></p>
         <ol class="steps">
-          <li><b>三样东西都齐了</b><span>文案、报名表、检查意见一个不少。<br>
-            <em>缺了某一样</em>：把缺的那部分点名再说一次，例如「再补一份发布前的合规检查意见」。</span></li>
-          <li><b>没出现编造的时间地点</b><span>活动时间、地点应该全是【待确认】。<br>
-            <em>它给了具体日期</em>：⚠️ 说明指令里那句「一律写成【待确认】，不要自己编」没生效——
-            把这句单独拎出来，放在指令最后再发一次。</span></li>
-          <li><b>表格里是模拟数据</b><span>姓名、联系方式不能是真人信息。<br>
-            <em>出现了真实姓名电话</em>：立刻删掉换成模拟数据——这一步只能由你自己把关，AI 判断不了。</span></li>
+          <li><b>把下面这段复制过去发送</b><span>命题表已经放在工作目录里了，它读得到；
+            如果用折叠里那份顶替，就连同它一起贴进去。</span></li>
+          <li><b>看它怎么分工</b><span>注意观察它是不是<strong>把任务拆成了几块</strong>分别处理
+            （比如一位成员排课题、一位拆阶段），而不是一口气写一段。</span></li>
         </ol>
-        <p><strong>要交的成果</strong>：这套宣传材料。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="发给专家团的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>这是我毕业实践项目的命题表，文件已放在工作目录里。请帮我做四件事：
+
+1. 把表里各个课题逐个过一遍，按「任务量 / 技术难度 / 一个人能不能独立做完」排个序，用表格列出来；
+2. 从中推荐 1 个最适合高职学生独立完成的，说明推荐理由——理由要能对应回表里的原文；
+3. 把这个课题拆成 3～5 个阶段，每个阶段写清「做什么 / 产出什么 / 大概几天」；
+4. 列出我开工前要准备好的东西（工具、账号、素材）。
+
+约束：
+- 只依据命题表里的信息。表里没有的（比如我的兴趣、我的成绩）一律写【需你补充】，不要编造；
+- 课题名称、技术要求必须逐字引用表里的原文，不许改写；
+- 最后选哪个由我定，你不要替我拍板。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了（这一步别省）</strong></p>
+        <ol class="steps">
+          <li><b>课题名、技术要求跟命题表逐字对得上</b><span>
+            拿文件原文核一遍课题名称、技术栈、完成形式。<br>
+            <em>对不上</em>：⚠️ 它编了——补一句「必须逐字引用表里原文，不许改写」，重新生成。</span></li>
+          <li><b>推荐理由能指到表里的具体句子</b><span>像「这个课题要求纯前端 + 调 API、不用服务器，
+            正好对上表里那句『无需部署服务器与数据库』」——能指到句子才算数。<br>
+            <em>只有「这个比较简单」这种话</em>：让它把理由落到表里的原文上，重说一遍。</span></li>
+          <li><b>阶段计划能落到「今天就能动手」</b><span>第一阶段的第一个动作要具体
+            （比如「注册 DeepSeek 账号、申请 API Key」）。<br>
+            <em>还是「先做需求分析」这种空话</em>：让它把第一阶段再拆细一层。</span></li>
+        </ol>
+
+        <p><strong>最后这三关，只能你自己守</strong></p>
+        <ol class="steps">
+          <li><b>事实核验</b><span>课题名称、技术栈、完成形式——拿命题表原文逐字对，<strong>改一个字都算它错</strong>。</span></li>
+          <li><b>隐私检查</b><span>工作目录里别放同学的信息、自己的成绩单——
+            这些不该喂给 AI，放进工作目录之前先拿出来。</span></li>
+          <li><b>拍板</b><span>最终选哪个课题，必须你自己定。专家团给的是建议，签字的是你。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这份课题规划（排序表 + 推荐结论 + 阶段计划）。</p>
         <p class="note">它跑起来会比单专家慢一些，这是正常的——它在并行做几件事。
-          所以<strong>简单任务别用专家团</strong>，杀鸡不用牛刀。</p>
+          所以<strong>简单任务别用专家团</strong>（杀鸡不用牛刀）；
+          但「帮我规划毕设」这种要拆解、要汇总的活，正是它该上的时候。</p>
       </div>
     </section>
 
@@ -412,28 +480,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <div class="task">
-        <div class="task__hd">实操 ④·回去审一遍你自己交的成果 <em>约 6 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：至少一处被你拦下来的真实问题——AI 没发现、你发现了。</p>
-        <p>把你前面三个实操的成果各拿出来过一遍——<strong>这次不是看它做得好不好，是看你能不能把它拦住</strong>。</p>
-        <ol class="steps">
-          <li><b>事实核验</b><span>把实习协议那份审阅意见里引用的<strong>条款原文</strong>，
-            逐字跟素材原文对一遍。<strong>改一个字都算它错</strong>——这是最容易失守的一关。<br>
-            <em>怎么查</em>：选中它引用的句子，再选中素材里的原句，两处并排看，别凭印象。</span></li>
-          <li><b>隐私检查</b><span>招新材料里那张报名表，三行数据里的姓名、联系方式——
-            是模拟的，还是它从别处搬来的真实信息？<br>
-            <em>怎么查</em>：手机号看是不是 13800000000 这类明显测试号；
-            姓名看跟班里同学对不对得上。</span></li>
-          <li><b>对外确认</b><span>这三份成果，如果直接发出去会有什么问题？各找一处。<br>
-            <em>怎么查</em>：把自己想象成收到这份东西的人——看到「另行通知」「待确认」会怎么想？</span></li>
-        </ol>
-        <p><strong>做到什么算对</strong>：三条检查里至少有一条你真的查出了问题——
-          说清它在<strong>哪一份成果的哪一处</strong>。</p>
-        <p class="note">一路全是「没问题」的，多半是没认真查。
-          回到报名表那三行数据，把姓名、联系方式逐个对一遍，再拿素材原文跟它引用的条款逐字对一遍——
-          通常问题就在这两处。</p>
       </div>
 
       <div class="callout callout--quote">
