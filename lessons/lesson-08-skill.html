@@ -92,6 +92,26 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
 </code></pre>
       </div>
 
+      <p>到这里你可能会想：那它跟平时写提示词有什么区别？区别就在下面这张表里：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>Prompt（提示词）</th><th>Skill（技能）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>管什么</strong></td><td>当前这一件事</td><td><strong>这一类事该怎么做</strong></td></tr>
+            <tr><td><strong>能用几次</strong></td><td>说一次，用完就没了</td><td>装一次，反复用</td></tr>
+            <tr><td><strong>放在哪里</strong></td><td>对话框里</td><td>一个文件夹（含 <code>SKILL.md</code>）</td></tr>
+            <tr><td><strong>能带什么</strong></td><td>只能带文字</td><td>能带脚本、模板、参考资料</td></tr>
+            <tr><td><strong>谁来触发</strong></td><td>每次都得你自己说</td><td>它按 <code>description</code> 自己判断，或你打 <kbd>/</kbd> 点名</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">一句话分清它俩</span>
+        <strong>Prompt 是「这次要做什么」，Skill 是「这类事该怎么做」。</strong><br>
+        你每次都在重复交代的那些要求（「别写太 AI」「按我们学校格式来」），
+        就该从提示词里搬出来，做成技能——以后不用再重复说。
+      </div>
+
     </section>
 
     <section class="sec" id="s-how">
@@ -127,6 +147,17 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         它是<strong>唯一「永远在场」</strong>的信息——AI 判断要不要用这个技能，能看到的就只有这一行。
         把你平时会说的词写进去（比如「生图」「转格式」「查文献」），它才认得出你。
       </div>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch05-08.webp" alt="技能执行轨迹：加载技能、读取禁用词库、再动手改" loading="lazy">
+        <figcaption><b>第三层的真凭实据：执行到那一步，它才去读技能自带的资料</b>　
+          这是「文章去 AI 味」技能跑起来的样子。看它的执行轨迹——
+          先加载技能本身，跑到中途才出现「<strong>已读取 banned-words.md</strong>」（这个技能自带的禁用词库），
+          然后才动手改。这正是渐进式披露的第三层：<strong>用到哪一层，才翻哪一层</strong>。<br>
+          下面它汇报的抓取点也值得看：「不是 A，而是 B」句式、装饰性双引号、教科书式开头——
+          都是<strong>能一条条核对的</strong>，不是「我感觉有点 AI 味」。<br>
+          截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+      </figure>
+
       <p class="note">
         Skill 由 Anthropic 于 <strong>2025 年 10 月 16 日</strong>推出，<strong>2025 年 12 月 18 日</strong>发布为开放标准；
         WorkBuddy 的技能沿用同一套文件夹规范。本站核对日期 2026-09。
@@ -138,8 +169,12 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       <p>左侧边栏点「<strong>技能</strong>」进入技能页，这里有四种方式拿到技能：</p>
 
       <figure class="figure">
-        <img src="../assets/img/bluebook/bb-ch05-01.webp" alt="技能页入口" loading="lazy">
-        <figcaption><b>技能页：技能市场 + 已安装</b>　左侧边栏点「技能」进入。市场里可以搜索、按需安装；装好的在「已安装」里。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+        <img src="../assets/img/bluebook/bb-ch05-10.webp" alt="技能页三个入口：左侧栏、顶部技能标签、右上角我安装的" loading="lazy">
+        <figcaption><b>三条路都从这里进</b>　图中三处红箭头就是你要记的三个位置：<br>
+          ① 左侧边栏「<strong>专家·技能·连接器</strong>」——总入口；<br>
+          ② 顶部的「<strong>技能</strong>」标签——专家、技能、连接器三选一，点它；<br>
+          ③ 右上角「<strong>我安装的</strong>」——你已经装过的技能都在这儿，旁边就是「添加技能」。<br>
+          截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
 
       <div class="tablewrap">
@@ -159,10 +194,36 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <figcaption><b>「添加技能」在技能页右上角</b>　上传、查找、创建——三个入口都收在这个按钮里。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
 
+      <p>点开「添加技能」里的「<strong>上传技能</strong>」，会看到下面这个弹窗——注意它对文件的要求写得很明确：</p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch05-04.webp" alt="导入技能弹窗：拖拽文件或点击上传，文件需包含 SKILL.md" loading="lazy">
+        <figcaption><b>「导入技能」弹窗，重点在下面那两行文件要求</b>　文件可以用拖的、也可以点一下选。<br>
+          但它要求：压缩包（zip）里<strong>必须包含 <code>SKILL.md</code></strong>；
+          如果只给一个 <code>.md</code> 文件，里面必须有 <strong>YAML 格式</strong>的名称和描述——
+          就是前面那个用 <code>---</code> 包起来的头部。<br>
+          所以别人发给你一个技能包，<strong>先解开看一眼有没有 <code>SKILL.md</code></strong>，
+          没有就装不上，别急着问「为什么装了没反应」。<br>
+          截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+      </figure>
+
+      <p>除了平台自己的市场，社区里还有别的技能市场可以逛，例如下面这个：</p>
+      <figure class="figure">
+        <img src="../assets/img/bluebook/bb-ch05-02.webp" alt="SkillHub 技能市场列表，其中包含「文章去AI味工具」" loading="lazy">
+        <figcaption><b>社区技能市场，可以按场景分类逛</b>　左栏能按「场景分类」筛——办公效率、内容创作、教育学习……
+          列表里每个技能都标了分类、收藏数和下载量。<br>
+          留意列表第 5 行：<strong>「文章去 AI 味工具」</strong>——就是本课动手做 ② 要用的那个技能。<br>
+          ⚠️ 这是<strong>第三方社区市场，不是 WorkBuddy 自带的</strong>。从这类站点拿技能，
+          装之前更要看清来源和权限，下面那条提醒请务必读一遍。<br>
+          截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；蓝皮书为社区非官方读物，产品口径以官方文档为准。</figcaption>
+      </figure>
+
       <div class="callout callout--danger">
         <span class="callout__t">装之前看一眼来源</span>
-        <strong>优先用官方推荐的技能。</strong>第三方技能要看清它的权限申请和来源——
-        技能能读写你的文件、能把内容发到外部，出事时账记在你头上。拿不准的，先别装。
+        <strong>优先用官方推荐的技能。</strong>从第三方市场、别人分享的技能包拿到的技能，
+        更要看清它的<strong>权限申请</strong>和<strong>来源</strong>——
+        技能能读写你的文件、能把内容发到外部，出事时账记在你头上。<br>
+        装之前问三句：<strong>谁发布的？它要什么权限？描述里说的跟它实际干的事对得上吗？</strong>
+        拿不准的，先别装。
       </div>
 
       <div class="task">
@@ -389,6 +450,16 @@ read_excel() 那个函数
           <li><b>发送，然后看它怎么改的</b><span>注意它是<strong>先读技能里的规则</strong>，再照着规则逐条执行，
             不是凭感觉润色。</span></li>
         </ol>
+        <figure class="figure">
+          <img src="../assets/img/bluebook/bb-ch05-06.webp" alt="输入框上方挂着技能引用与文件引用的标签" loading="lazy">
+          <figcaption><b>敲 <kbd>/</kbd> 选好技能之后，长这样</b>　看输入框上方那两个标签：
+            <code>/文章去AI味工具</code> 是<strong>技能引用</strong>，<code>#…</code> 是<strong>文件引用</strong>。
+            输入框里的提示文字也写着「<strong>@ 引用对话文件，/ 调用技能与指令</strong>」——
+            记住这两个符号就够了。<br>
+            下方「深度思考 / humanizer / 深度思考」是它的执行过程，
+            <code>humanizer</code> 就是「去 AI 味」这个技能的内部名。<br>
+            截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+        </figure>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 WorkBuddy 的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>用「文章去 AI 味」技能帮我改下面这篇通知。要求：
