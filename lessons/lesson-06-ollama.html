@@ -190,6 +190,35 @@
           <li>确实装不上 → 和邻座<strong>共用一台</strong>，作业里注明「共用设备」即可。</li>
         </ul>
       </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·装好 Ollama，并把三步自查跑出来 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一张终端截图——三条命令都跑过，结果你都看得懂。</p>
+
+        <p><strong>第 1 步 · 装好，然后新开一个 PowerShell（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>到 Ollama 官网下对应系统的安装包，双击装</b><span>Windows 选 <code>.exe</code>；macOS 按芯片选版本。装完不用重启电脑。</span></li>
+          <li><b>关掉所有终端窗口，重新打开一个</b><span>Windows 键 → 输入 <code>powershell</code> → 回车。
+            <span class="task__warn">必须新开</span>，否则环境变量还没生效，命令一定找不到。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 把上面那三条命令逐行跑一遍（3 分钟）</strong></p>
+        <p>一条一条执行，别一次全贴进去。跑完<strong>截一张图</strong>，把三条命令和它们的结果都截进去。</p>
+
+        <p><strong>第 3 步 · 对着结果确认三件事（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>第 ① 条给了版本号</b><span>形如 <code>ollama version is 0.x.x</code>。<br>
+            <em>提示「不是内部或外部命令」</em>：关掉终端重新开一次；还不行就重装一遍，装的时候勾上「添加到 PATH」。</span></li>
+          <li><b>第 ② 条能列出模型列表</b><span>刚装完是空的，正常——空列表本身就说明命令跑通了。<br>
+            <em>报错</em>：多半是后台服务没起来，重新开一个终端再试。</span></li>
+          <li><b>第 ③ 条告诉了你接下来先干什么</b><span>有输出、且路径不在 C 盘 → 直接进下一节；<strong>没有输出 → 先去改模型目录</strong>（见「坑位①」），
+            否则模型会把 C 盘塞满。<br>
+            顺手记下你的内存大小：「此电脑」右键 → 属性，或任务管理器 → 性能页。后面选模型档位要用。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这三条命令的输出截图。</p>
+        <p class="note">装不上别硬耗——<strong>和邻座共用一台</strong>，作业里注明「共用设备」即可。
+          一节课 80 分钟，不值得全花在装环境上。</p>
+      </div>
     </section>
 
     <section class="sec" id="s-cmd">
@@ -229,6 +258,47 @@ ollama run qwen3:1.7b
         <span class="callout__t">命令不用背</span>
         Ollama 支持 Tab 风格的习惯：记不住模型名，就用 <code>ollama list</code> 把名字抄下来；
         记不住有哪些命令，直接敲 <code>ollama</code> 回车，它会列出所有子命令。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·把「一条龙」跑通，本地多一个模型 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：本地多了一个能对话的模型，而且你亲眼见过它被列出来。</p>
+
+        <p><strong>第 1 步 · 按内存定模型（<span class="task__warn">规则定死，别自己换</span>）</strong></p>
+        <ol class="steps">
+          <li><b>内存 ≥ 8 GB → 用 <code>qwen3:1.7b</code>；内存 &lt; 8 GB → 用 <code>qwen3:0.6b</code></b><span>
+            0.6b 约 500 MB、1.7b 约 1.2 GB。档位选大了会卡到没法上课，先按这条规则来。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 按顺序跑完这三条（4 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="bash" data-name="按顺序执行 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code># ① 拉模型（把 qwen3:1.7b 换成你该用的那一档）
+ollama pull qwen3:1.7b
+
+# ② 确认下载成功
+ollama list
+
+# ③ 进入对话（进去直接打字就能聊，输入 /bye 退出）
+ollama run qwen3:1.7b</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 进去之后做两件事（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>问它一个你专业上的问题</b><span>比如「用一个生活例子解释什么是过拟合」，看它答成什么样。</span></li>
+          <li><b>输入 <code>/bye</code> 退出</b><span>这是退出对话的方式——直接关窗口有时会把进程留在后台。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>ollama list</code> 里能看到刚拉的模型</b><span>看不到说明第 ② 条的 pull 没跑完——
+            重新跑一次，注意进度条走到 100% 才算完。</span></li>
+          <li><b>跟它说过至少一轮话</b><span>回车后迟迟没反应，是模型还在加载，等十来秒正常；
+            超过一分钟还没动静，Ctrl+C 退出重进一次。</span></li>
+          <li><b>断网之后它还能答</b><span><strong>这是本地模型最核心的价值</strong>——
+            把 Wi-Fi 关掉再问一句，它照样回你。做不到就不是真本地。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>ollama list</code> 的输出 + 一段对话截图。</p>
       </div>
     </section>
 
@@ -590,6 +660,39 @@ if __name__ == "__main__":
           <li><strong>模型名拼对了吗</strong>——用 <code>ollama list</code> 复制粘贴，别手打。</li>
         </ul>
       </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·把本地模型接进你的 Python 脚本 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个能跑的 <code>ask_local.py</code>——用它在终端里跟本地模型一问一答。</p>
+
+        <p><strong>第 1 步 · 把脚本存下来（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在你的 <code>wb-试验</code> 文件夹里新建 <code>ask_local.py</code></b><span>
+            VS Code 或记事本都行，保存时编码选 <strong>UTF-8</strong>，否则中文会乱码。</span></li>
+          <li><b>把上面那份「完整可运行脚本」整段复制进去</b><span>点代码块右上角「复制」，别手抄——缩进错一处就跑不起来。</span></li>
+          <li><b>确认脚本里的模型名跟你本地的一致</b><span><span class="task__warn">这行最容易出错</span>——
+            先用 <code>ollama list</code> 把名字复制出来，再替换脚本里的 <code>MODEL = "..."</code>。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 装依赖、跑起来（5 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="bash" data-name="在脚本所在目录执行 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>pip install requests
+
+python ask_local.py</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>终端里打印出了模型的回答</b><span>能看到中文回答，就说明接口通了。<br>
+            <em>报 ConnectionError</em>：服务没起来或端口不对，对着上面那三条排查。</span></li>
+          <li><b>确认回答真来自本地</b><span><strong>把 Wi-Fi 关掉再跑一次</strong>，照样出结果——这才说明走的是本地模型。</span></li>
+          <li><b>能说出两种接口的区别</b><span>脚本里 <code>ask()</code> 用 <code>/api/generate</code>（Ollama 原生），
+            <code>chat()</code> 用 <code>/v1/chat/completions</code>（OpenAI 兼容）。<br>
+            <em>为什么要后者</em>：把地址一换就能接云端模型，代码几乎不用改。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>ask_local.py</code> 文件 + 运行输出的截图。</p>
+      </div>
     </section>
 
     <section class="sec" id="s-speed">
@@ -686,7 +789,7 @@ ollama rm mybot
       </div>
 
       <div class="fold">
-        <button class="fold__hd" type="button">四个可直接抄的 Modelfile 模板（点开复制）</button>
+        <button class="fold__hd" type="button">点开复制：课程答疑助手的 Modelfile</button>
         <div class="fold__bd">
           <div class="codeblock" data-lang="modelfile" data-name="① 课程答疑助手">
             <div class="codeblock__bar"></div>
@@ -699,45 +802,46 @@ SYSTEM """
 """
 </code></pre>
           </div>
-          <div class="codeblock" data-lang="modelfile" data-name="② Python 代码审查助手">
-            <div class="codeblock__bar"></div>
-<pre><code>FROM qwen3:1.7b
-
-SYSTEM """
-你是一个 Python 代码审查助手。
-只指出代码里的问题并给出修改建议，不要重写整段代码。
-每次最多指出 3 个问题，按严重程度排序。
-"""
-</code></pre>
-          </div>
-          <div class="codeblock" data-lang="modelfile" data-name="③ 英语口语陪练">
-            <div class="codeblock__bar"></div>
-<pre><code>FROM qwen3:1.7b
-
-SYSTEM """
-你是我的英语口语陪练。
-只用简单句和我对话；发现语法错误就立刻纠正，并用中文解释原因。
-每次对话都要主动抛出一个新话题让我接。
-"""
-</code></pre>
-          </div>
-          <div class="codeblock" data-lang="modelfile" data-name="④ 情绪树洞">
-            <div class="codeblock__bar"></div>
-<pre><code>FROM qwen3:1.7b
-
-SYSTEM """
-你是一个倾听者，只做共情和陪伴。
-不做任何诊断、不开药方、不给医疗建议。
-如果用户出现自我伤害的念头，请建议他联系学校心理咨询中心或专业机构。
-"""
-</code></pre>
-          </div>
           <div class="callout callout--tip callout--last">
             <span class="callout__t">规律</span>
             <strong>人设写得越具体，模型越好用。</strong>
             只写「你是个助手」等于什么都没说；把边界（只答什么、答不上来怎么办、一次说几句）写清楚，它就真的守规矩。
           </div>
         </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·做一个「课程答疑助手」，给它定死规矩 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个你自己命名的本地模型——问课程相关的问题它照规矩答，问不相关的它会拒绝。</p>
+
+        <p><strong>第 1 步 · 写 Modelfile（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在 <code>wb-试验</code> 里新建一个文件，名字就叫 <code>Modelfile</code></b><span>
+            <span class="task__warn">没有后缀名</span>——是 <code>Modelfile</code>，不是 <code>Modelfile.txt</code>。
+            用记事本保存时，文件名写 <code>"Modelfile"</code>（<strong>带引号</strong>）它就不会自动加 .txt。</span></li>
+          <li><b>把上面那份模板整段复制进去</b><span>点代码块右上角「复制」，别手打——缩进和引号错了都跑不起来。</span></li>
+          <li><b>把 <code>FROM</code> 那行的模型名换成你本地实际有的</b><span>先 <code>ollama list</code> 把名字复制出来再改。
+            <span class="task__warn">模型名不对，create 一定失败</span>。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 创建并运行（3 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="bash" data-name="在 Modelfile 所在目录执行 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>ollama create coursebot -f Modelfile
+
+ollama run coursebot</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 故意试它一下（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>先问一个课程相关的问题</b><span>比如「本地模型有什么好处」——看它答得是不是简短、在不在题上。</span></li>
+          <li><b>再问一个明显不相关的问题</b><span>比如「今天中午吃什么」。<strong>它应该拒绝</strong>，因为 SYSTEM 里写着「只回答与本课程相关的问题」。<br>
+            <em>它照样热情回答了</em>：说明规矩没写住——回去把 SYSTEM 里那句改得更硬，重新 create 一次。</span></li>
+          <li><b>输入 <code>/bye</code> 退出，再 <code>ollama list</code></b><span>能看到 <code>coursebot</code> ——你自己造的模型，已经在本地了。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>Modelfile</code> 文件 + 「问不相关问题被拒」的截图。</p>
+        <p class="note">第 2 条是重头戏。<strong>模型守不守规矩，取决于你写的规矩够不够具体</strong>——
+          这正是 Modelfile 这一节真正要教的东西。</p>
       </div>
     </section>
 
