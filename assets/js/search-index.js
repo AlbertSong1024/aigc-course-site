@@ -80,4 +80,59 @@ window.SITE_SECTION_INDEX = [
   { lesson: 10, id: "s-recap",   title: "本课要点回顾",         hint: "小结 下一步 Excel 数据处理" },
   { lesson: 10, id: "s-hw",      title: "课后作业",             hint: "客观题 单选 多选 判断 一键复制 六题 含答案解析" },
 
+  /* ── 第 11 次课 · 办公实战 Excel 数据处理（上）（实操课） ── */
+  { lesson: 11, id: "s-guide",   title: "本课导读",             hint: "从文字到表格 难点变成数字对不对 成绩表 考勤表 实训数据 边讲边做" },
+  { lesson: 11, id: "s-goal",    title: "学习目标",             hint: "目标 先修 Word 后续 数据汇总 可视化" },
+  { lesson: 11, id: "s-read",    title: "表格交出去之前，先让它摸底", hint: "本地执行不上传 沙箱隔离 授权目录 官方口径 拖入对话 告知路径 实操① 摸底报告 成绩表csv" },
+  { lesson: 11, id: "s-clean",   title: "脏数据的六张面孔与清洗规则", hint: "重复行 空值 文字混进数字列 日期格式 多余空格 一物多名 数据源 规则 输出 待核 实操② 考勤表清洗" },
+  { lesson: 11, id: "s-stat",    title: "基础统计：口径你定，公式它写", hint: "平均分 三种口径 空值跳过 当0分 去重 权重 总评 及格率 排名 实操③ 成绩统计" },
+  { lesson: 11, id: "s-check",   title: "验收：三道只有你能把的关", hint: "核行数 核口径 核合计数 实操④ 实训成绩一条龙 两个工作表 读不了文件 模型不支持 输出格式" },
+  { lesson: 11, id: "s-quiz",    title: "随堂自测",             hint: "自测题 答案 解析 摸底 空格 缺考 删行 口径差异" },
+  { lesson: 11, id: "s-recap",   title: "本课要点回顾",         hint: "小结 下一步 分类汇总 透视表 图表" },
+  { lesson: 11, id: "s-hw",      title: "课后作业",             hint: "客观题 单选 多选 判断 一键复制 六题 含答案解析 评分三条" },
+
+  /* ── 第 12 次课 · 办公实战 Excel 数据处理（下）（实操课） ── */
+  { lesson: 12, id: "s-guide",   title: "本课导读",             hint: "从一张表到多张表 多表合并 交叉统计 图表 异常值对账 input output 目录约定 边讲边做" },
+  { lesson: 12, id: "s-goal",    title: "学习目标",             hint: "目标 先修 Excel上 Word 后续 PPT 透视四要素 图表选型 异常四类" },
+  { lesson: 12, id: "s-merge",   title: "多表合并：先对齐，再加起来", hint: "纵向追加 横向关联 列名 口径 粒度 来源列 合并说明 实操① 三班成绩合成总表 16行" },
+  { lesson: 12, id: "s-pivot",   title: "透视：把明细压成结论", hint: "行 列 值 聚合方式 求和 计数 平均 交叉表 合计行合计列 百分比 人机双写 Excel 官方口径 实操② 耗材透视 282件" },
+  { lesson: 12, id: "s-chart",   title: "图表：选对比做对重要", hint: "比大小 柱形图 看趋势 折线图 看占比 饼图环形图 看关系 散点图 看分布 直方图 数据标签 不要3D 不要双轴 实操③" },
+  { lesson: 12, id: "s-check",   title: "异常值对账：让 AI 算，让人判", hint: "重复 越界 逻辑冲突 缺漏格式不一致 先总量后逐行 只标不改 需人工确认 实操④ 考勤异常清单 核查结论" },
+  { lesson: 12, id: "s-quiz",    title: "随堂自测",             hint: "自测题 答案 解析 追加关联 聚合方式 图表选型 对账顺序 来源列" },
+  { lesson: 12, id: "s-recap",   title: "本课要点回顾",         hint: "小结 下一步 PPT 先有结论再排页面" },
+  { lesson: 12, id: "s-hw",      title: "课后作业",             hint: "客观题 单选 多选 判断 一键复制 六题 含答案解析 实操成果 评分四条" },
+
+  /* ── 第 13 次课 · 办公实战 PPT 自动生成（理论课） ── */
+  { lesson: 13, id: "s-guide",   title: "本课导读",             hint: "PPT 自动生成 实训汇报 项目答辩 主题班会 大纲 分页 配图 审校 交付 产品口径核对" },
+  { lesson: 13, id: "s-goal",    title: "学习目标",             hint: "目标 先修 Word Excel 后续 文件管理 结论式标题 一页一任务" },
+  { lesson: 13, id: "s-outline", title: "先把材料变成演示大纲", hint: "材料分类 背景任务 过程方法 成果证据 问题边界 叙事 实操① 实训汇报 八页大纲" },
+  { lesson: 13, id: "s-pages",   title: "分页：一页只完成一个任务", hint: "逐页脚本 结论标题 主要证据 阅读负担 项目答辩 实操② 生成八页PPTX" },
+  { lesson: 13, id: "s-visual",  title: "配图与版式：每个元素都要有用", hint: "流程图 数据图表 截图 图标 对齐 对比 重复 留白 防诈骗班会 实操③" },
+  { lesson: 13, id: "s-audit",   title: "审校、修改与交付",     hint: "事实 阅读 版式 文件 文字溢出 字号 留白 人机双写 选页编辑 PPTX 导出 实操④" },
+  { lesson: 13, id: "s-quiz",    title: "随堂自测",             hint: "自测题 答案解析 大纲 结论式标题 配图 留白 四层检查" },
+  { lesson: 13, id: "s-recap",   title: "本课要点回顾",         hint: "小结 大纲 分页 配图 留白 质量门 下一步 文件管理" },
+  { lesson: 13, id: "s-hw",      title: "课后作业",             hint: "学习通 客观题 单选 多选 判断 六题 答案解析 一键复制 产品事实" },
+
+  /* ── 第 14 次课 · 文件管理与会议记录（实操课） ── */
+  { lesson: 14, id: "s-guide",   title: "本课导读",             hint: "桌面一堆实训照片 文件名乱码 会议录音转写稿 先划边界再动手 边讲边做" },
+  { lesson: 14, id: "s-goal",    title: "学习目标",             hint: "目标 先修 第7课 后续 RAG 知识库 检索" },
+  { lesson: 14, id: "s-bound",   title: "先划边界：工作空间与权限", hint: "工作空间 只放副本 默认权限 完全访问权限 全局开关 输入框底部 弹窗确认看三点 操作内容 影响范围 执行理由 三条红线 实操① 建工作目录 12个示例文件" },
+  { lesson: 14, id: "s-naming",  title: "命名规则：让文件名会说话", hint: "日期-主题-类型-版本 YYYYMMDD 不用空格 序号补零 不写最终版 v1 v2 待确认 对照表 实操② rename-plan" },
+  { lesson: 14, id: "s-archive", title: "批量归档：确认后才动手", hint: "按类型分类 方案在前执行在后 五类 变更 inventory.xlsx 验收四条 文件总数 无删除 抽查首中末 串行 实操③" },
+  { lesson: 14, id: "s-minutes", title: "会议记录转纪要与待办", hint: "口语转写稿 纪要五块 关键结论 未决事项 待办四要素 负责人 截止 验收 待补 不许推测 实操④ meeting.txt" },
+  { lesson: 14, id: "s-quiz",    title: "随堂自测",             hint: "自测题 答案 解析 工作空间 默认权限 对照表 回头再定 验收四条" },
+  { lesson: 14, id: "s-recap",   title: "本课要点回顾",         hint: "小结 下一步 知识库检索 命名差检索也差" },
+  { lesson: 14, id: "s-hw",      title: "课后作业",             hint: "客观题 单选 多选 判断 一键复制 六题 含答案解析" },
+
+  /* ── 第 15 次课 · RAG 原理与 IMA 知识库入门（实操课） ── */
+  { lesson: 15, id: "s-guide",   title: "本课导读",             hint: "幻觉 瞎编 凭记忆回答 内部规定 三个现象 RAG 检索增强生成 换掉回答的依据" },
+  { lesson: 15, id: "s-goal",    title: "学习目标",             hint: "目标 先修 后续衔接 第7课六要素 第14课文件命名 第16课接入" },
+  { lesson: 15, id: "s-hallu",   title: "AI 为什么会瞎编",      hint: "幻觉 三个来源 训练数据没有 记忆模糊 必须给答案 闭卷考试 实操① 亲手造一次幻觉 追问出处" },
+  { lesson: 15, id: "s-rag",     title: "RAG：把闭卷改成开卷",  hint: "检索增强生成 Retrieval-Augmented Generation 四步 切片 向量化 检索 增强生成 2020 Meta Patrick Lewis NeurIPS 闭卷 vs 开卷 实操② 同一问题问两遍 手动版RAG" },
+  { lesson: 15, id: "s-chunk",   title: "切片与向量化",          hint: "为什么切片 上下文窗口 向量 意思相近 三档对照 太大 太小 适中 按标题切 不要按字数硬切 10到20条 主题知识库 实操③ 资料清单" },
+  { lesson: 15, id: "s-ima",     title: "IMA 知识库入门",        hint: "ima 腾讯AI知识管家 个人 共享 订阅 知识库 上传文件 网页 公众号 图片 录音 腾讯文档 三查 查引用 查原文 查边界 溯源 拒答 实操④ 建库 提问 核溯源 资料库入口 解除绑定" },
+  { lesson: 15, id: "s-quiz",    title: "随堂自测",             hint: "自测题 答案 解析 幻觉 RAG四步 知识库不消灭幻觉 切片太小 三查" },
+  { lesson: 15, id: "s-recap",   title: "本课要点回顾",         hint: "小结 下一步 第16课 WorkBuddy 连接 IMA" },
+  { lesson: 15, id: "s-hw",      title: "课后作业",             hint: "客观题 单选 多选 判断 一键复制 六题 含答案解析" },
+
 ];

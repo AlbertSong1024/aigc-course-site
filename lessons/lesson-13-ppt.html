@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第13次课 办公实战——PPT 自动生成｜AIGC应用与实践</title>
+<meta name="description" content="竞品分析 PPT 全链路：联网调研并标来源、定死对比维度、先大纲后生成 PPT、审校迭代与交付。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="13" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 办公实战</span></h2>
+      <p class="lead">
+        做一份竞品分析 PPT，最花时间的往往不是排版，而是前三步：资料从哪来、比什么维度、结论凭什么成立。
+        如果这三步没定住，AI 生成出来的页面越漂亮，越容易把“看起来专业”和“真的可信”混在一起。
+      </p>
+      <p>
+        这一课按 course-map 里第 13 课的链路走完一遍：<strong>联网调研 → 对比整理 → 生成 PPT → 迭代优化</strong>。
+        你会遇到四个典型问题：搜来的信息不知道出处；对比表边比边加维度；页数堆了很多却没有结论；页面很满但证据很空。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        <strong>生成 PPT 不等于完成 PPT。</strong>AI 可以调研、起草结构、生成页面并按指令修改，但来源、结论和最终交付仍要由人验收。
+        本课涉及 WorkBuddy 客户端功能的口径，取自官方客户端用户文档，<strong>核对日期 2026-09-24</strong>；
+        官方没有写明的（例如所有环境都有同名“一键导出 PDF”入口），页面里如实写成不确定，不编造按钮和路径。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>能让 AI 联网调研竞品资料，并<strong>逐条标出来源</strong>，查不到的如实写【未查到】；</li>
+          <li>能先定死五个对比维度，再让 AI 产出<strong>不随意加列</strong>的竞品对比表；</li>
+          <li>能独立完成竞品分析的<strong>大纲先行</strong>流程，确认后再生成 PPT 初稿；</li>
+          <li>能用对齐、对比、重复、留白四条原则检查版式，并让 AI 按基准页统一风格；</li>
+          <li>能按事实、阅读、版式、文件四层完成交付前检查，并保留原稿与修订稿。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-outline"><b>01</b>联网调研：资料要带来源 <em>＋实操①</em></a>
+        <a href="#s-pages"><b>02</b>对比维度先定死 <em>＋实操②</em></a>
+        <a href="#s-visual"><b>03</b>先大纲，再生成竞品分析 PPT <em>＋实操③</em></a>
+        <a href="#s-audit"><b>04</b>审校、修改与交付 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="10"></a>里的“大纲先行”和“不确定就标【待确认】”，
+        以及 Excel 两课里的数据核对方法。<br>
+        <strong>后续</strong>：下一课进入<a class="xref" data-lesson="14"></a>，把散乱资料先整理成可复用的输入资产；
+        本课形成的调研清单、维度表和逐页脚本都能直接复用。
+      </div>
+    </section>
+
+    <section class="sec" id="s-outline">
+      <h2>一、联网调研：资料要带来源<span class="sec__tag">调研</span></h2>
+      <p>
+        竞品分析的第一件事不是打开 PPT，而是搞清楚“这些说法是哪来的”。让 AI 自由写一段竞品介绍，
+        它常常把公开信息、推测和套话混在一起，读起来顺畅，但每一句都没法拿去汇报。
+      </p>
+      <p>正确的做法是先要一份<strong>带来源的资料清单</strong>：每条信息后面跟着来源与日期，查不到的地方留空并标注。</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>资料状态</th><th>页面里怎么写</th><th>为什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>查到且有来源</strong></td><td>写结论 + 来源名称 + 日期</td><td>汇报时能被追问，也能复核</td></tr>
+            <tr><td><strong>查不到</strong></td><td>写【未查到】，不补推测</td><td>空着比编一个数字安全</td></tr>
+            <tr><td><strong>来源互相冲突</strong></td><td>两个来源都列出，标【待确认】</td><td>冲突本身就是要汇报的信息</td></tr>
+            <tr><td><strong>只有模拟数据</strong></td><td>注明【模拟】，不与事实混排</td><td>课堂练习可复现，也不误导读者</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">调研指令的三要素</span>
+        要它做什么（逐条列来源的清单）+ 不许做什么（不许把【未查到】写成事实、不许推测填充）+
+        缺信息怎么办（查不到就写【未查到】）。三句都写进去，输出才可控。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·联网调研四款 AI 笔记工具并输出带来源清单 <em>约 9 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份四款 AI 笔记工具的调研清单，每条信息都带来源与日期，查不到的明确写【未查到】。</p>
+
+        <p><strong>第 1 步 · 复制下面这份调研对象清单</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 调研对象与目标字段">
+          <div class="codeblock__bar"></div>
+<pre><code>调研主题：面向学生群体的 AI 笔记工具竞品分析
+竞品范围：知语笔记、快记文档、云析助手、灵格 AI（均为课堂练习用代称）
+必须覆盖的字段：价格、核心功能、适用人群、上手成本、生态与兼容性
+用途：制作一份 8 页竞品分析 PPT，受众是专业课老师和同学
+限制：本次汇报不引用未公开的内部数据，不使用无法核实的二手评测结论</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面这段指令与调研对象一起发给 WorkBuddy</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 联网调研并逐条标来源">
+          <div class="codeblock__bar"></div>
+<pre><code>请联网调研上面四款 AI 笔记工具，输出一份带来源的资料清单。
+清单格式：竞品｜字段｜内容｜来源名称｜来源日期｜可信度（高/中/低）。
+必须做到：
+1. 每个竞品都要覆盖价格、核心功能、适用人群、上手成本、生态与兼容性五个字段；
+2. 查到的信息必须写明来源名称和日期，不写“据说”“一般认为”这类无来源表述；
+3. 查不到的字段直接写【未查到】，不要推测、不要补一个看起来合理的数字；
+4. 不同来源说法冲突时，两个来源都列出，并在该条后面标【待确认】；
+5. 最后单独列一节「本轮调研的缺口」，写明哪些字段没查到、下一步可以从哪里补。
+不要现在生成 PPT，只输出调研清单。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 AI 自查有没有把推测写成事实</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请复核刚才的调研清单，逐条检查并直接修正：
+1. 凡是来源名称或日期为空的条目，内容一律改成【未查到】；
+2. 删除“可能”“应该是”“通常在”这类推测性表述，或补上可核实的来源；
+3. 冲突条目保留两个来源，并明确标【待确认】；
+4. 不得新增竞品，不得新增字段。
+输出修正后的完整清单，不只列修改意见。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四款竞品、五个字段都齐</b><span>共 20 个字段位，一个不缺。<br><em>缺字段</em>：让 AI 按“竞品｜字段”清单补齐，不允许删字段。</span></li>
+          <li><b>每条都有来源和日期</b><span>没有“据说”“一般认为”这类表述。<br><em>来源为空</em>：要求把该条内容改成【未查到】。</span></li>
+          <li><b>【未查到】没有被编成事实</b><span>数量可以不少，缺就是缺。<br><em>出现编造的价格或功能</em>：把“查不到就写【未查到】”放到指令第一行再发一次。</span></li>
+          <li><b>有独立的缺口小节</b><span>写清缺哪些字段、下一步去哪补。<br><em>没有缺口说明</em>：让 AI 补一节，它是后续调研的起点。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-pages">
+      <h2>二、对比维度先定死，一页只比较一件事<span class="sec__tag">对比整理</span></h2>
+      <p>
+        竞品对比最常见的失败是“边比边加维度”：先比价格，发现某家功能多就补一列功能，又发现生态不同再加一列。
+        最后表格越来越宽，却回答不了“到底该选哪个”。
+      </p>
+      <p>
+        维度必须在动手前定死，而且一次只让一页承担一个比较任务。本课的固定维度是五个：
+        <strong>价格 / 功能 / 适用人群 / 上手成本 / 生态与兼容性</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>这一列要回答什么</th><th>页面上的呈现</th></tr></thead>
+          <tbody>
+            <tr><td><strong>价格</strong></td><td>学生和团队分别要花多少</td><td>数字卡或两栏对比</td></tr>
+            <tr><td><strong>功能</strong></td><td>核心能力差在哪，不是功能总数</td><td>勾选矩阵</td></tr>
+            <tr><td><strong>适用人群</strong></td><td>它更适合谁，不适合谁</td><td>标签卡</td></tr>
+            <tr><td><strong>上手成本</strong></td><td>从注册到产出第一份成果要多久</td><td>步骤流程</td></tr>
+            <tr><td><strong>生态与兼容性</strong></td><td>能不能和现有工具、文件格式接上</td><td>兼容清单或图标行</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 维度是否先定死，会直接改变竞品对比表的可信度</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--accent" type="button" id="d1-bad">看“边比边加维度”</button>
+            <button class="btn btn--primary" type="button" id="d1-good">看“维度先定死”</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-dims">7</b><span>对比维度数</span></div>
+            <div class="kpi"><b class="acc" id="d1-align">低</b><span>各竞品口径一致性</span></div>
+            <div class="kpi"><b id="d1-action">重做</b><span>推荐动作</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out">当前：比到一半又加列，四款竞品的口径不再一致，结论无法成立。</div>
+          <div class="demo__note"><strong>教学示意，非实测数值。</strong>演示强调的是维度先定的必要性，不是规定维度数量。</div>
+        </div>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">判断对比表能不能用</span>
+        如果同一列里，四款竞品填的不是同一类东西（一家写价格、一家写体验），这一列就应该重做。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·按固定维度产出竞品对比表 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一张四款竞品 × 五个维度的对比表（Markdown），缺数据的格子写【未查到】，没有多加一列。</p>
+
+        <p><strong>第 1 步 · 复制下面这份竞品信息清单</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 竞品信息清单（模拟数据，非真实产品信息）">
+          <div class="codeblock__bar"></div>
+<pre><code>【模拟数据 · 仅用于课堂练习，不代表任何真实产品】
+
+1｜知语笔记｜价格：免费版可用，学生认证 9 元/月｜功能：语音转写、AI 摘要、知识问答
+   ｜适用人群：上课记录多的学生｜上手成本：注册即用，约 10 分钟｜生态：支持 Word/PDF 导入、可导出 Markdown
+
+2｜快记文档｜价格：免费版有页数上限，团队版 19 元/人/月｜功能：多人协作、模板库、AI 润色
+   ｜适用人群：小组作业与团队文档｜上手成本：需熟悉协作区，约 30 分钟｜生态：支持腾讯文档导入
+
+3｜云析助手｜价格：按调用量计费，额度用完后限速｜功能：长文分析、图表生成、批量整理
+   ｜适用人群：需要批量处理资料的同学｜上手成本：需理解额度概念，约 45 分钟｜生态：支持表格导出
+
+4｜灵格 AI｜价格：未公开｜功能：本地离线笔记、隐私模式、插件扩展
+   ｜适用人群：在意数据不出本机的同学｜上手成本：需安装客户端，约 20 分钟｜生态：兼容性未查到</code></pre>
+        </div>
+        <p class="note">课堂统一用模拟清单，是因为联网结果每个人都不一样，没法一起讲评；真实汇报时，同样的表格要换成实操① 带来源的调研结果。</p>
+
+        <p><strong>第 2 步 · 把下面这段指令与清单一起发给 WorkBuddy</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 生成五维对比表">
+          <div class="codeblock__bar"></div>
+<pre><code>请把上面的竞品信息清单整理成一张 Markdown 对比表。
+固定维度只有五个，顺序固定：价格、功能、适用人群、上手成本、生态与兼容性。
+要求：
+1. 行为竞品，列为五个固定维度，共 4 行 5 列，不得新增或删减维度；
+2. 每格不超过 20 个汉字，只保留对选择有影响的差异；
+3. 清单里写“未公开”“未查到”的格子继续写【未查到】，不要补推测；
+4. 数据属于模拟练习，表格下方必须注明「本表为模拟数据，非真实产品信息」；
+5. 表格后附三行结论：最便宜的是哪款、上手最快的是哪款、哪一款的数据缺口最大。
+不要现在生成 PPT，只输出对比表和三行结论。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 AI 逐格自查口径是否一致</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请逐格复核刚才的对比表并直接修正：
+1. 同一列必须比较同一类信息，不允许出现“价格列里写体验”这类串列；
+2. 每格不超过 20 个汉字，超出就压缩，不得改写数据含义；
+3. 【未查到】不得被替换成推测值；
+4. 维度数量保持 5 个，竞品数量保持 4 个；
+5. 三行结论必须只能依据表中已有数据。
+输出修正后的完整表格与结论。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>维度正好五个且不增不减</b><span>顺序也是价格、功能、适用人群、上手成本、生态与兼容性。<br><em>多出一列</em>：让它删掉新增列，回到固定维度。</span></li>
+          <li><b>每列口径一致</b><span>价格列全是价格，上手成本列全是时间或步骤。<br><em>出现串列</em>：点名那一列要求重填，不允许用一句话带过。</span></li>
+          <li><b>缺口如实保留</b><span>灵格 AI 的价格和兼容性仍是【未查到】。<br><em>被补成具体数值</em>：把“不补推测”提到指令首行再发一次。</span></li>
+          <li><b>模拟标注还在</b><span>表格下方写明是模拟数据。<br><em>标注丢失</em>：要求补回，避免练习材料被当成产品事实。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-visual">
+      <h2>三、先大纲，再生成竞品分析 PPT<span class="sec__tag">生成</span></h2>
+      <p>
+        调研和对比表都齐了，才轮到生成 PPT。直接让 AI “做一份竞品分析 PPT”，常见结果是八页里六页都在堆功能列表，
+        最重要的“该选谁、为什么”反而没有专门的一页。
+      </p>
+      <p>和 Word 一样，PPT 也要<strong>大纲先行</strong>：先确认逐页结构，再生成文件。骨架错了，改骨架比改页面便宜得多。</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>阶段</th><th>你要什么</th><th>只盯两件事</th></tr></thead>
+          <tbody>
+            <tr><td>第一步</td><td>只要逐页大纲，不要文件</td><td><strong>有没有漏</strong>、<strong>顺序对不对</strong></td></tr>
+            <tr><td>第二步</td><td>确认后按大纲生成 PPTX</td><td>每页是否只有一个中心、配图是否传信息</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>配图同样要服务于结论。竞品分析里真正有用的只有三类：<strong>对比矩阵、定位象限、流程步骤</strong>；装饰图和来源不明的截图都不能当证据。</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要表达什么</th><th>优先用什么</th><th>避免什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>多维差异</strong></td><td>勾选矩阵、对比表</td><td>四张产品截图并列</td></tr>
+            <tr><td><strong>定位差异</strong></td><td>二维象限（横轴价格、纵轴上手成本）</td><td>没有坐标含义的示意图</td></tr>
+            <tr><td><strong>上手路径</strong></td><td>编号流程、步骤箭头</td><td>用口号代替步骤</td></tr>
+            <tr><td><strong>数据缺口</strong></td><td>【未查到】清单</td><td>把缺口藏进备注里</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>版式美化记住四条：<strong>对齐、对比、重复、留白</strong>。它们不是艺术术语，而是可检查的动作。</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>原则</th><th>验收问题</th></tr></thead>
+          <tbody>
+            <tr><td><strong>对齐</strong></td><td>标题、表格、图例边缘是否落在同一条线上</td></tr>
+            <tr><td><strong>对比</strong></td><td>观众能否立刻分出结论、核心数字和说明文字</td></tr>
+            <tr><td><strong>重复</strong></td><td>相同层级是否反复使用同一字号、颜色和位置</td></tr>
+            <tr><td><strong>留白</strong></td><td>空白是否把结论围出来，而不是因为证据漏了</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·先确认大纲，再生成 8 页竞品分析 PPT <em>约 14 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 8 页竞品分析 <code>.pptx</code> 初稿，逐页对应你确认过的大纲。</p>
+
+        <p><strong>第 1 步 · 先只让 AI 出大纲</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第一步 · 只要逐页大纲">
+          <div class="codeblock__bar"></div>
+<pre><code>我要做一份竞品分析 PPT，受众是专业课老师和同学，讲述 5 分钟。
+先只给我逐页大纲，不要生成 PPT 文件，也不要写完整讲稿。
+固定 8 页：1 封面；2 结论先行；3 调研范围与方法；4 五个对比维度说明；
+5 四款竞品五维对比；6 定位差异；7 数据缺口与风险；8 选型建议与下一步。
+每页输出：页码、结论式标题、本页目的、只能使用的材料、建议图示。
+标题必须是结论句，不能只写“竞品对比”“产品介绍”这类栏目词。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 检查大纲，重点看有没有漏</strong></p>
+        <ol class="steps">
+          <li><b>第 2 页必须先给结论</b><span>竞品分析最忌讳讲到最后才说该选谁。</span></li>
+          <li><b>第 4、5 页要和实操② 的维度一致</b><span>价格、功能、适用人群、上手成本、生态与兼容性，五个都不能少。</span></li>
+          <li><b>第 7 页必须保留数据缺口</b><span>⚠️ 这一页最容易漏——AI 常常只写优势、不写没查到的。</span></li>
+          <li><b>第 8 页要能落地</b><span>给建议和下一步调研方向，不是“持续关注市场”。</span></li>
+        </ol>
+        <p><em>发现少了一块</em>：直接补一句「大纲第 7 页补上『数据缺口与风险』，列出【未查到】的字段」，让它重出大纲。
+          <strong>现在改几乎不花时间，等 PPT 生成完再改就是重做。</strong></p>
+
+        <p><strong>第 3 步 · 确认后，把下面这段生成指令发出去</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第二步 · 按确认的大纲生成 PPTX">
+          <div class="codeblock__bar"></div>
+<pre><code>按上面确认的 8 页大纲生成竞品分析 PPT，输出 .pptx 文件，文件名「AI笔记工具竞品分析_v1.pptx」。
+视觉：主色 #2563EB，强调色 #F59E0B，浅色背景；不要增加第三种高饱和主色。
+配图规则：第5页用勾选矩阵呈现五维对比；第6页用二维象限呈现定位（横轴价格、纵轴上手成本）；
+第3页用调研流程；其他页面只用形状和图标，不调用来源不明的网络图片、真人照片或机构 Logo。
+版式：每页只保留一个核心观点；对齐、对比、重复、留白四条都要体现；正文每页不超过 5 条，每条不超过 18 个汉字。
+事实约束：只使用实操① 调研清单和实操② 对比表中的信息；【未查到】的字段保持【未查到】，不得推测补齐；
+模拟数据必须在对应页面注明「模拟数据，非真实产品信息」。
+不要新增页数，不要新增章节，不要编造市场份额、用户量、融资或获奖信息。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>页数正好 8 页且与大纲一一对应</b><span>尤其第 2 页结论、第 7 页缺口都在。<br><em>页数不对</em>：让它按“页码—标题”清单重新对齐，不允许自由增删。</span></li>
+          <li><b>每页只有一个中心</b><span>标题、图表和正文都在证明同一句话。<br><em>一页塞两个主题</em>：点名页码，让它把次要内容移到备注或删除。</span></li>
+          <li><b>配图都在传信息</b><span>矩阵比差异、象限比定位、流程讲步骤。<br><em>出现装饰图</em>：删除并改成形状图示，不要保留“看起来专业”的空图。</span></li>
+          <li><b>事实口径没被改写</b><span>【未查到】还在，模拟数据仍有标注，没有新增市场份额或用户量。<br><em>出现无来源数字</em>：要求删除，不用更含糊的词替代。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：确认过的<strong>大纲</strong> + 生成出的 <strong>v1 文件</strong>，两个都要留着，下一节还要用。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-audit">
+      <h2>四、审校、修改与交付<span class="sec__tag">迭代优化</span></h2>
+      <p>
+        PPT 最危险的错误往往不在大纲，而在最后一公里：表格只差一行就溢出；象限图有轴却没有单位；页面看起来很满，
+        实际是把证据换成了装饰；最终文件名和版本又对不上。
+      </p>
+      <p>把检查拆成四层，顺序固定：先查事实，再查阅读，再查版式，最后查文件。否则你可能把一页错误数据排得非常漂亮。</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>检查层</th><th>必须检查</th><th>常见补救</th></tr></thead>
+          <tbody>
+            <tr><td><strong>事实</strong></td><td>来源、日期、数字、【未查到】、模拟标注</td><td>回调研清单逐项对照，删掉无来源信息</td></tr>
+            <tr><td><strong>阅读</strong></td><td>文字溢出、字号过小、投影距离下能否读清</td><td>删字、拆页、放大；不要只缩字体</td></tr>
+            <tr><td><strong>版式</strong></td><td>对齐、对比、重复、留白是否合理</td><td>统一网格和样式，补证据而非补装饰</td></tr>
+            <tr><td><strong>文件</strong></td><td>页数、版本名、能否打开、PPTX 是否保留</td><td>另存修订版，保留原稿与交付版</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② “页面很空”不一定是问题，先判断结论与证据是否完整</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--primary" type="button" id="d2-good">结论完整的留白</button>
+            <button class="btn btn--accent" type="button" id="d2-bad">证据缺失的空白</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d2-title">清楚</b><span>结论标题</span></div>
+            <div class="kpi"><b class="acc" id="d2-proof">充分</b><span>主要证据</span></div>
+            <div class="kpi"><b id="d2-next">保留</b><span>处理动作</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out">结论和证据都完整，空白在帮助观众聚焦竞品差异，不需要硬塞装饰。</div>
+          <div class="demo__note"><strong>教学示意，非实测数值。</strong>留白是否合格，要看信息任务是否完成，不看页面填满了多少。</div>
+        </div>
+      </div>
+
+      <h3>在 WorkBuddy 里怎么定向改</h3>
+      <p>
+        官方客户端用户文档写明：人机双写支持 PPT，可选整页、多选元素或自由框选后使用“AI 编辑”，
+        也可以选基准页刷新整份 PPT 的视觉风格；修改范围限于选区或明确指令；所有改写仍要用户核对，
+        重要文件建议先另存新文件。<strong>以上口径核对于 2026-09-24。</strong>
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">关于“导出”，只说官方明确说明的</span>
+        官方客户端用户文档明确说明 PPT 可作为“产物”在结果区查看和分享，PPTX Skill 可读取、压缩或重做演示文稿；
+        文档没有在本页核对范围内承诺所有环境都有同名的“一键导出 PDF”入口。
+        因此本课把<strong>可打开的 PPTX</strong>作为主交付物；若当前版本还能同步生成 PDF，可一并交付，没有时不编造按钮和路径。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·审校竞品分析 PPT 并交付最终版 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份通过四层检查的 <code>AI笔记工具竞品分析_final.pptx</code>，以及 AI 给出的逐页问题清单。</p>
+
+        <p><strong>第 1 步 · 让 AI 按下面的质量门检查 v1 文件，先只报告</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="审校指令 · 先报告，再修改">
+          <div class="codeblock__bar"></div>
+<pre><code>请检查「AI笔记工具竞品分析_v1.pptx」，先输出逐页问题清单，不要立刻修改。
+固定检查：
+1. 事实：页面上的数字、来源、日期与调研清单一致；模拟数据页面仍有「模拟数据」标注；
+   【未查到】没有被替换成推测值；没有出现市场份额、用户量、融资或获奖信息；
+2. 文字：标题或正文是否溢出、遮挡、断在不合理位置；正文每页不超过 5 条；
+3. 阅读：最小正文字号不低于 18pt；象限图的轴含义和单位完整；
+4. 版式：标题与图表对齐；相同层级样式一致；留白用于聚焦，不能用装饰图硬填；
+5. 文件：总页数必须为 8 页。
+清单格式：页码｜问题｜证据｜建议动作。没有问题的页也写“通过”。
+不要编造检查结果；无法从文件判断的项目写【需人工确认】。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面的修复指令紧接着发出去</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="修复指令 · 只改已发现的问题">
+          <div class="codeblock__bar"></div>
+<pre><code>请依据刚才的问题清单修改 PPT：
+- 事实以调研清单和对比表为准，无依据内容直接删除；
+- 文字溢出优先删减或拆分表达，不要把正文缩到 18pt 以下；
+- 留白合理的页面保持不动；证据缺失的页面补已有证据，不补装饰图；
+- 不改变 8 页结构，不改动已经通过的页面。
+修改后另存为「AI笔记工具竞品分析_final.pptx」，不要覆盖 v1 文件。
+同时保留并输出最终逐页问题清单。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 用基准页统一全篇视觉</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="选页编辑指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请以第5页为视觉基准，统一第3、4、6、7、8页：
+1. 标题左边缘、字号和颜色一致；
+2. 表格、象限图和信息卡使用相同圆角、描边和间距；
+3. 主蓝只用于结构，强调橙只用于结论与风险；
+4. 删除没有解释作用的装饰元素。
+不改动任何事实文字，不新增竞品、维度或数字。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 人只做验收，不再手工重排</strong></p>
+        <ol class="steps">
+          <li><b>在结果区逐页打开最终版</b><span>重点看边缘：标题末尾、表格底部、图例标签最容易溢出。</span></li>
+          <li><b>对照调研清单核事实</b><span>来源、日期、【未查到】和模拟标注必须逐项一致。</span></li>
+          <li><b>确认文件名与版本</b><span>v1 与 final 都在，final 能正常打开。</span></li>
+        </ol>
+
+        <p><strong>第 5 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>没有溢出与遮挡</b><span>逐页打开时所有文字与表格完整可见。<br><em>仍有溢出</em>：点名页码和文本框，让 AI 删减或拆分，不允许继续缩小字号。</span></li>
+          <li><b>空白与证据都合理</b><span>页面空是为了聚焦竞品差异，不是漏掉证据。<br><em>只剩标题</em>：从调研清单补证据，不要补装饰图。</span></li>
+          <li><b>事实全部可追溯</b><span>数字、来源、日期都能回到调研清单。<br><em>来源不明</em>：删除或标【未查到】，不保留“看起来合理”的说法。</span></li>
+          <li><b>最终文件可交付</b><span><code>AI笔记工具竞品分析_final.pptx</code> 能打开且为 8 页。<br><em>当前环境还生成了 PDF</em>：把 PDF 作为附加交付物；没有时以 PPTX 为准，不虚构导出成功。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己判断，再点开答案。解析不只告诉你选什么，还说明其他做法为什么不稳。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>做竞品分析时，让 AI 联网调研后最应该先拿到什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 一份排版漂亮的成品 PPT</li>
+            <li>B. 一段流畅的竞品介绍</li>
+            <li>C. 逐条带来源和日期的资料清单</li>
+            <li>D. 一套配色方案</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：C。</b>来源和日期决定了信息能不能被复核。A、B 会把无来源内容直接固化成页面；D 只处理外观。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>调研时某个字段查不到，页面上应该怎么写？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 留空白，什么都不写</li>
+            <li>B. 写【未查到】</li>
+            <li>C. 按同类产品的常见情况补一个值</li>
+            <li>D. 改成更模糊的说法，看起来像有信息</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B。</b>【未查到】是明确的状态，读者知道这里需要补。A 会被当成漏做；C 是编造；D 只是把编造包装得更隐蔽。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>多选：做竞品对比表时，哪些做法能保证对比成立？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 先定死五个维度再开始填</li>
+            <li>B. 同一列只比较同一类信息</li>
+            <li>C. 每格控制在 20 个汉字以内</li>
+            <li>D. 比到一半发现新角度就临时加一列</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：ABC。</b>ABC 分别保证维度稳定、口径一致、信息密度可控。D 会让各竞品的口径不再对齐，结论无法成立。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：竞品分析 PPT 的对比页留白较多，说明 AI 漏排了内容，应该再加几张产品截图。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B（错误）。</b>先判断结论和证据是否完整。完整时，留白在帮助观众看清差异；不完整时应补证据（矩阵、象限、来源），而不是补装饰截图。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>交付前四层检查的正确顺序是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 版式 → 文件 → 事实 → 阅读</li>
+            <li>B. 事实 → 阅读 → 版式 → 文件</li>
+            <li>C. 文件 → 版式 → 阅读 → 事实</li>
+            <li>D. 阅读 → 事实 → 文件 → 版式</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B。</b>先保证内容可信，再保证看得清、排得稳、交得对。其他顺序都可能先把错误信息美化得很好看。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>调研先标来源</strong>：查到的写来源与日期，查不到的写【未查到】，冲突的双列并标【待确认】；</li>
+          <li><strong>维度先定死</strong>：价格、功能、适用人群、上手成本、生态与兼容性，不边比边加列；</li>
+          <li><strong>大纲先行</strong>：先确认逐页结构再生成文件，第 2 页先给结论，第 7 页保留数据缺口；</li>
+          <li><strong>配图传信息</strong>：矩阵比差异、象限比定位、流程讲步骤，装饰图不能代替证据；</li>
+          <li><strong>四层质量门</strong>：事实 → 阅读 → 版式 → 文件，原稿、修订稿和最终版都保留。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天做的是“从调研到演示稿”的完整链路。下一课进入<a class="xref" data-lesson="14"></a>，
+        先把手上的散乱资料变成可检索、可复用的输入资产——调研清单和维度表都会用得上。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角“复制”就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 13 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）让 AI 联网调研竞品资料时，指令里最应该写清的是？
+A. 只给主题词，让它自由发挥
+B. 要逐条标明来源与日期，查不到的写【未查到】
+C. 先定好看的配色
+D. 让它直接生成最终 PPT
+【答案】B
+【解析】竞品分析能不能被复核，取决于来源与日期。A 无法约束输出；C 只处理外观；D 会把还没核实的调研结果直接固化成页面。
+
+2.（多选）一份可用的竞品对比表应满足哪些要求？
+A. 维度在开始前定死，不边比边加列
+B. 同一列只比较同一类信息
+C. 缺数据的格子写【未查到】，不补推测
+D. 维度越多越好，超过十个也没关系
+【答案】ABC
+【解析】ABC 保证维度稳定、口径一致、缺口可见。D 会让表格变宽、口径混乱，反而回答不了“该选哪个”。
+
+3.（判断）调研中两个来源给出的价格互相冲突时，应该选一个更常见的写进去，另一个不必保留。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】冲突本身就是结论的一部分。正确做法是两个来源都列出并标【待确认】，让听众知道这里存在不确定性。
+
+4.（单选）生成竞品分析 PPT 时，哪一种顺序更不容易返工？
+A. 直接生成 20 页成品，再删减
+B. 先只要逐页大纲，确认结构与顺序后再生成 PPTX
+C. 一次生成三份，挑最好的那份
+D. 先做动画和切换效果，再补内容
+【答案】B
+【解析】这就是大纲先行。大纲阶段改结构成本极低，等页面生成完再改等于重做。A、C 都在碰运气，D 先处理了最不重要的部分。
+
+5.（多选）关于 WorkBuddy 客户端中的 PPT 编辑，哪些说法符合本课核对的官方用户文档？
+A. 可以选中整页后发出 AI 编辑指令
+B. 可以多选元素后批量下达同一指令
+C. 可以选择基准页统一整份 PPT 的视觉风格
+D. AI 改写后不需要用户核对
+【答案】ABC
+【解析】官方“人机双写”文档明确列出选页编辑、多选元素、自由框选和风格统一；同时明确改写内容需用户自行判断并审慎核对，所以 D 错。
+
+6.（判断）当前官方客户端用户文档明确承诺：所有环境都有名称完全相同的“一键导出 PDF”入口。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】本课核对的官方页面明确说明 PPT 可作为产物查看和分享，也说明 PPTX Skill 能读取、压缩或重做演示文稿，但没有承诺所有环境都有同名的一键导出 PDF 入口。查不到的能力不能自行编造；本课以可打开的 PPTX 为主交付物。</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        只看三项：答案是否对应题目；多选题有没有漏选或多选；解析能否说明错误选项错在调研、维度、生成顺序还是产品口径。
+      </div>
+      <p class="note">官方产品事实核对日期：2026-09-24。依据为 WorkBuddy 客户端用户文档中的“WorkBuddy 简介”“实践二：文档生成与编辑”“结果查看”“人机双写”“办公文档四件套”；未使用开放平台开发者文档替代客户端口径。</p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  function d1Show(ok) {
+    $("d1-dims").textContent = ok ? "5" : "7";
+    $("d1-align").textContent = ok ? "高" : "低";
+    $("d1-action").textContent = ok ? "保留" : "重做";
+    $("d1-out").innerHTML = ok
+      ? "<span class='ok'>✓ 五个维度先定死：</span>四款竞品在同一个口径下比较，结论能成立。"
+      : "<span class='no'>✗ 比到一半又加列：</span>各竞品填的不是同一类信息，这张表无法支撑结论。";
+  }
+
+  function d2Show(ok) {
+    $("d2-title").textContent = ok ? "清楚" : "空泛";
+    $("d2-proof").textContent = ok ? "充分" : "缺失";
+    $("d2-next").textContent = ok ? "保留" : "补证据";
+    $("d2-out").innerHTML = ok
+      ? "<span class='ok'>✓ 这是有效留白：</span>结论和证据完整，空白在帮助观众看清竞品差异。"
+      : "<span class='no'>✗ 这是证据缺失：</span>只有栏目标题，没有来源、数字或对比，应补调研清单里的证据。";
+  }
+
+  $("d1-bad").addEventListener("click", function () { d1Show(false); });
+  $("d1-good").addEventListener("click", function () { d1Show(true); });
+  $("d2-good").addEventListener("click", function () { d2Show(true); });
+  $("d2-bad").addEventListener("click", function () { d2Show(false); });
+})();
+</script>
+</body>
+</html>

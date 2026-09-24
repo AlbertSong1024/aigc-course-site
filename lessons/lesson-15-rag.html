@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第15次课 RAG 原理与 IMA 知识库入门｜AIGC应用与实践</title>
+<meta name="description" content="AI 为什么会瞎编（幻觉）→ RAG 检索增强生成的四步流程 → 切片与向量化 → IMA 知识库建库、问答与溯源核验。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="15" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 知识库开局</span></h2>
+      <p class="lead">
+        前面 14 次课，我们一直在让 AI <strong>凭本事回答</strong>——它脑子里有什么，就说什么。
+        问题是：它脑子里装的是训练时灌进去的通用知识，<strong>没读过你的课程笔记、不知道你学校的内部规定、
+        没见过上周刚改的流程</strong>。于是它只能按「这类东西通常长什么样」来补——这就是所谓的幻觉。
+      </p>
+      <p>先确认三件你大概率遇到过的事：</p>
+      <ul>
+        <li><strong>问它一条你们学校的内部规定</strong>——它给了一个时间、一个份数、一个流程，写得很完整，但那全是它编的。</li>
+        <li><strong>问它「我这份笔记第 3 章讲了什么」</strong>——它根本没读过你的笔记，照样能答出一整段。</li>
+        <li><strong>你把资料塞给了它，它答的还是老黄历</strong>——答的是训练时记住的通用说法，不是你资料里的内容。</li>
+      </ul>
+      <p>
+        这一课的解法叫 <strong>RAG（Retrieval-Augmented Generation，检索增强生成）</strong>：
+        <strong>先把你的资料切片存进知识库，提问时先检索、再作答，答案还能点回原文核对。</strong>
+        课上会让你亲手做一次对比——同一个问题，挂资料和不挂资料，答案差在哪。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课最容易理解错的一点：<strong>RAG 不是「让 AI 多看点书」，而是换掉它回答的依据</strong>——
+        从「凭记忆猜」变成「照着资料说」。所以它治的不是「AI 变聪明了」，
+        而是「AI 说错时你能查出来」。
+      </div>
+      <p class="note">
+        本页涉及 ima 与 WorkBuddy 的产品事实，核对日期 <strong>2026-09-24</strong>，
+        依据为 ima 官网（ima.qq.com）与 WorkBuddy 官方文档
+        《WorkBuddy × ima 功能指引》《如何用 WorkBuddy 把 ima 知识库越用越厚》。
+        界面名称与功能随版本更新，<strong>以你实际使用的版本为准</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说清 AI「瞎编」的<strong>三个来源</strong>，并能举出一个自己真实遇到的例子；</li>
+          <li>用「<strong>开卷考试</strong>」这个比喻，把 RAG 的<strong>四步流程</strong>讲给同班同学听；</li>
+          <li>判断一份资料<strong>该切成多大的块</strong>，说清「一整本 PDF 直接扔进去」为什么效果差；</li>
+          <li>在 ima 里<strong>独立建一个主题知识库</strong>，投喂第一批资料并发起一次基于知识库的问答；</li>
+          <li>拿到带引用的答案后，按<strong>三查</strong>逐条核完，并说清「资料里没有」时它应该怎么答。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-hallu"><b>01</b>AI 为什么会瞎编 <em>＋实操①</em></a>
+        <a href="#s-rag"><b>02</b>RAG：闭卷改开卷 <em>＋实操②</em></a>
+        <a href="#s-chunk"><b>03</b>切片与向量化 <em>＋实操③</em></a>
+        <a href="#s-ima"><b>04</b>IMA 知识库入门 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素（本课所有指令都按它写）、
+        <a class="xref" data-lesson="14">第 14 次课</a>的文件命名与分类规范（投喂资料时要用到）。<br>
+        <strong>后续</strong>：本课只在 ima 里做。
+        <a class="xref" data-lesson="16">第 16 次课</a>把 ima 知识库接进 WorkBuddy，
+        让你在桌面智能体里直接调用这批资料。
+      </div>
+    </section>
+
+    <!-- 一、幻觉 -->
+    <section class="sec" id="s-hallu">
+      <h2>一、AI 为什么会瞎编<span class="sec__tag">问题</span></h2>
+      <p>
+        先别急着学解法，把病看准。你问 AI 一句「我们学校实训室几点关门」，
+        它<strong>不会说「我不知道」</strong>——它会给你一个「18:30，周末 17:00」，
+        语气笃定，格式工整。<strong>它不知道，但它不告诉你它不知道。</strong>
+      </p>
+      <p>
+        这不是它调皮。生成式模型的工作方式，本质上是<strong>一个字一个字地猜「下一个最可能的字」</strong>。
+        猜得顺了就一直往下写，写到像模像样为止。它手上没有「我现在有没有依据」这个开关。
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 闭卷 vs 开卷：同一个问题，答案的依据不一样</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="closed" class="on">闭卷：不给资料</button>
+              <button type="button" data-tab="open">开卷：挂上知识库</button>
+            </div>
+            <button class="btn btn--main" type="button" id="d1-ask">问一句</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="flow" id="d1-flow"></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            演示里的答案是<strong>离线预置的示意文本</strong>，用来让你看清「依据不同，答案的性质就不同」。
+            真实效果请在你自己的知识库上验证。
+          </div>
+        </div>
+      </div>
+
+      <h3>幻觉的三个来源</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>来源</th><th>什么意思</th><th>你会看到什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>训练数据里根本没有</strong></td>
+              <td>它没见过，只能按「这类东西通常长什么样」往下补</td>
+              <td>问它你们学校的内部规定、你们公司没公开的流程</td>
+            </tr>
+            <tr>
+              <td><strong>记忆是模糊的</strong></td>
+              <td>训练时见过类似的，但细节拼错了、串了</td>
+              <td>把两本书的作者、两个版本的参数混在一起说</td>
+            </tr>
+            <tr>
+              <td><strong>它被要求「必须给答案」</strong></td>
+              <td>它只会接着往下写，不会主动说「我不知道」</td>
+              <td>你问了，它就一定回一段，哪怕全是编的</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">记住这个结论</span>
+        <strong>指望「提醒它别瞎编」基本没用。</strong>
+        你越说「不知道就说不知道」，它越可能先编一段再补一句「仅供参考」。
+        真正有效的做法是——<strong>换掉它回答的依据</strong>，这就是下一节的 RAG。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·亲手造一次幻觉 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一段 AI 编造的回答，外加它自己给出的「出处」——
+          两样放在一起，你就能看清它凭的是什么。</p>
+
+        <p><strong>第 1 步 · 新建一个对话（<span class="task__warn">必须新建</span>）</strong></p>
+        <ol class="steps">
+          <li><b>在 WorkBuddy 里开一个全新的对话</b><span>不要接着前面的任务聊——
+            旧上下文里如果有资料，这次实验就不准了。</span></li>
+          <li><b>把下面这段指令复制进去，直接发送</b><span>问的是它<strong>不可能知道</strong>的两件事，
+            看它会不会照样给答案。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 段指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请直接回答下面两个问题，不要说"建议咨询学校"这类话：
+1. 《AIGC应用与实践》这门课的实训室，工作日开放到几点？周末开放到几点？
+2. 这门课期末补考申请，需要提交几份材料、交给哪个部门？
+请给出具体的时间和份数。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 追问它的依据（2 分钟）</strong></p>
+        <p>把下面这段追问，<strong>紧接着</strong>发在同一个对话里：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 段指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你上面给的时间和份数，依据是什么？请给出具体出处（文件名、网页或文件条款）。
+如果是你自己推测的，请明说"这是我推测的"。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它给了具体的时间和份数</b><span>比如「工作日 18:30」「3 份材料」——
+            这门课的真实规定它不可能知道，<strong>给了具体数字就是它在编</strong>。<br>
+            <em>它一上来就说不知道</em>：换一个更冷门的问题再试，
+            比如「我们班上周三的课在哪间教室上的」。</span></li>
+          <li><b>追问出处后，露馅了</b><span>两种结果都算成功：
+            它编了一个听起来很像的出处，或者它承认「这是我推测的」——<strong>两种都说明凭记忆不可靠</strong>。<br>
+            <em>它坚持给了出处</em>：把它给的出处名字拿去搜一下，搜不到就是编的。</span></li>
+          <li><b>你能说出它编在哪</b><span>指着它答的那句话，说出「这一条它没有依据」。<br>
+            <em>说不出来</em>：说明它编得太像了——这正是幻觉最危险的地方，把它记下来。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这两段回答（含追问出处那一段）的截图，
+          外加一句你判断「它是编的」的依据。</p>
+      </div>
+    </section>
+
+    <!-- 二、RAG -->
+    <section class="sec" id="s-rag">
+      <h2>二、RAG：把闭卷考试改成开卷考试<span class="sec__tag">本课核心</span></h2>
+      <p>
+        先说人话。<strong>普通问答是闭卷考试</strong>：题目发下来，考生全凭脑子里记的东西写，
+        记不清就编一段，还写得满满当当。
+        <strong>RAG 是开卷考试</strong>：允许你把资料带进考场，先翻到相关那一页，
+        照着那一页写，写完还注明「出自第几页」。
+      </p>
+      <p>
+        RAG 全称 <strong>Retrieval-Augmented Generation（检索增强生成）</strong>。
+        拆开看就是三个词：<strong>检索（Retrieval）→ 增强（Augmented）→ 生成（Generation）</strong>。
+        它由 Meta（原 Facebook）AI Research 的 Patrick Lewis 等人在 <strong>2020 年 5 月</strong>提出，
+        论文《Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks》发表于 NeurIPS 2020。
+        论文的核心思路，是把「模型记住的知识」和「外部可查的知识」这两件事分开，
+        <strong>要让模型知道新东西，不必重新训练它，只要换掉它查的那堆资料。</strong>
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② RAG 四步：你的资料是怎么跑到答案里的</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步 ▶</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="flow">
+              <div class="flow__node dim" id="d2-n1"><b>①</b>切片<br><span class="dim">切成小块</span></div>
+              <div class="flow__path"><span class="flow__dot hold" id="d2-p1"></span></div>
+              <div class="flow__node dim" id="d2-n2"><b>②</b>向量化<br><span class="dim">建索引</span></div>
+              <div class="flow__path"><span class="flow__dot hold" id="d2-p2"></span></div>
+              <div class="flow__node dim" id="d2-n3"><b>③</b>检索<br><span class="dim">召回相关块</span></div>
+              <div class="flow__path"><span class="flow__dot hold" id="d2-p3"></span></div>
+              <div class="flow__node dim" id="d2-n4"><b>④</b>增强生成<br><span class="dim">照着资料答</span></div>
+            </div>
+            <dl class="kvlist" id="d2-detail"></dl>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            流程为教学抽象，实际系统还有重排（rerank）、多路召回、混合检索等环节，这里只保留主干四步。
+          </div>
+        </div>
+      </div>
+
+      <h3>四步分别做了什么</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>步骤</th><th>做什么</th><th>发生在什么时候</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 切片</strong></td><td>把长资料切成一块一块的小片段</td><td>资料入库时（一次）</td></tr>
+            <tr><td><strong>② 向量化</strong></td><td>把每块变成一串数字（向量），存进索引</td><td>资料入库时（一次）</td></tr>
+            <tr><td><strong>③ 检索</strong></td><td>把问题也变成数字，找出挨得最近的几块</td><td>每次提问时</td></tr>
+            <tr><td><strong>④ 增强生成</strong></td><td>把这几块塞进提示词，让它照着答，并标注出处</td><td>每次提问时</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        注意①②和③④的时间点不一样：<strong>前两步是「存」，后两步是「用」</strong>。
+        所以「资料传进去要等一会儿才能问」是正常的——它正在做切片和向量化。
+      </p>
+
+      <h3>闭卷 vs 开卷：一张表看完</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>闭卷（普通问答）</th><th>开卷（RAG）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>回答依据</strong></td><td>训练时记住的参数</td><td>检索到的<strong>你的资料</strong></td></tr>
+            <tr><td><strong>有没有出处</strong></td><td>没有，答完就完了</td><td>有，可以点回去核</td></tr>
+            <tr><td><strong>资料更新</strong></td><td>要重新训练模型，成本极高</td><td><strong>换个文件就行</strong></td></tr>
+            <tr><td><strong>不知道的时候</strong></td><td>容易编一段</td><td>可以说「资料里没有」</td></tr>
+            <tr><td><strong>代价</strong></td><td>零成本，问了就答</td><td>要建库、要切片、检索要花时间</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·同一个问题问两遍，看差别 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：两份回答——一份凭记忆、一份照着你的资料，
+          外加一句「差在哪」的判断。</p>
+        <p><strong>场景</strong>：假定你的《AIGC应用与实践》课程笔记里有这么一段，
+          我们把它做成一份真实文件：</p>
+
+        <p><strong>第 1 步 · 把这份素材存成文件（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在 <code>wb-试验</code> 下新建目录 <code>RAG-试验</code></b><span>
+            本课后面几个实操都在这个目录里做。</span></li>
+          <li><b>在里面新建 <code>课程笔记-切片.md</code></b><span>
+            保存时编码选 <strong>UTF-8</strong>，否则中文会乱码。</span></li>
+          <li><b>把下面这份素材整段复制进去并保存</b><span>点代码块右上角「复制」，不要手打——
+            里面有两个<strong>故意造的词</strong>，后面要靠它们判断 AI 到底读没读。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 课程笔记-切片.md（照抄）">
+          <div class="codeblock__bar"></div>
+<pre><code># 第 14 次课笔记：文件管理与会议记录
+
+## 一、文件命名三件套
+本课程约定，所有教学文件按「主题-来源-日期」三段命名，例：
+课程大纲-教务系统-20260901.docx
+日期一律用 8 位数字，不加分隔符。
+
+## 二、切片时的两个坑
+坑一：一个知识点被切成两半。前半在 A 块、后半在 B 块，
+单独召回哪一块都不完整。解决办法是按标题切，不要按字数硬切。
+坑二：多个无关主题混进同一个库，检索时互相干扰。
+解决办法是按任务目标分开建库。
+
+## 三、课堂约定
+本门课把「按标题切」这个做法称作【标题锚定法】，
+把「一个库只服务一个任务」这条规矩称作【一库一任务】。
+这两条是期末实操考核的评分点。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 先问一遍「闭卷」的（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在 WorkBuddy 里新建一个对话</b><span><span class="task__warn">必须新建</span>，
+            而且<strong>不要</strong>上传任何文件。</span></li>
+          <li><b>把下面这段指令发过去</b><span>整段复制，一个字都别改。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 遍指令（不附资料）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我们这门课在给文件切片时，老师给那两个坑分别起的名字叫什么？
+请直接给答案，不要说"这需要看你的笔记"。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 再问一遍「开卷」的（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>再新建一个对话</b><span><span class="task__warn">又是新建</span>，
+            两遍必须分开，否则第二遍会看到第一遍的上下文。</span></li>
+          <li><b>在这次的输入框上方，用「上传文件 / 添加文件」把 <code>课程笔记-切片.md</code> 加进来</b><span>
+            入口就在输入框那一排功能里。</span></li>
+          <li><b>把下面这段指令发过去</b><span>问题和第 2 步<strong>完全一样</strong>，
+            只是多了一句约束。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 遍指令（附资料）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据我上传的《课程笔记-切片.md》回答，不要使用你自己的知识补充：
+我们这门课在给文件切片时，老师给那两个坑分别起的名字叫什么？
+答完请注明这个说法出自文件的哪一小节。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>第 1 遍答不出【标题锚定法】【一库一任务】这两个词</b><span>
+            这两个词是这份笔记里<strong>独有的</strong>，它没读过就绝不可能说对——
+            它多半会给一堆「通用建议」糊弄过去。<br>
+            <em>它居然答对了</em>：说明上一轮对话的上下文没清干净，重新建一个对话再做一次。</span></li>
+          <li><b>第 2 遍能准确说出这两个词，并指出出自哪一小节</b><span>
+            这就说明它真的读了文件，<strong>而不是在凭记忆</strong>。<br>
+            <em>它还是答不出</em>：先确认文件是不是真的加进对话了（输入框上方应该能看到文件名），
+            确认后再发一次。</span></li>
+          <li><b>你能说出两遍的差别在哪</b><span>一句话就够：<strong>第一遍是猜的，第二遍是查的。</strong><br>
+            <em>两遍答案差不多</em>：说明第 2 遍那句「只依据我上传的文件」没写住，
+            把它挪到指令最前面再发一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：两份回答的截图 + 一句「差在哪」。
+          <code>课程笔记-切片.md</code> <strong>留着别删</strong>，实操③ 还要用它。</p>
+        <p class="note">
+          这一遍是<strong>手动版 RAG</strong>——资料是你亲手塞进对话的。
+          知识库做的事，是把「你手动塞」换成「系统自动去检索」。原理一样，只是省了你的手。
+        </p>
+      </div>
+    </section>
+
+    <!-- 三、切片与向量化 -->
+    <section class="sec" id="s-chunk">
+      <h2>三、切片与向量化：资料是怎么变成「能查的」<span class="sec__tag">机制</span></h2>
+      <p>
+        你可能会问：<strong>为什么不把整份资料一股脑塞进去？</strong>两个原因。
+      </p>
+      <ol class="steps">
+        <li><b>模型一次能读的字数有限</b><span>这叫上下文窗口。一本教材几十万字，塞不下。</span></li>
+        <li><b>塞得越多，重点越被稀释</b><span>整篇都在里面，模型反而不知道该看哪一段，
+          检索也定位不到「哪一段相关」——它只能定位到「哪一本书相关」。</span></li>
+      </ol>
+      <p>
+        所以要<strong>切片</strong>：把长资料切成一个个能独立读懂的小块。检索时召回的是「块」，不是「书」。
+      </p>
+
+      <h3>向量化是什么意思（不用背公式）</h3>
+      <p>
+        每一块切完之后，系统会把它变成<strong>一串数字</strong>（这串数字叫「向量」）。
+        这串数字有个性质：<strong>意思相近的段落，数字也挨得近。</strong>
+      </p>
+      <p>
+        你提问时，系统把你的问题<strong>也变成一串数字</strong>，
+        然后在这个数字空间里找<strong>离它最近的几块</strong>——这就是「检索」。
+        <strong>它不是在比对关键词，是在比对意思。</strong>
+        所以你问「切片」时，写着「分块」「chunk」的那一段也能被找出来。
+      </p>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 切片多大合适：拖一下，看召回质量怎么变</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="range">
+              <span>每块切片长度</span>
+              <input type="range" id="d3-size" min="100" max="3000" step="100" value="500">
+              <span class="range__val" id="d3-size-val">500 字</span>
+            </div>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d3-recall">3 段</b><span>召回的片段数（示意）</span></div>
+              <div class="kpi"><b id="d3-hit">85%</b><span>有用信息占比（示意）</span></div>
+              <div class="kpi"><b class="acc" id="d3-noise">低</b><span>噪声程度（示意）</span></div>
+            </div>
+            <dl class="kvlist" id="d3-detail"></dl>
+          </div>
+          <div class="demo__out" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>不同资料、不同检索系统的最优切片长度差别很大，
+            这里只用来建立「太大太小都不好」的定性认识。
+          </div>
+        </div>
+      </div>
+
+      <h3>三档对照</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>切片大小</th><th>会发生什么</th><th>适合什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>太小</strong><br><span class="note">一两句</span></td>
+              <td>一句话没有上下文，检索是命中了，但读不懂、用不上</td>
+              <td>问答对、术语表、名词解释</td>
+            </tr>
+            <tr>
+              <td><strong>适中</strong><br><span class="note">一个完整小节</span></td>
+              <td>一块讲完一件事，召回来直接就能用</td>
+              <td><strong>笔记、教材、制度文件、课件</strong></td>
+            </tr>
+            <tr>
+              <td><strong>太大</strong><br><span class="note">整章 / 整篇</span></td>
+              <td>一块里塞了五六个主题，噪声多，还白占上下文</td>
+              <td>很短的文件（一页纸的通知）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">两个真实会踩的坑</span>
+        <strong>坑一：一个知识点被切成两半。</strong>前半在 A 块、后半在 B 块，
+        单独召回哪一块都不完整。解法是<strong>按标题切，不要按字数硬切</strong>。<br>
+        <strong>坑二：多个无关主题塞进同一个库。</strong>检索时互相干扰，答案跑偏。
+        解法是<strong>按任务目标分开建库</strong>——这一点官方文档也是这么建议的，
+        并且明确说<strong>第一批资料建议控制在 10–20 条以内</strong>，
+        优先挑信息完整、来源清楚、近期仍然有效的内容。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·备好第一批资料，并让它自查一遍 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个整理好的 <code>material/</code> 目录
+          ＋ 一份 <code>资料清单.md</code>（每条带文件名、一句话说明、来源）
+          ＋ 一份「哪几刀会把知识点切两半」的自查结果。</p>
+
+        <p><strong>第 1 步 · 把三份真实资料放进目录（2 分钟）</strong></p>
+        <p>就这三样，<strong>照指定来，不要换</strong>：</p>
+        <ol class="steps">
+          <li><b>实操② 那份 <code>课程笔记-切片.md</code></b><span>已经有现成的，直接拿来用。</span></li>
+          <li><b>一份本课程的课程大纲或授课计划类文件</b><span>PDF、Word、图片都行。</span></li>
+          <li><b>一份你交过的实验报告</b><span>自己真实写过的那份，Word / PDF / 图片都行。</span></li>
+        </ol>
+        <p>把这三份都放进 <code>wb-试验/RAG-试验/material</code> 目录里。</p>
+
+        <p><strong>第 2 步 · 让 WorkBuddy 重命名并生成清单（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在 WorkBuddy 里新建一个对话，工作目录选 <code>wb-试验/RAG-试验</code></b><span>
+            <span class="task__warn">工作目录要选对</span>，否则它扫不到 material 里的文件。</span></li>
+          <li><b>把下面这段指令整段复制发送</b><span>重命名、写清单、自查切片，一次做完。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="整理指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请处理 material/ 目录里的这 3 份资料，做三件事：
+
+1. 按「主题-来源-日期」三段重命名每个文件，日期用 8 位数字。
+   原文件不要删，改名后另存，并在回复里列出「原名 → 新名」对照。
+
+2. 生成 资料清单.md，每条一行，包含三列：文件名 / 一句话说明这份资料讲了什么 /
+   来源（我自己写的 / 学校发的 / 不确定的写【待确认】）。不要编造来源。
+
+3. 逐份检查：如果按「每 500 字一刀」来切，哪几刀会把一个完整知识点切成两半？
+   列出文件名 + 大概位置 + 原因。没发现就写「未发现」。
+
+不要修改原文件的内容，只做重命名和生成新文件。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三个文件名都是「主题-来源-日期」三段</b><span>日期是 8 位数字、没有分隔符。<br>
+            <em>没改名或格式不对</em>：把「按主题-来源-日期三段命名、日期用 8 位数字」这句单独再发一次。</span></li>
+          <li><b><code>资料清单.md</code> 里三条都齐全</b><span>每条都有文件名、一句话说明、来源三列。<br>
+            <em>来源那一列写得太满</em>：⚠️ 注意它有可能替你编来源。凡是它不确定的，
+            应该是【待确认】——看到它把你没说过的来源写死了，就让它改回【待确认】。</span></li>
+          <li><b>切片自查给出了具体位置</b><span>能指出「哪一份的什么地方会被切两半」。<br>
+            <em>它只写了「未发现」</em>：让它改成按标题切再自查一遍——
+            按字数硬切几乎一定会切出问题。</span></li>
+          <li><b>原文件的内容一个字没动</b><span>它只做了重命名和生成新文件。<br>
+            <em>原文被改了</em>：说明「不要修改原文件的内容」那句没生效，
+            把它提到指令最前面重发一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>material/</code> 目录截图 + <code>资料清单.md</code>
+          + 切片自查那段回答。这三样<strong>原样留着</strong>，实操④ 要整批投喂进知识库。</p>
+      </div>
+    </section>
+
+    <!-- 四、IMA 知识库 -->
+    <section class="sec" id="s-ima">
+      <h2>四、IMA 知识库入门<span class="sec__tag">工具</span></h2>
+      <p>
+        原理讲完了，落到工具上。<strong>ima</strong>（腾讯 AI 知识管家 / ima.copilot）
+        是「搜、读、写」一体的 AI 知识工作台，<strong>以个人知识库为核心</strong>。
+        按 WorkBuddy 官方口径：<strong>WorkBuddy 接入后，可直接检索并引用 ima 中的
+        个人 / 共享 / 订阅知识库。</strong>
+      </p>
+
+      <h3>三类知识库</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>类型</th><th>谁能用</th><th>什么时候用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>个人知识库</strong></td><td>只有你自己</td><td>课程笔记、专业资料、自己的成果沉淀</td></tr>
+            <tr><td><strong>共享知识库</strong></td><td>你邀请的人</td><td>小组作业、课题组、班组共用资料</td></tr>
+            <tr><td><strong>订阅知识库</strong></td><td>你在「发现」里订阅的别人的库</td><td>直接拿来用，省得自己从头攒</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        按官方建议，新手<strong>不要一上来就建一个「大而全」的库</strong>（比如「我的资料库」「AI 资料库」）——
+        短期方便，长期一定乱。要<strong>按任务目标建主题库</strong>：先想清楚这个库未来服务哪个任务，
+        再决定往里放什么。
+      </p>
+
+      <h3>能往里放什么</h3>
+      <p>ima 官方列出的可导入范围（以你实际使用的版本为准）：</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>类别</th><th>具体</th></tr></thead>
+          <tbody>
+            <tr><td><strong>文件</strong></td><td>PDF / Word / PPT / Excel 等</td></tr>
+            <tr><td><strong>网页</strong></td><td>网页链接、公众号文章、微信里的文件</td></tr>
+            <tr><td><strong>图片与音频</strong></td><td>图片 / 截图、录音 / 音频</td></tr>
+            <tr><td><strong>在线文档</strong></td><td>腾讯文档</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        导入之后不要急着问——系统在<strong>做切片和向量化</strong>（第二节的第①②步），
+        大文件要等一会儿才检索得到。
+      </p>
+
+      <h3>拿到答案之后：三查</h3>
+      <p>知识库能让你查得出错，但不会替你不出错。拿到答案后按这三步走：</p>
+      <ol class="steps">
+        <li><b>查引用</b><span>它有没有标出「这句话来自哪份资料的哪一段」。没有引用的长答案，当它没说。</span></li>
+        <li><b>查原文</b><span>点回去核，看资料里<strong>是不是真的这么写的</strong>。
+          这一步 AI 自己判不了。</span></li>
+        <li><b>查边界</b><span>资料里没有的内容，它是说了「资料里没有」，还是照样编了一段？</span></li>
+      </ol>
+      <div class="callout callout--danger">
+        <span class="callout__t">一句话说清知识库的边界</span>
+        <strong>知识库不能消灭幻觉，只能把幻觉从「凭空编」降级成「可核对」。</strong>
+        引用点得回去，才叫溯源；点不回去的引用，和没有引用是一样的。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·建库、提问、核溯源 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个你亲手建的主题知识库 ＋ 三组问答
+          （其中一组是「资料里根本没有」的问题）＋ 一张溯源核对结果。</p>
+
+        <p><strong>第 1 步 · 建一个主题知识库（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开 ima（ima.qq.com 或已安装的客户端），登录</b><span>没有账号就先注册一个。</span></li>
+          <li><b>新建知识库，名字就叫 <code>AIGC课程-第15次课试验</code></b><span>
+            <span class="task__warn">名字照抄</span>，讲评时好对上号。</span></li>
+          <li><b>把实操③ 那个 <code>material/</code> 目录里的 3 份资料传进去</b><span>
+            用「上传文件」；顺手把 <code>资料清单.md</code> 也传进去。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 问第一组：事实题（3 分钟）</strong></p>
+        <p>先问一个答案<strong>确实在你资料里</strong>的问题，把下面这段指令发进
+          <strong>基于知识库的问答</strong>里：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="Q1 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据「AIGC课程-第15次课试验」这个知识库里的内容回答，不要使用你自己的知识补充：
+这门课给文件命名的三件套是什么？切片时要避开的两个坑叫什么名字？
+请注明每条说法出自哪一份资料的哪一小节。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 问第二组：跨两份资料的归纳题（2 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="Q2 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据「AIGC课程-第15次课试验」知识库回答：
+把知识库里的课程笔记和我交过的那份作业对照一下，
+笔记里提到的做法，有哪些在我那份作业里其实还没做到？
+逐条列出，每条注明依据来自哪份资料。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 问第三组：资料里根本没有的问题（2 分钟）</strong></p>
+        <p>这一组是<strong>专门测它会不会编</strong>的——问一个你的资料里绝对没有的东西：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="Q3 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据「AIGC课程-第15次课试验」知识库回答，不允许使用知识库之外的任何知识：
+这门课期末考试的具体时间是几月几日？试卷一共有几道大题？
+如果知识库里没有这个信息，请直接回答"知识库里没有这项信息"，
+不要用你的常识或推测来补。</code></pre>
+        </div>
+
+        <p><strong>第 5 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>Q1 的每一条都能在资料里找到对应原文</b><span>【标题锚定法】【一库一任务】这两个词
+            应该被准确说出来，并且标了出处。<br>
+            <em>它答得笼统、没给出处</em>：把「请注明每条说法出自哪一份资料的哪一小节」
+            挪到指令最前面再问一次。</span></li>
+          <li><b>Q2 提到了两份资料里才有的内容</b><span>笔记里的做法 ＋ 作业里的实际情况，两边都点到了。<br>
+            <em>它只讲了一边</em>：补一句「必须同时引用课程笔记和作业两份资料，逐条对照」。</span></li>
+          <li><b>Q3 明确说「知识库里没有」</b><span>这是本组的关键。<br>
+            <em>它照样给了日期和题数</em>：⚠️ 说明「不允许使用知识库之外的任何知识」这句没写住。
+            把它改成指令的<strong>第一句</strong>，再问一次——如果还是编，
+            说明这次问答<strong>没有真正走知识库</strong>，回头检查第 1 步的库是不是选对了。</span></li>
+          <li><b>溯源核对做完了</b><span>Q1、Q2 的引用你都点开核过，至少核了其中一条。<br>
+            <em>引用点不回去</em>：这条答案就不算数，按「没有引用」处理。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：知识库截图（能看到 3 份资料在里面）
+          ＋ Q1/Q2/Q3 三组问答截图 ＋ 一句溯源核对结论。</p>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">下一步：把它接进 WorkBuddy</span>
+        在 WorkBuddy 桌面端里，ima 知识库的入口是<strong>左侧边栏「资料库」→「ima 知识库」</strong>；
+        按官方说明，个人版连接器用<strong>微信扫码</strong>授权，授权后 WorkBuddy 可获得
+        「查看知识库列表 / 查看或搜索知识库资料 / 把文件加进任务或存回 ima」这几项权限；
+        换绑账号则在该页面右上角「解除绑定」（<strong>仅个人版支持解绑，企业版由企业统一管理</strong>）。<br>
+        具体怎么连、怎么在任务里引用，<a class="xref" data-lesson="16">第 16 次课</a>整课都在做这件事。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>AI「瞎编」最根本的原因是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 模型训练数据太少，多练练就好了</li>
+            <li>B. 它只能凭训练时记住的东西猜下一个字，手上没有「我有没有依据」这个开关</li>
+            <li>C. 它故意骗人</li>
+            <li>D. 网络延迟导致答案出错</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>生成式模型的工作方式是<strong>逐字猜下一个最可能的字</strong>，
+            猜得顺就一直往下写。它没有「我现在有没有依据」这个判断机制，所以「提醒它别瞎编」基本没用——
+            得换掉它回答的依据，也就是 RAG。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>RAG 的四步，正确顺序是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 检索 → 切片 → 向量化 → 生成</li>
+            <li>B. 切片 → 向量化 → 检索 → 增强生成</li>
+            <li>C. 向量化 → 切片 → 增强生成 → 检索</li>
+            <li>D. 增强生成 → 检索 → 向量化 → 切片</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>前两步是<strong>「存」</strong>（切片、向量化建索引，资料入库时做一次），
+            后两步是<strong>「用」</strong>（检索、增强生成，每次提问都跑一遍）。
+            所以资料传进去要等一会儿才能问——它正在做前两步。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>判断：只要给 AI 挂上知识库，它就不会再瞎编了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，知识库能消灭幻觉</li>
+            <li>B. 错误，知识库只能把幻觉从「凭空编」降级成「可核对」，还得靠你去核</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>它仍可能召回到错的片段、可能读错原文、
+            也可能在资料不够时用自己的知识补。知识库的价值<strong>不在于不出错，
+            而在于出错时你能查出来</strong>——所以「查引用、查原文、查边界」这三查一步都不能省。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>一份 30 页的教材，按「每 30 字一刀」来切，最可能出什么问题？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 检索更快，效果更好</li>
+            <li>B. 切片太小，一句话没有上下文，命中了也读不懂、用不上</li>
+            <li>C. 会超出上下文窗口，塞不进去</li>
+            <li>D. 完全没有影响</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>太小的问题是<strong>「读不懂」</strong>，不是「塞不下」——C 是切片<strong>太大</strong>才会碰到的问题。
+            适中那一档的标准是：<strong>一块讲完一件完整的事，召回来直接就能用</strong>。
+            另外记住——按标题切，不要按字数硬切，否则容易把一个知识点切成两半。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>拿到一份带引用的答案，三查里最不能省的是哪一步？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 查引用：看它有没有标出处</li>
+            <li>B. 查原文：点回去核，看资料里是不是真的这么写的</li>
+            <li>C. 查字数：看答案够不够长</li>
+            <li>D. 查语气：看它写得好不好</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>引用<strong>标了不代表对</strong>——它可能标了一份资料、但结论是自己补的。
+            <strong>点得回去、而且原文确实这么写</strong>，这条答案才算数。
+            这一步 AI 自己判不了，必须人来。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>幻觉不是 bug，是默认行为</strong>——它逐字猜下一个字，「提醒它别编」没用，
+            要换掉它回答的依据；</li>
+          <li><strong>RAG = 检索增强生成</strong>：闭卷考试改开卷考试，
+            四步是<b>切片 → 向量化 → 检索 → 增强生成</b>，前两步「存」、后两步「用」；</li>
+          <li><strong>切片按标题切，不按字数硬切</strong>——太大噪声多、太小读不懂，
+            标准是「一块讲完一件完整的事」；</li>
+          <li><strong>建库要按任务目标建主题库</strong>，别搞「大而全」，
+            第一批资料 <b>10–20 条以内</b>，挑信息完整、来源清楚、近期有效的；</li>
+          <li><strong>知识库不消灭幻觉，只让它可核对</strong>——拿到答案走<b>三查</b>：
+            查引用、查原文、查边界，点不回去的引用等同于没有引用。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：这一课你在 ima 里亲手建了库、亲手核了溯源。
+        下一课换个方向——<strong>不再是你去 ima 里问，而是让 WorkBuddy 自己来查你的库</strong>：
+        怎么授权、怎么在任务里引用、产物怎么存回 ima，以及权限边界在哪。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 15 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）RAG 这三个字母里，"R"指的是什么？
+A. Reasoning（推理）
+B. Retrieval（检索）
+C. Response（回复）
+D. Rewrite（重写）
+【答案】B
+【解析】RAG 全称 Retrieval-Augmented Generation，检索增强生成。三个词依次是检索（Retrieval）、增强（Augmented）、生成（Generation）。它先去资料库里检索相关内容，再把检索到的内容塞进提示词增强上下文，最后由模型生成回答。
+
+2.（多选）ima 知识库分为哪三类？
+A. 个人知识库
+B. 共享知识库
+C. 订阅知识库
+D. 公开知识库
+【答案】ABC
+【解析】按官方口径是个人 / 共享 / 订阅三类：个人的只有自己能用，共享的由你邀请的人一起用，订阅的是你在"发现"里订阅的别人的库。"公开知识库"不是官方分类。
+
+3.（多选）建一个知识库、准备第一批资料时，下面哪些做法是对的？
+A. 按任务目标建主题库，而不是建一个"大而全"的资料库
+B. 第一批资料控制在 10–20 条以内
+C. 优先挑信息完整、来源清楚、近期仍然有效的内容
+D. 把能找到的资料全部一次性传进去，越多越好
+【答案】ABC
+【解析】官方建议新手不要建"我的资料库"这类大而全的库，短期方便、长期必乱；第一批资料建议 10–20 条以内，挑信息完整、来源清楚、近期有效的。D 正好相反——资料越多越杂，检索时互相干扰，答案反而容易跑偏。
+
+4.（单选）给一份教材做切片，下面哪种切法最合理？
+A. 整本教材作为一个大块，一次塞进去
+B. 每 30 字切一刀
+C. 按标题切，让每一块讲完一件完整的事
+D. 随机切，反正检索会找到
+【答案】C
+【解析】按标题切能保证一个知识点不被切成两半，也保证每块能独立读懂。A 太大：一块里塞了五六个主题，噪声多还白占上下文；B 太小：一句话没有上下文，命中了也用不上；D 完全不可控。
+
+5.（判断）AI 给出的答案后面带了引用，就说明这条答案的内容一定是正确的。
+A. 正确，有引用就是有依据
+B. 错误，引用标了不代表对，必须点回原文核过才算数
+【答案】B（错误）
+【解析】它可能标了一份资料、但结论是自己补的，也可能读错了原文。所以三查里的第二查"查原文"不能省：点得回去、而且原文确实这么写，这条答案才算数。这一步 AI 自己判不了，必须人来。
+
+6.（单选）你想让 AI 只依据知识库回答，知识库里没有的信息不要自己补。下面哪种指令写法最有效？
+A. 请回答我的问题，尽量准确一点
+B. 请回答我的问题，不知道的就说不知道
+C. 只依据 XX 知识库回答，不允许使用知识库之外的任何知识；知识库里没有的，直接回答"知识库里没有这项信息"，不要用常识或推测来补
+D. 请多查几遍资料再回答
+【答案】C
+【解析】A、B、D 都是在"求它自觉"，没有约束力。有效写法要同时做到三点：① 限定依据范围（只依据哪个库）；② 写死红线（不允许使用库外知识）；③ 明确缺信息时怎么办（直接说没有，不许用常识补）。而且这三句要放在指令开头才最稳。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 闭卷 vs 开卷 ---------- */
+  var d1mode = "closed";
+  var D1_FLOW = {
+    closed:
+      '<div class="flow__node"><b>❓</b>你的问题<br><span class="dim">实训室几点关门</span></div>' +
+      '<div class="flow__path"><span class="flow__dot bad"></span></div>' +
+      '<div class="flow__node dim"><b>📚</b>你的资料<br><span class="dim">没挂 / 没查</span></div>' +
+      '<div class="flow__path"><span class="flow__dot run"></span></div>' +
+      '<div class="flow__node"><b>🧠</b>模型<br><span class="dim">只能凭记忆</span></div>' +
+      '<div class="flow__path"><span class="flow__dot run"></span></div>' +
+      '<div class="flow__node"><b>💬</b>答案<br><span class="dim">很像对的，但没有出处</span></div>',
+    open:
+      '<div class="flow__node"><b>❓</b>你的问题<br><span class="dim">实训室几点关门</span></div>' +
+      '<div class="flow__path"><span class="flow__dot run"></span></div>' +
+      '<div class="flow__node"><b>📚</b>知识库<br><span class="dim">检索到 2 个片段</span></div>' +
+      '<div class="flow__path"><span class="flow__dot run"></span></div>' +
+      '<div class="flow__node on"><b>🧠</b>模型<br><span class="dim">照着片段答</span></div>' +
+      '<div class="flow__path"><span class="flow__dot run"></span></div>' +
+      '<div class="flow__node"><b>💬</b>答案<br><span class="dim">带引用，能点回去核</span></div>'
+  };
+  var D1_OUT = {
+    closed: [
+      '<span class="dim">>>> 实训室工作日开放到几点？</span>',
+      '工作日 18:30 关闭，周末 17:00 关闭。',
+      '<span class="no">✗ 这个时间是我编的 —— 模型手上没有你的校历</span>',
+      '<span class="dim">追问出处后：它可能再编一个出处，也可能承认是推测</span>',
+      '<span class="hl">结论：看起来越具体，越危险</span>',
+    ],
+    open: [
+      '<span class="dim">>>> 实训室工作日开放到几点？</span>',
+      '<span class="dim">检索中… 命中「实训室管理规定.pdf」第 2 节 等 2 个片段</span>',
+      '据《实训室管理规定》第 2 节：工作日开放至 21:00，周末 17:00。',
+      '<span class="dim">［引用 1］实训室管理规定.pdf · 第 2 节 开放时间</span>',
+      '<span class="ok">✓ 有出处 —— 你可以点回去核，核不了就是它读错了</span>',
+      '<span class="hl">结论：不是不会错，是错了能查出来</span>',
+    ]
+  };
+  function d1Render() {
+    if ($("d1-flow")) $("d1-flow").innerHTML = D1_FLOW[d1mode];
+    if (window.Site && window.Site.type && $("d1-out")) {
+      window.Site.type($("d1-out"), D1_OUT[d1mode]);
+    }
+  }
+  var d1btns = document.querySelectorAll('#demo1 button[data-tab]');
+  for (var i = 0; i < d1btns.length; i++) {
+    d1btns[i].addEventListener("click", function () {
+      d1mode = this.getAttribute("data-tab");
+      d1Render();
+    });
+  }
+  if ($("d1-ask")) $("d1-ask").addEventListener("click", d1Render);
+  if ($("d1-reset")) $("d1-reset").addEventListener("click", function () {
+    d1mode = "closed";
+    for (var j = 0; j < d1btns.length; j++) {
+      d1btns[j].classList.toggle("on", d1btns[j].getAttribute("data-tab") === "closed");
+    }
+    d1Render();
+  });
+  d1Render();
+
+  /* ---------- 演示② RAG 四步 ---------- */
+  var D2_STEPS = [
+    {
+      name: "① 切片",
+      kv: "<dt>做什么</dt><dd>把长资料按标题切成一块一块，让每块都能独立读懂</dd>" +
+          "<dt>什么时候做</dt><dd>资料入库时，做一次</dd>",
+      log: [
+        '<span class="hl">第 ① 步 · 切片</span>',
+        '<span class="dim">输入：实训室管理规定.pdf（32 页）</span>',
+        '按标题切成 47 个片段，每段 300–800 字',
+        '<span class="ok">✓ 切完的每一块都讲完一件完整的事</span>',
+      ]
+    },
+    {
+      name: "② 向量化",
+      kv: "<dt>做什么</dt><dd>把每一块变成一串数字，存进索引</dd>" +
+          "<dt>什么时候做</dt><dd>资料入库时，做一次</dd>",
+      log: [
+        '<span class="hl">第 ② 步 · 向量化（建索引）</span>',
+        '<span class="dim">文本 → 向量：意思相近的段落，数字也挨得近</span>',
+        '47 个片段全部写入索引，用时约十几秒',
+        '<span class="dim">这就是为什么大文件传完要等一会儿才好问</span>',
+      ]
+    },
+    {
+      name: "③ 检索",
+      kv: "<dt>做什么</dt><dd>把问题也变成数字，找出挨得最近的几块</dd>" +
+          "<dt>什么时候做</dt><dd>每次提问时</dd>",
+      log: [
+        '<span class="hl">第 ③ 步 · 检索（召回）</span>',
+        '<span class="dim">>>> 实训室工作日开放到几点？</span>',
+        '问题 → 向量 → 在索引里找最近的片段',
+        '<span class="ok">✓ 命中 2 段：第 2 节「开放时间」、第 5 节「节假日安排」</span>',
+        '<span class="dim">注意：它比对的是意思，不是关键词</span>',
+      ]
+    },
+    {
+      name: "④ 增强生成",
+      kv: "<dt>做什么</dt><dd>把这 2 个片段塞进提示词，让它照着答并标出处</dd>" +
+          "<dt>什么时候做</dt><dd>每次提问时</dd>",
+      log: [
+        '<span class="hl">第 ④ 步 · 增强生成</span>',
+        '<span class="dim">提示词 = 你的问题 + 检索到的 2 个片段 + 标注出处的要求</span>',
+        '输出：据《实训室管理规定》第 2 节，工作日开放至 21:00。',
+        '<span class="ok">✓ 带引用 —— 剩下的三查交给你</span>',
+      ]
+    }
+  ];
+  var d2step = -1;
+  function d2Render() {
+    for (var k = 0; k < 4; k++) {
+      var node = $("d2-n" + (k + 1));
+      var path = $("d2-p" + (k + 1));
+      if (node) {
+        node.classList.toggle("on", k === d2step);
+        node.classList.toggle("dim", k !== d2step);
+      }
+      if (path) {
+        path.className = "flow__dot" + (k < d2step ? " run" : k === d2step ? " run" : " hold");
+      }
+    }
+    var detail = $("d2-detail");
+    if (detail) {
+      detail.innerHTML = d2step < 0
+        ? "<dt>当前进度</dt><dd>还没开始 —— 点「下一步」逐步走完 RAG 的四步</dd>"
+        : D2_STEPS[d2step].kv;
+    }
+    var out = $("d2-out");
+    if (out && window.Site && window.Site.type) {
+      if (d2step < 0) {
+        out.innerHTML = '<span class="dim">四步走完一遍，你就知道「资料是怎么跑到答案里的」了。</span>';
+      } else {
+        window.Site.type(out, D2_STEPS[d2step].log);
+      }
+    }
+    if ($("d2-next")) {
+      $("d2-next").textContent = d2step >= 3 ? "走完了 ▶" : "下一步 ▶";
+    }
+  }
+  if ($("d2-next")) $("d2-next").addEventListener("click", function () {
+    d2step = d2step >= 3 ? -1 : d2step + 1;
+    d2Render();
+  });
+  if ($("d2-reset")) $("d2-reset").addEventListener("click", function () {
+    d2step = -1;
+    d2Render();
+  });
+  d2Render();
+
+  /* ---------- 演示③ 切片大小 ---------- */
+  var D3_TIERS = [
+    { max: 300,  recall: "8 段", hit: "25%",  noise: "低但读不懂",
+      kv: "<dt>这一档会发生什么</dt><dd>一句话一段，检索是命中了，但拿出来的片段没有上下文，模型读不懂、也没法用</dd><dt>建议</dt><dd>只适合问答对、术语表这类本来就很短的资料</dd>" },
+    { max: 900,  recall: "3 段", hit: "85%",  noise: "低",
+      kv: "<dt>这一档会发生什么</dt><dd>一块讲完一件完整的事，召回即用，噪声也少</dd><dt>建议</dt><dd>笔记、教材、制度文件的默认档位</dd>" },
+    { max: 1800, recall: "2 段", hit: "55%",  noise: "中",
+      kv: "<dt>这一档会发生什么</dt><dd>一块里塞了两三个主题，有用的那部分被无关内容稀释</dd><dt>建议</dt><dd>按标题再切细一点</dd>" },
+    { max: 9999, recall: "1 段", hit: "30%",  noise: "高",
+      kv: "<dt>这一档会发生什么</dt><dd>基本等于整篇塞进去，检索定位不到具体段落，还白占上下文</dd><dt>建议</dt><dd>只有一页纸的短文件才能这么干</dd>" }
+  ];
+  function d3Render() {
+    var v = parseInt($("d3-size").value, 10);
+    var t = D3_TIERS[D3_TIERS.length - 1];
+    for (var m = 0; m < D3_TIERS.length; m++) { if (v <= D3_TIERS[m].max) { t = D3_TIERS[m]; break; } }
+    if ($("d3-size-val")) $("d3-size-val").textContent = v + " 字";
+    if ($("d3-recall")) $("d3-recall").textContent = t.recall;
+    if ($("d3-hit")) $("d3-hit").textContent = t.hit;
+    if ($("d3-noise")) $("d3-noise").textContent = t.noise;
+    if ($("d3-detail")) $("d3-detail").innerHTML = t.kv;
+    var good = v > 300 && v <= 900;
+    if ($("d3-out")) {
+      $("d3-out").innerHTML = good
+        ? "<span class='ok'>✓ 这一档比较合适</span>：一块讲完一件事，召回来直接能用。"
+        : "<span class='no'>⚠ 这一档偏" + (v <= 300 ? "小" : "大") + "</span>：" +
+          (v <= 300 ? "读不懂，命中也白搭。" : "噪声多，重点被稀释。") +
+          "<br><span class='dim'>记住：按标题切，别按字数硬切。</span>";
+    }
+  }
+  if ($("d3-size")) $("d3-size").addEventListener("input", d3Render);
+  d3Render();
+})();
+</script>
+</body>
+</html>

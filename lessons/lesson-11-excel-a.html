@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第11次课 办公实战——Excel 数据处理（上）｜AIGC应用与实践</title>
+<meta name="description" content="本地沙箱与先摸底、脏数据六张面孔与清洗规则、口径定死的汇总公式、验收三道关。案例：发票报销自动整理——字段提取、金额与日期清洗、按部门月份汇总对账。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="11" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 办公实战</span></h2>
+      <p class="lead">
+        上一课处理的是 Word，难点是「读着顺不顺」。这一课换成<strong>表格</strong>，
+        难点变成了一件事：<strong>数字对不对</strong>。
+        一叠发票、一批报销单据，交到 AI 手里几分钟就能出表——
+        但快不等于对，它读了几张票、金额看错一位没有、同一张票算没算两遍，
+        你不问它就不说。<strong>而报销是要拿去给财务的。</strong>
+      </p>
+      <p>
+        先看三个你现在就能碰到的场景：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>场景</th><th>你现在的做法</th><th>真正的风险</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>月底录入发票</strong></td>
+              <td>对着一叠扫描件/照片，一张一张敲进行 Excel</td>
+              <td>金额看错一位、日期看串行，自己还发现不了；十几张票敲完两小时没了</td>
+            </tr>
+            <tr>
+              <td><strong>报销台账清洗</strong></td>
+              <td>三个部门各报各的，格式各写各的，合到一起全是乱的</td>
+              <td>金额写成 <code>¥1,280.00</code>、<code>1,280</code>、<code>一百二</code> 三种，
+                整列变成文本，<code>SUM</code> 求和直接把这些笔跳过去</td>
+            </tr>
+            <tr>
+              <td><strong>汇总交财务</strong></td>
+              <td>按部门拉一张表，手填 SUMIF，再自己加一遍核对</td>
+              <td>各部门加起来和总额对不上，差在哪一笔说不清，只能从头再算</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚：这一课的「做」全在 WorkBuddy 里</span>
+        页面里<strong>橙色边框的方块</strong>都是要你<strong>真的在 WorkBuddy 里跑一遍</strong>的环节，
+        一共 4 个、合计约 50 分钟。每个都配好了<strong>素材</strong>和<strong>可直接复制的指令</strong>，
+        你不用自己想提示词，也不用先在纸上算一遍——
+        <strong>动手的是 AI，把关的是你。</strong>
+        这一课最值钱的不是「它会算」，而是<strong>「你知道该核它哪三处」</strong>。
+      </div>
+      <p class="note">
+        本页出现的<strong>票据号、金额、人名、部门全部为教学模拟数据</strong>，
+        页面里每一份素材都标注了「模拟」，不是任何真实票据。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说清 WorkBuddy 处理表格时的三条官方口径：<strong>本地执行不上传</strong>、
+            <strong>沙箱隔离</strong>、<strong>只能访问你授权的目录</strong>；</li>
+          <li>写出一条三要素齐全的表格处理指令：<strong>数据源 + 规则 + 输出</strong>；</li>
+          <li>让 AI 从票据里<strong>提取字段</strong>成表，并且要求它
+            <strong>读不清的标【待核实】，不许编造</strong>；</li>
+          <li>点名说出脏数据<strong>六张常见面孔</strong>，并为每一张指定处理规则，
+            而不是让它自己看着办；</li>
+          <li>判断 AI 给的汇总能不能交：核<strong>行数</strong>、核<strong>口径</strong>、
+            核<strong>合计数</strong>——报销总额要能和明细<strong>逐笔对上</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-read"><b>01</b>票据交出去之前，先让它认字段、报家底 <em>＋实操①</em></a>
+        <a href="#s-clean"><b>02</b>脏数据的六张面孔与清洗规则 <em>＋实操②</em></a>
+        <a href="#s-stat"><b>03</b>汇总：口径你定，对账它做 <em>＋实操③</em></a>
+        <a href="#s-check"><b>04</b>一条龙 + 效率对比：省在哪、还得核什么 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素
+        （本课把它收窄成表格场景的「三要素」）、<a class="xref" data-lesson="10">第 10 次课</a>
+        「先结构、后内容、再审校」的流程。<br>
+        <strong>后续</strong>：本课只做到「把票据收拾干净、算出报销总额并对上账」。
+        下一课（<a class="xref" data-lesson="12">第 12 次课</a>）接着做<strong>分类汇总、透视表与图表</strong>，
+        以及从数字到结论那一步。
+      </div>
+    </section>
+
+    <section class="sec" id="s-read">
+      <h2>一、票据交出去之前，先让它认字段、报家底<span class="sec__tag">地基</span></h2>
+      <p>
+        先看一句最常见的指令，和它的下场：
+      </p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="最常见的错误用法">
+        <div class="codeblock__bar"></div>
+<pre><code>帮我算一下这些发票一共多少钱。
+
+（两分钟后）一共 10601.5 元。</code></pre>
+      </div>
+      <p>
+        问题是：<strong>你不敢把这个数报给财务。</strong>
+        它一共读了几张票？那张被印章盖住金额的算了多少？同一张票被扫进来两次算了两遍吗？
+        你一样都不知道，而它<strong>不会主动告诉你</strong>——它只回答你问的那句。
+      </p>
+      <p>
+        所以第一步不是「让它算」，而是<strong>让它先把票认全、把家底报出来</strong>。
+        这就像请人帮你盘库：先让他报「有多少箱、哪些箱是空的、哪些箱标签看不清」，
+        你认可了他的盘点结果，再让他搬。<strong>盘点错了就纠正，搬错了要重搬一趟。</strong>
+      </p>
+
+      <h3>它到底是怎么处理你的表的</h3>
+      <p>
+        这一点必须讲清楚，因为它决定了<strong>你敢不敢把真实报销数据交给它</strong>。
+        下面三条是官方文档口径，不是推测：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>官方口径（原文要点）</th><th>对你意味着什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>数据本地执行不上传</strong>：所有数据在用户本地环境执行处理；
+                服务端仅处理数据片段，<strong>用后即弃，不保存、不用于模型训练</strong></td>
+              <td>发票金额、报销人这类财务数据可以放心给它处理</td>
+            </tr>
+            <tr>
+              <td><strong>Bash 命令沙箱</strong>：AI 操作与真实系统严格隔离；
+                <strong>文件系统隔离</strong>：只能访问预先授权的工作空间目录</td>
+              <td>它碰不到你没授权的文件夹，也改不动系统目录</td>
+            </tr>
+            <tr>
+              <td><strong>默认安全设计</strong>：启动时仅拥有只读权限，
+                编辑文件、运行命令需<strong>显式用户批准</strong></td>
+              <td>它会先给你看方案，你点了才动手</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        以上三条摘自 WorkBuddy 客户端用户文档「常见问题 · 数据安全说明」，
+        本站核对日期 <strong>2026-09-24</strong>。
+        另：官方文档「简介」页把「本地文件操作：可读取授权的电脑文件夹，进行批量处理」
+        与「数据分析：上传数据文件，自动分析和可视化」列为产品能力。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">一个「不确定」，如实标出来</span>
+        教案里把它概括为「本地 Python 沙盒」。官方口径里能查到的是
+        <strong>「Bash 命令沙箱」+「数据本地执行不上传」</strong>这两条，
+        <strong>并没有规定必须用 Python</strong>。
+        你在执行过程里通常会看到它生成一段脚本再执行，
+        但具体用什么语言跑，取决于模型与任务——<strong>这一点本站不确定，以你实际看到的为准</strong>。
+        反正对你来说不重要：你验的是<strong>输出的数字</strong>，不是它用的语言。
+      </div>
+
+      <h3>怎么把票据交给它</h3>
+      <p>
+        官方文档「实践三：数据分析并可视化」里写了两种把表交给它的方式
+        （本站核对日期 2026-09-24）：
+      </p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>方式</th><th>怎么做</th><th>什么时候用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>拖入对话</strong></td><td>把票据图片 / PDF / Excel 文件直接拖到对话框</td><td>临时处理一两张票</td></tr>
+            <tr><td><strong>告诉路径</strong></td><td>在指令里写明文件在工作目录里的位置</td><td>要连续处理多份、或要它另存新文件</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        本课四个实操<strong>统一用第二种</strong>——把素材存成文件放进工作目录，
+        指令里写清文件名。这样它能自己另存、你能自己打开核对，
+        不会因为「文件只在对话里」而没法验收。
+        <strong>重要资料只放副本</strong>：素材统一放在工作目录里的 <code>input</code> 下，
+        你本人的真实票据不要往工作目录里放原件。
+      </p>
+      <div class="callout callout--danger">
+        <span class="callout__t">沙盒与权限边界：这一课的底线</span>
+        它只在<strong>你授权的工作目录内</strong>操作——
+        工作目录之外的文件夹它碰不到，系统目录它改不动，这是<strong>官方口径写明的</strong>。<br>
+        但这不等于你可以随手把原件丢进去：<strong>放进工作目录 = 允许它读写</strong>。
+        所以规矩是两条——
+        <strong>一、只在工作目录内操作；二、重要资料只放副本。</strong>
+        本课所有素材都要求存成 <code>input/</code> 下的新文件，就是这个原因。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·让 AI 从票据里提取字段，读不清的标【待核实】 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/票据明细_初稿.csv</code>——
+          6 张票一行一条，字段认全了；看不清的格子写着【待核实】，
+          <strong>一处都没有被它自己编个数填进去</strong>。</p>
+
+        <p><strong>第 1 步 · 先建素材文件</strong>：在 <code>wb-试验/input</code> 里新建
+          <code>票据扫描件文本.txt</code>，把下面这段<strong>原样存进去</strong>（点右上角复制）。
+          <span class="task__warn">这是模拟的扫描件识别文本，「█」表示被印章/订书钉挡住看不清的地方，不要顺手改掉</span>。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 票据扫描件文本.txt（模拟数据，含 3 处看不清）">
+          <div class="codeblock__bar"></div>
+<pre><code>【票据 1】
+发票代码：044002600111　发票号码：26090101
+开票日期：2026年9月1日
+销售方 / 项目：滴滴出行 · 市内交通
+价税合计（小写）：￥1,280.00
+报销人：张明（市场部）
+
+【票据 2】
+发票代码：044002600112　发票号码：26082602
+开票日期：2026年8月26日
+销售方 / 项目：如家酒店 · 住宿
+价税合计（小写）：￥█80.00　← 第二位数字被印章盖住
+报销人：李婷（市场部）
+
+【票据 3】
+发票代码：044002600113　发票号码：26090203
+开票日期：2026年█月5日　← 月份一栏模糊
+销售方 / 项目：海底捞 · 餐饮
+价税合计（小写）：￥120.00
+报销人：王海（技术部）
+
+【票据 4】
+发票代码：044002600114　发票号码：26082904
+开票日期：2026年8月29日
+销售方 / 项目：得力办公 · 办公用品
+价税合计（小写）：￥345.50
+报销人：陈静（行政部）
+
+【票据 5】
+发票代码：044002600115　发票号码：26090305
+开票日期：2026年9月10日
+销售方 / 项目：███████　← 项目一栏被订书钉挡住
+价税合计（小写）：￥2,150.00
+报销人：刘洋（技术部）
+
+【票据 6】
+发票代码：044002600116　发票号码：26090606
+开票日期：2026年9月6日
+销售方 / 项目：携程商旅 · 差旅
+价税合计（小写）：￥1,680.00
+报销人：赵欣（市场部）</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 打开 WorkBuddy，新建一个任务</strong>：工作目录选
+          <code>wb-试验</code>。</p>
+        <ol class="steps">
+          <li><b>确认工作目录</b><span>这一步是后面所有「另存新文件」能落到正确位置的前提，
+            也是权限边界：它只在这个目录里动东西。</span></li>
+          <li><b>把下面这段指令复制发送</b><span>注意：这一句<strong>只提取、只摸底，不许它算总额</strong>。
+            <span class="task__warn">整句粘贴，不要自己改写</span>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="字段提取指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请读取 input/票据扫描件文本.txt，把里面每一张票据提取成一行，
+输出为 output/票据明细_初稿.csv，包含六列：票据号,开票日期,消费类型,金额,报销人,部门。
+
+提取规则（逐条执行，不要自己加规则）：
+1. 票据号 = 发票号码（8 位数字，不要带发票代码）；
+2. 开票日期统一成 YYYY-MM-DD（比如 2026年9月1日 要写成 2026-09-01）；
+3. 消费类型只保留这五类：交通、住宿、餐饮、办公用品、差旅，
+   按"销售方 / 项目"里的内容归类；
+4. 金额只保留数字，去掉 ￥ 和千分位逗号，统一保留 2 位小数；
+5. 文本里用█挡住的地方，以及你判读不了的值，一律写【待核实】，
+   绝对不许自己猜一个数、猜一个日期、猜一个类型填进去；
+6. 一共 6 张票据，输出 6 行，不要多也不要少。
+
+不要计算任何总额，也不要生成 Excel，只要这个 CSV。
+最后用文字回报：一共几行、有几处【待核实】、分别是哪张票的哪个字段。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 拿到结果后，逐条对一遍</strong>。这份素材里<strong>一共埋了 3 处看不清</strong>，
+          它的回报里应该都点出来：</p>
+        <ol class="steps" start="3">
+          <li><b>输出是 6 行</b><span>这是数据行，不含表头。<br>
+            <em>它报了别的数</em>：补一句「只统计表头以下的数据行，必须是 6 行」，让它重新输出。</span></li>
+          <li><b>【待核实】正好 3 处</b><span>票据 2 的金额（￥█80.00）、
+            票据 3 的开票日期（2026年█月5日）、票据 5 的消费类型（项目被挡住）。<br>
+            <em>少于 3 处</em>：⚠️ 说明它把看不清的自己猜了一个值填进去了——
+            把第 5 条规则单独重发一遍，让它把猜的那几格改成【待核实】。</span></li>
+          <li><b>金额列能直接求和</b><span>1280.00 / 345.50 / 120.00 / 2150.00 / 1680.00，
+            没有 ￥、没有逗号、都是 2 位小数。<br>
+            <em>还带着 ￥ 或逗号</em>：补一句「金额只保留数字，去掉 ￥ 和千分位逗号」，重做金额列。</span></li>
+          <li><b>票据 3 的日期是【待核实】，不是「2026-09-05」</b><span>
+            这是最容易翻车的一处：月份被挡住了，它很可能顺手补成 9 月。<br>
+            <em>它填了个日期出来</em>：⚠️ 这就是「编造」，把这条指出来让它改。</span></li>
+          <li><b>票据 5 的消费类型是【待核实】</b><span>项目和发票代码都在，
+            但消费类型只能靠项目判断，项目被挡住就不能猜。<br>
+            <em>它填了「办公用品」之类</em>：补一句「消费类型只能依据文本里读到的内容判断，
+            读不到就写【待核实】」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这份 <code>票据明细_初稿.csv</code> +
+          它回报的那段文字（几行、几处【待核实】）。</p>
+        <p class="note">
+          <strong>这一步的核心就一句话：缺信息就标出来，不许它猜。</strong>
+          报销单上一个被猜出来的金额，到了财务那里就是一笔对不上的账。
+        </p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-clean">
+      <h2>二、脏数据的六张面孔与清洗规则<span class="sec__tag">本课核心</span></h2>
+      <p>
+        票据变成表之后，问题才刚开始。<strong>报销清单是最容易脏的一类表</strong>——
+        因为它是很多人、很多次、从很多张票上敲出来的。
+        脏数据不是「数据错了」，而是<strong>「数据长得不规矩」</strong>：
+        规矩一破，后面的求和就全跟着错，而且错得很隐蔽。
+      </p>
+      <p>
+        下面六张面孔是报销清单里最常见的。点按钮看每一张长什么样、清洗后该变成什么：
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 脏数据六张面孔：同一个格子，处理前后差在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl" id="d1-faces">
+            <button class="btn btn--ghost" type="button" data-face="0">① 重复票据号</button>
+            <button class="btn btn--ghost" type="button" data-face="1">② 空行</button>
+            <button class="btn btn--ghost" type="button" data-face="2">③ 金额带符号</button>
+            <button class="btn btn--ghost" type="button" data-face="3">④ 金额写中文</button>
+            <button class="btn btn--ghost" type="button" data-face="4">⑤ 日期三种写法</button>
+            <button class="btn btn--ghost" type="button" data-face="5">⑥ 一物多名</button>
+            <button class="btn btn--main" type="button" id="d1-all">六张一次看完</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d1-raw">点上面的按钮</b><span>它长什么样（原始值）</span></div>
+              <div class="kpi"><b class="acc" id="d1-fix">—</b><span>清洗后应该变成</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            六张面孔与清洗后的写法均为<strong>教学示意</strong>，取自本课素材里真实存在的脏数据类型，
+            非某个具体文件的实测输出。
+          </div>
+        </div>
+      </div>
+
+      <h3>清洗指令的三要素，一条都不能少</h3>
+      <p>
+        很多人清洗只说一句「帮我清洗一下这张表」。<strong>这就等于让它替你做主</strong>——
+        金额写中文的怎么转？重复票据号留哪条？它自己定，事后你对不上账，
+        而且财务问起来你答不出「这个数是怎么来的」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>要写清什么</th><th>本课素材里的写法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>数据源</strong></td>
+              <td>哪个文件、哪些列、哪几行</td>
+              <td><code>input/报销清单.csv</code> 的「票据号 / 开票日期 / 消费类型 / 金额 / 报销人 / 部门」六列</td>
+            </tr>
+            <tr>
+              <td><strong>规则</strong></td>
+              <td>每张面孔怎么处理，<strong>逐条点名</strong></td>
+              <td>日期统一成 <code>YYYY-MM-DD</code>；金额去掉 ￥ 和千分位、中文转阿拉伯、统一 2 位小数；
+                消费类型归并到五类；<strong>完全相同的行删到只剩 1 条；
+                票据号相同但金额不同的保留并标【待核】</strong></td>
+            </tr>
+            <tr>
+              <td><strong>输出</strong></td>
+              <td>新文件叫什么、放哪、<strong>原文件不许动</strong></td>
+              <td><code>output/报销清单_清洗后.xlsx</code>，禁止覆盖原文件</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">报销场景里最该写死的是「不许猜」</span>
+        遇到它判不了的值（比如金额被遮、日期模糊、消费类型读不出），
+        正确做法是<strong>标成【待核实】留给你判断</strong>，
+        而不是自己补一个看起来合理的数——那等于替你做了一笔你不知情的账。
+        <strong>更危险的是「票据号相同但金额不同」：这两条可能是同一张票录错了，
+        也可能是两张不同的票，只有人能判断，AI 不许自动删掉其中一条。</strong>
+        这两条规则要显式写进指令。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·把一份脏报销清单洗干净 <em>约 13 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/报销清单_清洗后.xlsx</code>——
+          <strong>13 行</strong>（去掉 1 个空行、合并 1 条完全重复），
+          日期全部统一、金额列能直接求和、多出一列「是否待核」，
+          其中 2 行标着【待核】等你处理。</p>
+
+        <p><strong>第 1 步 · 建素材文件</strong>：在 <code>wb-试验/input</code> 里新建
+          <code>报销清单.csv</code>，把下面这段<strong>原样存进去</strong>。
+          <span class="task__warn">模拟数据。空行、「一百二」、「¥1,280.00」这些是故意留的，不要顺手改掉</span>。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 报销清单.csv（模拟数据，照抄，含 6 类脏数据）">
+          <div class="codeblock__bar"></div>
+<pre><code>票据号,开票日期,消费类型,金额,报销人,部门
+FP260901001,2026.9.1,交通,¥1,280.00,张明,市场部
+FP260826002,2026/8/26,住宿,860,李婷,市场部
+FP260902003,9/5,餐饮,一百二,王海,技术部
+FP260829004,2026年8月29日,办公用品,345.5,陈静,行政部
+FP260903005,2026.9.10,出租车,￥2,150,刘洋,技术部
+FP260906006,2026-09-06,差旅,1,680.00,赵欣,市场部
+FP260907007,2026.9.15,办公用品,二百八,孙宇,行政部
+
+FP260908008,9/17,工作餐,430,周琳,技术部
+FP260918009,2026年9月18日,住宿,1,120.00,吴涛,市场部
+FP260920010,2026.9.20,交通,96,郑爽,行政部
+FP260922011,2026/9/22,办公用品,780,张明,市场部
+FP260918009,2026年9月18日,住宿,1,120.00,吴涛,市场部
+FP260925012,9/25,餐饮,五百,李婷,技术部
+FP260922011,2026/9/22,办公用品,960,张明,市场部</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面这段指令复制发送</strong>
+          <span class="task__warn">整句粘贴，不要自己改写</span>——
+          里面每一条规则都是对着上面这张表的具体问题写的。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="清洗指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请读取 input/报销清单.csv，按下面的规则清洗，输出到 output/报销清单_清洗后.xlsx。
+
+清洗规则（逐条执行，不要自己加规则）：
+1. 开票日期统一成 YYYY-MM-DD 格式（2026.9.1、2026/8/26、2026年9月18日、9/5 都要变成 2026-09-05 这种）；
+   缺年份的按 2026 年补，并在报告里说明补了几处；
+2. 金额列只保留数字：去掉 ￥ 和千分位逗号，中文数字转成阿拉伯数字
+   （一百二 → 120.00，二百八 → 280.00，五百 → 500.00），统一保留 2 位小数；
+3. 消费类型归并到这五类：交通、住宿、餐饮、办公用品、差旅。
+   "出租车""打车""市内交通"归到"交通"，"工作餐"归到"餐饮"；
+   出现这五类之外、或你判读不了的值，一律写【待核实】，不要自己归类；
+4. 整行完全为空的行：删除，并在报告里写明删了几行；
+5. 重复票据号分两种情况处理，不要混为一谈：
+   a. 整行完全相同的记录，只保留 1 条，删掉多余的；
+   b. 票据号相同但金额（或其他字段）不同的记录：两条都保留，不要删除任何一条，
+      并在新增列"是否待核"里把这两条都标成【待核】；
+6. 新增一列"是否待核"：除了上面 5b 的情况，读不清或判不了的值也标【待核】，其余写"正常"。
+
+输出要求：
+- 保存为 output/报销清单_清洗后.xlsx；
+- 不要覆盖原文件 input/报销清单.csv；
+- 清洗完成后，用文字告诉我：清洗前后各多少行、删了几个空行、
+  删了几条完全重复行、日期改了几处、金额改了几处、消费类型改了几处、
+  有几条被标成【待核】分别是哪几条。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 打开新文件，核这五条</strong>
+          <span class="task__warn">这一步你要亲自打开文件看，不能只看它说的话</span>。</p>
+        <ol class="steps">
+          <li><b>行数变成 13 行</b><span>原始 15 行 → 删 1 个空行、合并 1 条完全重复 → 13 行。
+            <br><em>不是 13 行</em>：⚠️ 让它报出「删了哪几行、合并了哪几条」，
+            对照着看它删对了没有。<strong>票据号 FP260922011 那两条不许被删，必须都在。</strong></span></li>
+          <li><b>日期列长得一模一样</b><span>13 个日期全是 <code>2026-08-26</code> 这种写法，
+            斜杠、点、「年月日」都不剩。<br>
+            <em>还有别的写法</em>：点出具体是哪几个格子，让它只改那几个。</span></li>
+          <li><b>金额列能直接求和</b><span>搜不到 ￥、搜不到逗号、搜不到中文，
+            全是 2 位小数。<code>一百二</code> 变成 <code>120.00</code>、
+            <code>二百八</code> 变成 <code>280.00</code>、<code>五百</code> 变成 <code>500.00</code>。<br>
+            <em>还有中文或符号</em>：补一句「金额列必须是纯数字，保留 2 位小数」，让它只改金额列。</span></li>
+          <li><b>【待核】正好 2 条，都是 FP260922011</b><span>
+            这两条同号不同金额（780.00 和 960.00），<strong>一条都不能被删</strong>。<br>
+            <em>只剩 1 条</em>：⚠️ 它替你做主删了一条——补一句
+            「票据号相同但金额不同的两条都必须保留」，重做。<br>
+            <em>一条都没标</em>：补一句「把所有票据号重复的行标成【待核】」。</span></li>
+          <li><b>消费类型只剩五类</b><span>「出租车」归到「交通」、「工作餐」归到「餐饮」，
+            搜不到这两词。<br>
+            <em>还留着</em>：补一句「出租车、打车、市内交通统一写成交通；工作餐写成餐饮」，
+            让它只改这一列。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 让它顺便报一个数，用来验证清洗没洗歪</strong>：
+          把下面这句接着发过去。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="追问 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>基于清洗后的文件，把金额列逐笔加起来，告诉我报销总额是多少（保留 2 位小数），
+并列出这 13 笔各自的金额，让我能自己再加一遍核对。</code></pre>
+        </div>
+        <p><strong>要做到这个数才算对</strong>：<strong>13 笔加起来是 10601.50 元</strong>。
+          <em>对不上</em>：⚠️ 八成是金额列还有没转干净的（中文数字、千分位逗号），
+          或者有行被多删了——让它把 13 笔逐笔列出来，你按票据号对一遍，
+          看是少了哪一笔、还是哪一格的金额不对。</p>
+        <p><strong>要交的成果</strong>：<code>报销清单_清洗后.xlsx</code> + 13 笔明细金额和总额。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-stat">
+      <h2>三、汇总：口径你定，对账它做<span class="sec__tag">最容易吵起来的地方</span></h2>
+      <p>
+        数据洗干净了，接下来汇总。这里有个坑比脏数据更隐蔽：
+        <strong>同一批票据，换一种算账口径，报销总额能差出上千元。</strong>
+        而这些算法听起来都叫「报销总额」。
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 同一个「报销总额」，三种口径能差 1740 元</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-run">三种口径都算一遍</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <p class="note">数据取自本课 <code>报销清单.csv</code> 清洗后的 13 笔：
+              其中 2 笔是「同一票据号、金额不同」的<strong>待核票据</strong>（780.00 / 960.00）。</p>
+            <div class="kpis">
+              <div class="kpi"><b id="d2-a">—</b><span>口径 A：待核票据全部计入</span></div>
+              <div class="kpi"><b id="d2-b">—</b><span>口径 B：待核票据只算先出现那条</span></div>
+              <div class="kpi"><b class="acc" id="d2-c">—</b><span>口径 C：待核票据全部剔除</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            数值由本页脚本按上面那 13 笔数据<strong>真实计算</strong>得出，非估算；
+            但这份数据本身是<strong>教学用虚构票据</strong>，非实测数值。
+          </div>
+        </div>
+      </div>
+
+      <p>
+        看到了吗？<strong>三个都是「报销总额」，没有一个算错，但结果差出 1740 元。</strong>
+        按 A 报上去，财务一核发现多算了；按 C 报上去，那两笔钱就没人认领了。
+        所以汇总之前第一件事不是发指令，是<strong>把口径定死</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要定的口径</th><th>你必须回答的问题</th><th>不定会怎样</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>待核票据怎么办</strong></td>
+              <td>全额计入？只算先出现那条？还是全部剔除等核实后再报？</td>
+              <td>三种算法差 1740 元，而且每一种都「算得没错」</td>
+            </tr>
+            <tr>
+              <td><strong>按什么维度汇总</strong></td>
+              <td>按部门？按月份？按消费类型？要不要一次给三张？</td>
+              <td>只给部门的，财务要月份的，你得让它重跑一遍</td>
+            </tr>
+            <tr>
+              <td><strong>精度与排序</strong></td>
+              <td>金额保留几位小数？明细按开票日期升序还是按金额降序？</td>
+              <td>交上去的表格式和财务要求不一致，被打回来</td>
+            </tr>
+            <tr>
+              <td><strong>对不上怎么办</strong></td>
+              <td>分组合计加不出总额时，是让它报出来，还是让它调平？</td>
+              <td>它为了「凑上」悄悄改一个数，这是最坏的一种结果</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">你不用会写公式，但必须会说清楚算什么</span>
+        <code>各部门报销额 = 按部门汇总金额列</code> 这句话你会说就行，
+        公式长什么样是它的事——你也可以直接让它
+        <strong>「用 SUMIF 写出各部门报销额的公式，并把结果算出来给我核」</strong>，
+        公式和结果一起拿到手。
+        但<strong>「算什么、按什么条件、对不上怎么办」这三句必须你说</strong>——
+        它替你定的那部分，就是你事后不敢签字的那部分。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·按部门、按月份汇总，并让总额与明细逐笔对上 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/报销汇总.xlsx</code>——
+          一个工作簿里三张分组表（按部门 / 按月份 / 按消费类型），
+          <strong>三个分组的合计数都等于 10601.50</strong>，外加一份它用的口径说明。</p>
+
+        <p><strong>第 1 步 · 把下面这段指令复制发送</strong>——
+          素材用的是实操② 产出的 <code>output/报销清单_清洗后.xlsx</code>——
+          <strong>确认它还在原位没被动过</strong>。
+          <span class="task__warn">口径全部写在指令里了，照抄即可，不要精简</span>。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="汇总指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请读取 output/报销清单_清洗后.xlsx，按下面定死的口径做汇总，输出到 output/报销汇总.xlsx。
+
+口径（严格按这五条，不要自己换算法）：
+1. 待核票据的处理：标着【待核】的那 2 笔（票据号 FP260922011 的 780.00 和 960.00）
+   全部计入总额，同时在汇总表下方单独写一行"其中待核金额"，把这 2 笔的合计列出来；
+2. 按部门汇总：每个部门的笔数和金额合计；
+3. 按月份汇总：按开票日期的月份分组（2026-08、2026-09），每月的笔数和金额合计；
+4. 按消费类型汇总：交通 / 住宿 / 餐饮 / 办公用品 / 差旅，每类的笔数和金额合计；
+5. 金额一律保留 2 位小数；明细按开票日期升序排列。
+
+对账要求（最重要的一条）：
+6. 给出报销总额，并且必须做交叉验证：把"按部门汇总""按月份汇总""按消费类型汇总"
+   三组的合计数分别加起来，再和明细逐笔加起来的总额对比；
+   三个分组的合计必须都等于明细总额；
+7. 如果对不上，不要自己改动任何数字去凑，直接告诉我差多少、
+   并把明细逐笔列出来让我核——不许为了让数字对上而调整任何一笔金额。
+
+输出要求：
+- 保存为 output/报销汇总.xlsx，三个分组放在同一个工作簿的三张表里，
+  分别命名"按部门""按月份""按消费类型"；
+- 不要覆盖 output/报销清单_清洗后.xlsx 和 input/报销清单.csv；
+- 最后用文字把你实际采用的计算口径原样复述一遍，我要逐字核对。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 核口径：把它复述的那段话，对着上面七条逐字对一遍</strong></p>
+        <ol class="steps">
+          <li><b>待核票据写的是「全部计入，并单独列出待核金额」</b><span>不是「只算一条」，
+            也不是「剔除」。<br>
+            <em>它换了算法</em>：⚠️ 总额会差几百到一千多——
+            把第 1 条重新发一遍，让它按这条重算。</span></li>
+          <li><b>它做了交叉验证，而且三组都等于明细总额</b><span>
+            这是本课的<strong>核心验收点</strong>。<br>
+            <em>它只给了一个总额</em>：补一句「把三个分组的合计分别加起来，
+            和明细逐笔合计对比，把三组数字都列出来」。</span></li>
+          <li><b>金额是 2 位小数，明细按日期升序</b><span><br>
+            <em>格式不对</em>：把第 5 条单独重发，让它只改格式，不动数字。</span></li>
+          <li><b>它把口径复述出来了</b><span>没有这段复述，你没法核。<br>
+            <em>它没给</em>：直接说「把你刚才用的计算口径原样复述一遍」。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 用一段脚本自己再对一遍账</strong>：
+          把下面这段存成 <code>check_total.py</code>，放在 <code>wb-试验</code> 目录下，
+          在 WorkBuddy 里让它运行（你也可以自己在本机命令行跑）。
+          <span class="task__warn">这一步是让你拿到一个不依赖它口述的第三方数字</span>。</p>
+        <div class="codeblock" data-lang="python" data-name="对账脚本 · check_total.py（点右上角复制）">
+          <div class="codeblock__bar"></div>
+<pre><code># -*- coding: utf-8 -*-
+"""
+报销总额对账：明细逐笔加总  <->  按部门分组合计
+依赖：  pip install openpyxl
+运行前提：
+  1. 本脚本放在 wb-试验 目录下，与 output/ 同级；
+  2. 实操② 已经生成 output/报销清单_清洗后.xlsx；
+  3. 该表第 4 列是"金额"、第 6 列是"部门"（第 1 行是表头）。
+运行：  python check_total.py
+"""
+import openpyxl
+
+SRC = "output/报销清单_清洗后.xlsx"
+
+def to_float(v):
+    """把金额格转成浮点数：顺手去掉可能的 ￥ 和千分位逗号。"""
+    if v is None:
+        return None
+    s = str(v).replace("￥", "").replace("¥", "").replace(",", "").strip()
+    try:
+        return float(s)
+    except ValueError:
+        return None
+
+
+wb = openpyxl.load_workbook(SRC)
+ws = wb.active
+
+# 1) 明细逐笔加总
+detail, rows, bad = 0.0, 0, []
+for r in ws.iter_rows(min_row=2, values_only=True):
+    amt = to_float(r[3])
+    if amt is None:
+        continue          # 空行跳过，不计入笔数
+    if str(r[3]).strip() and amt is None:
+        bad.append(r[0])  # 有值却转不成数字 -> 记下来，不硬凑
+    detail += amt
+    rows += 1
+
+# 2) 按部门分组合计
+by_dept = {}
+for r in ws.iter_rows(min_row=2, values_only=True):
+    amt = to_float(r[3])
+    if amt is None:
+        continue
+    dept = r[5] or "（部门为空）"
+    by_dept[dept] = by_dept.get(dept, 0.0) + amt
+
+group = sum(by_dept.values())
+
+print("明细笔数：", rows)
+print("明细逐笔合计：%.2f" % detail)
+for d, v in by_dept.items():
+    print("  %s：%.2f" % (d, v))
+print("部门分组合计：%.2f" % group)
+print("对账结果：", "对得上" if abs(detail - group) < 0.01 else "对不上，差 %.2f，报出来" % abs(detail - group))
+if bad:
+    print("金额转不成数字的票据号：", bad)</code></pre>
+        </div>
+        <p><strong>要做到这三条，就算做完了</strong></p>
+        <ol class="steps" start="3">
+          <li><b>脚本跑出来的明细合计是 10601.50，笔数是 13</b><span>
+            和它给的总额完全一致。<br>
+            <em>对不上</em>：⚠️ 先让它把 13 笔逐笔列出来，
+            你按票据号和脚本的输出一条条对，看是漏了哪笔还是金额转错了。</span></li>
+          <li><b>部门分组合计也等于 10601.50</b><span>
+            市场部 6680.00、技术部 3200.00、行政部 721.50，加起来正好 10601.50。<br>
+            <em>对不上</em>：⚠️ 说明有笔被归错部门或漏了——
+            让它把每个部门分别有哪些票据号列出来，你数一遍。</span></li>
+          <li><b>月份和类型两组也都等于 10601.50</b><span>
+            2026-08 是 1205.50、2026-09 是 9396.00；
+            交通 3526.00、住宿 1980.00、餐饮 1050.00、办公用品 2365.50、差旅 1680.00。<br>
+            <em>对不上</em>：⚠️ 别让它「调平」，让它把差额和明细列出来，
+            你来判断是哪一笔出了问题。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>报销汇总.xlsx</code>（三张分组表）
+          + 它复述的口径原文 + 脚本跑出来的对账结果。</p>
+      </div>
+
+      <h3>验收三道关：这三道只有你能把</h3>
+      <p>
+        到这一步，AI 已经把活干完了。剩下的事它<strong>一件都干不了</strong>：
+        它不知道这笔钱该不该报、票据是不是真的、超没超标。
+        验收不用全查，守住三道关就够了——<strong>这三道关 AI 自己判不了</strong>，
+        因为错的是它对任务的理解，不是它的算术。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>关卡</th><th>核什么</th><th>不对说明出了什么事</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>① 行数</strong></td>
+              <td>清洗后剩几笔，和你手上的票据数一不一样</td>
+              <td>删多了 = 它把不该删的当重复删了；
+                没删 = 去重规则没生效，总额虚高</td>
+            </tr>
+            <tr>
+              <td><strong>② 口径</strong></td>
+              <td>它复述的计算口径，逐字对比你写的那几条</td>
+              <td>对不上 = 指令里那句约束它没严格遵守，结果全废</td>
+            </tr>
+            <tr>
+              <td><strong>③ 合计数</strong></td>
+              <td>各分组加起来，等不等于明细逐笔的总额</td>
+              <td>对不上 = 统计过程中丢了数据或串了组；
+                <strong>它要是「调平」了，比不对还危险</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">一句话记住这一课</span>
+        <strong>表格处理里，AI 负责快，你负责对。</strong>
+        它几分钟能干完你两小时的活，但「这批钱能不能报、这个数能不能交上去」这个判断，
+        永远只有签字那个人能做。
+      </div>
+    </section>
+
+    <section class="sec" id="s-check">
+      <h2>四、一条龙 + 效率对比：省在哪、还得核什么<span class="sec__tag">收口</span></h2>
+      <p>
+        前面三个实操是一步步来的，为的是让你看清每一步在核什么。
+        真干活的时候不用分三步——<strong>把读取、清洗、汇总、出结论串成一条指令</strong>，
+        一次跑完。但串起来之后，<strong>验收一步都不能省</strong>。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·一条龙：从原始票据清单到汇总表一次跑完 <em>约 15 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/报销一条龙.xlsx</code>，
+          里面<strong>两个工作表</strong>——「明细-清洗后」和「汇总」，
+          外加一句它给的数据结论，和一份<strong>「仍需人工核对」清单</strong>。</p>
+
+        <p><strong>第 1 步 · 确认素材还在原位</strong>：用的是实操② 建的
+          <code>input/报销清单.csv</code>——<strong>原文件，确认它没被动过</strong>
+          （行数还是 15 行、里面还有「一百二」和空行）。
+          <span class="task__warn">如果已经被改了，按第 1 步的素材重建一次</span>。</p>
+
+        <p><strong>第 2 步 · 把下面这段指令复制发送</strong>——
+          这一条把清洗、汇总、对账、出结论<strong>串成一条指令</strong>——
+          本课学的三件事，一次全用上。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="一条龙指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请读取 input/报销清单.csv，完成清洗、汇总和结论，输出到 output/报销一条龙.xlsx。
+
+第一步 清洗：
+1. 开票日期统一成 YYYY-MM-DD，缺年份的按 2026 年补；
+2. 金额只保留数字：去掉 ￥ 和千分位逗号，中文数字转阿拉伯数字，统一 2 位小数；
+3. 消费类型归并到五类：交通、住宿、餐饮、办公用品、差旅
+   （出租车归交通、工作餐归餐饮），判读不了的写【待核实】；
+4. 删除整行为空的行；整行完全相同的重复票据只保留 1 条；
+5. 票据号相同但金额不同的：两条都保留，在"是否待核"列标成【待核】，不许删任何一条。
+
+第二步 汇总：
+6. 按部门汇总每部门的笔数和金额；
+7. 按开票日期的月份汇总每月的笔数和金额；
+8. 给出报销总额（保留 2 位小数）。
+
+第三步 对账与结论：
+9. 交叉验证：按部门、按月份两组的合计，必须都等于明细逐笔加起来的总额；
+   对不上就直接报出差额和明细，不许改动任何数字去凑平；
+10. 额外给一份"仍需人工核对"清单，至少包含：
+    a. 标着【待核实】或【待核】的字段有哪些、分别是哪张票；
+    b. 票据号相同但金额不同的记录是哪几条；
+    c. 金额最大的一笔是哪张票、多少元；
+    d. 按现行数据看，哪些笔可能超出常规报销标准需要人工判断（只列出来，不要自己下结论）。
+
+第四步 输出：
+11. 写成一个 Excel 文件，包含两个工作表："明细-清洗后"（每行一笔，按开票日期升序）
+    和"汇总"（部门一组、月份一组）；
+12. 不要覆盖原文件 input/报销清单.csv；
+13. 最后用不超过 3 句话给出数据结论，写清：报销总额是多少、
+    哪个部门最多、有待核问题几笔。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 按三道关逐条验收</strong>
+          <span class="task__warn">这一步你要亲自打开那个 Excel 看，不要只看它的结论</span>。</p>
+        <ol class="steps">
+          <li><b>第一关 · 行数：「明细-清洗后」是 13 行</b><span>原始 15 行 →
+            删 1 个空行、合并 1 条完全重复 → 13 行。
+            票据号 FP260922011 那两条<strong>必须都在</strong>。<br>
+            <em>不是 13 行</em>：让它报出「删了哪几行、合并了哪几条」，
+            对照着看它删对了没有。</span></li>
+          <li><b>第二关 · 口径：让它把采用的计算规则复述一遍</b><span>对着上面第 2、5、9 条逐字核。<br>
+            <em>它没复述</em>：直接问「把你实际用的清洗和汇总规则原样复述一遍」。
+            <em>对不上</em>：⚠️ 说明某条约束没生效，把那条单独重发，让它重做。</span></li>
+          <li><b>第三关 · 合计数：总额是 10601.50，两个分组都等于它</b><span>
+            市场部 6680.00 + 技术部 3200.00 + 行政部 721.50 = 10601.50；
+            2026-08 是 1205.50、2026-09 是 9396.00。<br>
+            <em>加起来不等于总额</em>：⚠️ 说明有笔被漏了或算了两次——
+            让它把每组分别有哪些票据号列出来，你数一遍。
+            <strong>它要是自己「调平」了，直接打回重做。</strong></span></li>
+          <li><b>「仍需人工核对」清单是 4 小项齐全的</b><span>
+            待核字段、同号不同金额那 2 条、金额最大的一笔、可能超标的笔。<br>
+            <em>少给了</em>：点名要缺的那一项，比如「再补上金额最大的一笔是哪张票」。</span></li>
+          <li><b>两个工作表都在，且日期列是同一种写法</b><span>打开 Excel 看底部标签，
+            两个表都得有；日期列搜不到斜杠、搜不到「年月日」。<br>
+            <em>只有一张表</em>：补一句「必须包含两个工作表，名字分别是『明细-清洗后』和『汇总』」。</span></li>
+          <li><b>结论里那三个数都给了</b><span>报销总额、最多的是哪个部门、待核几笔。<br>
+            <em>少给了</em>：点名要缺的那个，比如「再补上有待核问题的笔数」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>报销一条龙.xlsx</code>（两个工作表齐全）
+          + 它复述的规则原文 + 三句话结论 + 人工核对清单。</p>
+        <p class="note">
+          这一步做完，你手上就有了一份<strong>可以直接送审的报销汇总</strong>——
+          前提是那 4 项人工核对你已经亲自过了一遍。
+          下一课会在这份表上继续做透视表和图表，并把它写成一段能放进分析报告的结论。
+        </p>
+      </div>
+
+      <h3>效率对比：省在哪，哪些还得你自己来</h3>
+      <p>
+        账算完了，回到这一课开头那句「人工整理约 2 小时」。
+        把这一批报销从录入到对账的活拆开看，时间花在哪、AI 能替掉哪一段：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>环节</th><th>手工一张张填</th><th>交给 AI</th><th>省在哪</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>录入</strong></td>
+              <td>对着票一张张敲，约 40 分钟</td>
+              <td>读文件或识票据，约 1 分钟</td>
+              <td>省掉重复敲键盘，也省掉看错行</td>
+            </tr>
+            <tr>
+              <td><strong>格式统一</strong></td>
+              <td>手动去 ￥、去千分位、改日期，约 30 分钟</td>
+              <td>规则写进指令，一次跑完</td>
+              <td>省掉逐格改；而且规则写一次，下个月还能用</td>
+            </tr>
+            <tr>
+              <td><strong>找重复</strong></td>
+              <td>肉眼比对票据号，约 20 分钟</td>
+              <td>按票据号分组，一次报出来</td>
+              <td>省掉肉眼找；同号不同金额也能一次挑出来</td>
+            </tr>
+            <tr>
+              <td><strong>汇总求和</strong></td>
+              <td>手填 SUMIF，约 20 分钟</td>
+              <td>一句话出三张分组表</td>
+              <td>省掉写公式和拖填充柄</td>
+            </tr>
+            <tr>
+              <td><strong>对账</strong></td>
+              <td>自己再加一遍，约 10 分钟</td>
+              <td>明细合计 vs 分组合计，一次对完</td>
+              <td>省掉重算；但对不上的原因还是得你看</td>
+            </tr>
+            <tr>
+              <td><strong>合计</strong></td>
+              <td>约 <strong>2 小时</strong></td>
+              <td>约 <strong>3 分钟</strong></td>
+              <td>省的是时间，<strong>不是责任</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        表中「2 小时 / 3 分钟」取自《AIGC应用与实践_32次课授课安排》第 11 次课，
+        为<strong>教学示意</strong>：票据数量、清晰度不同，实际耗时会变，
+        不要当成承诺值使用。
+      </p>
+      <h3>省掉的是时间，没省掉的是责任</h3>
+      <p>
+        下面这五件事<strong>AI 一件都替不了你</strong>，
+        做完实操④ 之后<strong>必须亲自过一遍</strong>：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>还得人工核的事</th><th>为什么 AI 判不了</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>票据真伪与业务是否真实发生</strong></td>
+              <td>它看到的是数字和文字，验不了票、也不知道这趟车你坐没坐</td>
+            </tr>
+            <tr>
+              <td><strong>【待核实】那几个字段</strong></td>
+              <td>被遮住的金额、模糊的日期、读不出的类型，只能翻原始票据或问当事人</td>
+            </tr>
+            <tr>
+              <td><strong>同号不同金额那 2 笔（780.00 / 960.00）</strong></td>
+              <td>是同一张票录错了，还是两张票？财务只认一张，这个判断只有人能做</td>
+            </tr>
+            <tr>
+              <td><strong>报销标准、审批权限、是否超标</strong></td>
+              <td>那是你们单位的制度，不在数据里，你不告诉它它就不知道</td>
+            </tr>
+            <tr>
+              <td><strong>这个数能不能交上去</strong></td>
+              <td>签字的是你。它算得再快，也不会替你在报销单上签那个名</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">官方已经写明的两个坑，先记下来</span>
+        <strong>一、读不了文件不一定是它的问题。</strong>官方「常见问题」写明：
+        无法读取图片、PDF、Excel、Word 等文件时，常见原因是<strong>当前模型不支持对应文件类型</strong>，
+        或未安装相关插件与 Skill；建议切换到支持该类型的模型、分步描述需求，
+        或在插件与技能市场安装文档处理类 Skill（本站核对日期 2026-09-24）。
+        票据图片读不出来时，先按这条排查。<br>
+        <strong>二、生成的文件打不开，多半是你没说清格式。</strong>官方给的建议是：
+        下达任务时明确说明要生成的文件格式（Word / Excel / PDF / Markdown）。
+        本课四条指令里都写了 <code>.xlsx</code> / <code>.csv</code>，就是这个原因。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>把一叠发票交给 AI，为什么不该一上来就让它算报销总额？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 因为它算得慢，先让它熟悉一下文件</li>
+            <li>B. 因为你不知道它读了几张票、看不清的金额它怎么处理，出来的数不敢报给财务</li>
+            <li>C. 因为它必须先安装 Excel 软件</li>
+            <li>D. 因为报销总额要财务审批</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>先让它认字段、报家底，是为了<strong>确认你们看的是同一批票</strong>：
+            几张票、每个字段读成什么、哪几处读不清。
+            这些不先说清楚，它算出来的总额再快也不代表能报。
+            A 说反了——它恰恰算得很快，快才是风险。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>金额列里有个值是「¥1,280.00」，最可能导致什么问题？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 表格变宽，不好看</li>
+            <li>B. 文件打不开</li>
+            <li>C. 整列被当成文本，SUM 求和时静默跳过这一笔，总额少一截</li>
+            <li>D. 金额会自动四舍五入成整数</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>带 <code>¥</code> 和千分位逗号的值在计算机眼里是<strong>文本</strong>，
+            不是数字。<code>SUM</code> 求和会把它跳过去——而且不会报错，
+            <strong>静默跳过比报错危险得多</strong>，你根本不知道少了这一笔。
+            这也是为什么本课把「金额只保留数字」单列成一条清洗规则。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>同一个票据号出现两条记录，金额分别是 780.00 和 960.00，正确做法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 让 AI 自动保留金额较大的那条，删掉另一条</li>
+            <li>B. 让 AI 自动取两条的平均数</li>
+            <li>C. 两条都保留、都标【待核】，交给人核对后再决定</li>
+            <li>D. 直接删掉两条，等下次重新录入</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>「票据号相同但金额不同」有两种可能：
+            同一张票录错了，或者真的是两张票。
+            <strong>这个判断 AI 做不了，也不该做</strong>——A 和 B 都是让它替你决定一笔钱，
+            D 更糟，直接把钱弄丢了。正确做法是两条都留着、都标【待核】，
+            你翻原始票据核完再定，并且把这个规则<strong>显式写进指令</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：清洗报销清单时，把所有含空值的行删掉是最省事、也最推荐的做法。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，空着的行本来就没用</li>
+            <li>B. 错误，删行会改变笔数和总额，缺哪个字段应该标记后按规则处理</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>一张票只在<strong>开票日期</strong>上缺了一个值，
+            你把整行删了，等于把那笔钱<strong>一起扔掉</strong>——
+            报销总额悄悄少了一笔，而且看不出来是本该有的还是录入错的。
+            正确做法是<strong>保留行、标记缺哪个字段、按你定的规则处理</strong>。
+            唯一该删的是<strong>整行完全为空</strong>的那种空行，并且要让它报出删了几行。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：同一批票据，「待核票据全部计入」和「待核票据全部剔除」两个口径算出的报销总额，可能相差上千元。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，两种口径差多少取决于待核票据有多少钱，差上千很常见</li>
+            <li>B. 错误，报销总额只有一种算法，不可能有差别</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A（正确）。</b>用本课的素材实际算过：全部计入是 <strong>10601.50 元</strong>，
+            全部剔除是 <strong>8861.50 元</strong>，差 <strong>1740.00 元</strong>。
+            两种算法<strong>都没有算错</strong>，错的是没提前定口径。
+            这就是本课把「待核票据怎么办」列进口径表第一条的原因。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>先认字段、报家底，再动手</strong>——票据号、开票日期、消费类型、
+            金额、报销人、部门，它认完你认可了才往下走；
+            <strong>读不清的标【待核实】，不许它编</strong>；</li>
+          <li>官方口径三条：<strong>数据本地执行不上传</strong>、<strong>沙箱隔离</strong>、
+            <strong>只访问授权目录</strong>（核对日期 2026-09-24）；
+            底线是<strong>只在工作目录内操作、重要资料只放副本</strong>；</li>
+          <li>清洗指令三要素：<strong>数据源 + 规则 + 输出</strong>，
+            规则要逐条点名：日期统一、金额转纯数字、类型归并、
+            空行删除、重复票据号<strong>分两情况处理</strong>；</li>
+          <li>汇总之前先把<strong>口径定死</strong>：待核票据怎么办、按什么维度汇总、
+            保留几位小数、<strong>对不上不许调平</strong>——
+            同一个「报销总额」能差 1740 元；</li>
+          <li>验收三道关：<strong>核行数、核口径、核合计数</strong>，
+            再加上一节<strong>人工核对清单</strong>——
+            这三道 AI 自己判不了，只能你来。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天把票据<strong>收拾干净</strong>了，也算出了能对上账的总额。
+        但一堆数字还不是结论——下一课（<a class="xref" data-lesson="12">第 12 次课</a>）
+        接着做<strong>分类汇总、数据透视表和图表</strong>，
+        解决的是「用哪张图」「怎么看出来」和「这句结论凭什么这么说」。
+        今天产出的 <code>报销一条龙.xlsx</code> 存好，下一课直接接着用。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 11 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）把一份含发票金额、报销人的 Excel 交给 WorkBuddy 处理，按官方口径，数据在哪里执行？
+A. 上传到云端服务器处理
+B. 在用户本地环境执行处理，不上传
+C. 由用户手动复制到网页里处理
+D. 先传给模型厂商，算完再取回结果
+【答案】B
+【解析】官方「常见问题·数据安全说明」原文：数据本地执行不上传，所有数据在用户本地环境执行处理；服务端仅处理数据片段，用后即弃，不保存、不用于模型训练。A、D 与官方口径相反，C 不是它的工作方式。
+
+2.（单选）一条完整的表格处理指令，应该包含哪三个要素？
+A. 文件名 + 图表类型 + 字体
+B. 数据源 + 处理规则 + 输出形式
+C. 模型 + 运行模式 + 积分余额
+D. 行数 + 列数 + 文件大小
+【答案】B
+【解析】数据源（哪个文件、哪些字段）+ 规则（怎么清洗、算什么）+ 输出（新文件叫什么、放哪、原文件不许动）。少了规则，AI 就会替你做主——比如把看不清的金额自己猜一个数填进去。A 混进了格式细节，C 是环境配置，D 是摸底结果而不是指令。
+
+3.（多选）下面哪些属于本课说的报销清单里的「脏数据」？
+A. 同一个票据号出现了两次，金额分别是 780.00 和 960.00
+B. 金额列里出现"一百二"这样的中文数字
+C. 开票日期列同时存在 2026.9.1 和 2026/8/26 两种写法
+D. 金额是 1280.00
+【答案】ABC
+【解析】A 是重复票据号、B 是金额格式不统一、C 是日期格式不统一，这三种都会让求和与汇总结果失真。D 是规范的数字金额，不是脏数据——不要把「看着不顺眼」当成脏数据，清洗必须按明确规则来，不能凭感觉。
+
+4.（单选）让 AI 算报销总额之前，最重要的一个动作是？
+A. 让它自己判断该怎么算，它比我们懂
+B. 先把口径定死：待核票据怎么办、按什么维度汇总、保留几位小数、对不上怎么办
+C. 让它多算几遍，取几次结果的平均
+D. 让它同时给出三种结果，到时候再挑一个
+【答案】B
+【解析】口径不定，AI 就会替你做主。同一批票据，「待核票据全部计入」和「待核票据全部剔除」能差出 1740 元，两种都没算错。D 看似稳妥，其实把决策又推回给你，而且三个结果你不知道哪个是对的；C 更没有意义，重复算同一个错误口径只会得到同一个错误答案。
+
+5.（判断）清洗数据时，让 AI 直接覆盖原文件更省事，是推荐做法。
+A. 正确，省一个文件，磁盘也干净
+B. 错误，应输出为新文件，原文件保留以便回溯
+【答案】B（错误）
+【解析】原文件是唯一能证明「改之前是什么样」的证据。清洗规则一旦定错，覆盖之后既没法对比也没法回退。指令里要写明输出的新文件名，并加上「不要覆盖原文件」这句——本课四个实操都写了。
+
+6.（多选）AI 给出报销汇总结果之后，下面哪几项必须由人来核？
+A. 清洗后的笔数与手上的票据数是否一致
+B. 它实际采用的计算口径是不是你定的那条
+C. 各部门、各月份的金额合计加起来是否等于明细逐笔的总额
+D. 它生成的图表颜色好不好看
+【答案】ABC
+【解析】这三关 AI 自己判不了：笔数不对说明去重或删行越界；口径不对说明指令里的约束没被严格遵守；合计数对不上说明统计过程中丢了数据或串了组。D 是观感问题，不影响数据是否可用。另外票据真伪、是否超标、标着【待核实】的字段，也都只能人工核。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">本课还要交的东西</span>
+        四个实操的产出物：<strong>① 票据明细_初稿.csv + 它的待核实回报</strong>、
+        <strong>② 报销清单_清洗后.xlsx + 13 笔明细与总额</strong>、
+        <strong>③ 报销汇总.xlsx（三张分组表）+ 口径复述 + 对账脚本结果</strong>、
+        <strong>④ 报销一条龙.xlsx（两个工作表）+ 规则复述 + 三句话结论 + 人工核对清单</strong>。<br>
+        <strong>评分看三条</strong>：
+        一、<strong>行数对不对</strong>（② 清洗后 13 行、④ 明细 13 行，且 FP260922011 那两条都在）；
+        二、<strong>原文件有没有被动过</strong>（<code>input/报销清单.csv</code> 还在、内容没变）；
+        三、<strong>总额 10601.50 且三组分组都等于它</strong>，
+        口径复述和你指令里写的能逐条对上、<strong>对不上的地方是报出来而不是被调平</strong>。
+      </div>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return window.Site && window.Site.esc ? window.Site.esc(s) : String(s); };
+
+  /* ── 演示①：脏数据六张面孔（报销清单版） ── */
+  var FACES = [
+    { n: "① 重复票据号", raw: "同一张票录了两遍；还有同号不同金额",
+      fix: "完全相同的删到 1 条；同号不同金额的两条都保留并标【待核】",
+      harm: "重复的那笔让报销总额虚高，财务一核就退单" },
+    { n: "② 空行", raw: "整行什么都没有", fix: "删除，并在报告里写明删了几行",
+      harm: "笔数对不上，按部门分组时多出一个空白组" },
+    { n: "③ 金额带符号和千分位", raw: "'¥1,280.00''￥2,150'", fix: "只保留数字，统一 2 位小数 → 1280.00",
+      harm: "整列被当成文本，SUM 求和静默跳过，总额少一截且看不出来" },
+    { n: "④ 金额写成中文", raw: "'一百二''二百八''五百'", fix: "转成 120.00 / 280.00 / 500.00",
+      harm: "和③一样进不了求和，而且混在一堆数字里更难被发现" },
+    { n: "⑤ 日期三种写法", raw: "2026.9.1、2026/8/26、2026年9月18日、9/5", fix: "统一成 2026-09-05",
+      harm: "按开票日期排序和按月汇总全乱，8 月和 9 月混在一起" },
+    { n: "⑥ 消费类型一物多名", raw: "出租车 / 打车 / 市内交通、工作餐 / 餐饮", fix: "映射到统一的「交通」「餐饮」",
+      harm: "同一类费用被拆成三类，分类汇总全错，还看不出错在哪" }
+  ];
+
+  function showFace(i) {
+    var f = FACES[i];
+    if (!f) return;
+    $("d1-raw").textContent = f.raw;
+    $("d1-fix").textContent = f.fix;
+    $("d1-out").innerHTML =
+      "<span class='hl'>" + esc(f.n) + "</span>　不处理的话：" + esc(f.harm);
+  }
+
+  var faceBox = $("d1-faces");
+  if (faceBox) {
+    faceBox.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-face]");
+      if (!b) return;
+      showFace(parseInt(b.getAttribute("data-face"), 10));
+    });
+  }
+
+  var allBtn = $("d1-all");
+  if (allBtn) {
+    allBtn.addEventListener("click", function () {
+      var lines = FACES.map(function (f) {
+        return "<span class='hl'>" + esc(f.n) + "</span> " + esc(f.raw) +
+               " → " + esc(f.fix) + "　<span class='dim'>（" + esc(f.harm) + "）</span>";
+      });
+      if (window.Site && window.Site.type) {
+        window.Site.type($("d1-out"), lines);
+      } else {
+        $("d1-out").innerHTML = lines.join("<br>");
+      }
+      $("d1-raw").textContent = "六张全部列出";
+      $("d1-fix").textContent = "见下方逐条";
+    });
+  }
+  showFace(0);
+
+  /* ── 演示②：同一个报销总额，三种口径 ── */
+  // 报销清单.csv 清洗后的 13 笔；hold=true 表示"同一票据号、金额不同"的待核票据
+  var ROWS = [
+    { id: "FP260901001", v: 1280.00 },
+    { id: "FP260826002", v: 860.00 },
+    { id: "FP260902003", v: 120.00 },
+    { id: "FP260829004", v: 345.50 },
+    { id: "FP260903005", v: 2150.00 },
+    { id: "FP260906006", v: 1680.00 },
+    { id: "FP260907007", v: 280.00 },
+    { id: "FP260908008", v: 430.00 },
+    { id: "FP260918009", v: 1120.00 },
+    { id: "FP260920010", v: 96.00 },
+    { id: "FP260922011", v: 780.00, hold: true },
+    { id: "FP260925012", v: 500.00 },
+    { id: "FP260922011", v: 960.00, hold: true }
+  ];
+
+  function sum(arr) {
+    var s = 0;
+    for (var i = 0; i < arr.length; i++) s += arr[i];
+    return s;
+  }
+  function money(n) {
+    var p = n.toFixed(2).split(".");
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return "¥" + p.join(".");
+  }
+
+  function calc() {
+    // 口径 A：待核票据全部计入
+    var a = ROWS.map(function (r) { return r.v; });
+    // 口径 B：待核票据只算先出现的那条
+    var seen = {}, b = [];
+    ROWS.forEach(function (r) {
+      if (r.hold) {
+        if (seen[r.id]) return;
+        seen[r.id] = 1;
+      }
+      b.push(r.v);
+    });
+    // 口径 C：待核票据全部剔除，等核实后再报
+    var c = [];
+    ROWS.forEach(function (r) { if (!r.hold) c.push(r.v); });
+
+    var va = sum(a), vb = sum(b), vc = sum(c);
+    $("d2-a").textContent = money(va);
+    $("d2-b").textContent = money(vb);
+    $("d2-c").textContent = money(vc);
+
+    var gap = Math.max(va, vb, vc) - Math.min(va, vb, vc);
+    var lines = [
+      "口径 A：待核票据全部计入 → 共 <span class='hl'>" + a.length + "</span> 笔，报销总额 " + money(va),
+      "口径 B：待核票据只算先出现的那条 → 共 <span class='hl'>" + b.length + "</span> 笔，报销总额 " + money(vb),
+      "口径 C：待核票据全部剔除，核实后再报 → 共 <span class='hl'>" + c.length + "</span> 笔，报销总额 " + money(vc),
+      "<span class='no'>最高与最低相差 " + money(gap) + "</span>　三个都没算错，错的是口径没先定死"
+    ];
+    if (window.Site && window.Site.type) {
+      window.Site.type($("d2-out"), lines);
+    } else {
+      $("d2-out").innerHTML = lines.join("<br>");
+    }
+  }
+
+  function reset2() {
+    $("d2-a").textContent = "—";
+    $("d2-b").textContent = "—";
+    $("d2-c").textContent = "—";
+    $("d2-out").innerHTML = "";
+  }
+
+  if ($("d2-run")) $("d2-run").addEventListener("click", calc);
+  if ($("d2-reset")) $("d2-reset").addEventListener("click", reset2);
+})();
+</script>
+
+</body>
+</html>

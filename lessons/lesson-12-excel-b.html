@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第12次课 办公实战——Excel 数据处理（下）｜AIGC应用与实践</title>
+<meta name="description" content="多表合并、透视统计、图表选型、异常值对账：把一堆明细表变成一个能汇报的结论。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="12" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 办公实战</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="11"></a>解决的是「一张乱表怎么理干净」，那是<strong>能算</strong>的前提。
+        可真实工作里数据从来不是一张表：三个班的成绩在三个辅导员手里、耗材是每天记一笔的流水、
+        考勤是每周导出一次的。这一课走的是后一半：<strong>多张表 → 合并 → 交叉统计 → 出图 → 对账出结论</strong>。
+      </p>
+      <p>下面这几件事，你迟早会撞上：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>场景</th><th>卡在哪一步</th><th>本课哪一节解决</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>三张成绩表合成一张</strong></td>
+              <td>列名不一样（「学号 / 学生编号」）、张数不一样、有的还多一列——粘在一起就串行</td>
+              <td>一、多表合并</td>
+            </tr>
+            <tr>
+              <td><strong>800 行耗材流水</strong></td>
+              <td>领导问「哪个班领得最多」，肉眼根本看不出来，只能一个数一个数地加</td>
+              <td>二、透视统计</td>
+            </tr>
+            <tr>
+              <td><strong>图做出来了但没人看懂</strong></td>
+              <td>想看占比却画了折线图，图没错，只是回答不了问题</td>
+              <td>三、图表选型</td>
+            </tr>
+            <tr>
+              <td><strong>合计怎么都对不上</strong></td>
+              <td>翻回去逐行查，查到崩溃——其实排查有固定顺序，而且可以先让 AI 列出可疑行</td>
+              <td>四、异常值对账</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        这一课所有实操的<strong>最后一关都留给你</strong>：总数对不对、百分比加起来是不是 100%、
+        图能不能回答那个问题、异常是真错了还是业务本来就特殊。
+        <strong>AI 算得很快，但它不知道「这个数合不合理」</strong>——判断这件事没法外包。
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">全课统一的目录约定</span>
+        沿用第 10 课的做法：<code>input/</code> 放素材、<code>output/</code> 放产出，
+        <strong>原始文件一个字符都不改</strong>。这一条到第 14 次课都成立，
+        养成习惯后，做错事还能回到起点。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>分清<strong>纵向追加</strong>和<strong>横向关联</strong>该用在哪，并说清合并前必须先对齐哪三件事；</li>
+          <li>用<strong>「行 / 列 / 值 + 聚合方式」</strong>四要素描述一次透视，并对 AI 说出准确需求；</li>
+          <li>判断一张<strong>该用什么图</strong>（比大小、看趋势、看占比、看关系、看分布），说清为什么不用另一种；</li>
+          <li>把<strong>四类异常</strong>（重复、越界、逻辑冲突、缺漏或格式不一致）交给 AI 列清单，自己判断哪些是真错；</li>
+          <li>独立完成「多表 → 结论」这条链，并交出一份<strong>能被别人复核</strong>的结果。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-merge"><b>01</b>多表合并：先对齐，再加 <em>＋实操①</em></a>
+        <a href="#s-pivot"><b>02</b>透视：把明细压成结论 <em>＋实操②</em></a>
+        <a href="#s-chart"><b>03</b>图表：选对比做对重要 <em>＋实操③</em></a>
+        <a href="#s-check"><b>04</b>异常值对账与出结论 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="11"></a>的数据清洗思路（脏数据不进统计），
+        <a class="xref" data-lesson="10"></a>的模板与变量思想（批量任务靠「固定 + 变化」拆分）。<br>
+        <strong>后续</strong>：今天这套「先合并、再交叉、最后出结论」的流程，
+        到 <a class="xref" data-lesson="13"></a>换一张皮就是 PPT——先把数据结论定下来，再排页面。
+      </div>
+    </section>
+
+    <section class="sec" id="s-merge">
+      <h2>一、多表合并：先对齐，再加起来<span class="sec__tag">合并</span></h2>
+      <p>
+        期末收成绩，三个辅导员各发一张表给你。打开一看：一班的叫「学号」，二班叫「学生编号」，
+        三班多一列「备注」，行数也各不相同。你把它们上下粘到一块儿，
+        16 个人粘出了 19 行——多出来的三行是三个表头。
+      </p>
+      <p>毛病不在粘贴，在于你跳过了<strong>对齐</strong>这一步。</p>
+
+      <h3>两种「合并」，别搞混</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>&nbsp;</th><th>纵向追加（上下拼）</th><th>横向关联（左右拼）</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>什么时候用</strong></td>
+              <td>每张表结构差不多，只是「多了几批记录」<br>三个班的成绩、三个月的流水</td>
+              <td>每张表讲同一批人的不同信息<br>名单表 + 成绩表、员工表 + 考勤表</td>
+            </tr>
+            <tr>
+              <td><strong>怎么拼</strong></td>
+              <td>行数相加，列要能一一对上</td>
+              <td>靠一列「识别码」对齐（学号 / 工号 / 订单号）</td>
+            </tr>
+            <tr>
+              <td><strong>最容易错</strong></td>
+              <td>列名不一致 → 同一个字段被当成两列<br>表头或空行被当成数据</td>
+              <td>识别码有重复或前后空格 → 拼到别的同学头上</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>本课用的是前者（三个班合成一张）。后者记住名字就行，遇到「两张表各有半份信息」时再翻回来。</p>
+
+      <h3>合并前必须对齐的三件事</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>对什么</th><th>一句话要求</th><th>不一致会怎样</th></tr></thead>
+          <tbody>
+            <tr><td><strong>列名</strong></td><td>同一件事只能有一个名字</td><td>「学生编号」和「学号」变成两列，各填一半</td></tr>
+            <tr><td><strong>口径</strong></td><td>数字代表的意思、范围要一致</td><td>百分制和五级制混在一起，平均值没有意义</td></tr>
+            <tr><td><strong>粒度</strong></td><td>一行到底是谁</td><td>一个「人」和一个「人次」混着算，人数直接翻倍</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">这一条最容易漏：一定要留「来源列」</span>
+        合并出来的大表，<strong>必须多一列写明这行来自哪张表</strong>（班级、月份、文件名都行）。
+        理由是：一旦总数对不上，你能立刻定位是哪个来源出的问题；
+        没有这一列，出事时你只能把三张原始表重新对一遍——<strong>而那时候你的耐心已经用完了</strong>。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·三班成绩合成一张总表 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/成绩总表.xlsx</code>——16 名同学合成一张、
+          带「班级」列的干净总表，外加一份<strong>合并说明</strong>（字段怎么对应的、哪些为空）。
+          上面三张原始表一个字符都没被改过。</p>
+
+        <p><strong>第 1 步 · 把三段素材存成三个文件（2 分钟）</strong></p>
+        <p>在工作目录里建 <code>input</code> 文件夹，把下面三段内容<strong>分别</strong>存成三个文件，
+          文件名严格照抄（后缀 <code>.csv</code>）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 1/3 · input/一班成绩.csv">
+          <div class="codeblock__bar"></div>
+<pre><code>学号,姓名,平时成绩,期末成绩
+2023110101,张明,88,92
+2023110102,李婷,76,81
+2023110103,王海,91,85
+2023110104,陈静,65,72
+2023110105,刘洋,80,68
+2023110106,赵敏,95,96</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 2/3 · input/二班成绩.csv">
+          <div class="codeblock__bar"></div>
+<pre><code>学生编号,姓名,平时分,期末分
+2023110201,周杰,82,79
+2023110202,吴倩,90,94
+2023110203,郑凯,58,63
+2023110204,孙悦,87,88
+2023110205,马涛,73,70</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 3/3 · input/三班成绩.csv">
+          <div class="codeblock__bar"></div>
+<pre><code>学号,姓名,平时成绩,期末成绩,备注
+2023110301,黄丽,79,84,
+2023110302,徐强,92,90,复训
+2023110303,朱琳,68,75,
+2023110304,高翔,85,82,
+2023110305,林芳,94,97,免听</code></pre>
+        </div>
+        <p class="note">三段素材里藏着本课要练的三件事：列名不一致、备注列有空有满、行数不同。数据均为虚构。</p>
+
+        <p><strong>第 2 步 · 把下面这段指令发出去（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>切到当前任务的工作目录</b><span>确认 <code>input</code> 就在这个目录下，别指向别处。</span></li>
+          <li><b>整段复制下面的指令，直接发送</b><span>
+            <span class="task__warn">不要改写词句</span>，尤其是「先列对照表」那句——
+            它是为了避免它替你猜字段。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="合并指令 · 点右上角复制后整段发送">
+          <div class="codeblock__bar"></div>
+<pre><code>把 input 目录下 3 个班成绩文件合成一张总表。
+
+第一步（先别急着合并）：把三个文件的字段名对照关系列成一张表给我看——
+哪个字段对应哪个，有没有哪个文件的列是另外两个没有的。
+
+第二步（确认后再合并）：按你列出的对照关系合并，输出到 output/成绩总表.xlsx，要求：
+1. 列顺序固定为：班级、学号、姓名、平时成绩、期末成绩、备注；
+2. 新增「班级」列，值写 一班 / 二班 / 三班，来源就是文件名；
+3. 没有备注的同学，备注列写「无」，不要留空；
+4. 表头只保留一行，中间的空行删掉。
+
+约束：
+- 不要修改 input 里的任何原始文件；
+- 不要计算总评、排名、及格率，本次只做合并；
+- 不要对数、不要补数，原始表是多少就写多少；
+- 字段含义你对不上、不敢确定的，不要猜——在最后列成「待确认」清单告诉我。
+
+做完后附一份合并说明：总行数、每个班各多少行、字段对照结果、是否存在待确认项。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这五条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>数据行正好 16 行</b><span>不含表头：一班 6 + 二班 5 + 三班 5。<br>
+            <em>行数多了</em>：多半是把某个文件的表头或末尾空行当成数据收进来了，
+            补一句「表头只保留一行，删掉空行」再出一版。</span></li>
+          <li><b>「班级」列三行数值齐全</b><span>一班 6 行、二班 5 行、三班 5 行，一个都不能漏。<br>
+            <em>班级列是空的</em>：说明来源列没生成，直接补一句「按文件名新增班级列」。</span></li>
+          <li><b>列名统一到一套</b><span>总表里只能看到「学号、姓名、平时成绩、期末成绩」，
+            搜不到「学生编号」「平时分」。<br>
+            <em>还留着旧列名</em>：说明它没做对照就硬拼了，回到第一步，让它先把对照表单独发给你。</span></li>
+          <li><b>「备注」列没有空格</b><span>没备注的 11 个人都应写着「无」。<br>
+            <em>留了空白</em>：把它漏掉的那句话单独说一下——「备注为空的写『无』」。</span></li>
+          <li><b>数字没被改动</b><span>随便抽两个人，比如二班郑凯 58/63，和原始 CSV 对一遍。<br>
+            <em>对不上</em>：⚠️ 它可能「顺手」做了类型转换或补了缺失值，直接驳回重并要求重做。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>output/成绩总表.xlsx</code> + 它附的<strong>合并说明</strong>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-pivot">
+      <h2>二、透视：把明细压成结论<span class="sec__tag">统计</span></h2>
+      <p>
+        实训中心的耗材领用明细，一个月 800 多行：日期、班级、类别、物品、数量、单价、领用人。
+        主任要一句结论：「哪个班领得最多？钱主要花在哪类东西上？」
+        你盯着屏幕看了十分钟，只能说「好像 AI1 班挺多的」。
+      </p>
+      <p>
+        <strong>明细表里没有答案，答案要压出来。</strong>透视就是这件事：
+        把几千行压成一张能一眼读完的交叉表。
+      </p>
+
+      <h3>透视只要说清四件事</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>它在问什么</th><th>耗材这个例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>行</strong></td><td>按什么分组（竖着切）</td><td>班级</td></tr>
+            <tr><td><strong>列</strong></td><td>再按什么细分（横着切）</td><td>耗材类别</td></tr>
+            <tr><td><strong>值</strong></td><td>数哪列</td><td>数量</td></tr>
+            <tr><td><strong>聚合方式</strong></td><td>一堆数怎么并成一个</td><td>求和</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>前三个填了只是出了张表，<strong>真正决定「结论是什么」的是第四项</strong>。切到下个演示看为什么。</p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一份数据，换一种聚合方式，结论就翻了过来</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__stage">
+            <p>三个班的设备报修记录（每组一个数字＝一次报修的件数），<strong>共 8 条记录</strong>：</p>
+            <div class="kpis">
+              <div class="kpi"><b id="d1-raw">甲 2,3,2<br>乙 20<br>丙 5,5,5,5</b><span>原始明细</span></div>
+            </div>
+            <div class="demo__ctrl">
+              <span class="badge badge--a">值：件数</span>
+              <div class="btngroup" data-tabs="demo1">
+                <button type="button" data-tab="sum" class="on">求和</button>
+                <button type="button" data-tab="cnt">计数</button>
+                <button type="button" data-tab="avg">平均</button>
+              </div>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><b id="d1-jia">—</b><span>甲班</span></div>
+              <div class="kpi"><b id="d1-yi">—</b><span>乙班</span></div>
+              <div class="kpi"><b id="d1-bing">—</b><span>丙班</span></div>
+            </div>
+            <div class="demo__out" id="d1-out"></div>
+          </div>
+          <div class="demo__note">
+            数据为<strong>教学示意，非实测数值</strong>，只为讲清聚合方式对结论的影响。
+            这个演示让人看懂：<strong>聚合方式不是格式选项，它决定了你要回答什么问题。</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">求和 / 计数 / 平均，一个都不能乱选</span>
+        <strong>求和</strong>回答「一共多少」——算用量、金额用它。<br>
+        <strong>计数</strong>回答「有多少条」——算次数、人数用它；<strong>
+        姓名列计数 ≠ 人数</strong>，一个人出现三次会被算成三个人（真要数人头，得先去重再计数）。<br>
+        <strong>平均</strong>回答「平均每次/每人」——但它会<strong>抹掉规模差异</strong>：
+        领一次领走 20 件的班，平均值可能比领十次每次两三件的班高得多，而实际用量更少。
+        <strong>汇报「谁最多」时，默认是求和；要用别的，就说明为什么。</strong>
+      </div>
+
+      <h3>在 WorkBuddy 里直接让它做透视</h3>
+      <p>
+        透视既可以交给它生成一张新表，也可以在已经生成的 Excel 里<strong>框选数据区域、直接让它做</strong>。
+        后者就是官方文档里说的「人机双写」：在 WorkBuddy 里直接编辑 Word / Excel / PPT / Markdown 及腾讯文档，
+        手动改与 AI 改在同一个界面完成。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要查的事</th><th>官方口径（www.workbuddy.cn「人机双写」页）</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Excel 能让它做什么</strong></td>
+              <td>「选中单元格后即可对所选区域下达指令，复杂数据处理与可视化也能覆盖」；
+                官方列了两类典型用法：<strong>数据透视分析</strong>（框选数据区域，多维透视一次到位）、
+                <strong>数据分析报告</strong>（出分析 + 图表 + 结论）</td>
+            </tr>
+            <tr>
+              <td><strong>从哪儿点「AI 编辑」</strong></td>
+              <td>Excel 没有 Word / PPT 那样的原生划词工具栏，
+                「AI 编辑」入口<strong>随选区单独浮出</strong>（图标 + 黑色「AI 编辑」文字）</td>
+            </tr>
+            <tr>
+              <td><strong>改了哪里看得见吗</strong></td>
+              <td>改动时该区域显示加载动画；改完后<strong>所有修改位置以淡黄色高亮</strong>标出，
+                点击文档任意位置取消高亮</td>
+            </tr>
+            <tr>
+              <td><strong>要不要花钱</strong></td>
+              <td>手动编辑不消耗积分；<strong>AI 编辑消耗积分</strong>；选区精调比整篇发给它更省 Token</td>
+            </tr>
+            <tr>
+              <td><strong>它会动别的文件吗</strong></td>
+              <td>仅对用户<strong>主动打开的文档</strong>操作，不主动扫描或读取其他文件；
+                修改范围限于选区或明确指令指向的内容</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        以上口径取自 WorkBuddy 官方文档 www.workbuddy.cn「人机双写」页，<strong>本站核对日期 2026-09-24</strong>。
+        <code>www.workbuddy.cn</code> 是客户端用户文档，<code>open.workbuddy.cn</code> 是开放平台/开发者文档，
+        两者能力口径可能不一致，本站只用前者。界面与功能随版本更新，以你打开的实际版本为准。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·耗材明细做交叉透视 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/耗材透视.xlsx</code>——一张「班级 × 耗材类别」的交叉表，
+          带合计行、合计列和占比，右下角那个总数能和明细一笔一笔对上。</p>
+
+        <p><strong>第 1 步 · 存素材（2 分钟）</strong></p>
+        <p>把下面这段存成 <code>input/耗材领用明细.csv</code>（共 18 行数据，姓名均为虚构）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · input/耗材领用明细.csv">
+          <div class="codeblock__bar"></div>
+<pre><code>日期,班级,耗材类别,物品,数量,单价,领用人
+2026-09-01,23AI1班,电子元件,面包板,10,6.5,张明
+2026-09-02,23AI1班,工具耗材,剥线钳,5,18.0,张明
+2026-09-03,23AI1班,实验耗材,杜邦线,20,3.2,李婷
+2026-09-05,23AI1班,办公用品,A4打印纸,6,22.0,李婷
+2026-09-08,23AI1班,电子元件,LED灯珠,50,0.4,王海
+2026-09-10,23AI1班,实验耗材,杜邦线,15,3.2,王海
+2026-09-01,23AI2班,办公用品,文件夹,8,9.5,周杰
+2026-09-02,23AI2班,电子元件,面包板,8,6.5,周杰
+2026-09-04,23AI2班,工具耗材,电烙铁,4,45.0,吴倩
+2026-09-06,23AI2班,实验耗材,面包板电源,3,12.0,吴倩
+2026-09-09,23AI2班,办公用品,中性笔,30,2.5,郑凯
+2026-09-11,23AI2班,工具耗材,万用表,2,120.0,郑凯
+2026-09-02,23网络班,实验耗材,网线水晶头,60,0.6,黄丽
+2026-09-03,23网络班,工具耗材,压线钳,3,35.0,黄丽
+2026-09-04,23网络班,电子元件,光纤模块,4,68.0,徐强
+2026-09-07,23网络班,办公用品,标签纸,12,15.0,朱琳
+2026-09-09,23网络班,实验耗材,网线水晶头,40,0.6,朱琳
+2026-09-12,23网络班,工具耗材,测线仪,2,85.0,高翔</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面这段指令发出去（5 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="透视指令 · 点右上角复制后整段发送">
+          <div class="codeblock__bar"></div>
+<pre><code>基于 input/耗材领用明细.csv 做透视统计，输出到 output/耗材透视.xlsx，内含三张表：
+
+表1「班级×耗材类别交叉表」：
+- 行=班级，列=耗材类别，值=数量（求和）；
+- 带合计列（每班合计）和合计行（每类合计），右下角为总计。
+
+表2「按班级汇总」：班级、领用总数量、占总量的百分比（保留 1 位小数）。
+表3「按耗材类别汇总」：耗材类别、领用总数量、占总量的百分比（保留 1 位小数）。
+
+约束：
+- 本次只统计数量，不要算金额——单价那一列不要进统计口径；
+- 不要修改、不要重命名 input 里的原始明细文件；
+- 不要用平均值或计数冒充合计，交叉表里的每个格子必须是数量求和；
+- 数据能确定的部分自己算，缺失或有歧义的值不要猜、不要补，
+  在最后单独列出「无法确认的项」。
+
+做完后告诉我：总计数量是多少、哪个班最多、哪个耗材类别最多。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这五条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>总计等于 282</b><span>三个班合计：23AI1 班 106 + 23AI2 班 55 + 23 网络班 121 = 282 件。<br>
+            <em>对不上</em>：⚠️ 先让它把中间表吐出来（每类的明细小计），
+            一般能看到是哪一类漏算了。</span></li>
+          <li><b>四个格子抽查过</b><span>比如 23AI1 班电子元件 = 60（10+50）、
+            23 网络班工具耗材 = 5（3+2）——各取一处回明细核对。<br>
+            <em>格子都对不上明细</em>：说明它可能用了计数而不是求和，
+            补一句「交叉表的值是数量求和，不是行数」。</span></li>
+          <li><b>合计行、合计列、百分比都在</b><span>三张表都要有。<br>
+            <em>只有交叉表</em>：把缺的表名念给它——「再补表2 按班级汇总和表3 按耗材类别汇总」。</span></li>
+          <li><b>百分比加起来是 100.0%</b><span>37.6% + 19.5% + 42.9% ≈ 100.0%。<br>
+            <em>差了一两个点</em>：⚠️ 多半是它先四舍五入再相加，
+            要求「百分比保留 1 位小数，且合计显示为 100.0%（允许 0.1 的舍入差）」。</span></li>
+          <li><b>原始明细还是 18 行</b><span>打开 input 里的 csv 看一眼，行数不变、内容没被动过。<br>
+            <em>被改了</em>：这是红线。立刻把素材重新存一遍再生成，并从此把它当作默认失误去检查。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>output/耗材透视.xlsx</code>（三张表齐全）+ 它给出的<strong>三条结论</strong>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-chart">
+      <h2>三、图表：选对比做对重要<span class="sec__tag">可视化</span></h2>
+      <p>
+        透视表给出的是数，汇报要的是「一眼看出重点」。于是有了图——
+        但图最容易犯的错不是配色，是<strong>类型选错</strong>：
+        想看「哪个类别占大头」却画了折线图（折线回答的是趋势，不是占比），
+        图本身画得没错，只是回答不了那个问题。
+      </p>
+
+      <h3>按「你要什么」反推图型</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>你要回答的问题</th><th>用什么图</th><th>为什么不用别的</th></tr></thead>
+          <tbody>
+            <tr><td><strong>谁多谁少（比大小）</strong></td><td>柱形图（类别少、名字长用条形图）</td><td>饼图比不出细小的差距，20% 和 23% 肉眼几乎一样</td></tr>
+            <tr><td><strong>随时间怎么变（看趋势）</strong></td><td>折线图</td><td>柱状图能看高低，看不出「一路在降」这个走势</td></tr>
+            <tr><td><strong>各部分占多少（看占比）</strong></td><td>饼图或环形图（类别不超过 5 个）</td><td>类别一多，扇区小得连标签都放不下</td></tr>
+            <tr><td><strong>两个量有没有关系（看关系）</strong></td><td>散点图</td><td>两根柱子看不出相关性</td></tr>
+            <tr><td><strong>集中在哪一段（看分布）</strong></td><td>直方图 / 箱线图</td><td>平均值只有一个数，看不到两极分化</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 先想清楚要回答什么，图型自己就冒出来了</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__stage">
+            <div class="demo__ctrl">
+              <span class="badge badge--p">我要回答的问题是：</span>
+              <div class="btngroup" data-tabs="demo2">
+                <button type="button" data-tab="cmp" class="on">比大小</button>
+                <button type="button" data-tab="trend">看趋势</button>
+                <button type="button" data-tab="part">看占比</button>
+                <button type="button" data-tab="rel">看关系</button>
+                <button type="button" data-tab="dist">看分布</button>
+              </div>
+            </div>
+            <div class="demo__out" id="d2-out"></div>
+          </div>
+          <div class="demo__note">
+            示例均为<strong>教学示意，非实测数值</strong>。
+            这个演示让人看懂：<strong>图型不是审美选择，是问题类型的结果。</strong>
+          </div>
+        </div>
+      </div>
+
+      <h3>交给 AI 做图，得把要求写进指令</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>要写清楚的</th><th>不写会怎样</th></tr></thead>
+          <tbody>
+            <tr><td><strong>图型</strong></td><td>它自选，可能选错</td></tr>
+            <tr><td><strong>数据区域</strong></td><td>它可能把合计行也算进图里，出现「自己比自己大」的那根柱</td></tr>
+            <tr><td><strong>标题与坐标轴单位</strong></td><td>图出来没人知道纵轴是「件」还是「元」</td></tr>
+            <tr><td><strong>数据标签</strong></td><td>饼图不给百分比，读者只能目测</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">三条默认不用说，但它常常还是会犯</span>
+        <strong>一、不要 3D。</strong>立体效果会让柱子看上去比实际值高一大截，读图的人被你误导了都不知道。<br>
+        <strong>二、不要为了「好看」上双轴。</strong>两个量纲不同的序列放一张图，会把不相关的两条线看起来像因果关系。<br>
+        <strong>三、合计行别进图。</strong>饼图里混进「合计」，占比会变成 50% 起跳的一片糊。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·给透视结果配两张能汇报的图 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/耗材透视.xlsx</code> 里多出两张<strong>贴图</strong>——
+          一张比大小的柱形图、一张看占比的饼图，数值与透视表完全对得上。</p>
+
+        <p><strong>第 1 步 · 接着上一个任务继续发（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>接着实操② 那次对话继续提</b><span>
+            <span class="task__warn">不要开新对话</span>——开了它就看不到刚才的表，会让你重新给一遍数据。</span></li>
+          <li><b>整段复制下面的指令发送</b><span>注意它写明了「合计行不进图」和「要数据标签」，
+            这两句是做出能汇报的图的关键。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="制图指令 · 点右上角复制后整段发送">
+          <div class="codeblock__bar"></div>
+<pre><code>在刚才生成的 output/耗材透视.xlsx 里，基于表1「班级×耗材类别交叉表」插入两张图，
+图放在新工作表「图表」里，不要覆盖已有的三张表。
+
+图1：柱形图
+- 数据只用各班级的「合计列」三个数，合计行本身不要画进图里；
+- 标题「各班耗材领用数量对比」，纵轴标题写「数量（件）」，横轴写「班级」；
+- 显示数据标签，柱子不设三维效果。
+
+图2：饼图
+- 数据用表3「按耗材类别汇总」的数量那一列；
+- 标题「耗材类别领用占比」，数据标签同时显示类别名和百分比（1 位小数）；
+- 不要用三维饼图，不要分离扇区。
+
+约束：
+- 不要修改表1/表2/表3 里已有的任何数字；
+- 图里的数值必须与表中的数据一致，不要为了图片好看去调整坐标轴刻度的起点；
+- 缺少或拿不准的数据不要补，告诉我缺了什么。
+
+做完后说明：每张图分别能回答什么问题。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 做到这五条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>柱形图里最高的那根是 23 网络班（121 件）</b><span>
+            最低是 23AI2 班（55 件），中间是 23AI1 班（106 件）。<br>
+            <em>高低对不上</em>：⚠️ 多半是它把「合计行」也当成一类画进去了，
+            补一句「图1 只用每班的合计值，合计行不是一类」。</span></li>
+          <li><b>饼图最大的扇区是「实验耗材」</b><span>标签应显示 48.9%左右。<br>
+            <em>最大扇区是别的类别</em>：让它把图2 用的原始数据再列一遍，
+            通常能看出它取错了列。</span></li>
+          <li><b>饼图百分比加起来 100.0%</b><span>四个扇区：25.5%、5.7%、48.9%、19.9%。<br>
+            <em>明显不到或超过 100%</em>：说明它把「合计」也当成一瓣画了进去。</span></li>
+          <li><b>标题和坐标轴单位都在</b><span>柱形图纵轴写着「数量（件）」。<br>
+            <em>没有单位</em>：直接说「纵轴标题补上单位（件）」。</span></li>
+          <li><b>原来的三张表数字一个没变</b><span>打开核对几个格子，还是 106 / 55 / 121。<br>
+            <em>数字被改了</em>：这是第四次提同一条红线——<strong>产出可以不完美，原始数据不能被动</strong>，
+            请它重做并说明为什么动过表。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：带两张图的 <code>output/耗材透视.xlsx</code> + 它说明的<strong>每张图回答什么问题</strong>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-check">
+      <h2>四、异常值对账：让 AI 算，让人判<span class="sec__tag">收口</span></h2>
+      <p>
+        最折磨人的一步来了：考勤表导出来 13 行，
+        「实际出勤 + 请假 + 缺勤」怎么加都和「应出勤」对不上，
+        你只能一行一行看，看到眼睛发花还没找到。
+      </p>
+      <p>
+        其实<strong>排查是有套路的</strong>——把可能出现的毛病先分成四类，
+        然后让 AI 拿着这四条规则逐行扫。它扫得比你快，也不会看到第 11 行就烦。
+      </p>
+
+      <h3>四类异常，先给它有名字</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>类型</th><th>长什么样</th><th>常见成因</th></tr></thead>
+          <tbody>
+            <tr><td><strong>重复</strong></td><td>整行一模一样出现两次</td><td>导出时按了两次、两个来源各导一次</td></tr>
+            <tr><td><strong>越界</strong></td><td>实际出勤 105、应出勤 20</td><td>单位写错、小数点错、把别的列的值粘过来了</td></tr>
+            <tr><td><strong>逻辑冲突</strong></td><td>出勤 17 + 请假 2 ≠ 应出勤 20</td><td>漏记了一次假、两边口径不一致</td></tr>
+            <tr><td><strong>缺漏 / 格式不一致</strong></td><td>格子空着、写了「-」、混着全半角</td><td>录入时没填、用占位符代替「没有」</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">对账顺序：先总量，后逐行</span>
+        先确认「总数对不对」（总行数、总计值），再往下追分项，最后才落到具体某一行。
+        <strong>反过来做会迷路</strong>——一上来就钻进逐行检查，找了半天发现问题是某一整个来源漏导了，白干。
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">异常 ≠ 错误</span>
+        出勤 105 那天可能是补录了整月的课时；请假栏空着可能就是「没请过假」。
+        <strong>AI 只能标出「不合常规」，判断是不是错要靠业务。</strong>
+        所以这一节的指令里有一条硬要求：<strong>只标不改</strong>——发现异常就写进清单，
+        不许顺手把数「修正」掉。你改了数，事后谁都说不清原始数据是什么样。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·考勤异常值对账并出结论 <em>约 13 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/考勤异常清单.xlsx</code>（每行一条问题，写明行号、类型、依据、
+          建议怎么核）+ <code>output/考勤核查结论.md</code>（共几条、按类型分布、先核哪三条）。
+          原始考勤表一个字符没改。</p>
+
+        <p><strong>第 1 步 · 存素材（2 分钟）</strong></p>
+        <p>把下面这段存成 <code>input/考勤汇总.csv</code>（13 行数据，姓名学号均为虚构）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · input/考勤汇总.csv">
+          <div class="codeblock__bar"></div>
+<pre><code>学号,姓名,应出勤,实际出勤,请假,缺勤
+2023110101,张明,20,20,0,0
+2023110102,李婷,20,19,1,0
+2023110102,李婷,20,19,1,0
+2023110103,王海,20,22,0,0
+2023110104,陈静,20,17,2,0
+2023110105,刘洋,20,15,,5
+2023110106,赵敏,20,18,0,2
+2023110201,周杰,20,20,0,0
+2023110202,吴倩,20,18,2,0
+2023110203,郑凯,20,12,4,3
+2023110204,孙悦,20,20,0,0
+2023110205,马涛,-,20,0,0
+2023110301,黄丽,20,105,0,0</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面这段指令发出去（6 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>确认当前工作目录</b><span><code>input/考勤汇总.csv</code> 就在里面。</span></li>
+          <li><b>整段复制下面的指令发送</b><span>
+            <span class="task__warn">「只标不改」那句是这一节的重点</span>，别删。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="对账指令 · 点右上角复制后整段发送">
+          <div class="codeblock__bar"></div>
+<pre><code>对 input/考勤汇总.csv 做异常值检查，输出到 output/考勤异常清单.xlsx。
+
+逐行检查以下四类问题，每发现一处就写一条记录：
+1. 重复：整行字段与其他行完全相同；
+2. 越界：实际出勤 &gt; 应出勤，或任何数值明显超出合理范围（应出勤为 20）；
+3. 逻辑冲突：实际出勤 + 请假 + 缺勤 ≠ 应出勤；
+4. 缺漏或格式不一致：单元格为空、不是数字（如「-」）、全半角混用。
+
+清单每行 6 列：行号、学号、姓名、异常类型、具体描述（写出实际值和期望值）、
+建议如何核实（具体到去查什么原始凭证，不要写「请核实」这种空话）。
+
+写完后另出一份 output/考勤核查结论.md，包含三块：
+- 共发现多少条异常，按四个类型分别几条；
+- 建议优先核实的 3 条，说明理由；
+- 有哪些数据缺失导致无法判断，列成【待补】清单。
+
+硬约束：
+- 只标不改：不要修改 input 里的原始文件，也不要在清单里给出「修正后的值」；
+- 不要删除任何可疑行，也不要替我们判断它是不是错误；
+- 判断不了的写成【需人工确认】，不要下结论；
+- 不要为了凑数放宽标准，也不要因为觉得「可能合理」就跳过任何一条。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这五条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四类都出现在清单里，每类至少一条</b><span>
+            重复（李婷那行）、越界（王海 22、黄丽 105）、逻辑冲突（陈静 19≠20、郑凯 19≠20）、
+            缺漏格式（刘洋请假空着、马涛应出勤写「-」）。<br>
+            <em>某一类一条都没有</em>：把漏掉的那条规则单独念一遍让它重扫，
+            例如「再检查一遍：有没有单元格不是数字的」。</span></li>
+          <li><b>每条都写了行号和依据</b><span>格式是「实际值 → 期望值」，不是「该行有问题」这种含糊说法。<br>
+            <em>描述太笼统</em>：补一句「每条都要写出行号和实际数值」。</span></li>
+          <li><b>清单里没有「修正后的值」</b><span>它给的是建议怎么核，不是替你改好的数字。<br>
+            <em>它顺手改了</em>：⚠️ 这正是本节的红线，驳回并要求严格按「只标不改」重出一版。</span></li>
+          <li><b>原始文件还是 13 行没变</b><span>打开 <code>input/考勤汇总.csv</code> 看一眼。<br>
+            <em>被改了</em>：回到第 1 步把素材重新存一遍，重跑；并在结论里记一笔。</span></li>
+          <li><b>结论文件给了优先顺序</b><span>写明先核哪三条，理由具体到「影响面」或「金额」。<br>
+            <em>只写了总数</em>：补一句「按核实优先级排出前三条，并说明理由」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>output/考勤异常清单.xlsx</code> + <code>output/考勤核查结论.md</code>。</p>
+        <p class="note">
+          最后留一步给你自己：挑出清单里标【需人工确认】的那几条，判断它们是录入错还是业务本来就特殊。
+          <strong>这一步是整个环节的收口，也是只有你能做的事。</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题给你自己查漏用，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>三个班各交一张成绩表，合成一张总分年级总表——该用哪种合并？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 纵向追加（上下拼），行数相加</li>
+            <li>B. 横向关联（左右拼），用学号做识别码</li>
+            <li>C. 先把三张表各自透视，再把结果拼起来</li>
+            <li>D. 用平均值把三张表合成一张</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A。</b>三张表结构相同、只是「多了几批记录」，属于<strong>纵向追加</strong>，行数相加。
+            B 用在「两张表各有半份信息」的场景（名单表 + 成绩表）。C 和 D 都会把原始行压缩掉，
+            后面的统计就没法回头核对了。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>透视里最能决定「得出什么结论」的要素是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 行</li>
+            <li>B. 列</li>
+            <li>C. 值</li>
+            <li>D. 聚合方式（求和 / 计数 / 平均）</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：D。</b>行、列、值只决定<strong>表长什么样</strong>；聚合方式决定<strong>回答什么问题</strong>：
+            求和是「一共多少」，计数是「有多少条」，平均会因为<strong>抹掉规模差异</strong>把结论翻过来
+            （见演示①）。汇报「谁最多」默认是求和。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>要说明「耗材领用量里，实验耗材占大头」，用哪种图？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 折线图</li>
+            <li>B. 饼图或环形图</li>
+            <li>C. 散点图</li>
+            <li>D. 柱形图</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>问的是<strong>看占比</strong>，用饼图或环形图（类别不超过 5 个时）。
+            折线图回答的是「随时间怎么变」，散点图回答的是「两个量有没有关系」，
+            柱形图回答的是「谁多谁少」——都比不出「占大头」这件事。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>（多选）合计对不上时，下面哪些做法是对的？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 先总后分：先确认总行数和总计值，再追到具体某一行</li>
+            <li>B. 让 AI 按「重复 / 越界 / 逻辑冲突 / 缺漏」四类逐行扫</li>
+            <li>C. 让它顺手把可疑的数字改成「合理值」，省得再问一遍</li>
+            <li>D. 保留原始文件不动，异常只写进单独的清单</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABD。</b>C 是最危险的一条——<strong>异常不等于错误</strong>，
+            而且一旦它改了原始值，你就再也不知道数据本来长什么样。
+            正确做法是<strong>只标不改</strong>：清单里写清行号、实际值、期望值和建议核什么凭证，
+            判断留给人。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：合并多张表时，加一列「来源（班级 / 月份）」可有可无。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，反正合并就完事了</li>
+            <li>B. 错误，没有来源列就定位不到是哪个源头出的问题</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>来源列是<strong>出事时的定位器</strong>：
+            总数对不上，你能立刻算出是哪个班、哪个月份多了或少了；
+            没有这一列，你只能把原始表全部重新对一遍——而那时候耐心已经耗尽。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>合并先<strong>对齐三件事</strong>：列名、口径、粒度；并且<strong>必须留一列来源</strong>；</li>
+          <li>透视四要素 <strong>行 / 列 / 值 / 聚合方式</strong>，结论主要由聚合方式决定——默认是<strong>求和</strong>；</li>
+          <li>图型跟着<strong>问题类型</strong>走：比大小用柱形、看趋势用折线、看占比用饼图，别用 3D 和双轴；</li>
+          <li>异常分<strong>重复 / 越界 / 逻辑冲突 / 缺漏格式</strong>四类，对账<strong>先总量后逐行</strong>；</li>
+          <li><strong>异常 ≠ 错误</strong>：AI 负责标出来，<strong>只标不改</strong>，判断永远留给人。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天你学会了「把数据变成一个结论」。
+        下一课换成 PPT：结论已经有了，接下来的难点变成
+        <strong>「怎么让一屋子人三分钟内看懂」</strong>——
+        先把数据和结论定下来，再去排页面，顺序反了就会做一版花哨但没内容的片子。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>
+        本课作业两部分：<strong>一份实操成果</strong> + <strong>学习通上的 6 道客观题</strong>。
+        客观题在下面这个折叠块里，<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。
+      </p>
+      <h3>要交的实操成果</h3>
+      <ol class="steps">
+        <li><b>四个输出文件</b><span>
+          <code>output/成绩总表.xlsx</code>、<code>output/耗材透视.xlsx</code>（含两张图）、
+          <code>output/考勤异常清单.xlsx</code>、<code>output/考勤核查结论.md</code>。</span></li>
+        <li><b>原始素材原封不动</b><span>四个 input 文件的行数和内容都不能变——
+          这是本课程所有办公任务的底线。</span></li>
+        <li><b>一段 150 字以内的话</b><span>写清：耗材这块到底哪个班领得最多、钱花在哪类东西上、
+          考勤那几条异常你判断是录入错还是业务特殊。<strong>结论必须能指回文件里的具体数字。</strong></span></li>
+      </ol>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        <strong>一、数对不对</strong>——成绩总表 16 行、耗材总计 282 件、占比合计 100.0%，
+        三个数字错一个就是统计过程有漏洞。<br>
+        <strong>二、图能不能回答问题</strong>——柱形图比的是三个班的多少，饼图看的是类别占比，
+        类型和标题都得对得上。<br>
+        <strong>三、异常清单能不能被别人复核</strong>——每条有行号、有实际值、有「去查什么凭证」；
+        只写「XX 有问题」的，等于没做。<br>
+        <strong>四、有没有只标不改</strong>——原始文件被动过，本次作业最高只能算及格。
+      </div>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 12 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）三个班各交一张结构相同的成绩表，要合成全年级一张总表，应该采用哪种合并方式？
+A. 纵向追加（上下拼），行数相加
+B. 横向关联（左右拼），以学号作为识别码
+C. 先各自透视成汇总表，再把三张汇总表拼起来
+D. 用平均值把三张表合成一张
+【答案】A
+【解析】三张表结构相同、只是多了几批记录，属于纵向追加，行数相加即为 16 行。B 适用于两张表各有半份信息的场景（名单表+成绩表）。C、D 都会把原始明细压缩掉，之后无法回头核对，是本课程明确反对的做法。
+
+2.（单选）合并多张来源不同的表时，下面哪一步最容易被漏掉却最不该漏？
+A. 给每张表统一字体
+B. 新增一列写明这行数据来自哪个来源（班级/月份）
+C. 把所有数字设成两位小数
+D. 把表头加粗居中
+【答案】B
+【解析】来源列是出事时的「定位器」：一旦总数对不上，能立刻定位到是哪个班、哪个月份多出或少了数据；没有这一列，只能把所有原始表重新对一遍。AD 属于美化，C 属于格式统一，都不影响数据正确性。
+
+3.（多选）关于数据透视里的聚合方式，下面说法正确的是？
+A. 汇报「谁最多」时，默认应该用求和
+B. 计数回答的是「有多少条记录」，同一人出现三次会被算成三条
+C. 平均值会抹掉规模差异，可能把「领一次领走很多」和「领很多次每次一点点」的班级排序颠倒
+D. 聚合方式只是显示格式，不影响最终结论
+【答案】ABC
+【解析】D 恰好相反——行、列、值只决定表长什么样，聚合方式才决定回答什么问题，是透视四要素里最关键的一项。ABC 分别说明了求和、计数、平均三种方式的含义与陷阱。
+
+4.（单选）要向领导说明「耗材领用量中，实验耗材占了大头」，最合适的图表是？
+A. 折线图
+B. 饼图或环形图
+C. 散点图
+D. 带三维效果的柱形图
+【答案】B
+【解析】问题类型是「看占比」，用饼图或环形图（类别不超过 5 个时）。折线图回答趋势，散点图回答相关性，柱形图回答谁多谁少。D 中的三维效果会让数值看起来被放大，是课件里点名的三个常见坑之一。
+
+5.（判断）发现考勤表里的可疑数据后，应该让 AI 直接把它改成「合理的值」，避免来回沟通。
+A. 正确，AI 很擅长判断业务合理性
+B. 错误，应只标不改：写进异常清单，判断留给人
+【答案】B（错误）
+【解析】异常不等于错误——出勤 105 可能是补录，请假栏空着可能就是没请假。AI 只能标出「不合常规」，判断需要业务知识。更重要的是，一旦改了原始值，就再也无法还原数据本来面貌，事后无法追溯。
+
+6.（多选）合计数字对不上时，规范的处理顺序包括？
+A. 先确认总量：总行数、总计值是否一致
+B. 再按「重复、越界、逻辑冲突、缺漏或格式不一致」四类逐行扫描
+C. 发现问题立刻在原始文件里改成正确答案
+D. 把异常写进单独的清单，每条注明行号、实际值和建议核实的凭证
+【答案】ABD
+【解析】C 违反「只标不改」原则：修改原始文件会破坏可追溯性，且 AI 无权替人判断业务合理性。ABD 构成标准流程——先总量后逐行、按四类扫描、清单式记录、核实留给人。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* 演示①：同一份明细，切换聚合方式，看结论怎么变 */
+  var DATA = { 甲班: [2, 3, 2], 乙班: [20], 丙班: [5, 5, 5, 5] };
+  var KEYS = ["甲班", "乙班", "丙班"];
+  var NODES = ["d1-jia", "d1-yi", "d1-bing"];
+  var CALC = {
+    sum: function (a) { var s = 0; a.forEach(function (v) { s += v; }); return s; },
+    cnt: function (a) { return a.length; },
+    avg: function (a) { var s = 0; a.forEach(function (v) { s += v; }); return Math.round((s / a.length) * 10) / 10; }
+  };
+  var SUFFIX = { sum: " 件", cnt: " 条", avg: " 件/次" };
+  var CONCL = {
+    sum: "<span class='ok'>求和：</span>乙班、丙班并列第一（各 20 件），甲班最少（7 件）。<span class='dim'>回答「一共用了多少」。</span>",
+    cnt: "<span class='ok'>计数：</span>丙班第一（4 次），甲班 3 次，乙班只有 1 次。<span class='hl'>结论和求和完全相反</span>——它回答的是「多频繁」，不是「多少量」。",
+    avg: "<span class='ok'>平均：</span>乙班第一（20 件/次），因为它只有一次就领了 20 件。<span class='hl'>规模被抹掉了</span>，用它汇报「谁领得最多」会误导读图的人。"
+  };
+
+  function d1Render(mode) {
+    if (!CALC[mode]) return;
+    var vals = KEYS.map(function (k) { return CALC[mode](DATA[k]); });
+    vals.forEach(function (v, i) {
+      var n = $(NODES[i]);
+      if (n) n.textContent = v + SUFFIX[mode];
+    });
+    var out = $("d1-out");
+    if (out) out.innerHTML = CONCL[mode];
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('#demo1 [data-tab]'), function (btn) {
+    btn.addEventListener("click", function () { d1Render(btn.getAttribute("data-tab")); });
+  });
+  d1Render("sum");
+
+  /* 演示②：按「要回答什么」反推图型 */
+  var CHART = {
+    cmp: ["推荐：柱形图（类别名长或超过 6 个就换条形图）",
+      "回答的是「谁多谁少」，靠柱子的高低直接比",
+      "别用饼图：20% 和 23% 的扇区肉眼几乎一样，比不出差距"],
+    trend: ["推荐：折线图",
+      "回答的是「随时间怎么变」，看的是斜率和拐点",
+      "别用柱状图：能看出高低，看不出「一路在降」这个走势"],
+    part: ["推荐：饼图或环形图（类别不超过 5 个）",
+      "回答的是「各部分占多少」，需要同时给出百分比标签",
+      "注意：合计行不要画进饼图，否则每个扇区都被稀释成一半"],
+    rel: ["推荐：散点图",
+      "回答的是「两个量有没有关系」，看的是点云的走向",
+      "别用柱形图：两根柱子之间看不出相关性"],
+    dist: ["推荐：直方图（看分布形态）或箱线图（看离散程度）",
+      "回答的是「集中在哪一段」，能看到两极分化",
+      "别只报平均值：一个平均数会掩盖「一半很高一半很低」"]
+  };
+  var d2Node = $("d2-out");
+  function d2Render(key) {
+    if (!d2Node || !CHART[key]) return;
+    var html = "";
+    CHART[key].forEach(function (line, i) {
+      var cls = i === 0 ? "ok" : (i === 2 ? "no" : "dim");
+      html += "<div><span class='" + cls + "'>" + (i === 0 ? "" : (i === 2 ? "✗ " : "· ")) + "</span>" + line + "</div>";
+    });
+    d2Node.innerHTML = html;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('#demo2 [data-tab]'), function (btn) {
+    btn.addEventListener("click", function () { d2Render(btn.getAttribute("data-tab")); });
+  });
+  d2Render("cmp");
+})();
+</script>
+</body>
+</html>

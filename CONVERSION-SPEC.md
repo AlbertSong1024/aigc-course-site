@@ -611,9 +611,11 @@ node tools/new-lesson.js 8
 | 人机双写：文档内 AI 编辑 vs 手动编辑、选区精调、权限边界、积分说明 | https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Knowledge-Base/Cowriting |
 | SKILL.md 目录结构与 frontmatter 字段 | https://www.workbuddy.cn/docs/ide/Features/Skills |
 
-> ⚠️ **路径陷阱（2026-09-17 实测）**：官方文档的 `Practice-Cases` 分组（如 `.../Practice-Cases/Document-Generation`）
-> 在 `www.workbuddy.cn` 上返回 **404**，只在 `www.workbuddy.ai` 上存在。
-> 引用前先确认页面能打开，**不要写没验证过的 URL**。
+> ✅ **Practice-Cases 分组现在两个站都能打开（2026-09-24 复核）**：
+> `https://www.workbuddy.cn/docs/Practice-Cases/Document-Generation`、
+> `https://www.workbuddy.cn/docs/Practice-Cases/Practice-One` 均返回 **200**；`www.workbuddy.ai` 同样 200。
+> ⚠️ 2026-09-17 曾实测 `www.workbuddy.cn` 返回 404，那条结论**已过时**（第 14 课备课时复核更正）。
+> 文档路径会变，**引用前先跑一次状态码确认**，不要写没验证过的 URL。
 >
 > 另：第三方转载（ima 知识库、CSDN、云厂商文档等）内容常常更详细，但**不能作为本站的官方口径依据**——
 > 只用于帮助我们理解，落笔时仍以官方页面为准。

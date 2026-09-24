@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第14次课 文件管理与会议记录｜AIGC应用与实践</title>
+<meta name="description" content="限定工作目录、默认权限、先出方案再执行；把杂乱文件批量整理成可检索资产，把会议转写稿变成纪要和待办。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="14" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 办公实战</span></h2>
+      <p class="lead">
+        前三次课，AI 帮你写出了文档、表格、PPT。但在这之前还有一件更脏更累的活——
+        <strong>素材本身就是乱的</strong>：桌面上堆着一百多张实训照片，文件名是
+        <code>IMG_20260312_143022.jpg</code>、<code>实训报告 最终版2.docx</code>；
+        开完会手里只有一份录音转出来的口语稿，谁负责什么、什么时候交，全埋在闲聊里。
+      </p>
+      <p>这一课解决两件真实的事：</p>
+      <ol class="steps">
+        <li><b>把一堆乱文件变成可检索资产</b><span>识别内容、定命名规则、出对照表、你确认后才动手。</span></li>
+        <li><b>把会议转写稿变成纪要和待办</b><span>提炼结论和行动项，缺的信息标【待补】而不是让它编。</span></li>
+      </ol>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚：这一课的难点不是「会不会做」，是「敢不敢让它做」</span>
+        文件整理和 Word 生成有一个本质区别：<strong>它可能改坏你电脑上真实存在的文件</strong>。
+        所以本课的规矩是——<strong>先限定工作目录，再让它列出打算怎么改，你点头之后才许动手</strong>。
+        页面里所有实操都在这个规矩下设计，一步都不能跳。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说清<strong>工作空间</strong>是什么，以及为什么整理文件前必须先给它划一个目录；</li>
+          <li>判断一条操作在<strong>默认权限</strong>下会不会弹确认，并能说出确认弹窗要看哪三点；</li>
+          <li>定出一条<strong>可用的命名规则</strong>，并让 AI 先产出新旧文件名对照表；</li>
+          <li>独立完成一次<strong>批量归档</strong>：方案 → 确认 → 执行 → 按四条标准验收；</li>
+          <li>把一份口语化的会议转写稿整理成<strong>纪要 + 待办</strong>，缺的信息标【待补】。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-bound"><b>01</b>先划边界：工作空间与权限 <em>＋实操①</em></a>
+        <a href="#s-naming"><b>02</b>命名规则：让文件名会说话 <em>＋实操②</em></a>
+        <a href="#s-archive"><b>03</b>批量归档：确认后才动手 <em>＋实操③</em></a>
+        <a href="#s-minutes"><b>04</b>会议记录转纪要与待办 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素，
+        以及「在我确认前不移动文件」那一句——本课把它变成一套完整流程。<br>
+        <strong>后续</strong>：文件整理好了才谈得上检索。
+        <a class="xref" data-lesson="15">第 15 次课</a>要把这些文件喂给知识库，
+        那时候你就会发现：<strong>命名和分类做得差，检索出来也是一堆垃圾</strong>。
+      </div>
+    </section>
+
+    <!-- ══════════════ 一、边界 ══════════════ -->
+    <section class="sec" id="s-bound">
+      <h2>一、先划边界：工作空间与权限<span class="sec__tag">本课核心</span></h2>
+      <p>
+        先看一个真实事故的发生顺序。有同学想整理实训照片，发了这么一句：
+      </p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="反面示例 · 不要这样发">
+        <div class="codeblock__bar"></div>
+<pre><code>帮我把电脑里的实训照片整理一下，按日期重命名。</code></pre>
+      </div>
+      <p>
+        问题出在「电脑里」这三个字。<strong>「电脑里」不是一个目录，是一个无限大的范围</strong>——
+        它可能一路扫到桌面、下载、微信文件夹，甚至你大一的毕业设计。
+        你以为你在整理照片，它以为你在整理整台电脑。
+      </p>
+      <p>
+        正解是两个动作：<strong>先给它一个目录（工作空间），再让它在这个目录里干活</strong>。
+      </p>
+
+      <h3>工作空间：本次任务的「工地围挡」</h3>
+      <p>
+        官方文档的定义是：<strong>工作空间是当前任务主要读取和保存文件的文件夹</strong>——
+        你在新建任务时选择的目录，或 WorkBuddy 自动创建的任务目录，都会作为本次任务的工作空间。
+        官方还建议：处理重要资料前，<strong>优先为任务新建一个独立文件夹，只把需要处理的副本放进去</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>对比项</th><th>给了工作空间</th><th>没给（直接说「电脑里」）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>它能看多大范围</strong></td><td>只有那一个文件夹</td><td>它可能整盘去找</td></tr>
+            <tr><td><strong>你能不能预判后果</strong></td><td>能，动手前就知道会动哪些文件</td><td>不能，只能等它做完再补救</td></tr>
+            <tr><td><strong>误伤范围</strong></td><td>最多毁掉一份副本</td><td>可能毁掉原件</td></tr>
+            <tr><td><strong>出错后能不能回退</strong></td><td>重新复制一份副本就行</td><td>要靠备份和运气</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">官方也明确写了：默认权限可以减少误操作风险，但<strong>不能替代备份</strong>。</p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一句「批量重命名」，目标在不在工作空间内，结果完全不同</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--primary" type="button" id="d1-in">模拟：改工作空间内的文件</button>
+            <button class="btn btn--accent" type="button" id="d1-beyond">模拟：改桌面上的文件</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d1-k1">—</b><span>会不会弹确认</span></div>
+              <div class="kpi"><b class="acc" id="d1-k2">—</b><span>影响范围</span></div>
+              <div class="kpi"><b id="d1-k3">—</b><span>你该做什么</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            这是<strong>教学示意</strong>，用来说明「路径不同导致风险等级不同」，不是实测的输出截图。
+            权限判定口径来自官方文档「默认权限与安全沙箱」。
+          </div>
+        </div>
+      </div>
+
+      <h3>默认权限：不是什么都拦，只拦要命的那几步</h3>
+      <p>
+        WorkBuddy 提供<strong>默认权限</strong>和<strong>完全访问权限</strong>两档。
+        入口在<strong>输入框底部</strong>，是一个常驻的权限状态按钮（默认显示为「默认权限」），
+        点开面板后可以切换。日常保持默认权限：<strong>常规操作照常跑，高风险动作先停下来问你</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>操作类型</th><th>默认权限下</th><th>为什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>写入受保护或敏感路径</strong></td><td>要确认</td><td>避免覆盖密钥、凭据或安全配置</td></tr>
+            <tr><td><strong>删除受保护文件 / 重要目录 / 批量删除</strong></td><td>要确认</td><td>避免误删难以恢复的资料</td></tr>
+            <tr><td><strong>执行脚本、命令或外部程序</strong></td><td>要确认</td><td>可能改文件、访问网络、影响系统环境</td></tr>
+            <tr><td><strong>网络访问或敏感能力</strong></td><td>要确认</td><td>命中安全中心规则或高风险能力时</td></tr>
+            <tr><td><strong>工作空间内的普通文件写入</strong></td><td>通常直接继续</td><td>低风险，不然每步都问就没法干活了</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        也就是说：<strong>默认权限不是「什么都不让它干」，而是「关键几步交回给你」</strong>。
+        官方的比喻很贴切——一层安全护栏，日常不挡路，真要越界时让你再看一眼。
+      </p>
+
+      <h3>弹窗出来时，只看三件事</h3>
+      <ol class="steps">
+        <li><b>操作内容</b><span>是写文件、删文件，还是执行脚本。</span></li>
+        <li><b>影响范围</b><span>目标路径<strong>在不在本次任务的工作空间内</strong>，
+          会不会波及桌面、下载目录、项目源码或其它重要目录。</span></li>
+        <li><b>执行理由</b><span>这一步是不是完成任务真的必需的。</span></li>
+      </ol>
+      <p>三条里只要有一条答不上来，官方的建议是：<strong>先取消</strong>，让它改成「先展示清单 / 先生成预览或备份 / 把输出保存到工作空间内」。</p>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">三条红线（本课全程适用）</span>
+        <strong>① 只给一个目录，不给「电脑里」</strong>——新建任务时把工作目录选成那个专用文件夹；<br>
+        <strong>② 不把「删除」当成任务</strong>——要它「移动到某处」，而不是「清理掉多余的」；<br>
+        <strong>③ 先要预览，再让它动手</strong>——对照表没看过就执行，等于闭着眼睛签字。
+      </div>
+      <p class="note">
+        关于另一档：官方说明<strong>完全访问权限是全局开关</strong>——开启后当前客户端内所有已存在任务和后续新建任务统一生效，
+        且不跨设备；不建议在「任务会批量删除、批量重命名或覆盖文件」「工作目录靠近桌面、下载目录」等场景开启。
+        本站核对日期 <strong>2026-09-24</strong>，口径来自 WorkBuddy 客户端官方文档
+        「默认权限与安全沙箱」「实践一：文件内容识别与处理」（<code>www.workbuddy.cn</code>）。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·建一个只放副本的工作目录 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个叫 <code>wb-文件整理</code> 的文件夹，
+          里面 <code>input</code> 子目录放着 12 个故意命名混乱的示例文件，
+          并且权限档位确认是「默认权限」。</p>
+
+        <p><strong>第 1 步 · 建专用文件夹（唯一一处需要你动手的准备工作）</strong></p>
+        <ol class="steps">
+          <li><b>在 D 盘根目录新建一个文件夹，命名 <code>wb-文件整理</code></b><span>
+            <span class="task__warn">不要在桌面建</span>——桌面上文件杂，越界风险高；
+            也不要用「新建文件夹」这种默认名。</span></li>
+          <li><b>在里面建一个 <code>input</code> 子文件夹</b><span>路径是 <code>D:/wb-文件整理/input</code>。
+            后面所有素材只放这里，AI 也只许动这里。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 让 AI 生成 12 个示例文件</strong>：新建任务，工作目录选 <code>wb-文件整理</code>，
+          <span class="task__warn">选完看对话区左下角显示的目录名对不对</span>，然后把下面这段指令发出去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="造素材指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 input 目录里新建 12 个空文件，文件名严格照下面这份清单，一个字都不要改：
+
+IMG_20260312_143022.jpg
+IMG_20260312_145001.jpg
+DSC00128.jpg
+微信图片_20260315102233.jpg
+实训报告（最终版）.docx
+实训报告 最终版2.docx
+新建 Microsoft Word 文档.docx
+人工智能导论-第三章课件.pdf
+课件.pdf
+成绩表.xlsx
+新建 XLSX 工作表.xlsx
+说明.txt
+
+要求：
+1. 只在这一个目录里操作，不要碰 input 以外的任何地方；
+2. 不要建子目录，12 个文件平铺在 input 里；
+3. 不要修改、删除任何已存在的文件；
+4. 建完告诉我建了几个、跳过几个。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 校对权限档位</strong>：看输入框底部那个常驻按钮写的是不是「默认权限」。</p>
+        <ol class="steps">
+          <li><b>显示「默认权限」</b><span>正是我们这一课要的档位，继续。</span></li>
+          <li><b>显示「完全访问权限」</b><span>点开面板，关掉「允许完全访问」开关，回到默认权限再继续。
+            <br><em>不知道开关在哪</em>：官方说明它在输入框底部的权限状态按钮里，点一下会弹出面板。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>input</code> 里正好 12 个文件</b><span>打开目录数一遍，名字和上面清单一致（含空格和括号）。<br>
+            <em>少了或多了</em>：把实际数量告诉它，补一句「按清单补齐到 12 个，不要动已建好的」。</span></li>
+          <li><b>文件是平铺的，没有子目录</b><span>出现子目录说明它自作主张分了类。<br>
+            <em>有子目录</em>：补一句「不要建子目录，12 个文件全部平铺在 input 里」，删掉重来。</span></li>
+          <li><b>对话区左下角显示的工作目录是 <code>wb-文件整理</code></b><span>
+            <span class="task__warn">目录选错，后面三步全白做</span>。<br>
+            <em>选错了</em>：停，新建任务重选目录，不要在当前任务里补救。</span></li>
+          <li><b>权限档位是「默认权限」</b><span>这一步是后面所有操作的安全前提。<br>
+            <em>是「完全访问权限」</em>：先在输入框底部切回默认权限，再做第 4 步之后的内容。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这个 <code>wb-文件整理</code> 文件夹（含 12 个示例文件）。
+          它是本课后面三次实操的共同素材，<strong>不要删、不要挪</strong>。</p>
+      </div>
+    </section>
+
+    <!-- ══════════════ 二、命名 ══════════════ -->
+    <section class="sec" id="s-naming">
+      <h2>二、命名规则：让文件名自己会说话<span class="sec__tag">方法</span></h2>
+      <p>
+        文件乱，八成不是乱在「放哪」，而是乱在「叫什么」。
+        看这三个名字，你能看出哪个是哪个吗：
+      </p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="三种典型的坏名字">
+        <div class="codeblock__bar"></div>
+<pre><code>IMG_20260312_143022.jpg      —— 拍的是什么？看不出来
+实训报告 最终版2.docx          —— 哪个才是最终版？看不出来
+新建 Microsoft Word 文档.docx  —— 里面写了什么？看不出来</code></pre>
+      </div>
+      <p>
+        好名字的标准只有一条：<strong>不用打开文件，就知道它是什么、什么时候的、第几版</strong>。
+        拆开就是四个字段：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>字段</th><th>作用</th><th>写法</th><th>例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>日期</strong></td><td>让文件能按时间排序</td><td><code>YYYYMMDD</code> 八位数字</td><td><code>20260312</code></td></tr>
+            <tr><td><strong>主题</strong></td><td>让人一眼知道是什么</td><td>中文短词，3–8 个字</td><td><code>实训-数控车床操作</code></td></tr>
+            <tr><td><strong>类型</strong></td><td>区分同一主题的不同产物</td><td>照片 / 报告 / 课件 / 数据表</td><td><code>照片</code></td></tr>
+            <tr><td><strong>版本</strong></td><td>避免「最终版2」</td><td><code>v1</code> <code>v2</code>，只有真改过才加</td><td><code>v2</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>拼起来就是一条规则：<strong>日期-主题-类型[-版本]</strong>，中间用连字符，例如：</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="合格命名示例 · 对照着看">
+        <div class="codeblock__bar"></div>
+<pre><code>✗ IMG_20260312_143022.jpg
+✓ 20260312-实训-数控车床操作-照片01.jpg
+
+✗ 实训报告 最终版2.docx
+✓ 20260315-实训报告-数控车床-v2.docx
+
+✗ 新建 Microsoft Word 文档.docx
+✓ 20260318-实训心得-数控车床.docx
+
+✗ 课件.pdf
+✓ 20260310-人工智能导论-第三章课件.pdf</code></pre>
+      </div>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>规矩</th><th>为什么</th></tr></thead>
+          <tbody>
+            <tr><td>日期用 <code>YYYYMMDD</code></td><td>字典序就是时间序，排序不会乱</td></tr>
+            <tr><td>不用空格</td><td>空格在命令行和脚本里容易被截断</td></tr>
+            <tr><td>序号补零（01、02）</td><td>不然 10 会排在 2 前面</td></tr>
+            <tr><td>不写「最终版」「最新版」</td><td>下一次修改它就立刻失效了，用 v1/v2</td></tr>
+            <tr><td>认不出来的标【待确认】</td><td>留给人工补，比它瞎猜一个强</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">这一步的关键：要对照表，不要直接改</span>
+        官方实践文档给的示例指令里就带着一句「<strong>先展示重命名预览，确认后再执行</strong>」，
+        并且明确写了：批量重命名属于高风险操作，<strong>只在你确认后才执行</strong>，
+        还要保留一份新旧文件名对照表作为回退依据。<br>
+        所以这一节的产出物是<strong>一张表</strong>，不是改完的文件。改，放到下一节。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·让 AI 出一份重命名对照表 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>rename-plan.md</code>——一张 12 行的新旧文件名对照表，
+          此刻 <code>input</code> 里的文件一个都没被改动。</p>
+
+        <p><strong>第 1 步 · 确认工作目录还是 <code>wb-文件整理</code></strong>，
+          然后把下面这段指令发出去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="出对照表指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>读取 input 目录里的 12 个文件的文件名与可识别的内容或属性，
+按「日期-主题-类型」的规则，生成一份新旧文件名对照表，
+写入 rename-plan.md，放在工作目录根下。
+
+表格格式（Markdown 表格，四列）：
+| 序号 | 原文件名 | 新文件名 | 依据 |
+
+规则：
+1. 日期用 YYYYMMDD 八位；同主题多张照片按 01、02 补零编号；
+2. 新文件名不用空格，不用「最终版」「最新版」这类词；
+3. 从文件名、创建时间、文件内容都判断不出主题的文件，新文件名里写【待确认】，
+   依据列写「信息不足」，不要猜；
+4. 同一批次里不允许出现两个相同的新文件名，重复的用序号区分；
+5. 只生成这张表，不要重命名、不要移动、不要删除任何文件。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 打开 <code>rename-plan.md</code>，对着下面三条核</strong></p>
+        <ol class="steps">
+          <li><b>是不是正好 12 行</b><span>和 <code>input</code> 里的文件数对上，少了就是漏了文件。</span></li>
+          <li><b>每一行都有「依据」</b><span>依据列空着，等于它随手起的名字，不可信。</span></li>
+          <li><b>确实有【待确认】</b><span>像 <code>新建 XLSX 工作表.xlsx</code>、<code>说明.txt</code>
+            这种看不出内容的，就该标【待确认】。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>对照表 12 行，与原文件一一对应</b><span>逐个原文件名核对。<br>
+            <em>行数不对</em>：补一句「input 里一共 12 个文件，对照表必须 12 行，重新数一遍」。</span></li>
+          <li><b>看不出内容的文件标了【待确认】，没有被硬猜成主题</b><span>
+            <span class="task__warn">它猜了就是编造</span>。<br>
+            <em>被硬猜了</em>：把那几行点名出来，补一句「这几行信息不足，新文件名改回【待确认】」。</span></li>
+          <li><b>新文件名没有空格、没有「最终版」，日期是八位</b><span>用编辑器的查找功能搜一下空格。<br>
+            <em>还带着空格</em>：补一句「新文件名一律用连字符，去掉所有空格」。</span></li>
+          <li><b><code>input</code> 里的 12 个文件一个都没变</b><span>打开目录看文件名，还是原来那一串乱码。<br>
+            <em>已经被改了</em>：⚠️ 说明「不要重命名」这句没生效。
+            用 <code>rename-plan.md</code> 的对照表逐个改回原名，
+            再把这句挪到指令<strong>最后一行</strong>重发一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>rename-plan.md</code>。
+          它是下一节执行的「施工图」，<strong>先别急着让它执行</strong>。</p>
+      </div>
+    </section>
+
+    <!-- ══════════════ 三、归档 ══════════════ -->
+    <section class="sec" id="s-archive">
+      <h2>三、批量归档：确认后才动手<span class="sec__tag">本课主线</span></h2>
+      <p>
+        名字改好了，接下来是「放哪」。分类这件事没有标准答案，但<strong>必须有唯一答案</strong>——
+        一个文件放两个地方，等于两个地方都找不到。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>分法</th><th>适合什么</th><th>不适合什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>按类型</strong>（照片 / 报告 / 课件 / 表格）</td><td>素材杂、只为了好找</td><td>同一件事的材料会被拆散</td></tr>
+            <tr><td><strong>按项目</strong>（一次实训一个文件夹）</td><td>要整包交出去的材料</td><td>跨项目复用的资料要放两份</td></tr>
+            <tr><td><strong>按时间</strong>（2026-03 / 2026-04）</td><td>流水型材料，如周报、截图</td><td>回头找某个主题时很难定位</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        选哪种不重要，重要的是<strong>这一批从头到尾只用一种</strong>。
+        本课统一按<strong>类型</strong>分——它最不容易产生歧义，也最容易验收。
+      </p>
+
+      <h3>两阶段：方案在前，执行在后</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>阶段</th><th>它做什么</th><th>你做什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 方案</strong></td><td>列出每个文件去哪、叫什么</td><td>数数量、看有没有 delete、挑出不合理的分类</td></tr>
+            <tr><td><strong>② 执行</strong></td><td>建目录、改名、移动</td><td>盯着「变更」看它动了什么，然后按四条标准验收</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">为什么非要分两阶段</span>
+        因为<strong>移动和改名是可以回退的，但回退很烦</strong>。
+        在方案阶段改一句分类，成本是一句话；执行完再改，成本是重新搬一遍文件。
+        而且一旦它在方案里写出了「删除」，你可以在它动手之前就叫停。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·按对照表执行归档，并验收 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：按类型分好的 <code>input</code> 目录、一份
+          <code>inventory.xlsx</code> 清单，以及结果区里可追溯的「变更」记录——
+          每个文件去了哪，你都能说清。</p>
+
+        <p><strong>第 1 步 · 先让它报方案，不许直接执行</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="先要方案 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按 rename-plan.md 的对照表，准备把 input 里的 12 个文件归档。
+分类方案固定为五类，每个文件只能归一类：
+  实训照片/ 　实训报告/ 　课件资料/ 　表格数据/ 　其他/
+
+先只给我方案，不要执行。方案里要写清：
+1. 每个文件的「原路径 → 新路径（含新文件名）」；
+2. 五类各分到几个文件；
+3. 有没有你无法归类的文件——有就写在「其他/」里并说明原因。
+
+约束：不删除、不覆盖任何文件；重名时保留两份并在名字后加序号；
+方案里不允许出现「删除」「清理」这类动作。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 数一数它的方案，三条里有一条不对就叫停</strong></p>
+        <ol class="steps">
+          <li><b>五类加起来的文件数是 12</b><span>不是 11 也不是 13，加起来必须等于原文件总数。</span></li>
+          <li><b>方案里没有「删除」「清理」</b><span>出现就立刻叫停，重新交代约束。</span></li>
+          <li><b>每个文件只出现一次</b><span>一个文件被安排到两个目录，说明分类标准没定死。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 确认后让它执行</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="确认执行 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>方案通过，按它执行：建好五个分类目录，改名并移动文件。
+
+执行时：
+1. 严格按上面确认的「原路径 → 新路径」逐条执行，不要自己改分类；
+2. 不删除、不覆盖任何文件；
+3. 执行完生成 inventory.xlsx，四列：序号 / 新文件名 / 所在分类 / 原文件名；
+4. 附一份变更记录：建了哪几个目录、移动了哪些文件、跳过了哪些文件及原因。
+5. 文件总数必须与执行前一致，都是 12 个。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 按下面四条验收（这一步不能省）</strong></p>
+        <ol class="steps">
+          <li><b>文件总数还是 12 个</b><span>五个分类目录里的文件加起来数一遍，不算新建的 inventory.xlsx。<br>
+            <em>少了</em>：⚠️ 立刻去结果区的「变更」里找有没有删除类操作，
+            找到就对照 <code>inventory.xlsx</code> 的原文件名列，让它把缺的补回来。</span></li>
+          <li><b>变更里没有任何删除类操作</b><span>移动和改名可以有，删除一条都不能有。<br>
+            <em>有删除</em>：说明「不删除」这句没生效——把它挪到指令最前面，重做一次。</span></li>
+          <li><b><code>inventory.xlsx</code> 是 12 行，且「所在分类」列没有空值</b><span><br>
+            <em>行数不对或有空值</em>：把缺的那几个文件的原文件名发过去，
+            补一句「把这几个文件补进清单，写清它们现在在哪个目录」。</span></li>
+          <li><b>抽查首、中、末各一个文件</b><span>打开看内容是不是和名字对得上——
+            <strong>名字对了、内容串了，比不整理还糟</strong>。<br>
+            <em>抽查发现串了</em>：把错的那份原文件名和新路径一起发过去，
+            补一句「第 N 条记录对应第 N 个文件，逐条对齐，不要串行」，让它重做那几条。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：整理好的 <code>wb-文件整理</code> 文件夹 + <code>inventory.xlsx</code>。
+          课上如果要求截图，截<strong>整理前（12 个平铺）和整理后（五个分类目录）两张</strong>。</p>
+        <p class="note">
+          官方安全提示里还有两条值得记住：<strong>先备份或小批量试跑</strong>、
+          <strong>避开敏感文件</strong>（含隐私、财务密钥、凭证的目录不要直接批量处理）。
+          本站核对日期 2026-09-24。
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════ 四、会议纪要 ══════════════ -->
+    <section class="sec" id="s-minutes">
+      <h2>四、会议记录转纪要与待办<span class="sec__tag">实战</span></h2>
+      <p>
+        第二件事：社团开完会，你手里有一份录音转出来的文字稿。
+        它长这样——有废话、有跑题、有「回头再说」，但真正的结论和待办就埋在里面。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>口语转写稿</th><th>会议纪要</th></tr></thead>
+          <tbody>
+            <tr><td><strong>顺序</strong></td><td>想到哪说到哪，来回跳</td><td>按议题归类</td></tr>
+            <tr><td><strong>内容</strong></td><td>讨论过程、犹豫、闲聊</td><td>只留结论和行动项</td></tr>
+            <tr><td><strong>责任</strong></td><td>「这个要不你来？」</td><td>写明负责人和截止时间</td></tr>
+            <tr><td><strong>语气</strong></td><td>口语、重复、省略</td><td>书面、一句话一件事</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>所以纪要不是「缩写」，是<strong>换一种文体重写</strong>。结构固定五块：</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>块</th><th>写什么</th><th>容易出问题的地方</th></tr></thead>
+          <tbody>
+            <tr><td><strong>会议基本信息</strong></td><td>主题、时间、地点、参会人、缺席</td><td>它常把「在场的人」写成「应到的人」</td></tr>
+            <tr><td><strong>议题与讨论要点</strong></td><td>每个议题讨论了什么（不是过程，是要点）</td><td>它容易把讨论过程全抄进来</td></tr>
+            <tr><td><strong>关键结论</strong></td><td>定了的事，一条一行</td><td>⚠️ 它常把「有人说……」当成「定了……」</td></tr>
+            <tr><td><strong>行动项</strong></td><td>谁、做什么、什么时候前</td><td>缺负责人或截止时间</td></tr>
+            <tr><td><strong>未决事项</strong></td><td>没定下来的，写明卡在哪</td><td>它常常直接不写，或者自己替你定了</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>待办的四要素，缺一个就别写进清单</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>要素</th><th>问句</th><th>缺了怎么办</th></tr></thead>
+          <tbody>
+            <tr><td><strong>动作</strong></td><td>具体要做哪件事</td><td>必须补，否则无从下手</td></tr>
+            <tr><td><strong>负责人</strong></td><td>谁来做</td><td>标【待补】，不许写「相关同学」</td></tr>
+            <tr><td><strong>截止</strong></td><td>什么时候前完成</td><td>标【待补】，不许写「尽快」</td></tr>
+            <tr><td><strong>验收</strong></td><td>做成什么样算完成</td><td>标【待补】，会后找主持人确认</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">最容易踩的坑：它替你把会开完了</span>
+        转写稿里出现「这个回头再定」「差不多下周三吧」这类话时，
+        AI 有两种处理：<strong>写【待补】</strong>，或者<strong>替你定一个看起来合理的日期和人</strong>。
+        后者最危险——待办清单是拿来追责的，<strong>编出来的负责人等于没人负责</strong>。
+        所以指令里必须写死：<strong>原文没说的一律标【待补】，不许推测、不许补全</strong>。
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 同一段口语记录，写【待补】和硬猜一个，差别在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-go">提取待办</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d2-k1">—</b><span>行动项</span></div>
+              <div class="kpi"><b class="acc" id="d2-k2">—</b><span>标【待补】的项</span></div>
+              <div class="kpi"><b id="d2-k3">—</b><span>编造项</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            教学示意，用于演示「缺信息该标【待补】」，数值与文本为课堂编写，非实测。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·把社团会议转写稿变成纪要 + 待办 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>会议纪要.md</code> 和 <code>待办清单.md</code> 两个文件，
+          原文 <code>meeting.txt</code> 一个字都没被改动。</p>
+
+        <p><strong>第 1 步 · 让 AI 把转写稿存成文件</strong>：在 <code>wb-文件整理/input</code> 里新建
+          <code>meeting.txt</code>，内容用下面这一段（复制发送，让它自己建文件）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 社团会议转写稿（照抄）">
+          <div class="codeblock__bar"></div>
+<pre><code>在 input 目录里新建 meeting.txt，内容一字不改地照抄下面这段：
+
+———以下为内容———
+2026年9月18日 周五 下午四点 人工智能社团 例会
+地点：实训楼 B305
+到的人：社长陈可、副社长周涛、宣传组的林小雨、技术组的吴凡，还有我
+迟到的：吴凡，晚了十分钟
+请假的：指导老师刘老师，去开会了
+
+陈可：先说一下招新的事。去年我们摆摊两天收了六十多份报名表，
+最后留下来的不到二十个。今年我想提前一点，别等到十月份再弄。
+周涛：提前也行，但是海报得先出来，不然摆摊的时候没东西挂。
+林小雨：海报我可以做，但是我得先知道今年招多少人，
+还有要突出什么，是突出比赛还是突出项目？
+陈可：这个回头再定吧，我先跟刘老师问一下。人数就按四十个报吧。
+周涛：那我这边负责联系场地，实训楼门口那块地方得提前跟物业说，
+去年就是没提前说，被挪到二楼去了。
+陈可：行，场地你去说。还有一件事，上周那个模型跑不通的问题，
+吴凡你看了没有？
+吴凡：看了，是数据的问题，标注里有不少错的。我这两天重新标一批，
+大概下周能跑起来。跑通了我发群里。
+陈可：那最好在招新之前跑通，招新的时候就拿这个当演示，比讲 PPT 有说服力。
+林小雨：那我海报上就先留一块位置给演示，回头你把截图给我。
+吴凡：行，我到时候发你。
+陈可：还有经费的事，上学期剩三百二十块，这学期学院还没批，
+我下周去找刘老师签字。批下来之前大家先垫着。
+周涛：垫可以，但是超过一百的要留发票。
+陈可：对，留发票。行，今天就这些，散会。
+———以上为内容———
+
+写完只要告诉我建好了，不要整理，不要改内容。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 发出整理指令</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="整理指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>读取 input/meeting.txt，整理成两份文件，放在工作目录根下：
+
+一、会议纪要.md，固定五块，每块用小标题标出：
+1. 会议基本信息：主题、时间、地点、参会人、迟到、请假——逐项从原文取，不要推测；
+2. 议题与讨论要点：按议题归类，只写要点，不要抄讨论过程；
+3. 关键结论：只写会上明确定了的事，一条一行；
+   原文里是「回头再定」「我先问一下」这类话的，一律写进「未决事项」，
+   不许当成已定结论；
+4. 行动项：谁 / 做什么 / 什么时候前，一条一行；
+5. 未决事项：写明卡在哪、等谁拍板。
+
+二、待办清单.md，用表格输出，五列：
+| 序号 | 行动项 | 负责人 | 截止时间 | 验收标准 |
+
+要求：
+1. 原文没明确说的负责人、截止时间、验收标准，一律写【待补】，
+   不许推测，不许用「相关同学」「尽快」这类模糊词代替；
+2. 不要把讨论过程写进待办，只写真正要动手的事；
+3. 数字（人数、金额、日期、地点）必须与原文逐字一致；
+4. 不要修改 input/meeting.txt，两个文件都另存。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 按下面五条验收</strong></p>
+        <ol class="steps">
+          <li><b>纪要五块齐全，且参会人只写了到场的 5 个人</b><span>
+            刘老师是请假的，不能出现在参会人里。<br>
+            <em>把请假的人列进了参会人</em>：补一句「参会人只列实际到场的，请假和迟到单独标注」。</span></li>
+          <li><b>行动项不少于 5 条，每条都有负责人</b><span>海报、场地、模型、演示截图、经费签字——
+            这些都在原文里。<br>
+            <em>条数不够</em>：把漏的那件事的原文句子发过去，补一句「这条也整理成行动项」。</span></li>
+          <li><b>待办清单里【待补】至少出现 3 处</b><span>
+            <span class="task__warn">一处都没有，多半是它替你把会开完了</span>——
+            海报突出什么、招新人数谁批、经费什么时候下来，原文都没说死。<br>
+            <em>全被编出来了</em>：把那几行点名出来，
+            补一句「原文没说的写【待补】，不许推测」，重新生成待办清单。</span></li>
+          <li><b>数字逐字核对无误</b><span>三百二十块、四十个、B305、9 月 18 日，逐个对原文。<br>
+            <em>对不上</em>：以 <code>meeting.txt</code> 为准，让它改回正确的值。</span></li>
+          <li><b><code>input/meeting.txt</code> 一个字都没变</b><span>打开看内容是不是还是原来那段口语。<br>
+            <em>被改了</em>：⚠️ 说明「不要修改原文件」没生效——
+            把这句挪到指令最前面，重新生成一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>会议纪要.md</code> + <code>待办清单.md</code> + 未改动的
+          <code>meeting.txt</code>。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">这一课的底层逻辑，一句话</span>
+        <strong>操作交给 AI，验收留给人。</strong>
+        它能一分钟改完 12 个文件、能从三千字口语里捞出 5 条待办；
+        但「删没删错」「猜没猜」「数字对不对」，这三条它自己判不了。
+        你在这门课上要练的，恰恰是后面这半句。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>「帮我把电脑里的实训照片整理一下」这句话，最根本的问题是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 没说按什么规则命名</li>
+            <li>B. 「电脑里」不是一个目录，范围大到无法预判后果</li>
+            <li>C. 没说整理成 Word 还是 Excel</li>
+            <li>D. 照片太多，AI 处理不过来</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>命名规则可以后面补，但<strong>范围必须一开始就限定</strong>——
+            官方把「工作空间」定义为当前任务主要读取和保存文件的文件夹，
+            并建议为任务新建独立文件夹、只放需要处理的副本。范围不定，
+            后面所有约束（不删除、先预览）都失去了判断基准：你根本不知道它可能会碰到什么。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>默认权限下，哪一类操作通常<strong>不会</strong>停下来要你确认？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 批量删除受保护目录下的文件</li>
+            <li>B. 执行脚本或外部程序</li>
+            <li>C. 在工作空间内写入一个普通新文件</li>
+            <li>D. 写入受保护或敏感路径</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>官方说明：开启删除保护后，<strong>普通文件写入通常可以直接继续</strong>；
+            要确认的是写入敏感路径、重要或批量删除、执行脚本命令、网络访问这四类。
+            记住这个分界——<strong>拦的是「要命的那几步」，不是每一步</strong>，
+            否则每步都问就没法干活了。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>批量重命名之前，为什么要先让它出一张新旧文件名对照表？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 对照表可以当作业交</li>
+            <li>B. 重命名属于高风险操作，先预览才能在它动手前发现问题，也留了回退依据</li>
+            <li>C. AI 必须先写表才会改文件，是它的技术限制</li>
+            <li>D. 表格比文件名更容易排序</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>官方把批量重命名明确列为<strong>高风险操作</strong>，
+            安全提示里就写着「只在你确认后执行」和「保留可回退的依据」。
+            A 说反了——对照表是过程产物，不是目的；C 是臆测，它完全可以直接改；
+            D 与风险无关。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>会议转写稿里出现「这个回头再定吧」，正确的处理是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 按讨论倾向，先定一个最可能的方案写进结论</li>
+            <li>B. 写进「未决事项」，并标明卡在哪、等谁拍板；相关待办的负责人写【待补】</li>
+            <li>C. 直接不写，纪要里只留定下来的事</li>
+            <li>D. 写成行动项，负责人写「相关同学」</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>「回头再定」在原文里就是<strong>没定</strong>，
+            写成结论 A 属于编造；C 会让这件事会后彻底消失，下次没人记得；
+            D 里的「相关同学」是典型的模糊词——<strong>待办清单是拿来追责的，
+            编出来的负责人等于没人负责</strong>。缺的就标【待补】，会后找主持人确认。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：归档完成后，只要文件总数没变，就算验收通过了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，文件没少就说明没删错</li>
+            <li>B. 错误，还要查变更里有无删除、清单行数是否对齐、抽查内容有没有串</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>总数不变只能排除「文件消失」，
+            排除不了<strong>内容串行</strong>——第 2 份里装着第 5 份的内容，总数照样是 12。
+            所以完整验收至少有四条：总数一致、变更里无删除、清单行数对齐且无空值、
+            抽查<strong>首中末</strong>三个文件看内容对不对得上名字。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>先划边界再干活</strong>：工作空间 = 本次任务主要读写文件的文件夹，
+            只放副本；目录选错，后面全白做；</li>
+          <li><strong>默认权限拦的是要命的那几步</strong>——敏感路径写入、重要或批量删除、
+            执行脚本、网络访问；弹窗来了只看三点：操作内容、影响范围、执行理由；</li>
+          <li><strong>命名规则「日期-主题-类型-版本」</strong>：八位日期、不用空格、
+            序号补零、不写「最终版」，认不出的标【待确认】；</li>
+          <li><strong>方案在前、执行在后</strong>：批量重命名和归档都是高风险操作，
+            先看对照表和分类方案，确认后才许动手；</li>
+          <li><strong>纪要重结构、待办重四要素</strong>：缺的标【待补】，
+            不许推测；<strong>操作交给 AI，验收留给人</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：文件现在整理干净了，但「干净」不等于「找得到」。
+        下一次课要解决的正是这件事——<strong>怎么让 AI 从这一堆文件里，
+        准确地找到你问的那一份并引用它</strong>。命名和分类做得差，那时候检索出来照样是垃圾。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 14 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）关于「工作空间」，下面说法正确的是？
+A. 它是 AI 能访问的整台电脑
+B. 它是当前任务主要读取和保存文件的文件夹，建议只放需要处理的副本
+C. 它是云端存放文件的空间
+D. 它一旦设定就不能更改
+【答案】B
+【解析】官方文档把工作空间定义为「当前任务主要读取和保存文件的文件夹」，并建议处理重要资料前新建独立文件夹、只把副本放进去。A 恰恰是要避免的做法；C 混淆了本地目录与云端；D 没有根据，换任务时可以另选目录。
+
+2.（多选）在默认权限下，WorkBuddy 通常会停下来请你确认的操作有哪些？
+A. 写入受保护或敏感路径
+B. 删除受保护文件或批量删除
+C. 在工作空间内新建一个普通文件
+D. 执行脚本、命令或外部程序
+【答案】ABD
+【解析】官方列出需要确认的四类：写入受保护或敏感路径、删除受保护文件或批量删除、执行脚本命令或外部程序、网络访问或敏感能力。C 属于低风险的普通文件写入，开启删除保护后通常可以直接继续——默认权限拦的是「要命的那几步」，不是每一步。
+
+3.（单选）批量重命名之前，为什么必须先让 AI 输出新旧文件名对照表？
+A. 对照表是最终要交的成果
+B. 重命名属于高风险操作，先预览才能在它动手前发现问题，也保留回退依据
+C. AI 技术上必须先写表才能改文件名
+D. 表格比文件名更容易排序
+【答案】B
+【解析】官方把批量重命名明确列为高风险操作，安全提示要求「只在你确认后执行」并「保留可回退的依据」。A 说反了，对照表是过程产物；C 是臆测；D 与风险无关。
+
+4.（多选）下面哪些文件名符合本课讲的命名规则？
+A. 20260312-实训-数控车床操作-照片01.jpg
+B. 实训报告 最终版2.docx
+C. 20260315-实训报告-数控车床-v2.docx
+D. 新建 Microsoft Word 文档.docx
+【答案】AC
+【解析】合格命名的四条规矩：日期用 YYYYMMDD 八位、不用空格、序号补零、不写「最终版」「最新版」而用 v1/v2。B 含空格且用了「最终版2」；D 完全看不出内容。
+
+5.（判断）会议记录里出现「这个回头再定吧」，整理纪要时可以让 AI 按讨论倾向先定一个最可能的方案，写进关键结论。
+A. 正确，这样纪要更完整
+B. 错误，原文没定的事要写进未决事项并标明等谁拍板，相关待办标【待补】
+【答案】B（错误）
+【解析】「回头再定」在原文里就是没定，写成结论属于编造。纪要要如实反映「没定下来」这件事，待办清单里缺的负责人、截止时间、验收标准一律标【待补】——待办是拿来追责的，编出来的负责人等于没人负责。
+
+6.（多选）一次批量归档做完后，验收至少要查哪几条？
+A. 文件总数与执行前一致
+B. 变更记录里没有任何删除类操作
+C. 清单文件行数与原文件数一致，且分类列没有空值
+D. 抽查首、中、末各一个文件，看内容与文件名对不对得上
+【答案】ABCD
+【解析】四条都不能省。总数一致只能排除「文件消失」，排除不了内容串行——第 2 份里装着第 5 份的内容，总数照样对得上。批量处理最危险的就是串行和误删，而这两类错误肉眼扫一眼是发现不了的。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        <strong>① 边界有没有守住</strong>——工作目录是不是专用文件夹、权限档位是不是默认权限、
+        执行前有没有先出方案；<br>
+        <strong>② 产物齐不齐</strong>——<code>rename-plan.md</code>、<code>inventory.xlsx</code>、
+        <code>会议纪要.md</code>、<code>待办清单.md</code> 四样都在；<br>
+        <strong>③ 有没有编造</strong>——待办清单里该标【待补】的地方标了没有、
+        文件总数有没有变、原文件有没有被改动。
+      </div>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var S = window.Site;
+
+  /* 演示①：目标在不在工作空间内，风险等级不同 */
+  function d1Run(inScope) {
+    var lines = inScope
+      ? [
+          "<span class='dim'>$ 任务：把 input 里 12 个文件按「日期-主题-类型」重命名</span>",
+          "<span class='dim'>目标路径：D:/wb-文件整理/input/　（在工作空间内）</span>",
+          "<span class='ok'>✓ 常规文件写入：直接执行，不打断你</span>",
+          "<span class='ok'>✓ 影响范围可预判：最多就是这 12 个文件</span>",
+          "<span class='hl'>你的动作：看一眼对照表，确认后再说「执行」</span>"
+        ]
+      : [
+          "<span class='dim'>$ 任务：把桌面上的实训照片按日期重命名</span>",
+          "<span class='dim'>目标路径：C:/Users/…/Desktop/　（在工作空间外）</span>",
+          "<span class='no'>✗ 命中「写入受保护路径」：弹窗请你确认</span>",
+          "<span class='no'>✗ 影响范围：可能波及整个桌面，包括你没打算动的文件</span>",
+          "<span class='hl'>你的动作：先取消，把文件复制到专用目录，缩小范围再发一次</span>"
+        ];
+    $("d1-k1").textContent = inScope ? "不弹" : "要弹";
+    $("d1-k2").textContent = inScope ? "仅 input 目录" : "可能波及整个桌面";
+    $("d1-k3").textContent = inScope ? "看清单后放行" : "先取消，改范围";
+    if (S && S.type) S.type($("d1-out"), lines);
+    else $("d1-out").innerHTML = lines.join("<br>");
+  }
+
+  function d1Reset() {
+    $("d1-k1").textContent = "—";
+    $("d1-k2").textContent = "—";
+    $("d1-k3").textContent = "—";
+    $("d1-out").innerHTML = "";
+  }
+
+  /* 演示②：待办提取，缺的信息要标【待补】 */
+  function d2Run() {
+    var lines = [
+      "<span class='dim'>原文：海报我可以做，但是我得先知道今年招多少人，还有要突出什么……</span>",
+      "<span class='dim'>原文：这个回头再定吧，我先跟刘老师问一下。</span>",
+      "<span class='ok'>1. 制作招新海报　负责人：林小雨　截止：【待补】　验收：【待补】</span>",
+      "<span class='ok'>2. 联系实训楼门口场地　负责人：周涛　截止：招新前（原文未给具体日期）　验收：场地确认可用</span>",
+      "<span class='ok'>3. 重标数据并跑通模型　负责人：吴凡　截止：下周　验收：跑通后发群</span>",
+      "<span class='hl'>4. 确定海报突出什么　负责人：【待补】　截止：【待补】　验收：【待补】　（原文：回头再定）</span>",
+      "<span class='ok'>5. 找刘老师签经费　负责人：陈可　截止：下周　验收：学院批复</span>",
+      "<span class='no'>✗ 若写成「负责人：宣传组、截止：本周五」——原文没说，就是编造</span>"
+    ];
+    $("d2-k1").textContent = "5";
+    $("d2-k2").textContent = "4 处";
+    $("d2-k3").textContent = "0 处";
+    if (S && S.type) S.type($("d2-out"), lines);
+    else $("d2-out").innerHTML = lines.join("<br>");
+  }
+
+  function d2Reset() {
+    $("d2-k1").textContent = "—";
+    $("d2-k2").textContent = "—";
+    $("d2-k3").textContent = "—";
+    $("d2-out").innerHTML = "";
+  }
+
+  if ($("d1-in")) {
+    $("d1-in").addEventListener("click", function () { d1Run(true); });
+    $("d1-beyond").addEventListener("click", function () { d1Run(false); });
+    $("d1-reset").addEventListener("click", d1Reset);
+  }
+  if ($("d2-go")) {
+    $("d2-go").addEventListener("click", d2Run);
+    $("d2-reset").addEventListener("click", d2Reset);
+  }
+})();
+</script>
+</body>
+</html>
