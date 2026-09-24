@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第20次课 自媒体运营实战｜AIGC应用与实践</title>
+<meta name="description" content="公众号 / 小红书 / GEO 内容生产">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="20" data-root="../">
+
+<!-- 顶栏 / 侧边栏 / 面包屑 / 页面标题区 / 本页目录 / 上下课导航 / 页脚
+     全部由 assets/js/site.js 按 course-map.js 自动生成。
+     课时页里【不要】再写这些结构，否则会重复。 -->
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始 —— 转化时只写这一段
+     硬性要求：
+       1. 每个知识点一个小节：<section class="sec" id="s-语义名">
+       2. 小节的 <h2> 不带 id，锚点 id 落在 section 上
+       3. 需要单独跳转的三级标题（h3）才带 id，命名 s-xxx-yyy
+       4. 本页全部小节都要在 search-index.js 里登记
+     标准小节清单（除本课确有需要外，顺序不要变、不要增删）：
+       s-guide    本课导读
+       s-goal     学习目标（含知识点导航）
+       s-…        正文小节 2–8 个，一节讲透一个概念
+       s-quiz     随堂自测
+       s-recap    本课要点回顾
+       s-hw       课后作业
+     ============================================================ -->
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        你在前面课程里练过的所有能力——写文档、整理素材、管知识库——在这节课汇合到一个真实场景：
+        <strong>内容生产</strong>。同一份素材，公众号要一篇成稿、小红书要一篇带标签的笔记、
+        甚至还要想办法让 AI 在回答相关问题时「记得你」。
+      </p>
+      <p>
+        这节课不是教你当博主，而是教你<strong>把内容生产里的重复劳动标准化</strong>——
+        并把你用得顺手的指令沉淀成模板。这一步做完，你为这门课攒下的就不只是作品，还有一套能复用的生产流程。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">两条先说清楚</span>
+        ① 本课所有平台数据（阅读量、规则细则）均为<strong>模拟或通用做法</strong>，
+        平台规则随时间变化，以平台当前规则为准；
+        ② 内容可以由 AI 起草，但<strong>发布前的事实核对必须由你完成</strong>——
+        AI 写错一个参数、编一个数据，发出去就是你署名的。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>把一份原始素材，按公众号和小红书各自的风格产出两个版本；</li>
+          <li>说出两个平台对内容的要求差异，并据此调整指令；</li>
+          <li>解释 <strong>GEO</strong>（Generative Engine Optimization，生成式引擎优化）和 SEO 的区别；</li>
+          <li>按「可被 AI 引用」的标准改写一篇文章，并说出改了什么；</li>
+          <li>把本课用过的指令整理成<strong>一份可复用的指令模板文档</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-gzh"><b>01</b>公众号全流程 <em>＋实操①</em></a>
+        <a href="#s-xhs"><b>02</b>小红书笔记 <em>＋实操②</em></a>
+        <a href="#s-geo"><b>03</b>GEO 可见度优化 <em>＋实操③</em></a>
+        <a href="#s-tpl"><b>04</b>指令模板沉淀 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="10">第 10 次课</a>的文档指令、
+        <a class="xref" data-lesson="12">第 12 次课</a>的图表、
+        <a class="xref" data-lesson="13">第 13 次课</a>的排版四原则。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="26">第 26 次课</a>的求职作品包，
+        本课沉淀的模板和成稿可以直接进作品集。
+      </div>
+    </section>
+
+    <section class="sec" id="s-gzh">
+      <h2>一、公众号全流程：从素材到成稿</h2>
+      <p>
+        公众号文章的完整链路是：<strong>选题 → 素材 → 大纲 → 成稿 → 核对 → 排版</strong>。
+        AI 能接管中间四步，但<strong>选题和核对永远是你的</strong>：
+        选什么题体现你的判断，核对决定这篇东西敢不敢署你的名。
+      </p>
+      <p>本课贯穿一个统一案例：<strong>「AI 学习工具实测」</strong>。素材如下（模拟数据）：</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · AI 工具体验记录（模拟） · 点右上角复制">
+        <div class="codeblock__bar"></div>
+<pre><code>【模拟数据，用于课堂练习】
+体验时间：2026 年 9 月
+体验对象：三款 AI 学习工具（化名：甲、乙、丙）
+体验记录：
+- 甲：回答快，但数学题经常算错；界面简洁，适合文科向提问
+- 乙：能上传讲义生成摘要，但免费版每天限 3 次
+- 丙：支持语音提问，识别准确，但回答偏长，重点不突出
+- 三款都支持导出为文档；导出格式有差异
+- 我的使用场景：课后整理笔记 + 期末复习提纲</code></pre>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·产出一篇公众号文章 <em>约 15 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一篇公众号风格的成稿 + 一份你逐条核过的事实清单。</p>
+        <p><strong>第 1 步 · 先要大纲，确认后再写（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把素材和第一条指令一起发出去</b><span>先只要大纲——和 <a class="xref" data-lesson="10">第 10 次课</a>的长文档规矩一样，别让它直接写全文。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="大纲指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>下面是我亲测三款 AI 学习工具的体验记录（模拟数据）。
+请为公众号写一篇文章的大纲，要求：
+
+1. 面向大学生读者，标题给 3 个备选（不许标题党）；
+2. 结构：先给结论 → 分工具讲体验 → 按使用场景给选择建议 → 结尾给行动建议；
+3. 每节标出预计字数，全文 1200 字左右；
+4. 大纲里标出哪些地方需要我补充原始素材，哪些是你推断的。
+
+只要大纲，先不要写正文。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 确认大纲，展开成稿（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>核完大纲再放行</b><span>重点看两处：结论是否真的能从素材推出；标「推断」的地方你认不认。</span></li>
+          <li><b>发展开指令</b><span>成稿后让它<strong>另存为文件</strong>，别只在对话里。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="成稿指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>大纲没问题，按它写正文。要求：
+
+1. 严格按确认过的大纲结构，不要自行增删章节；
+2. 素材里没有的数据、功能，一律不要写——宁可不提，不许编；
+3. 语气平实，像学长在分享，不要「随着……的发展」这类套话；
+4. 写完输出为 公众号成稿.md，保存到工作目录。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 逐条核对，出事实清单（5 分钟）</strong></p>
+        <p>发布前的核对<strong>只能由你做</strong>。逐项过一遍并留痕：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="事实核对清单 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>发布前事实核对（逐条打勾前必须真的查过）
+
+□ 文中提到的每个功能，素材里都有记录
+□ 没有出现素材里没有的数据（跑分、准确率、价格）
+□ 三款工具的化名不会引起对真实产品的误认
+□ 结论与我的实际体验一致
+□ 没有贬低性表述，只有体验描述
+□ 文末标注「体验为个人记录，工具信息以官方为准」</code></pre>
+        </div>
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>成稿是文件，不是对话记录</b><span>在目录里能看到 公众号成稿.md。</span></li>
+          <li><b>事实清单六条全过</b><span>任何一条不过，先让 AI 改稿，再重新核对——<strong>改一次核一次</strong>。</span></li>
+          <li><b>文中没有一个编造的数据</b><span>逐个数字对回素材。对不上就删掉那句，不要「应该差不多」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：公众号成稿.md + 核对清单（已勾选版）。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-xhs">
+      <h2>二、小红书笔记：同一份素材换平台</h2>
+      <p>
+        公众号文章是「读」的，小红书笔记是「刷」的。
+        同一份素材，两个平台的形态完全不同——这正是检验<strong>指令调整能力</strong>的地方：
+        你要能把平台差异「翻译」进指令里。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>公众号</th><th>小红书</th></tr></thead>
+          <tbody>
+            <tr><td><strong>形态</strong></td><td>长文，标题党是减分项</td><td>短笔记，标题决定点击</td></tr>
+            <tr><td><strong>结构</strong></td><td>结论 → 论述 → 建议</td><td>钩子 → 干货点 → 标签</td></tr>
+            <tr><td><strong>语气</strong></td><td>平实像分享</td><td>口语、有个人感</td></tr>
+            <tr><td><strong>必带</strong></td><td>—</td><td>话题标签（决定分发）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·同一素材产出小红书笔记 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一篇小红书笔记（标题 + 正文 + 标签），以及它和公众号版的差异说明。</p>
+        <p><strong>第 1 步 · 发出小红书指令（5 分钟）</strong></p>
+        <p>把素材再发一次，指令里明确平台差异：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="小红书指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>还是我亲测三款 AI 学习工具的体验记录（模拟数据）。
+这次为小红书写一篇笔记，要求：
+
+1. 标题 3 个备选：口语化、有个人视角，20 字以内，不许夸张承诺；
+2. 正文 300 字以内：开头一句钩子，中间干货点用「✅ / ⚠️」逐条列，
+   每条一句实话（好的坏的都说），结尾一句给同学的建议；
+3. 文末给 4–6 个话题标签（选真实存在、和内容匹配的）；
+4. 全文用第一人称，语气像和朋友聊天；
+5. 素材里没有的信息不许编；体验为负面的点也要写，不许全是夸；
+6. 输出为 小红书笔记.md 保存到工作目录，并附一段「和公众号版相比你改了什么」的说明。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 核对平台适配（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>它给的「改了什么」说明要真实</b><span>拿公众号版并排对——它说的每条差异都应该能在两稿里找到对应。<br>
+            <em>说不清差异</em>：说明它只是改了个语气，让它具体指出哪句在哪一版、改成了什么。</span></li>
+          <li><b>标签不许编造</b><span>要它确认每个标签在小红书真实存在——查不到的标签宁可不带。</span></li>
+          <li><b>负面体验保留了</b><span>全是优点的笔记不可信，也违反指令第 5 条。被删掉的负面点让它加回来。</span></li>
+        </ol>
+        <p><strong>第 3 步 · 双稿对照沉淀差异（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把两个平台的差异写进你的模板文档</b><span>这是实操④的原料——现在记下的每一条，都是以后能复用的经验。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：小红书笔记.md + 差异说明。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-geo">
+      <h2>三、GEO：让 AI 引用你的内容</h2>
+      <p>
+        SEO（Search Engine Optimization，搜索引擎优化）大家听过：让网页在搜索结果里排前面。
+        <strong>GEO（Generative Engine Optimization，生成式引擎优化）</strong>是它的后辈：
+        让 AI 在回答问题时，<strong>引用到你的内容</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>SEO</th><th>GEO</th></tr></thead>
+          <tbody>
+            <tr><td><strong>面向</strong></td><td>搜索引擎的排名</td><td>AI 生成答案时的引用来源</td></tr>
+            <tr><td><strong>看重</strong></td><td>关键词、外链、页面权重</td><td>内容清晰、有数据支撑、易于被引用</td></tr>
+            <tr><td><strong>结果形态</strong></td><td>你的链接排在前面</td><td>AI 的回答里提到你、注明来源</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        通用做法是：内容里<strong>给出明确的数据和结论</strong>、<strong>结构清晰可摘录</strong>、
+        <strong>关键说法集中成短句</strong>——AI 更容易引用「一段能独立成立的话」，而不是一堆形容词。
+        （这是业界通用经验，非官方口径；各 AI 产品如何选取引用来源没有公开统一标准。）
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·改写一篇文章，让它更「可被引用」 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一篇文章的「改前 / 改后」对照 + 一份改动说明。</p>
+        <p><strong>第 1 步 · 用公众号成稿当改写对象（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>就用实操①的成稿</b><span>它天然有一些「AI 味套话」和「散落的体验」，正好练手。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 发出 GEO 改写指令（5 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="GEO 改写指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把 公众号成稿.md 改写成「更容易被 AI 引用」的版本。要求：
+
+1. 把散在文中的体验改成一句一句能独立成立的短结论，
+   例如「工具甲响应速度快，但数学计算准确率不足（基于 2026 年 9 月实测）」；
+2. 每个关键结论带上具体依据（体验时间、样本量），没有依据的写明「个人主观感受」；
+3. 删掉不承载信息的形容词（「非常」「超级」「强烈推荐」）；
+4. 在文首加一段 100 字以内的「核心结论」：三款工具各一句话定位；
+5. 改完输出两份文件：GEO改写版.md + 改动说明.md（逐条列出改了什么、为什么这么改）。
+
+不要改变事实本身——只改表述方式。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 对着改动说明验收（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>改动说明逐条可验证</b><span>它说改了哪句，你就去两版里找到前后句对照。<br>
+            <em>说明和实际改动对不上</em>：让它重新逐条对照输出——说明不实，比不改还危险。</span></li>
+          <li><b>事实没有被「优化」掉</b><span>重点核数字和时间：GEO 改写最忌为了「可引用」把模糊的说法改得看起来很确定。</span></li>
+          <li><b>核心结论能独立成立</b><span>只读那 100 字，就能知道三款工具各自的定位——这就是「可被引用」的检验标准。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：GEO改写版.md + 改动说明.md。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-tpl">
+      <h2>四、指令模板沉淀：把好用的指令变成资产</h2>
+      <p>
+        这一课你写了至少四条长指令。用完就丢，下学期还得从头摸；
+        <strong>沉淀成模板，才是它真正的价值</strong>。
+        一条指令要能成为模板，得完成三步：把<strong>一次性的内容</strong>换成<strong>占位符</strong>、
+        写清<strong>使用说明</strong>、存进<strong>固定位置</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>构成</th><th>说明</th><th>例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>模板正文</strong></td><td>指令原文，具体内容换成【占位符】</td><td>「体验对象：【产品名】」</td></tr>
+            <tr><td><strong>使用说明</strong></td><td>什么时候用、占位符怎么填、产出是什么</td><td>「用于公众号成稿，填入素材后发送」</td></tr>
+            <tr><td><strong>存放位置</strong></td><td>固定目录 + 固定文件，进知识库</td><td>指令模板/公众号成稿.md</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·沉淀一份自己的指令模板文档 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>指令模板.md</code>——本课四条指令全部模板化，并存进你的知识库目录。</p>
+        <p><strong>第 1 步 · 让 AI 起草模板文档（4 分钟）</strong></p>
+        <p>把本课的四条原始指令交给它，让它做模板化改写：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="模板化指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>本课我用了 4 条指令：公众号大纲、公众号成稿、小红书笔记、GEO 改写。
+请帮我把它们沉淀成一份「指令模板.md」，要求：
+
+1. 每条指令一节，格式统一为：
+   - 适用场景：什么时候用这条；
+   - 模板正文：原文中的具体内容（如「三款 AI 工具」）替换为【占位符】，
+     占位符用【】标出，并说明填什么；
+   - 使用说明：占位符填完后怎么发、产出是什么、验收看哪几条；
+2. 开头加「怎么用这份模板」：三句话说明；
+3. 结尾加「更新记录」节：今天建立，收录 4 条；
+4. 输出保存为 指令模板.md。
+
+不要改写指令本身的逻辑——只做「具体→占位符」的替换和说明的补充。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 逐条试跑模板（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把占位符填上试一次</b><span>至少试跑两条：模板化之后的指令，<strong>效果必须和原来一样</strong>。<br>
+            <em>效果变差</em>：说明模板化时丢了关键约束——回去补上，这条最常见也最致命。</span></li>
+          <li><b>放进知识库的固定目录</b><span>建一个 <code>指令模板</code> 目录放进去，并更新 <code>资料清单.md</code>——
+            用 <a class="xref" data-lesson="17">第 17 次课</a>的迭代流程收尾。</span></li>
+        </ol>
+        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四条指令全部模板化</b><span>每条都有适用场景、占位符说明、验收要点三件套。</span></li>
+          <li><b>至少两条试跑通过</b><span>试跑记录附在模板文档末尾。</span></li>
+          <li><b>进了知识库并登记</b><span>资料清单里能查到这份模板——以后所有课程内容生产都用得上它。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：指令模板.md + 试跑记录。</p>
+        <p class="note">这一课真正的产出不是那两篇文章，而是<strong>这套模板</strong>。
+          文章发出去就结束了；模板留着，下学期、下一个平台、下一个选题，都能再来一遍。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__item">
+          <p><b>1.（单选）公众号文章的「选题」和「发布前核对」，应该由谁负责？</b></p>
+          <div class="quiz__opts"><p>A. 都交给 AI，它写得更快</p>
+          <p>B. 选题定方向、核对保真实，两件事都必须人来负责</p>
+          <p>C. 选题自己来，核对可以抽查</p>
+          <p>D. 都自己来，AI 只用来排版</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：B</b></p>
+          <p>【解析】选题是判断，核对是责任——这两件是「署名」的部分，AI 代不了。中间的起草、扩写交给 AI。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>2.（单选）GEO 和 SEO 最核心的区别是？</b></p>
+          <div class="quiz__opts"><p>A. GEO 更花钱</p>
+          <p>B. GEO 面向 AI 生成答案时的引用来源，SEO 面向搜索排名</p>
+          <p>C. GEO 只适用于短视频</p>
+          <p>D. GEO 是 SEO 的新名字，完全一样</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：B</b></p>
+          <p>【解析】SEO 争的是链接排位；GEO 争的是「AI 回答时引用你」。对象变了，做法也不同。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>3.（多选）「可被 AI 引用」的内容通常具备哪些特征？（全选）</b></p>
+          <div class="quiz__opts"><p>A. 关键结论是能独立成立的短句</p>
+          <p>B. 带有具体依据（时间、样本、出处）</p>
+          <p>C. 结构清晰，容易摘录</p>
+          <p>D. 大量使用「非常」「超级」等强调词</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：ABC</b></p>
+          <p>【解析】D 的强调词不承载信息，改写时应当删掉。AI 倾向引用「一段能独立成立的话」。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>4.（判断）把指令模板化时，重点是把写死的案例内容换成占位符，并补上使用说明。</b></p>
+          <div class="quiz__opts"><p>正确</p><p>错误</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：正确</b></p>
+          <p>【解析】模板化三件套：占位符替换、使用说明、固定存放位置。注意模板化后必须试跑，防止丢掉关键约束。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>5.（判断）同一素材发公众号和小红书，主要差别是语气，结构可以完全一样。</b></p>
+          <div class="quiz__opts"><p>正确</p><p>错误</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：错误</b></p>
+          <p>【解析】结构差异更大：公众号是「结论→论述→建议」的长文，小红书是「钩子→干货点→标签」的短笔记，标签还决定分发。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <ol class="steps">
+        <li><b>选题和核对永远是人负责</b><span>中间的起草、扩写、改写交给 AI。署名的东西，事实必须自己核。</span></li>
+        <li><b>平台差异要「翻译」进指令</b><span>公众号长文、小红书短笔记，差异不是改语气，是结构都不同。</span></li>
+        <li><b>GEO 的目标是「被 AI 引用」</b><span>短结论 + 带依据 + 结构清晰。改写时只改表述，不许改事实。</span></li>
+        <li><b>指令模板三件套</b><span>占位符替换、使用说明、固定存放位置。模板化之后必须试跑。</span></li>
+        <li><b>所有产出进知识库</b><span>成稿、模板、核对清单都登记进资料清单——它们是长期资产，不是一次性作业。</span></li>
+      </ol>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课最想让你记住的一句</span>
+        <strong>文章发出去就结束了，模板留下来才是资产。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 20 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）用 AI 生成公众号文章的正确流程是？
+A. 一次指令直接出全文，发出去
+B. 先要大纲并确认，再展开成稿，最后人工逐条核对事实
+C. 先写全文再让 AI 改标题
+D. 让 AI 同时生成文章和配图，一起发布
+【答案】B
+【解析】先大纲后成稿防止整篇返工；发布前人工核对事实不可省——署名的是你。
+
+2.（单选）写小红书笔记时，「话题标签」的作用是？
+A. 纯装饰，可加可不加
+B. 影响内容分发，要选真实存在且与内容匹配的
+C. 标签越多越好，最好 20 个以上
+D. 只用于标记自己的名字
+【答案】B
+【解析】标签决定内容被分发给谁。编造不存在的标签没有分发效果，堆砌无关标签反而有害。
+
+3.（单选）GEO 改写文章时，下面哪种做法是错误的？
+A. 把散落的体验改成能独立成立的短结论
+B. 给关键结论补上体验时间和依据
+C. 为了让结论看起来更确定，把「个人主观感受」改写成客观事实
+D. 删掉不承载信息的强调词
+【答案】C
+【解析】GEO 只改表述方式，不许改事实。把主观感受包装成客观事实，是被 AI 引用后最容易翻车的地方。
+
+4.（多选）一条指令要沉淀成「模板」，需要具备？（全选）
+A. 具体内容替换为占位符，并说明怎么填
+B. 附使用说明：何时用、产出是什么、验收看哪几条
+C. 存放在固定位置，并登记进知识库清单
+D. 模板化之后必须试跑，确认效果不差于原指令
+【答案】ABCD
+【解析】四条缺一不可。尤其 D：模板化时丢失关键约束是最常见的坑，必须靠试跑发现。
+
+5.（判断）公众号和小红书的差异主要是语气不同，文章结构可以通用。
+【答案】错误
+【解析】公众号是长文结构（结论→论述→建议），小红书是短笔记结构（钩子→干货点→标签），结构差异比语气更大。
+
+6.（判断）本课沉淀的指令模板，应该登记进自己第 17 次课建立的知识库清单。
+【答案】正确
+【解析】模板是长期资产，进知识库才能被检索和持续迭代——这正是知识库「持续迭代」的触发点之一。
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑
+     可用工具：
+       window.Site.esc(str)                  —— HTML 转义
+       window.Site.highlight(code, lang)     —— 语法高亮，返回 HTML
+       window.Site.type(node, lines, done)   —— 逐行「打字」输出到 node（数组元素可含 HTML）
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  // 本课无交互演示
+})();
+</script>
+</body>
+</html>
