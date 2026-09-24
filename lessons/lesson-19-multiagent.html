@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第19次课 多 Agent 协作｜AIGC应用与实践</title>
+<meta name="description" content="按岗位配出三个 AI 员工，各配知识库与技能，再串成一条可复用的流水线：分工、资料隔离、技能配置、串联交接。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="19" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="9">第 9 次课</a>你学会的是<strong>召唤一支现成的队伍</strong>——专家团由团长自己拆活、并行干活、整合交付。
+        这一课往前走一步：<strong>按你自己的岗位需要，配出三个各有分工的「AI 员工」</strong>，
+        每个员工各有自己的知识库和技能，再把它们串成一条能反复复用的流程。
+      </p>
+      <p>
+        一句话区分：<strong>专家团是别人给你配好的队，AI 团队是你自己搭的班底。</strong>
+        专家团用完就散，你搭的班底下周还能接着用。
+      </p>
+      <p>下面这几件事，做过 AI 的人都遇到过：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>一个对话里塞太多事</strong></td><td>先让它查资料、再写稿、再校对，做到第三步它已经忘了第一步的约定</td></tr>
+            <tr><td><strong>每次都要重新讲一遍背景</strong></td><td>上次的活动信息、上次的格式要求，每次都从头说一遍</td></tr>
+            <tr><td><strong>三个人要的东西不一样</strong></td><td>写稿的要往期范文，审校的要规范条款，全塞一个对话框里谁都拿不全</td></tr>
+            <tr><td><strong>改一个环节要整篇重来</strong></td><td>审校提了意见，改完发现前面的素材又串了</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        这一课<strong>不是</strong>再讲一遍「怎么召唤专家团」——那是第 9 次课，召唤和自建的步骤本课都不重复。<br>
+        本课的三个「AI 员工」是<strong>同一个 WorkBuddy 里的三种配置</strong>：同一套软件，三种岗位、三种资料、三种技能。
+        不是装三个软件，也不是开三个窗口轮流聊。
+      </div>
+      <p class="note">本课涉及的产品口径（技能、专家团、资料库团队空间、权限边界）均取自
+        <strong>www.workbuddy.cn 客户端用户文档</strong>，核对日期 <strong>2026-09-25</strong>。
+        界面随版本更新，以你实际使用的版本为准。</p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出「召唤专家团」和「自己搭 AI 团队」的区别，各自适合什么情况；</li>
+          <li>为一个真实任务拆出三个岗位，写出每个岗位的<strong>负责什么 / 不做什么 / 输入 / 输出</strong>；</li>
+          <li>给每个岗位各配一份自己的知识库，说清「谁读哪份、谁不该读哪份」；</li>
+          <li>给每个岗位各配一件技能，并按官方建议<strong>只启用当前需要的</strong>；</li>
+          <li>把三个岗位串成一条流水线，让上一站的产出成为下一站的输入，并指出哪几步必须由人拍板。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-role"><b>01</b>先定岗位：三个员工干什么 <em>＋实操①</em></a>
+        <a href="#s-kb"><b>02</b>各配各的知识库 <em>＋实操②</em></a>
+        <a href="#s-skill"><b>03</b>各配各的技能 <em>＋实操③</em></a>
+        <a href="#s-chain"><b>04</b>串成一条流水线 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="8">第 8 次课</a>的技能、
+        <a class="xref" data-lesson="9">第 9 次课</a>的专家与专家团、
+        <a class="xref" data-lesson="10">第 10 次课</a>的文档流程（本课把它拆给三个岗位分别做）。<br>
+        <strong>后续</strong>：这条「素材 → 初稿 → 审校」的流水线是通用的——
+        <a class="xref" data-lesson="20">第 20 次课</a>做自媒体内容时直接沿用；
+        想给员工接外部数据，看 <a class="xref" data-lesson="18">第 18 次课</a>的连接器。
+      </div>
+    </section>
+
+    <section class="sec" id="s-role">
+      <h2>一、先定岗位：三个 AI 员工各自干什么<span class="sec__tag">分工</span></h2>
+      <p>
+        最常见的做法是<strong>一个对话包干所有活</strong>：查资料、写稿、审校全在同一个对话框里完成。
+        前两轮很顺，越往后越乱——它的注意力被前面几十轮对话稀释了，
+        你第 1 轮定的规矩，到第 8 轮它已经不怎么遵守。
+      </p>
+      <p>
+        换个思路：<strong>把它当成一个办公室，不是一个万能的人。</strong>
+        办公室里有岗位，每个岗位只管自己那一摊。三个岗位各开各的活，交接靠文件。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>一个对话包干</th><th>三个岗位分工</th></tr></thead>
+          <tbody>
+            <tr><td><strong>上下文</strong></td><td>越聊越长，前面的约定逐渐失效</td><td>每个岗位只带自己需要的那点上下文</td></tr>
+            <tr><td><strong>复用</strong></td><td>这次聊完就散，下次从头讲</td><td>岗位卡 + 资料 + 技能都留着，下次直接跑</td></tr>
+            <tr><td><strong>出错定位</strong></td><td>结果不对，不知道是哪一步错的</td><td>看交接文件，错在那一站一目了然</td></tr>
+            <tr><td><strong>换人接手</strong></td><td>只有你知道当时怎么说的</td><td>交接文件在手，别人也能接着跑</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        所以一个「AI 员工」的定义很简单：
+        <strong>一个岗位 + 一份固定输入 + 一份固定输出 + 一条验收标准。</strong>
+        它不是新软件，就是你给 WorkBuddy 规定的一套「这个岗位该怎么干活」。
+      </p>
+
+      <h3>本课用的三个岗位</h3>
+      <p>整课用一个场景串下来：学院要办<strong>「职业技能体验周」</strong>，需要一条宣传内容的生产线。</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>岗位</th><th>负责什么</th><th>不做什么</th><th>产出（文件）</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>资料员</strong></td>
+              <td>整理活动信息，把零散事实收成一张清单</td>
+              <td>不写稿、不下结论</td>
+              <td><code>00-资料清单.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>撰稿员</strong></td>
+              <td>照着资料清单和往期范文写推文初稿</td>
+              <td>不自己补事实、不改清单里的数据</td>
+              <td><code>01-推文初稿.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>审校员</strong></td>
+              <td>按发布规范挑错，给「位置 → 问题 → 怎么改」</td>
+              <td>不替你改稿、不拍板能不能发</td>
+              <td><code>02-审校意见.md</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">岗位怎么拆才不翻车</span>
+        <strong>一次只让一个岗位做一件事</strong>，岗位数控制在 3–5 个。
+        每个岗位必须有一个<strong>落盘的文件</strong>作为产出——只有对话里的文字，下一站接不住。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·让 AI 把三张「岗位卡」写出来 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：工作目录里一份 <code>岗位卡.md</code>，
+          里面是三张岗位卡——每个岗位干什么、不干什么、吃什么、吐什么、怎么算做完。</p>
+
+        <p><strong>第 1 步 · 备好工作目录（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务</b><span>工作目录选 <code>wb-试验</code>（沿用前几课那个目录即可）。</span></li>
+          <li><b>确认对话区左下角显示的确实是这个目录</b><span>
+            <span class="task__warn">选错目录，它写的文件你就找不着</span>。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 把下面这段指令整段复制，发出去（3 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="岗位卡生成指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我要为「职业技能体验周」的宣传内容生产，搭一个三人 AI 小组。
+请你先帮我把三个岗位的岗位卡写出来，存成工作目录下的 岗位卡.md。
+
+三个岗位固定为：资料员、撰稿员、审校员。整体流程是：
+资料员整理素材 → 撰稿员照着清单写初稿 → 审校员按规范挑错。
+
+每张岗位卡必须包含这 6 项，一项都不能少：
+1. 岗位名
+2. 负责什么（一句话说清它这一站要完成什么）
+3. 不做什么（明确写死边界，至少两条）
+4. 输入（它开工前必须拿到什么，写清文件名）
+5. 输出（它必须落盘的文件名，以及文件里大概有什么）
+6. 验收（做到什么算做完，写成可判断的陈述句）
+
+约束：
+- 岗位之间不许有职责重叠，一件事只能归一个岗位；
+- 每个岗位的输出必须是文件，不能只是对话里的一段文字；
+- 涉及事实的信息，不许自己编，缺失的一律写【待补】；
+- 不要修改工作目录里已有的任何文件，只新建 岗位卡.md。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这三条，就算做完了（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>工作目录里真的有 <code>岗位卡.md</code></b><span>打开看是不是三张卡。<br>
+            <em>只在对话里给了没建文件</em>：补一句「请把这三张卡存成 岗位卡.md 文件，不要只回复在对话里」。</span></li>
+          <li><b>每张卡六项齐全，三个岗位的职责不重叠</b><span>重点看「不做什么」那栏——
+            资料员不该写稿、撰稿员不该补事实、审校员不该替你改。<br>
+            <em>职责串了</em>：点明哪两项串了，让它只重写那两张卡，不要整份重来。</span></li>
+          <li><b>每个岗位都写清了输出文件名</b><span>三张卡分别指向三个不同的文件。<br>
+            <em>输出写的是「给一份报告」这种空话</em>：补一句「输出必须写死文件名，格式 00-资料清单.md / 01-推文初稿.md / 02-审校意见.md」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这份 <code>岗位卡.md</code>。后面三节都按它来配，先别改。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-kb">
+      <h2>二、给每个员工配知识库<span class="sec__tag">资料隔离</span></h2>
+      <p>
+        <strong>岗位定好了，接下来最容易做错的一步是「资料怎么给」。</strong>
+        多数人会把三份资料一起丢进同一个对话框——结果是谁都拿不全，
+        而且资料还会互相污染：审校员的知识被写稿的范文带跑，撰稿员的语气被规范条款压死。
+      </p>
+      <p>
+        正确的做法是<strong>一岗一库</strong>：谁需要什么，就只给谁看什么。
+        放在 WorkBuddy 里，最轻的落地方式是<strong>工作目录下分三个子目录</strong>，
+        员工开工时只指它读自己那一个。
+      </p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>载体</th><th>官方口径的用途</th><th>本课怎么用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MD</strong></td><td>决定内容，承载文字与结构</td><td>三个岗位的知识都写成 <code>.md</code>，改内容就改它</td></tr>
+            <tr><td><strong>CSV</strong></td><td>存储数据，作为唯一数据源</td><td>报名数据、清单类信息用它，改数据只改这一处</td></tr>
+            <tr><td><strong>HTML</strong></td><td>提供视觉表达，读取 CSV 渲染</td><td>需要对外展示的页面才用，本课不涉及</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">MD / CSV / HTML 的分工口径来自官方《多人多 Agent 协作》页（核对日期 2026-09-25）。
+        这一页讲的「团队空间」是资料库里的共享空间：左栏「团队空间」点 <strong>+</strong> 新建，
+        资料可以新建文档、上传本地文件、剪藏网页链接，也可以<strong>让 Agent 直接生成到这里</strong>；
+        成员权限分<strong>查看 / 编辑 / 管理 / 无权限</strong>四档。
+        最关键的一条：<strong>Agent 按同一权限读取——人看不到的内容，Agent 也读不到</strong>，
+        不必为 Agent 单独维护一套权限。</p>
+
+      <h3>本课的三个员工各读什么</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>员工</th><th>它的知识库目录</th><th>里面放什么</th><th>不该给它看的</th></tr></thead>
+          <tbody>
+            <tr><td><strong>资料员</strong></td><td><code>kb-资料员/</code></td><td>活动原始信息、报名方式、场地安排</td><td>往期范文（会带跑它对事实的整理）</td></tr>
+            <tr><td><strong>撰稿员</strong></td><td><code>kb-撰稿员/</code></td><td>往期推文、标题与结构范例</td><td>发布规范（写作阶段先别被条款压住）</td></tr>
+            <tr><td><strong>审校员</strong></td><td><code>kb-审校员/</code></td><td>发布规范、禁用词表、往期踩过的坑</td><td>往期范文（否则它会拿范文当标准）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">资料隔离的两条硬规矩</span>
+        <strong>一、不该看的别放进去。</strong>Agent 按你的权限读取，目录里有什么它就能读什么——
+        所以「隔离」靠的是<strong>你放什么</strong>，不是靠你在指令里叮嘱它别看。<br>
+        <strong>二、事实只有一个源头。</strong>同一个日期在三个库里各写一份，改的时候一定漏改一处；
+        事实统一放在资料员那个库里，其他岗位靠交接文件传递。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·建三个知识库目录，并让 AI 报出「谁读哪份」 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>wb-试验</code> 下三个 <code>kb-</code> 目录各有一份资料，
+          外加一份 <code>岗位资料对照.md</code>——谁读哪份、谁不该读哪份，写得清清楚楚。</p>
+
+        <p><strong>第 1 步 · 让 AI 把目录和三份资料一次建好（5 分钟）</strong></p>
+        <p>把下面<strong>素材</strong>和<strong>指令</strong>一起发出去（素材在前、指令在后）。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 三份知识库资料 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【文件一　路径：kb-资料员/活动信息.md】
+
+职业技能体验周 · 活动信息（原始）
+时间：2026 年 10 月 12 日—16 日，每天 14:00—17:00
+地点：实训楼 B 座一层，共 6 个体验工位
+面向：全校在校生，每场限 30 人
+报名：到梦空间 APP，10 月 8 日 20:00 开放
+体验项目：AI 图文生成、AI 表格处理、智能体搭建，每天轮换一个
+负责老师：（还没定）
+现场提供：工位电源与网线，学生自带笔记本
+
+【文件二　路径：kb-撰稿员/往期推文.md】
+
+往期推文范例 · 2026 年 3 月「AI 工具体验日」
+标题：周三下午，实训楼 B 座，来亲手试一次 AI
+开头：先给一个具体场景，30 秒能看完，不铺背景
+正文结构：时间地点 → 能玩到什么 → 怎么报名 → 一句提醒
+篇幅：300—400 字
+标题句式：不用「关于举办……的通知」这类公文标题
+语气：对同学说话，句子短
+
+【文件三　路径：kb-审校员/发布规范.md】
+
+学院公众号发布规范（节选）
+1. 禁止出现的词：进一步、切实、有效、积极、营造氛围、携手共进
+2. 时间地点必须精确到「日期 + 时段 + 楼栋楼层」，不许写「近期」「择日」
+3. 涉及报名的，必须写明平台和开放时间
+4. 未确定的信息（联系人、预算、人数）一律写【待补】，不许推测
+5. 落款：XX 学院 + 发布日期</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="建库指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请在工作目录下建三个文件夹：kb-资料员、kb-撰稿员、kb-审校员，
+并把上面三段内容按标注的路径，分别存成对应的三份 .md 文件。
+
+要求：
+- 三个目录各只放自己那一份文件，不要互相复制；
+- 文件内容与上面逐字一致，不许概括、不许改写、不许补内容；
+- 活动信息里「负责老师」那一行保持原样，不要替我填名字。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它报出岗位与资料的对应关系（3 分钟）</strong></p>
+        <p>目录建好后，把下面这段指令紧接着发在同一个对话里：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="对照表指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>对照工作目录里的 岗位卡.md，生成一份 岗位资料对照.md，用表格写清三列：
+岗位名 / 该岗位开工时必须读取的文件（写完整路径）/ 该岗位不该读取的文件（写完整路径，并说明为什么）。
+
+要求：
+- 三个岗位各自指向自己的 kb- 目录，不能出现交叉；
+- 「不该读取」那一列必须写出理由，不许空着；
+- 事实类信息只认 kb-资料员/活动信息.md，其他岗位一律通过交接文件获取。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这三条，就算做完了（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>三个目录各只有一份文件</b><span>打开 <code>wb-试验</code> 逐个看一眼，
+            <span class="task__warn">多出来的复制件要让它删掉</span>——重复文件就是串味的开始。<br>
+            <em>文件被复制到别的目录了</em>：补一句「三个目录各自只保留自己那一份，把复制过去的删掉」。</span></li>
+          <li><b>对照表里三个岗位没有交叉</b><span>每行「必须读」指向自己的目录，「不该读」写清了理由。<br>
+            <em>出现交叉</em>：点名哪一行错了，让它只改那一行。</span></li>
+          <li><b>资料内容与素材逐字一致</b><span>尤其是「负责老师」那行——
+            应该原样留着，不是它编的一个名字。<br>
+            <em>它给填上了名字</em>：⚠️ 这就是编造。让它改回「（还没定）」，
+            并在指令末尾补一句「缺失信息一律保持原文，不许推测」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：三个 <code>kb-</code> 目录（各一份资料）+ <code>岗位资料对照.md</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-skill">
+      <h2>三、给每个员工配技能<span class="sec__tag">工具配置</span></h2>
+      <p>
+        只有资料，员工还是个「知道很多但手不能动」的人。
+        官方对技能的定义是：<strong>技能（Skill）为 WorkBuddy 增加「特定工具能力」</strong>——
+        封装一组可执行的脚本与工作流，让 AI 在你的授权下完成具体动作（读写文件、处理表格、调用第三方 API 等）。
+      </p>
+      <p>
+        技能板块分两块：<strong>技能市场</strong>（推荐技能，按需一键安装）和<strong>已安装</strong>（可直接调用）。
+        「添加技能」有三种方式：<strong>上传技能</strong>（导入本地技能包）、
+        <strong>查找技能</strong>（描述任务需求，它帮你找相关技能）、
+        <strong>创建技能</strong>（描述需求，它帮你建一个）。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>本课岗位</th><th>该配什么方向的技能</th><th>没有它会怎样</th></tr></thead>
+          <tbody>
+            <tr><td><strong>资料员</strong></td><td>文件整理 / 表格读取方向</td><td>素材只能靠你手抄给它</td></tr>
+            <tr><td><strong>撰稿员</strong></td><td>Word 或文档生成方向</td><td>只能给你文字，落不成规范文件</td></tr>
+            <tr><td><strong>审校员</strong></td><td>文档审校 / 格式检查方向</td><td>挑错凭印象，没有固定检查项</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">官方的一条建议，本课必须照做</span>
+        官方原文：<strong>「仅启用当前任务所需的技能，减少无关干扰并降低误调用概率。」</strong><br>
+        技能可以<strong>随时关闭或重新启用，无需卸载</strong>——关闭后仍留在已安装列表里，
+        只是不参与对话中的模型自动调用；重新开启立即恢复。<strong>关闭 ≠ 卸载</strong>，
+        卸载才会彻底删除技能及其开关记录。<br>
+        所以给三个员工配技能的真正动作是<strong>「装进来 + 按需开关」</strong>，不是装一大堆全开着。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·给资料员装一件技能，并用它产出素材清单 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<strong>已安装列表里多一件技能且处于启用状态</strong>，
+          外加它整理出的 <code>00-资料清单.md</code>——不是你手抄给它的，是它自己读目录读出来的。</p>
+
+        <p><strong>第 1 步 · 装一件技能（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>左侧栏点「<strong>专家·技能·连接器</strong>」，顶部切到「<strong>技能</strong>」</b><span>
+            点「<strong>添加技能</strong>」。</span></li>
+          <li><b>选「<strong>查找技能</strong>」，把下面这句描述粘进去</b><span>
+            <span class="task__warn">搜索结果里第一条符合的就用它</span>，不要反复比较。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="查找技能用的描述 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我需要读取一个文件夹里的多个 Markdown 文件，把里面的事实信息（时间、地点、人数、报名方式）
+整理成一张结构化的清单，并写成新的 Markdown 文件。</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>装好之后，回到「已安装」列表</b><span>把<strong>与本次任务无关的技能全部关掉</strong>，只留刚装这件——
+            官方建议只启用当前所需的技能。<br>
+            <em>不确定哪个有用</em>：就按官方那条办，只保留刚装的这一件，其余关掉；下一站要用再开。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 以「资料员」的身份开工（4 分钟）</strong></p>
+        <p>把下面这段指令发出去。<span class="task__warn">岗位卡在前、指令在后</span>——
+          让它先读岗位卡，才知道自己该干什么、不该干什么。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="资料员开工指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你现在是「资料员」，先读工作目录里的 岗位卡.md 和 岗位资料对照.md，确认你的职责边界。
+
+然后只读取 kb-资料员/ 这一个目录，把里面的事实整理成一份清单，
+存成 00-资料清单.md，用表格输出三列：项目 / 内容 / 来源文件。
+
+要求：
+- 只做整理，不写稿、不下结论、不补充资料里没有的信息；
+- 缺失的信息（比如负责老师）照原样写成【待补】，不许推测；
+- 不许读取 kb-撰稿员/ 和 kb-审校员/ 里的任何文件；
+- 不要修改已有的任何文件，只新建 00-资料清单.md。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这三条，就算做完了（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>已安装列表里能看到刚装那件技能，且是启用状态</b><span>其它无关技能处于关闭。<br>
+            <em>找不着装到哪了</em>：就在「技能 → 已安装」里翻，开关在每条技能上；关掉≠丢，随时能开回来。</span></li>
+          <li><b><code>00-资料清单.md</code> 是它自己读目录生成的</b><span>打开看：表格里有「来源文件」那一列，
+            指向 <code>kb-资料员/活动信息.md</code>。<br>
+            <em>它是在问你要资料</em>：说明没读到目录——补一句「直接读工作目录下的 kb-资料员/ 文件夹，不要问我要内容」。</span></li>
+          <li><b>清单里没有凭空多出来的事实</b><span>拿它跟 <code>kb-资料员/活动信息.md</code> 逐条对：
+            时间、地点、人数、报名方式一条不少，也不多。<br>
+            <em>多了资料里没有的内容</em>：⚠️ 它编了。点出具体哪一条，让它删掉并补一句「只许照抄资料里的原文」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：已安装并启用的那件技能 + <code>00-资料清单.md</code>。</p>
+        <div class="callout callout--danger">
+          <span class="callout__t">装技能的红线</span>
+          官方安全提示：<strong>非官方 Skill 可能存在恶意提示词注入、越权访问、后门程序等隐患，请优先使用官方推荐 Skill。</strong>
+          安装第三方 Skill 前先看<strong>权限申请、来源说明与脚本内容</strong>；
+          它调用第三方、修改本地文件、执行系统命令时，<strong>都以你本人身份执行</strong>——
+          涉及文件删除、批量写入、系统配置变更或资金类操作，先小范围验证再放大使用。
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-chain">
+      <h2>四、把它们串成一条流水线<span class="sec__tag">协同</span></h2>
+      <p>
+        三个员工各自都能干，不代表它们能一起干。<strong>串联的关键只有一个：交接物必须是文件。</strong>
+        上一站说的话留在对话里，下一站接不住；上一站把结果<strong>落成一个文件</strong>，下一站读这个文件就行。
+      </p>
+      <p>这条线跑起来是这样的——点「下一步」看每一站怎么交接：</p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 三站流水线：上一站的产出文件，就是下一站的输入</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d1-next">下一步</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="flow" id="d1-flow"></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            演示里的产出条数与文件名是<strong>教学示意，非实测数值</strong>，
+            用来让你看清「交接靠文件」这件事；真实结果以你自己跑出来的为准。
+          </div>
+        </div>
+      </div>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>站点</th><th>开工前读什么</th><th>产出文件</th><th>人在这里做什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>① 资料员</strong></td>
+              <td><code>岗位卡.md</code> + <code>kb-资料员/</code></td>
+              <td><code>00-资料清单.md</code></td>
+              <td>核对清单里的每一条都能在原始资料里找到</td>
+            </tr>
+            <tr>
+              <td><strong>② 撰稿员</strong></td>
+              <td><code>00-资料清单.md</code> + <code>kb-撰稿员/</code></td>
+              <td><code>01-推文初稿.md</code></td>
+              <td>看它有没有自己补事实</td>
+            </tr>
+            <tr>
+              <td><strong>③ 审校员</strong></td>
+              <td><code>01-推文初稿.md</code> + <code>kb-审校员/</code></td>
+              <td><code>02-审校意见.md</code></td>
+              <td>逐条判断改不改，最后拍板能不能发</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">协同到底值在哪</span>
+        不是「人多力量大」，是三件事：<strong>流程能复用</strong>（下次换活动，换掉素材就能再跑一遍）、
+        <strong>错误能定位</strong>（出问题看交接文件就知道是哪一站）、
+        <strong>活能交接</strong>（同学接手你的目录，照着岗位卡就能接着干）。<br>
+        但最后一关不变：<strong>能不能发，只能人拍板。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·跑通剩下两站，产出初稿和审校意见 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>01-推文初稿.md</code> + <code>02-审校意见.md</code> 两份文件，
+          外加一段「每站交接了什么」的说明——整条线从头到尾跑通一次。</p>
+
+        <p><strong>第 1 步 · 撰稿员开工（5 分钟）</strong></p>
+        <p>把下面这段指令发出去（接着实操③ 那个对话继续即可，
+          <span class="task__warn">不要新建对话</span>——前面几站的文件都在同一个工作目录里）。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="撰稿员开工指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在切换到「撰稿员」岗位。先读 岗位卡.md 确认你的职责，再读 00-资料清单.md 和 kb-撰稿员/往期推文.md。
+
+照着往期推文的结构和语气，写一版公众号推文初稿，存成 01-推文初稿.md。
+
+要求：
+- 事实一律以 00-资料清单.md 为准，清单里没有的一律写【待补】，不许自己补；
+- 标题不用「关于举办……的通知」这类公文句式；
+- 篇幅 300—400 字，结构：时间地点 → 能玩到什么 → 怎么报名 → 一句提醒；
+- 只读取 kb-撰稿员/ 这一个目录，不许读 kb-审校员/；
+- 只新建 01-推文初稿.md，不要改动前面任何文件。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 审校员开工（5 分钟）</strong></p>
+        <p>初稿落盘之后，紧接着把下面这段发出去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="审校员开工指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在切换到「审校员」岗位。先读 岗位卡.md 确认你的职责，再读 01-推文初稿.md 和 kb-审校员/发布规范.md。
+
+按发布规范逐条审这份初稿，把问题写成 02-审校意见.md，用表格输出三列：位置 / 问题 / 怎么改。
+
+要求：
+- 必须逐条对照规范里的 5 条，哪一条没问题也要写「第 N 条：无问题」；
+- 发现问题要指出在初稿的哪一句，不许泛泛地说「建议注意格式」；
+- 只给意见，不要替我改稿、不要修改 01-推文初稿.md；
+- 判断不了的（比如某个数据是否准确）明确写「需人工确认」，不许自己下结论。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它报一遍交接过程（1 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="交接说明指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用一段话说明这次流水线每一站的交接：每站读了哪些文件、产出了哪个文件、下一站拿它做了什么。
+写在 02-审校意见.md 的末尾，标题用「## 流程交接说明」。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>两份文件都在工作目录里，且初稿没被改动</b><span>
+            <code>01-推文初稿.md</code> 和 <code>02-审校意见.md</code> 各自独立存在。<br>
+            <em>初稿被改掉了</em>：说明「不要替我改稿」那句没生效——把它提到指令最前面重跑审校那一站。</span></li>
+          <li><b>审校意见逐条对着规范走，且指出了具体位置</b><span>规范里 5 条每一条都有交代，
+            问题能定位到初稿的哪一句。<br>
+            <em>只说了「建议优化表达」</em>：补一句「每个问题必须引用初稿原句，并说明违反规范第几条」。</span></li>
+          <li><b>推文里的事实全部来自资料清单</b><span>拿 <code>00-资料清单.md</code> 对一遍初稿里的每个时间、地点、人数。<br>
+            <em>初稿里冒出了清单上没有的信息</em>：⚠️ 撰稿员越界了——
+            补一句「事实只许取自 00-资料清单.md，清单外一律写【待补】」，重跑撰稿那一站，
+            <span class="task__warn">不用整条线重来</span>。</span></li>
+          <li><b>末尾有「流程交接说明」这一段</b><span>能看清三站各自读了什么、产出了什么。<br>
+            <em>没写或写得太笼统</em>：把上面那段指令单独再发一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-推文初稿.md</code> + <code>02-审校意见.md</code>（含流程交接说明）。</p>
+        <p class="note">最后这一步留给你自己：审校意见里的每一条，<strong>改不改由你定</strong>，
+          改完能不能发也是你签字。三个岗位能替你干活，替不了你担责。</p>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">什么时候该用专家团，什么时候该自己搭班底</span>
+        <strong>一次性、要拆解又要并行的复杂项目 → 召唤专家团</strong>（第 9 次课），
+        团长自动拆解、并行执行、整合交付，官方提示积分约为单专家的 <strong>3–5 倍</strong>。<br>
+        <strong>要反复做、标准固定、还想留下来复用 → 自己搭这条流水线。</strong>
+        岗位卡、知识库、技能配置都在你自己的目录里，下次换一批素材就能再跑。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>「召唤专家团」和「自己搭一条流水线」最主要的差别是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 专家团更贵，流水线不要钱</li>
+            <li>B. 专家团是现成的队伍，用完就散；流水线是你自己搭的配置，能反复复用</li>
+            <li>C. 专家团只能干活，流水线只能聊天</li>
+            <li>D. 两者是同一个功能的不同叫法</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>专家团由团长自动拆解、并行执行并整合交付——你描述任务，它自己组织；
+            任务结束，这支队伍不留下任何可复用的东西。自己搭的流水线留下的是
+            <strong>岗位卡 + 知识库 + 技能配置</strong>，换一批素材就能再跑一遍。
+            A 只说对了一半：积分确实是考量（专家团约单专家 3–5 倍），但差别不在价格。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>三个岗位之间，靠什么把活交接下去？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 在同一个对话里继续聊，下一站自然知道上一站说了什么</li>
+            <li>B. 把上一站产出的文件交给下一站读</li>
+            <li>C. 让下一站重新读全部资料，重新做一遍</li>
+            <li>D. 把上一站的对话记录复制给下一站</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b><strong>交接物必须是落盘的文件</strong>——对话里说过的话，下一站接不住；
+            文件在工作目录里，下一站指名读它就行。
+            C 会重复劳动，而且两站做出来的事实可能对不上；D 把大量无关对话塞进上下文，反而干扰判断。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>给三个岗位配技能时，官方给出的建议是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 装得越多越好，用的时候才不缺工具</li>
+            <li>B. 只启用当前任务所需的技能，减少干扰、降低误调用概率</li>
+            <li>C. 装完就不能关，要换只能卸载重装</li>
+            <li>D. 每个岗位必须配满三件技能</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>官方原文就是「仅启用当前任务所需的技能，减少无关干扰并降低误调用概率」。
+            C 说反了：已安装技能<strong>可以随时关闭或重新启用，无需卸载</strong>，
+            关闭只是暂停模型自动调用，技能文件和配置都保留，<strong>关闭 ≠ 卸载</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>关于「Agent 按同一权限读取」，下面哪种理解是对的？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 需要给每个 Agent 单独配一套权限，否则它会越权</li>
+            <li>B. 人看不到的内容，Agent 也读不到——隔离靠的是你放了什么</li>
+            <li>C. Agent 有独立权限，能读到人看不到的内部资料</li>
+            <li>D. 权限只对协作的人生效，对 Agent 无效</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>官方口径：把空间或文档带入任务后，
+            <strong>Agent 只读取当前用户有权访问的内容</strong>——不必为 Agent 单独维护一套权限。<br>
+            这句话反过来就是一条纪律：<strong>不该给它看的，就别放进那个目录</strong>。
+            靠指令叮嘱它「别看某份文件」不可靠，靠目录隔离才可靠。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：流水线最后一站是审校员，所以推文能不能发，由审校意见说了算。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，审校就是最后一道关</li>
+            <li>B. 错误，审校只给意见，拍板必须由人来做</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>审校员的岗位卡里就写死了「不替你改稿、不拍板能不能发」——
+            它给的是<strong>可审阅的建议</strong>，改哪条、能不能发，得你定。
+            官方免责声明也写明：生成内容<strong>仅供参考，不构成专业意见</strong>。
+            角色名称替代不了责任。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>专家团 vs 自己的班底</strong>：专家团是现成队伍、用完就散；自己搭的流水线留下岗位卡 + 知识库 + 技能，能反复跑；</li>
+          <li>一个 AI 员工 = <strong>一个岗位 + 一份固定输入 + 一份固定输出 + 一条验收标准</strong>，岗位数控制在 3–5 个；</li>
+          <li><strong>一岗一库</strong>：谁需要什么就只给谁看什么。Agent 按同一权限读取，<strong>人看不到的它也读不到</strong>——隔离靠目录，不靠叮嘱；</li>
+          <li>技能是<strong>特定工具能力</strong>，官方建议<strong>只启用当前所需</strong>；装进来可以<strong>随时开关，不必卸载</strong>；</li>
+          <li>串联靠<strong>落盘文件</strong>交接：上一站的产出文件 = 下一站的输入；最后一关<strong>必须人拍板</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：这条「素材 → 初稿 → 审校」的流水线换掉素材就能复用。
+        <a class="xref" data-lesson="20">第 20 次课</a>拿它去做公众号和小红书内容——
+        岗位不用重建，换的是知识库和产出格式。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 19 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）按官方口径，专家团是什么机制？
+A. 角色切换机制，靠人设 + 方法论 + 工具链执行任务
+B. 协作执行机制，由多位专家分工协作，团长自动拆解、并行执行并整合交付
+C. 一种专门用来读取本地文件夹的权限机制
+D. 一种把任务自动发布到公众号的机制
+【答案】B
+【解析】官方写明：专家团是「协作执行」机制，由团长自动拆解、分配、执行并整合交付；对比表里把它标为 Team 型「AI 协作团队：自动拆解、并行执行、完整交付」。A 说的是单个专家；C、D 都属于凭空编造——专家本身不主动获取系统权限，也不负责发布。
+
+2.（单选）三个 AI 岗位之间，最可靠的交接方式是？
+A. 在同一个对话里接着聊，下一站自然知道上一站说了什么
+B. 上一站把结果落成文件，下一站读这个文件
+C. 让下一站把全部资料重新读一遍、自己做一遍
+D. 把上一站的对话记录整段复制给下一站
+【答案】B
+【解析】交接物必须是落盘的文件：对话里的文字下一站接不住，文件指名就能读。C 会重复劳动且两站事实可能对不上；D 把大量无关对话塞进上下文，反而干扰判断。
+
+3.（多选）关于技能的启用与关闭，下面说法正确的是？
+A. 已安装技能可以随时关闭或重新启用，无需卸载
+B. 关闭后技能仍保留在已安装列表，只是不参与自动调用
+C. 关闭等于卸载，技能文件会被删掉
+D. 官方建议只启用当前任务所需的技能
+【答案】ABD
+【解析】C 与官方说明相反——关闭只是暂停模型调用，技能文件与配置都会保留，卸载才会彻底删除技能及其开关记录。D 是官方原文建议：仅启用当前任务所需的技能，减少无关干扰并降低误调用概率。
+
+4.（多选）给三个岗位配知识库时，下面哪些做法是对的？
+A. 一个岗位一个目录，谁需要什么就只给谁看什么
+B. 事实类信息统一放在一个源头，其他岗位靠交接文件获取
+C. 把全部资料放进同一个目录，再在指令里叮嘱它别看某些文件
+D. 不该给 Agent 看的内容，干脆不要放进那个目录
+【答案】ABD
+【解析】C 是常见误区。官方口径是「Agent 按同一权限读取——人看不到的内容，Agent 也读不到」，也就是说它能不能读到取决于目录里放了什么，而不是你在指令里怎么叮嘱。隔离必须靠目录，不能靠提醒。B 是为了避免同一事实在多处各写一份、改的时候漏改。
+
+5.（判断）流水线最后一站设了「审校员」，所以推文能不能发布由审校意见决定。
+A. 正确，审校就是最后一道关
+B. 错误，审校只给意见，对外发布必须由人确认
+【答案】B（错误）
+【解析】审校岗位的职责边界里写死了「不替你改稿、不拍板能不能发」，它给的是可审阅的建议。官方免责声明也写明生成内容仅供参考、不构成专业意见。事实核验与对外确认这两关只能由人来做——角色名称替代不了责任。
+
+6.（单选）一项任务要反复做、标准固定、还想留下来下周继续用，应该选哪种做法？
+A. 每次都召唤专家团，让它重新拆解一遍
+B. 自己搭一条流水线：岗位卡 + 各自的知识库 + 各自的技能配置
+C. 每次开一个新对话，从头把背景讲一遍
+D. 装尽可能多的技能，全部保持启用
+【答案】B
+【解析】专家团适合一次性、需要拆解并行的复杂项目（官方提示积分约为单专家的 3–5 倍），但它不会留下可复用的配置。反复做、标准固定的活，应该把岗位、资料与技能沉淀下来，换素材就能再跑。D 与官方建议相反：技能应只启用当前所需的那几件。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 三站流水线：交接靠文件 ---------- */
+  var NODES = [
+    { icon: "📥", name: "素材池",   sub: "三个 kb- 目录" },
+    { icon: "🔍", name: "资料员",   sub: "整理成清单" },
+    { icon: "✍️", name: "撰稿员",   sub: "写出初稿" },
+    { icon: "🧐", name: "审校员",   sub: "挑错给改法" },
+    { icon: "📄", name: "人来拍板", sub: "改完再发" }
+  ];
+
+  var LOGS = [
+    [
+      '<span class="dim">>>> 开工：素材池就位</span>',
+      '<span class="ok">✓ kb-资料员 / kb-撰稿员 / kb-审校员 各一份，互不串门</span>',
+      '<span class="hl">下一站只认自己那个目录 —— 隔离靠目录，不靠叮嘱</span>'
+    ],
+    [
+      '<span class="dim">>>> 第 1 站：资料员读 kb-资料员/</span>',
+      '整理出 8 条事实：时间、地点、人数、报名方式……',
+      '<span class="ok">✓ 产出文件：00-资料清单.md（含「来源文件」列）</span>',
+      '<span class="dim">负责老师 → 【待补】，它没有替我编</span>'
+    ],
+    [
+      '<span class="dim">>>> 第 2 站：撰稿员读 00-资料清单.md + kb-撰稿员/</span>',
+      '照往期范文的结构写，386 字',
+      '<span class="ok">✓ 产出文件：01-推文初稿.md</span>',
+      '<span class="hl">事实全部来自清单 —— 清单外的它一个字没加</span>'
+    ],
+    [
+      '<span class="dim">>>> 第 3 站：审校员读 01-推文初稿.md + kb-审校员/</span>',
+      '对照规范 5 条逐条审，挑出 3 处：2 处禁用词、1 处时间不精确',
+      '<span class="ok">✓ 产出文件：02-审校意见.md（位置 / 问题 / 怎么改）</span>',
+      '<span class="dim">它没有改稿，只给意见</span>'
+    ],
+    [
+      '<span class="dim">>>> 第 4 站：人</span>',
+      '逐条看这 3 处意见，决定改哪几条',
+      '<span class="ok">✓ 改完、核对无误、签字发布</span>',
+      '<span class="hl">这一站没有 AI 能替你 —— 角色名称替代不了责任</span>'
+    ]
+  ];
+
+  var step = -1;
+
+  function d1Render() {
+    var html = "";
+    for (var i = 0; i < NODES.length; i++) {
+      if (i > 0) {
+        var dot = (i === step) ? "run" : (i < step ? "" : "hold");
+        html += '<div class="flow__path"><span class="flow__dot ' + dot + '"></span></div>';
+      }
+      var cls = i <= step ? "on" : "dim";
+      html += '<div class="flow__node ' + cls + '"><b>' + NODES[i].icon + '</b>' +
+              NODES[i].name + '<br><span class="dim">' + NODES[i].sub + '</span></div>';
+    }
+    if ($("d1-flow")) $("d1-flow").innerHTML = html;
+
+    if (step < 0) {
+      if ($("d1-out")) $("d1-out").innerHTML = "";
+      return;
+    }
+    if (window.Site && window.Site.type && $("d1-out")) {
+      window.Site.type($("d1-out"), LOGS[step]);
+    } else if ($("d1-out")) {
+      $("d1-out").innerHTML = LOGS[step].join("<br>");
+    }
+  }
+
+  if ($("d1-next")) $("d1-next").addEventListener("click", function () {
+    if (step < NODES.length - 1) step++;
+    d1Render();
+  });
+  if ($("d1-reset")) $("d1-reset").addEventListener("click", function () {
+    step = -1;
+    d1Render();
+  });
+
+  d1Render();
+})();
+</script>
+</body>
+</html>

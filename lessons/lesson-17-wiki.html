@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第17次课 LLM Wiki 实战｜AIGC应用与实践</title>
+<meta name="description" content="创建自己的 AI 知识库">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="17" data-root="../">
+
+<!-- 顶栏 / 侧边栏 / 面包屑 / 页面标题区 / 本页目录 / 上下课导航 / 页脚
+     全部由 assets/js/site.js 按 course-map.js 自动生成。
+     课时页里【不要】再写这些结构，否则会重复。 -->
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始 —— 转化时只写这一段
+     硬性要求：
+       1. 每个知识点一个小节：<section class="sec" id="s-语义名">
+       2. 小节的 <h2> 不带 id，锚点 id 落在 section 上
+       3. 需要单独跳转的三级标题（h3）才带 id，命名 s-xxx-yyy
+       4. 本页全部小节都要在 search-index.js 里登记
+     标准小节清单（除本课确有需要外，顺序不要变、不要增删）：
+       s-guide    本课导读
+       s-goal     学习目标（含知识点导航）
+       s-…        正文小节 2–8 个，一节讲透一个概念
+       s-quiz     随堂自测
+       s-recap    本课要点回顾
+       s-hw       课后作业
+     ============================================================ -->
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        上一课我们把资料放进 ima，解决了「AI 答不准」的问题。但用着用着你会发现一个新问题：
+        <strong>资料是攒起来了，知识还是散的</strong>——笔记是笔记、踩坑是踩坑、模板是模板，
+        想找一条三个月前记的东西，翻半天。
+      </p>
+      <p>这一课解决的就是这个：把散落的资料组织成一个<strong>结构清楚、能检索、能一直长</strong>的知识库。</p>
+      <ul>
+        <li>同样一条提示词模板，为什么你现在找不到、三个月后更找不到？</li>
+        <li>同样一个报错，为什么上次查过、这次又从零查一遍？</li>
+        <li>同样一份课程笔记，为什么期末复习时自己都不想看？</li>
+      </ul>
+      <div class="callout callout--warn">
+        <span class="callout__t">先说清楚一个名称问题</span>
+        课程表上这一课叫「LLM Wiki」。经查（2026-09-25），WorkBuddy 官方文档里<strong>没有叫「LLM Wiki」的功能</strong>。
+        所以本课按<strong>知识库的通用做法</strong>来讲：怎么组织、怎么检索、怎么迭代。
+        具体的功能入口以你实际使用的版本为准——但组织方法本身，用什么工具都一样。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出「一堆文件」和「一个知识库」的三条区别；</li>
+          <li>独立设计一套知识库的<strong>目录结构</strong>，并说明每层为什么这么分；</li>
+          <li>把一批杂乱资料整理入库，并生成一份<strong>资料清单</strong>；</li>
+          <li>用三类问题检验知识库：查得到、能归纳、<strong>该拒答的会拒答</strong>；</li>
+          <li>发现知识库的缺口，并知道下一步该补什么。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-value"><b>01</b>一堆文件 ≠ 知识库</a>
+        <a href="#s-build"><b>02</b>创建与目录组织 <em>＋实操①②</em></a>
+        <a href="#s-search"><b>03</b>检索与拒答 <em>＋实操③</em></a>
+        <a href="#s-iter"><b>04</b>持续迭代 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="15">第 15 次课</a>的 RAG 原理与 ima 建库、
+        <a class="xref" data-lesson="14">第 14 次课</a>的文件命名与归档。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="19">第 19 次课</a>组建 AI 团队时，
+        每个「AI 员工」都要挂自己的知识库——今天建的就是那时要用的。
+      </div>
+    </section>
+
+    <section class="sec" id="s-value">
+      <h2>一、一堆文件 ≠ 知识库</h2>
+      <p>
+        把所有资料扔进一个文件夹，这不叫知识库——顶多叫<strong>仓库</strong>。
+        仓库和知识库的差别，不在存了多少，而在<strong>找得到、用得上、还能长</strong>：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>一堆文件</th><th>知识库</th></tr></thead>
+          <tbody>
+            <tr><td><strong>找一条东西</strong></td><td>凭记忆翻文件名</td><td>按结构定位，或直接搜</td></tr>
+            <tr><td><strong>判断该看哪份</strong></td><td>挨个打开看</td><td>看清单和目录就知道</td></tr>
+            <tr><td><strong>新旧版本</strong></td><td>「最终版」「最终版2」并存</td><td>一份为主，旧的归档</td></tr>
+            <tr><td><strong>半年后</strong></td><td>自己都不敢删</td><td>按迭代记录，该补补该清清</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        知识库多出来的那三条能力，来自两件「仓库没有」的东西：
+        <strong>一套稳定的目录结构</strong>，和<strong>一份不断更新的清单</strong>。
+        这一课的实操就围绕这两件事。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">为什么目录结构值得专门花功夫</span>
+        AI 检索你的知识库时，靠的是<strong>内容 + 路径 + 标题</strong>。
+        一份叫 <code>新建文档23.md</code> 的笔记，即使内容再好，检索时也吃亏——
+        因为路径和标题都没提供任何线索。这和 <a class="xref" data-lesson="14">第 14 次课</a>讲的文件命名是同一个道理，
+        只是知识库的要求更严：文件名就是它的「门牌」。
+      </div>
+    </section>
+
+    <section class="sec" id="s-build">
+      <h2>二、创建流程与目录结构组织</h2>
+      <p>
+        建知识库最忌讳的是一上来就想「分几类才完美」。
+        正确的顺序是：<strong>先盘点有什么，再决定怎么分</strong>——分类是从资料里长出来的，不是想出来的。
+      </p>
+      <p>所以流程是三步，顺序不能反：</p>
+      <ol class="steps">
+        <li><b>盘点</b><span>把手头资料列成清单：有什么、各是关于什么的。此时不分类。</span></li>
+        <li><b>定目录</b><span>看着清单定目录结构。标准：任何一个文件，看路径就知道它是什么。</span></li>
+        <li><b>入库 + 出清单</b><span>资料按结构放好，同时生成一份「资料清单」——它是整个库的目录页。</span></li>
+      </ol>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让 AI 帮你定目录结构 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一套针对你资料的目录方案，以及一个按方案建好的工作目录。</p>
+        <p><strong>第 1 步 · 建工作目录并盘点资料（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在桌面新建文件夹 <code>wb-wiki</code>，里面再建一个 <code>raw</code></b><span>
+            <code>raw</code> 用来堆「还没整理的原始资料」——先不分类，把散落的笔记、模板、文档都丢进去。</span></li>
+          <li><b>把你要整理的资料复制进 <code>raw</code>（5–10 份即可）</b><span>课堂笔记、踩坑记录、提示词模板、项目文档都行。
+            <span class="task__warn">只放副本</span>，原件留在原处。</span></li>
+          <li><b>新建任务，工作目录选 <code>桌面/wb-wiki</code></b><span>确认对话区左下角显示的是它。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 让 AI 盘点并给目录方案（3 分钟）</strong></p>
+        <p>把下面这段指令发出去（<code>raw</code> 里的资料它读得到）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="目录方案指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>工作目录的 raw 文件夹里是我一学期攒下的学习资料。
+请做两件事：
+
+1. 逐个列出 raw 里的文件，每个用一句话说明它是什么、大概属于什么主题；
+2. 基于盘点结果，给我一套目录结构方案：
+   - 顶层不超过 5 个文件夹，每个说明放什么、不放什么；
+   - 文件命名格式统一（参考：主题-内容-日期）；
+   - 指出哪些文件看起来是重复或过时的。
+
+只出方案，先不要移动任何文件。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 对着方案做三件事（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>顶层分类你看得懂吗</b><span>合不合格就看一条：<strong>任何一个文件，你不用打开就能说出它该放哪</strong>。<br>
+            <em>分不清</em>：让 AI 说明那两类边界在哪，或合并成一类。</span></li>
+          <li><b>它标出的重复 / 过时文件对不对</b><span>这正是你该清掉的。<br>
+            <em>它把不重复的标成重复</em>：⚠️ 让它给出判断依据，说不出来就保留。</span></li>
+          <li><b>方案里没有「其他」「杂项」这类兜底文件夹</b><span>兜底文件夹是目录结构腐烂的开始——
+            每个文件都必须有明确归属。<br>
+            <em>有「其他」</em>：让 AI 把里面的文件逐个归到明确类目，实在无处可归的单独标记出来给你决定。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这套目录方案（后面实操②要用它）。</p>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·入库：按方案归位 + 生成资料清单 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：按目录结构归位好的知识库 + 一份 <code>资料清单.md</code>。</p>
+        <p><strong>第 1 步 · 让 AI 按方案归位，先给对照表（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令发出去</b><span>关键在最后一句：<span class="task__warn">先出对照表、你确认后才动手</span>——
+            这和 <a class="xref" data-lesson="14">第 14 次课</a>批量重命名的规矩一样。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="归位指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按我们确认的目录方案，把 raw 文件夹里的资料整理入库。要求：
+
+1. 先输出一份「移动对照表」：原路径 → 新路径，每行一个；
+2. 需要改名的文件，新文件名用统一格式：主题-内容-日期；
+3. 重复文件保留一份为主，其余在对照表里标出，等我确认后再处理；
+4. 我确认对照表之前，不要移动、重命名或删除任何文件。
+
+对照表给我之后停下来等我确认。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 核对对照表，确认执行（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>每行都能看懂为什么这么放</b><span>看不懂的那行就是将来找不到的那份——当场问。</span></li>
+          <li><b>确认后让它执行，并数一遍</b><span>让它报告「移动了几个、改名了几个、跳过了几个」，
+            你去目录里数一遍对得上。</span></li>
+        </ol>
+        <p><strong>第 3 步 · 生成资料清单（3 分钟）</strong></p>
+        <p>清单是整个知识库的<strong>目录页</strong>，以后先看它、再进目录：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="清单指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>整理完成后，在知识库根目录生成「资料清单.md」，要求：
+
+1. 按目录结构分节列出全部文件；
+2. 每个文件一行：文件名（带链接路径）+ 一句话说明它是什么；
+3. 开头加一节「怎么用这个库」：三层结构各自放什么；
+4. 结尾加一节「更新记录」：今天这次整理，加了什么、改了什么。
+
+生成后把全文展示给我。</code></pre>
+        </div>
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>没有一个文件躺在 raw 里</b><span>raw 清空（或只剩确实待定的少数几个）才算入库完成。</span></li>
+          <li><b>资料清单和实际目录对得上</b><span>抽查三个：清单里写的路径，文件真的在那。<br>
+            <em>对不上</em>：让它重新生成清单——以实际目录为准。</span></li>
+          <li><b>每个文件看路径就知道是什么</b><span>随机点开一个文件夹，只看文件名，说出每份是什么。<br>
+            <em>说不出</em>：改名（主题-内容-日期），改完更新清单。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：归位后的知识库目录截图 + <code>资料清单.md</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-search">
+      <h2>三、检索：让知识库答得准</h2>
+      <p>
+        库建好之后，它到底好不好用，不是你说了算——<strong>要用问题去试</strong>。
+        和 <a class="xref" data-lesson="15">第 15 次课</a>一样，检验知识库要用三类问题，缺一不可：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>问题类型</th><th>考什么</th><th>合格表现</th></tr></thead>
+          <tbody>
+            <tr><td><strong>事实题</strong></td><td>库里的单条信息找得到吗</td><td>答对，且<strong>指出出自哪份文件</strong></td></tr>
+            <tr><td><strong>归纳题</strong></td><td>跨几份资料能连起来吗</td><td>综合多份作答，各处来源都能指认</td></tr>
+            <tr><td><strong>库里没有的题</strong></td><td>不知道时敢不敢说不知道</td><td>明确说「资料里没有」，<strong>不硬编</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        第三类最容易被忽略，却最能暴露问题：如果它对一个库里根本没有的问题侃侃而谈，
+        说明它在<strong>用通用知识硬答</strong>，你的知识库形同虚设——
+        这时该做的是补资料，或者在提问时明确「只根据知识库回答」。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·三类问题检验你的知识库 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份三题测试记录，以及「这个库现在能干什么、不能干什么」的结论。</p>
+        <p><strong>第 1 步 · 把知识库接入对话（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把 wb-wiki 里整理好的资料导入你的知识库</b><span>用 <a class="xref" data-lesson="15">第 15 次课</a>学的办法（ima 或任务内引用均可）。</span></li>
+          <li><b>先交代一句「只根据资料回答」</b><span>下面这三条测试指令里都带了这句——别省。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 三类问题各问一个（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>事实题</b><span>从你的资料里挑一条具体信息（比如某个提示词模板的原文）来问。</span></li>
+          <li><b>归纳题</b><span>挑一个横跨两份资料的主题（比如「我踩过的和提示词有关的坑有哪些」）。</span></li>
+          <li><b>库里没有的题</b><span>问一个你<strong>确定没写进库</strong>的事。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="三类问题 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>第一问（事实题）：只根据我的知识库回答——
+我记录过的提示词模板里，[挑一个你确实有的主题] 那条模板的原文是什么？出自哪份文件？
+
+第二问（归纳题）：只根据我的知识库回答——
+把我资料里和「提示词」有关的踩坑记录归纳成几条，每条注明来自哪份文件。
+
+第三问（库里没有的题）：只根据我的知识库回答——
+[问一件你确定库里没有的事，比如某门你没记过笔记的课的某个具体知识点]。
+如果资料里没有，直接说没有，不要用你自己的知识补。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 对着结果定结论（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>事实题答对了、且能指到文件</b><span>指不出来，等于查不到——路径和清单还要补。</span></li>
+          <li><b>归纳题没有夹带库外内容</b><span>每一条都能在你资料里找到对应段落才算数。</span></li>
+          <li><b>第三问它老实说「没有」</b><span><strong>这是最重要的一个</strong>。它硬答了，说明「只根据资料回答」没起作用——
+            把这句挪到问题最前面再试；还不行，就在每次提问时手动带上。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：三问的截图（问答 + 出处）。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-iter">
+      <h2>四、持续迭代：知识库是长出来的</h2>
+      <p>
+        建库那天是它最好用的一天——之后每天都会变差，除非你<strong>迭代</strong>。
+        迭代不是「想起来就整理一下」，而是有固定触发点的三个动作：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>触发点</th><th>动作</th><th>例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>检索时没找到</strong></td><td>补资料，同时改路径或清单</td><td>三类问题测试里答不出的那个，就是缺口</td></tr>
+            <tr><td><strong>回答引用出错</strong></td><td>修资料内容或拆分过大文件</td><td>一份大杂烩笔记拆成按主题的多份</td></tr>
+            <tr><td><strong>某类问题反复问</strong></td><td>把答案写成常驻文档</td><td>同样的报错查了三次，就写进「踩坑记录」</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>第三个触发点最值得养成习惯：<strong>同一个问题被问到第二遍，就是该写进知识库的信号</strong>。</p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·找缺口、补资料、更新清单 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个补过资料的知识库 + 更新过的资料清单和更新记录。</p>
+        <p><strong>第 1 步 · 让 AI 替你找缺口（3 分钟）</strong></p>
+        <p>缺口不用你自己苦想，让 AI 拿着清单对照你的提问记录来找：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="找缺口指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我的知识库是关于《AIGC 应用与实践》这门课的，目前收录了 [n] 份资料。
+请帮我找出知识库的缺口，从三个角度：
+
+1. 结构角度：哪类主题的资料明显偏少或空缺（对照目录结构看）；
+2. 深度角度：哪些文件只有结论没有过程，将来我自己也看不懂；
+3. 时效角度：哪些内容可能已经过时，需要核对或更新。
+
+每个缺口给一条「下一步补什么」的具体建议。</code></pre>
+        </div>
+        <p><strong>第 2 步 · 挑一个缺口补上（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>从它的建议里挑一条最容易补的</b><span>比如「缺 X 主题的笔记」——把这次课上你没记下来的要点补成一份 md。</span></li>
+          <li><b>补完让 AI 更新清单</b><span>新文件入位后，让它在 <code>资料清单.md</code> 里登记，
+            并在「更新记录」里加一行：日期 + 加了什么。</span></li>
+        </ol>
+        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>缺口清单是具体的</b><span>每条都能落到「补哪份、放哪个目录」。<br>
+            <em>只说「内容还不够多」</em>：这种没用的结论让它重给，落到具体主题。</span></li>
+          <li><b>新资料进了正确的目录</b><span>不是随手一放——放错了目录的知识库会慢慢烂掉。</span></li>
+          <li><b>清单和更新记录都更新了</b><span>清单不更新，下次检索就找不到新资料——这步不能省。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：缺口清单 + 补上的新资料 + 更新后的 <code>资料清单.md</code>「更新记录」节截图。</p>
+        <p class="note">知识库和健身一样：<strong>建一次不叫拥有，能持续迭代才算</strong>。
+          这一课给你的不是某个功能按钮，而是一套「盘点 → 定结构 → 入库出清单 → 检验 → 迭代」的循环——
+          工具怎么变，这套循环都成立。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__item">
+          <p><b>1.（单选）知识库区别于「一堆文件」的关键，是多了下面哪两样东西？</b></p>
+          <div class="quiz__opts"><p>A. 更大的硬盘和更多的文件</p>
+          <p>B. 一套稳定的目录结构 + 一份持续更新的清单</p>
+          <p>C. 更好看的图标和分类颜色</p>
+          <p>D. 把所有文件合并成一个大文档</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：B</b></p>
+          <p>【解析】找得到、用得上、能长，靠的是结构和清单这两样「仓库没有」的东西。C 是装饰，D 反而破坏结构。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>2.（单选）定目录结构的正确顺序是？</b></p>
+          <div class="quiz__opts"><p>A. 先凭经验分好类，再把资料塞进去</p>
+          <p>B. 先盘点资料有什么，再从资料里长出分类</p>
+          <p>C. 参考别人的目录直接照抄</p>
+          <p>D. 按文件类型分：文档、图片、压缩包各一个文件夹</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：B</b></p>
+          <p>【解析】分类从资料里长出来，不是想出来的。A 容易分出空文件夹，D 只按格式不分主题，检索价值最低。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>3.（多选）检验知识库要用哪三类问题？（全选）</b></p>
+          <div class="quiz__opts"><p>A. 事实题：单条信息找得到、指得出处</p>
+          <p>B. 归纳题：跨资料能连起来、来源可指认</p>
+          <p>C. 库里没有的题：该拒答的会拒答</p>
+          <p>D. 让它写一篇与库无关的文章看文笔</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：ABC</b></p>
+          <p>【解析】D 检验的是写作能力不是知识库。第三类最能暴露「用通用知识硬答」的问题。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>4.（判断）目录结构里留一个「其他」文件夹放暂时归不了类的文件，是合理做法。</b></p>
+          <div class="quiz__opts"><p>正确</p><p>错误</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：错误</b></p>
+          <p>【解析】兜底文件夹是目录腐烂的开始——每个文件都必须有明确归属，归不了的要单独标出来由你决定。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>5.（判断）「同一个问题被问到第二遍」，就是该把它写进知识库的信号。</b></p>
+          <div class="quiz__opts"><p>正确</p><p>错误</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：正确</b></p>
+          <p>【解析】反复问说明它值得沉淀。写成常驻文档，第三次就不用再查了。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <ol class="steps">
+        <li><b>一堆文件 ≠ 知识库</b><span>知识库多出的三条能力（找得到、用得上、能长）来自<strong>目录结构 + 资料清单</strong>。</span></li>
+        <li><b>先盘点、再分类</b><span>分类从资料里长出来。流程三步：盘点 → 定目录 → 入库出清单，顺序不能反。</span></li>
+        <li><b>动文件前先出对照表</b><span>和批量重命名一个规矩：AI 出「移动对照表」，你确认后才执行。</span></li>
+        <li><b>三类问题检验，第三类最重要</b><span>事实题、归纳题之外，「库里没有的题敢拒答」才说明它在真的检索你的库。</span></li>
+        <li><b>迭代有三个固定触发点</b><span>没找到 → 补资料；引用出错 → 修内容；同一问题问两遍 → 写成常驻文档。</span></li>
+      </ol>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课最想让你记住的一句</span>
+        <strong>建一次不叫拥有，能持续迭代才算。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 17 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）把一批散乱资料变成知识库，正确的第一步是？
+A. 先设计一套完美的分类体系
+B. 先盘点手头有什么资料，再从资料里长出分类
+C. 把所有文件合并成一个大文档方便检索
+D. 先买一个大容量网盘
+【答案】B
+【解析】分类从资料里长出来。先设计再塞资料，容易分出一堆空文件夹或放错位置。
+
+2.（单选）知识库里「资料清单.md」的作用是？
+A. 代替所有原始文件，可以删掉原文件
+B. 整个库的目录页：先看它就知道有什么、在哪
+C. 提交给老师的作业证明
+D. 记录文件的修改时间戳
+【答案】B
+【解析】清单是目录页，检索和迭代都围绕它。原始文件当然不能删。
+
+3.（单选）检验知识库时，问一个「库里根本没有的问题」，最重要的目的是？
+A. 考察 AI 的通用知识面
+B. 看它会不会在不该回答时硬编答案
+C. 顺便多学一个知识点
+D. 测试 AI 的响应速度
+【答案】B
+【解析】如果它对库里没有的问题侃侃而谈，说明在用通用知识硬答，知识库没真正起作用。
+
+4.（多选）知识库「持续迭代」的触发点包括？（全选）
+A. 检索时没找到想要的东西
+B. 回答引用出错或内容过时
+C. 同一个问题被问到第二遍
+D. 知识库建满一年必须全面重建
+【答案】ABC
+【解析】迭代是「有触发点的小步动作」，D 的「定期推倒重建」反而是错误做法。
+
+5.（判断）让 AI 整理入库时，应该让它直接动手，等发现错了再让它改回来。
+【答案】错误
+【解析】和第 14 次课的批量重命名同一条规矩：先出对照表，你确认后才执行。「错了再改」赌的是它每次都能改回来。
+
+6.（判断）只要把资料都上传到知识库，AI 就一定什么都答得准，不需要再做检验。
+【答案】错误
+【解析】检验是必须的环节：事实题、归纳题、拒答题三类问题各问一遍，才知道这个库现在能干什么、不能干什么。
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑
+     可用工具：
+       window.Site.esc(str)                  —— HTML 转义
+       window.Site.highlight(code, lang)     —— 语法高亮，返回 HTML
+       window.Site.type(node, lines, done)   —— 逐行「打字」输出到 node（数组元素可含 HTML）
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  // 本课无交互演示
+})();
+</script>
+</body>
+</html>

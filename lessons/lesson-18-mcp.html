@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第18次课 MCP 连接器与自动化任务｜AIGC应用与实践</title>
+<meta name="description" content="给 AI 接上外部工具和数据">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="18" data-root="../">
+
+<!-- 顶栏 / 侧边栏 / 面包屑 / 页面标题区 / 本页目录 / 上下课导航 / 页脚
+     全部由 assets/js/site.js 按 course-map.js 自动生成。
+     课时页里【不要】再写这些结构，否则会重复。 -->
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始 —— 转化时只写这一段
+     硬性要求：
+       1. 每个知识点一个小节：<section class="sec" id="s-语义名">
+       2. 小节的 <h2> 不带 id，锚点 id 落在 section 上
+       3. 需要单独跳转的三级标题（h3）才带 id，命名 s-xxx-yyy
+       4. 本页全部小节都要在 search-index.js 里登记
+     标准小节清单（除本课确有需要外，顺序不要变、不要增删）：
+       s-guide    本课导读
+       s-goal     学习目标（含知识点导航）
+       s-…        正文小节 2–8 个，一节讲透一个概念
+       s-quiz     随堂自测
+       s-recap    本课要点回顾
+       s-hw       课后作业
+     ============================================================ -->
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        到目前为止，AI 干的活都在「圈子里」：读写你授权的文件夹、生成文档、整理表格。
+        但很多真实工作在圈子外面——<strong>要查网上的资料、要发一条消息、要按时间自动跑一个任务</strong>。
+      </p>
+      <p>
+        把 AI 和外部世界接起来的那根「线」，就是本课的主角：<strong>MCP 连接器</strong>，
+        以及顺着它来的另一个能力——<strong>定时自动化任务</strong>。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">先把丑话说在前面</span>
+        连接器是<strong>给 AI 开权限</strong>的活。权限开得越宽，AI 能干的事越多，出事的范围也越大。
+        所以这一课一半讲「怎么连」，另一半讲「<strong>怎么少连</strong>」——最小权限原则贯穿全课。
+        另外说明：连接器的具体入口和可用列表随版本变化明显，本页只讲通用流程与原则，
+        具体名称以你实际使用的版本为准（核对日期 2026-09-25）。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>用自己的话说出 MCP 和连接器解决什么问题；</li>
+          <li>完成一次连接器的接入与调用，并说清它申请了什么权限；</li>
+          <li>用<strong>最小权限原则</strong>审查一个自动化任务，指出哪里权限给宽了；</li>
+          <li>创建并验证一个定时自动化任务；</li>
+          <li>说出自动化任务和手动执行相比，<strong>多出来的风险在哪</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-what"><b>01</b>MCP 是什么</a>
+        <a href="#s-flow"><b>02</b>连接器工作流程 <em>＋实操①②</em></a>
+        <a href="#s-perm"><b>03</b>最小权限原则 <em>＋实操③</em></a>
+        <a href="#s-auto"><b>04</b>定时自动化任务 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的工作目录与权限、
+        <a class="xref" data-lesson="14">第 14 次课</a>的确认后再执行。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="19">第 19 次课</a>的「AI 员工」各自要挂连接器，
+        今天理解了权限，那时才不会乱给。
+      </div>
+    </section>
+
+    <section class="sec" id="s-what">
+      <h2>一、MCP 是什么：给 AI 装插座</h2>
+      <p>
+        MCP（Model Context Protocol，模型上下文协议）是 AI 和外部工具之间的一套<strong>标准接口</strong>。
+        说白了：在它出现之前，每接一个外部工具都要单独写一套对接；
+        有了 MCP，工具方按统一规格「做好插座」，AI 这边「插上就能用」。
+      </p>
+      <p>用生活化的话讲：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>没有 MCP</th><th>有 MCP</th></tr></thead>
+          <tbody>
+            <tr><td>每台电器配一种专用插头，换个牌子就插不上</td><td>统一插座，谁家的电器都能插</td></tr>
+            <tr><td>AI 接外部工具要逐个定制开发</td><td>工具按标准做成「连接器」，即插即用</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>而「连接器」就是按这个标准做出来的一个个具体插件：搜索、邮箱、日历、文档平台……</p>
+      <div class="callout callout--tip">
+        <span class="callout__t">一个重要的心态</span>
+        连接器列表会不断变化，<strong>名字和数量都不值得背</strong>。
+        值得带走的是那套判断流程：这个东西<strong>申请了什么权限、
+        数据流向哪里、我不给行不行</strong>——这套流程换个产品也一样用。
+      </div>
+    </section>
+
+    <section class="sec" id="s-flow">
+      <h2>二、连接器工作流程：装、授权、用</h2>
+      <p>不管接哪个连接器，流程都是三步，权限问题藏在第二步：</p>
+      <ol class="steps">
+        <li><b>装</b><span>在连接器市场里找到并启用。此时先看它的说明页，<strong>重点看权限部分</strong>。</span></li>
+        <li><b>授权</b><span>多数连接器需要登录或提供凭证。这里决定「AI 能代表你干多少事」。</span></li>
+        <li><b>用</b><span>在对话里正常下指令，AI 判断需要时自动调用。你应能在执行过程里看到它调用了哪个连接器。</span></li>
+      </ol>
+      <div class="callout callout--danger">
+        <span class="callout__t">授权时必须问自己的三个问题</span>
+        ① 它要的权限，<strong>和我要干的活匹配吗</strong>——只想让它读，它却要写，就要警惕；
+        ② 授权的<strong>范围能不能缩小</strong>——能只授权某个文件夹/某个日历，就不要全部；
+        ③ <strong>凭证放在哪</strong>——API Key 不能写进对话、不能硬编码进代码，只能放在它指定的配置处。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·在连接器市场完成一次「权限侦察」 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份连接器权限侦察记录——不安装也能完成，练的是看的能力。</p>
+        <p><strong>第 1 步 · 打开连接器列表，挑一个你用得上的（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>找到连接器入口并浏览列表</b><span>入口位置以你实际版本为准。挑一个你<strong>真的会用到</strong>的（比如搜索类或文档类），不要随便挑。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 只看说明页，回答四个问题（4 分钟）</strong></p>
+        <p>把下面四个问题的答案记下来（记在你自己的知识库里更好）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="权限侦察四问 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>连接器权限侦察记录（练眼睛，不安装）
+
+连接器名称：
+1. 它声称能干什么（用原文）：
+2. 它需要什么权限 / 授权方式（登录？API Key？读写范围？）：
+3. 这些权限里，哪些是我这次任务真正需要的？哪些用不上？
+4. 如果我只给它「最小够用」的权限，够不够完成我想要的事？
+
+结论：装 / 不装（理由一句话）</code></pre>
+        </div>
+        <p><strong>第 3 步 · 做到这三条，就算做完了（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>四问都有具体答案</b><span>第 2 问要落到具体权限项（读写、网络、凭证），不能只写「要授权」。</span></li>
+          <li><b>第 3 问里至少指出一项「用不上的权限」</b><span>这题练的就是「默认给的和实际要的往往不一致」这双眼睛。<br>
+            <em>实在找不到</em>：把理由写清楚（这个连接器权限确实最小），也是一种合格答案。</span></li>
+          <li><b>结论有理由</b><span>装或不装都要一句话理由，不许「感觉还行」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：权限侦察记录。</p>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·接入一个连接器并完成一次调用 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个已接入的连接器 + 它完成的一次真实调用 + 执行过程的截图。</p>
+        <p><strong>第 1 步 · 按侦察结论接入（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>按流程三步走：装 → 授权 → 确认</b><span>授权时对照侦察记录：<strong>只授权刚才标了「真正需要」的那部分</strong>。
+            凭证只放在官方指定的配置位置，<span class="task__warn">绝不写进对话，也绝不硬编码进任何文件</span>。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 完成一次真实调用（4 分钟）</strong></p>
+        <p>用一个具体的任务去调它，指令说清「要它用连接器干什么、产出什么、什么情况下停下问你」：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="调用指令模板 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我已接入 [连接器名称]。请用它完成下面的任务：
+
+任务：[一句话说清要干什么，例如：检索「XXX」的最新资料并整理成 5 条要点]
+产出：[要什么形式的产出，例如：整理成一份 md 文件，存到工作目录]
+限制：
+- 每条信息标注来源；
+- 只使用该连接器获取的内容，不要用你自己的知识补充；
+- 遇到需要更高权限的操作时，停下来问我，不要自行尝试。
+
+完成后告诉我：调用了什么、拿到了什么、什么没做到。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 复盘执行过程（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>执行过程里能看到它调用了连接器</b><span>如果它没用连接器、而是用自己的知识回答了——这不算完成，让它明确用连接器重做。</span></li>
+          <li><b>信息都带了来源</b><span>没标来源的条目让它补。<br>
+            <em>它说「来源拿不到」</em>：这本身就是有价值的发现，记录下来——很多连接器返回的内容不带出处。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：调用结果 + 执行过程截图（能看到连接器被调用的痕迹）。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-perm">
+      <h2>三、最小权限原则：能少给就少给</h2>
+      <p>
+        最小权限原则只有一句话：<strong>只给完成当前任务所必需的权限，多一点都不给</strong>。
+        它不是让你胆小，而是让「出事的时候损失可控」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>场景</th><th>权限给宽了会怎样</th><th>最小权限的做法</th></tr></thead>
+          <tbody>
+            <tr><td>只读资料就够了</td><td>给了写权限 → 它可能改错文件</td><td>只授读取；要写时单独授权一次</td></tr>
+            <tr><td>只用一个文件夹</td><td>给了全盘访问 → 波及面不可控</td><td>工作目录限定到那个文件夹</td></tr>
+            <tr><td>一次性任务</td><td>长期授权 → 忘了它还开着</td><td>用完解除授权，需要再接</td></tr>
+            <tr><td>批量操作</td><td>直接执行 → 错一片</td><td>先出清单预览，确认后才执行</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·权限对比实验：同一个任务，两种权限 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一组对比记录——同一指令在不同权限范围下的行为差异。</p>
+        <p><strong>第 1 步 · 设计一个「越界任务」（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>想一条「正常但超出当前工作目录」的指令</b><span>例如：让 AI 去「读取桌面另一个文件夹里的文件」——
+            这个要求本身合理，<strong>但它不在当前授权范围内</strong>。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 两种权限下各跑一次（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>最小权限下跑</b><span>当前工作目录限定在 <code>wb-wiki</code>（或你自己的目录），发出指令，<strong>记录它的反应</strong>：
+            拒绝？请求授权？还是绕开？</span></li>
+          <li><b>放宽权限后再跑</b><span>在它明确请求、你判断可以接受的前提下放宽，再跑同一指令，对比结果。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="对比记录模板 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>权限对比实验记录
+
+指令：[原样贴上你的指令]
+① 最小权限下的行为：[它做了什么/说了什么]
+② 放宽后的行为：[它做了什么/说了什么]
+③ 差异说明：[权限改变了什么]
+④ 我的结论：[这条任务到底需要多大权限？]</code></pre>
+        </div>
+        <p><strong>第 3 步 · 做到这三条，就算做完了（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>两种行为都如实记录</b><span>包括它请求授权时<strong>具体说了什么</strong>——那是它给你的决策信息。</span></li>
+          <li><b>结论落到「这条任务需要多大权限」</b><span>而不是「权限越大越好」或「越小心越好」的空话。</span></li>
+          <li><b>实验后把权限收回来</b><span>实验用的放宽权限，用完立即收回——<strong>这本身就是最小权限的实践</strong>。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：对比记录 + 收回权限的截图（或说明）。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-auto">
+      <h2>四、定时自动化任务：没人盯着也在干活的 AI</h2>
+      <p>
+        前面所有任务都是「你说一句，它做一次」。自动化任务把顺序反过来：
+        <strong>你定好规则，它按时间自己跑</strong>——每周一早上汇总上周资料、每天固定时间抓一次资讯。
+      </p>
+      <p>好处很明显，但<strong>风险也是双倍的</strong>，因为出事时你不在场：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>手动执行</th><th>自动化任务</th></tr></thead>
+          <tbody>
+            <tr><td>执行前你看得见它要干什么</td><td>执行时你在睡觉</td></tr>
+            <tr><td>出错当场发现</td><td>错了它每周错一次，直到你发现</td></tr>
+            <tr><td>权限可以逐次给</td><td>权限必须一直挂着</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>所以自动化任务的指令必须比手动任务<strong>多写两样东西</strong>：明确的产出位置，和明确的失败处理。</p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·创建并验证一个定时自动化任务 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个定时自动任务 + 它的一次（或一次模拟的）执行记录。</p>
+        <p><strong>第 1 步 · 选一个「真的值得定时」的小任务（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>任务要满足两个条件</b><span>
+            <strong>周期性</strong>——每周或每天都会需要；
+            <strong>步骤固定</strong>——输入、处理、输出都一样。<br>
+            例如：「每周一把上周新增的学习资料整理进知识库清单」。
+            一次性的活不要做成定时任务（为什么，第 8 次课讲过）。</span></li>
+        </ol>
+        <p><strong>第 2 步 · 用指令把任务建出来（4 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="定时任务创建指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个定时自动化任务，配置如下：
+
+任务内容：[一句话，例如：检索「AIGC 教学工具」相关的最新资料，整理成 5 条要点]
+执行频率：[例如：每周一 09:00 执行一次]
+产出位置：[明确到文件，例如：输出保存为 自动化/资讯周报.md，覆盖上一份]
+失败处理：如果执行时连不上网络或拿不到结果，
+  生成一份「执行失败.md」写明失败时间和原因，不要什么都不留。
+权限要求：只使用 [你授权过的那个连接器] 的最小权限；
+  除写产出文件外，不做任何其他写入操作。
+
+创建完成后，把这个任务的配置读给我听一遍，让我核对。</code></pre>
+        </div>
+        <p><strong>第 3 步 · 核对配置，并验证一次执行（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>逐项核对它复述的配置</b><span>重点核三处：<strong>频率对不对、产出位置对不对、失败处理有没有</strong>。
+            <em>它没提失败处理</em>：补上——自动化任务没有失败处理，等于每周可能静默失败。</span></li>
+          <li><b>手动触发一次（或用测试执行）</b><span>不等周期到——立刻验证它能跑通、产出落在指定位置。<br>
+            <em>无法立即触发</em>：至少核对配置无误，并记下首次执行时间，到点后回来检查。</span></li>
+          <li><b>验证后收权限</b><span>确认任务只用了最小权限；多余的一律收回。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：任务配置截图 + 一次执行（或模拟执行）的产出文件。</p>
+        <p class="note">自动化任务的三条铁律：<strong>产出位置写死、失败要留痕、权限给最小</strong>。
+          三条都齐了，它才是你的员工；缺一条，它就是每周定时埋一次雷。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__item">
+          <p><b>1.（单选）MCP 解决的核心问题是？</b></p>
+          <div class="quiz__opts"><p>A. 让 AI 的回答速度变快</p>
+          <p>B. 让 AI 和外部工具之间有一套标准接口，即插即用</p>
+          <p>C. 让 AI 的模型参数变大</p>
+          <p>D. 让 AI 不再产生幻觉</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：B</b></p>
+          <p>【解析】MCP 是统一接口标准，工具按标准做成连接器，AI 即插即用。它不改变模型本身。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>2.（单选）接入连接器时，API Key 的正确处理方式是？</b></p>
+          <div class="quiz__opts"><p>A. 直接贴在对话里，方便 AI 随时取用</p>
+          <p>B. 写在代码注释里，方便自己查看</p>
+          <p>C. 只放在官方指定的配置位置，不进对话、不进代码</p>
+          <p>D. 发给同学保管一份，以防丢失</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：C</b></p>
+          <p>【解析】Key 一旦进对话就可能被记录、被引用，写进代码就是硬编码——都等于泄露。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>3.（多选）最小权限原则在实践中的做法包括？（全选）</b></p>
+          <div class="quiz__opts"><p>A. 只读够用的，就不给写权限</p>
+          <p>B. 工作目录限定到具体文件夹</p>
+          <p>C. 一次性任务用完就解除授权</p>
+          <p>D. 为了省事，把常用权限全部长期打开</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：ABC</b></p>
+          <p>【解析】D 是「最大权限」，和原则相反。长期挂着的宽权限，出事时损失不可控。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>4.（判断）自动化任务和手动任务相比，指令要多写「产出位置」和「失败处理」。</b></p>
+          <div class="quiz__opts"><p>正确</p><p>错误</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：正确</b></p>
+          <p>【解析】执行时你不在场：产出没有固定位置就找不到结果；没有失败处理，它可能每周静默失败一次。</p></div>
+        </div>
+        <div class="quiz__item">
+          <p><b>5.（判断）权限实验结束后，实验用的放宽权限可以留着，以后还要用。</b></p>
+          <div class="quiz__opts"><p>正确</p><p>错误</p></div>
+          <button class="quiz__reveal" type="button">看答案</button>
+          <div class="quiz__ans"><p><b>答案：错误</b></p>
+          <p>【解析】用完即收，这本身就是最小权限的实践。宽权限长期挂着，是自动化任务最常见的安全隐患。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <ol class="steps">
+        <li><b>MCP 是统一接口标准</b><span>连接器是按标准做好的具体插件。名字不用背，判断流程要带走。</span></li>
+        <li><b>接入流程三步</b><span>装 → 授权 → 用。权限问题藏在授权这一步，装之前先做「权限侦察四问」。</span></li>
+        <li><b>最小权限原则</b><span>只读够用不给写、目录限定、用完即收。让出事时损失可控。</span></li>
+        <li><b>自动化任务多写两样</b><span>产出位置写死 + 失败要留痕。执行时你不在场，这两样就是保险。</span></li>
+        <li><b>自动化任务三条铁律</b><span>产出位置写死、失败要留痕、权限给最小。</span></li>
+      </ol>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课最想让你记住的一句</span>
+        <strong>权限不是功能，是责任。</strong>每多给一分，就要能说清「为什么需要它」。
+      </div>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 18 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）连接器接入流程的三步，正确的顺序是？
+A. 用 → 授权 → 装
+B. 装 → 用 → 授权
+C. 装 → 授权 → 用
+D. 授权 → 装 → 用
+【答案】C
+【解析】先启用，再完成授权（决定 AI 能代表你干什么），最后在对话里调用。
+
+2.（单选）「权限侦察四问」主要在哪个环节做？
+A. 安装完成之后
+B. 安装之前，看连接器说明页时
+C. 出了事故之后
+D. 任务执行失败时
+【答案】B
+【解析】侦察在装之前完成——装之前是拦截风险的最后时机，装完再发现权限过宽就晚了。
+
+3.（单选）下列哪种情况违反了最小权限原则？
+A. 只读任务只授予读取权限
+B. 工作目录限定到具体文件夹
+C. 为了以后省事，把写入和网络权限长期全部打开
+D. 一次性任务完成后解除授权
+【答案】C
+【解析】「为了省事全打开」正是最小权限原则要防的：宽权限长期挂着，出事时损失不可控。
+
+4.（多选）创建定时自动化任务时，指令里必须写明的包括？（全选）
+A. 执行频率
+B. 产出的具体位置和文件名
+C. 执行失败时的处理方式
+D. 任务失败后自动删除整个工作目录
+【答案】ABC
+【解析】失败处理是「留痕」，不是「毁灭」。D 会让一次失败摧毁全部资料。
+
+5.（判断）API Key 可以写在给 AI 的对话消息里，因为 AI 不会外传。
+【答案】错误
+【解析】对话内容可能被记录和引用，Key 进对话就等于泄露。只能放在官方指定的配置位置。
+
+6.（判断）验证一个定时自动化任务，可以等它的第一个周期到了再看结果。
+【答案】错误
+【解析】应该立即手动触发（或用测试执行）验证能跑通、产出落位。等到周期到了才发现配置错误，已经错过一轮。
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑
+     可用工具：
+       window.Site.esc(str)                  —— HTML 转义
+       window.Site.highlight(code, lang)     —— 语法高亮，返回 HTML
+       window.Site.type(node, lines, done)   —— 逐行「打字」输出到 node（数组元素可含 HTML）
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  // 本课无交互演示
+})();
+</script>
+</body>
+</html>

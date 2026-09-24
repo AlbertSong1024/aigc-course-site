@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第16次课 WorkBuddy 连接 IMA 知识库实战｜AIGC应用与实践</title>
+<meta name="description" content="API Key 配置、绑定 ima 知识库、带引用问答、权限边界与拒答策略——让桌面智能体调用你的私有资料。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="16" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 接上你的资料</span></h2>
+      <p class="lead">
+        上一课你在 ima 里亲手建了一个知识库，也在 ima 里问过问题。
+        那一课的方向是<strong>「你走进 ima 的房间去翻资料」</strong>。
+        这一课换方向——<strong>让 WorkBuddy 这只手伸进你的库里，替你翻、替你答、替你把产物存回去</strong>。
+      </p>
+      <p>先确认三件你大概率会遇到的事：</p>
+      <ul>
+        <li><strong>知识库建好了，WorkBuddy 却说「没找到你的资料」</strong>——两边根本没打通，
+          它手上没有进门的凭证。</li>
+        <li><strong>打通之后，它答得很顺，但你不知道哪句来自你的资料、哪句是它自己补的</strong>——
+          没有引用，等于回到了凭记忆回答。</li>
+        <li><strong>把一串密钥贴进对话让它配置</strong>——省事了，但那串字符串从此躺在对话记录里。</li>
+      </ul>
+      <p>
+        这一课按四步走：<strong>① 把凭证领出来、放对地方 → ② 绑定知识库、看清授权了哪三项 →
+        ③ 在任务里带引用地问答 → ④ 划清权限边界，资料里没有时让它明确拒答。</strong>
+        RAG 的原理不再重复讲，需要回顾时翻
+        <a class="xref" data-lesson="15">第 15 次课</a>。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课最容易理解错的一点：<strong>「连上」和「答得对」是两件事。</strong>
+        连上只解决了「它能碰到你的资料」，不解决「它会照着你的资料说」。
+        所以本课一半的篇幅放在<strong>引用和拒答</strong>上——那是让知识库真正有用的部分。
+      </div>
+      <p class="note">
+        本页涉及 WorkBuddy 与 ima 的产品事实，核对日期 <strong>2026-09-25</strong>，
+        依据为 <strong>www.workbuddy.cn</strong> 官方文档《WorkBuddy × ima 功能指引》
+        《如何用 WorkBuddy 把 ima 知识库越用越厚》《连接器》三篇，
+        以及 ima 官方凭证页 <strong>ima.qq.com/agent-interface</strong>。
+        客户端文档与开放平台文档能力不同，本页不混用；
+        <strong>查不到官方口径的地方一律写「不确定」，并以你实际使用的版本为准。</strong>
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说清让 WorkBuddy 触碰你 ima 资料的<strong>两条路</strong>（扫码授权 / API Key 凭证）差在哪，
+            并说出三条 API Key 的安全红线；</li>
+          <li>在 WorkBuddy 里<strong>独立完成 ima 知识库的绑定</strong>，
+            并逐条说出它拿到的<strong>三项权限</strong>分别是什么；</li>
+          <li>发起一次<strong>带引用的问答</strong>，拿到答案后按「文件名 / 位置 / 原句」三要素核完溯源；</li>
+          <li>写出一条<strong>能让它拒答的指令</strong>——限定依据范围、写死红线、说清缺信息怎么办；</li>
+          <li>判断一件事<strong>该不该交给它做</strong>（权限边界三条 + 积分口径），
+            并说清什么时候该解绑。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-key"><b>01</b>API Key 配置 <em>＋实操①</em></a>
+        <a href="#s-bind"><b>02</b>绑定知识库 <em>＋实操②</em></a>
+        <a href="#s-ask"><b>03</b>带引用问答 <em>＋实操③</em></a>
+        <a href="#s-edge"><b>04</b>权限边界与拒答 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="15">第 15 次课</a>建的 ima 主题知识库
+        （本课的四个实操全靠它，没建库的先回去建）、
+        <a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素（本课所有指令都按它写）。<br>
+        <strong>后续</strong>：本课讲的是「一个连接器怎么接、边界在哪」。
+        <a class="xref" data-lesson="18">第 18 次课</a>把这件事推广到 MCP 与自动化任务上。
+      </div>
+    </section>
+
+    <!-- 一、API Key 配置 -->
+    <section class="sec" id="s-key">
+      <h2>一、API Key 配置：把钥匙领出来，放对地方<span class="sec__tag">凭证</span></h2>
+      <p>
+        先讲个比方。<strong>扫码授权像去前台登记领一张临时工牌</strong>：
+        登记一次，工牌由系统管着，你随时能注销，注销完它就进不了门。
+        <strong>API Key 像配了一把你家的钥匙给别人</strong>：谁拿到这串字符串，谁就能开门，
+        而且<strong>它不会自己失效</strong>。
+      </p>
+      <p>
+        所以要分清你现在走的是哪条路。
+      </p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>扫码授权（官方内置连接器）</th><th>API Key（ima 开放接口凭证）</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>官方依据</strong></td>
+              <td>www.workbuddy.cn《WorkBuddy × ima 功能指引》</td>
+              <td>ima.qq.com/agent-interface（ima 官方凭证页）</td>
+            </tr>
+            <tr>
+              <td><strong>拿到的是什么</strong></td>
+              <td>一次授权关系，凭据由 WorkBuddy 维护，你不用抄</td>
+              <td>一串密钥字符串（页面上还可能出现 Client ID，<strong>以页面实际显示为准</strong>）</td>
+            </tr>
+            <tr>
+              <td><strong>存在哪</strong></td>
+              <td>不用你管</td>
+              <td><strong>要你自己保存，并填给调用方</strong>——这一步是本课的重点</td>
+            </tr>
+            <tr>
+              <td><strong>撤销方式</strong></td>
+              <td>个人版连接器可解除绑定；企业版由企业统一管理，端内不支持解绑</td>
+              <td>回凭证页重新获取，让旧的字符串失效<br><span class="note">是否支持「重新生成」按钮，本页核对时未能确认，<strong>不确定</strong>，以页面显示为准</span></td>
+            </tr>
+            <tr>
+              <td><strong>典型用途</strong></td>
+              <td>在 WorkBuddy 桌面端里日常调用知识库</td>
+              <td>把 ima 能力接给脚本、命令行、其他智能体（技术向场景）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        按 WorkBuddy 官方《连接器》一节的口径，授权凭据包括
+        <strong>OAuth Access/Refresh Token，或您手动填写的 API 密钥</strong>——
+        也就是说「填密钥」这回事本身是被产品支持的能力，只是<strong>ima 这一路的具体填写入口，
+        官方客户端文档里没有写明</strong>。本页因此只讲通用的安全做法，不编造入口名。
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一串密钥，放在四个地方，风险完全不同</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="chat" class="on">贴在对话里</button>
+              <button type="button" data-tab="code">写进代码</button>
+              <button type="button" data-tab="local">本地配置文件</button>
+              <button type="button" data-tab="repo">传进仓库 / 群</button>
+            </div>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b class="acc" id="d1-level">—</b><span>泄露风险</span></div>
+              <div class="kpi"><b id="d1-spread">—</b><span>扩散范围</span></div>
+            </div>
+            <dl class="kvlist" id="d1-detail"></dl>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            风险等级与扩散范围是<strong>定性判断的教学示意</strong>，不是产品给出的安全评级，
+            用来建立「同一串字符串，位置不同、后果差别很大」的直觉。
+          </div>
+        </div>
+      </div>
+
+      <h3>三条红线，一条都不能破</h3>
+      <ol class="steps">
+        <li><b>不硬编码进代码</b><span>写死在脚本里，代码一分享、一提交，密钥跟着走。
+          要用环境变量或本地配置文件读取。</span></li>
+        <li><b>不整段贴进对话</b><span>对话记录可能被同步、导出、截图、转给他人。
+          真要配置，让它去<strong>读你本地的那个文件</strong>，而不是你把内容复述给它。</span></li>
+        <li><b>不交给第三方工具</b><span>来源不明的「一键配置脚本」「帮你接入的小工具」，
+          接过你的密钥就等于接过你的账号。</span></li>
+      </ol>
+      <div class="callout callout--danger">
+        <span class="callout__t">官方原话，记住这句</span>
+        WorkBuddy 官方《连接器》一节的安全提示原文：
+        <strong>「API 密钥与 Token 是访问您第三方账号的钥匙，请妥善保管，避免在公共设备或共享环境填写；
+        不再使用的连接器建议及时撤销授权。」</strong><br>
+        另一句是免责声明：<strong>「自定义连接器的访问范围由您的配置决定，WorkBuddy 不预设范围，
+        请审慎评估后再启用。」</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·领出凭证，放到只有你能读的地方 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：本地 <code>~/.config/ima/</code> 下两个凭证文件，
+          ＋ WorkBuddy 读出你的 ima 知识库列表的一段回答（全程密钥<strong>没有出现在对话里</strong>）。</p>
+
+        <p><strong>第 1 步 · 到 ima 官方凭证页领钥匙（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>浏览器打开 <code>ima.qq.com/agent-interface</code> 并登录</b><span>
+            用你建库时那个 ima 账号。</span></li>
+          <li><b>点页面上的「获取 API Key」</b><span>页面会给出一串密钥；
+            如果同时显示了 Client ID，两个都要留着——<strong>以页面实际显示为准</strong>。</span></li>
+          <li><b>先复制下来，暂时别发给任何人、也别发进任何对话</b><span>
+            <span class="task__warn">这一步最容易做错</span>：看到「配置」两个字就顺手贴给 AI。先忍住。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 用下面这组命令把它写进本地文件（2 分钟）</strong></p>
+        <p>打开 <strong>PowerShell</strong>，把下面这段整段复制进去执行。
+          先把 <code>你的ClientID</code> 和 <code>你的APIKey</code> 换成第 1 步拿到的真实值：</p>
+        <div class="codeblock" data-lang="powershell" data-name="写入凭证 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.config\ima" | Out-Null
+Set-Content -Path "$env:USERPROFILE\.config\ima\client_id" -Value "你的ClientID" -Encoding utf8 -NoNewline
+Set-Content -Path "$env:USERPROFILE\.config\ima\api_key"   -Value "你的APIKey"   -Encoding utf8 -NoNewline
+Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 WorkBuddy 自己去读，不要把内容贴给它（2 分钟）</strong></p>
+        <p>在 WorkBuddy 里<strong>新建一个对话</strong>，把下面这段指令整段发出去——
+          注意里面<strong>一个密钥字符都没有</strong>：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="配置指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我已经把 ima 的开放接口凭证写在这两个本地文件里：
+%USERPROFILE%\.config\ima\client_id
+%USERPROFILE%\.config\ima\api_key
+
+请读取这两个文件完成 ima 连接配置，然后做两件事：
+1. 列出我 ima 账号下的知识库名称；
+2. 告诉我你现在能对这个知识库做什么、不能做什么。
+
+要求：不要在回复里回显这两个文件的完整内容，只回显前 4 个字符用于我确认读对了文件。
+读不到就直说"读不到"，不要猜、不要编造知识库名称。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它列出了你真实的知识库名称</b><span>至少能说出你在
+            <a class="xref" data-lesson="15">第 15 次课</a>建的那个库。<br>
+            <em>它说读不到</em>：先确认第 2 步命令没报错、文件真的存在
+            （用第 2 步最后那条 <code>Get-ChildItem</code> 再看一眼），
+            再把「读不到就直说」这句挪到指令最前面重发一次。</span></li>
+          <li><b>回复里没有出现完整密钥</b><span>最多只有你让它回显的前 4 个字符。<br>
+            <em>它整段吐出来了</em>：⚠️ 说明「不要回显」那句没生效。
+            这段对话别再转发给任何人，并回到 <code>ima.qq.com/agent-interface</code>
+            重新获取一次，让这串字符串作废。</span></li>
+          <li><b>两个凭证文件在 <code>.config\ima\</code> 下，不在你的工作目录里</b><span>
+            工作目录里的文件随时可能被 AI 读走、被打包、被同步。<br>
+            <em>放错位置了</em>：把文件移走，再执行第 2 步的命令重新生成一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：它列出知识库那段回答的截图
+          ＋ 一句「我的凭证放在哪、为什么放那儿」。
+          <strong>截图里不要出现完整密钥</strong>——出现的话打码再交。</p>
+        <p class="note">
+          如果你手上的版本没有「让 AI 读本地文件完成配置」这条路，
+          那就<strong>不要勉强</strong>：直接用第二节的扫码授权即可，
+          日常在 WorkBuddy 里调知识库走那条路就够了。本节的凭证只在你确实要把 ima
+          接给脚本或其他智能体时才需要。
+        </p>
+      </div>
+    </section>
+
+    <!-- 二、绑定知识库 -->
+    <section class="sec" id="s-bind">
+      <h2>二、绑定知识库：让它看见你有几个库<span class="sec__tag">本课核心</span></h2>
+      <p>
+        上一节解决的是「凭证」，这一节解决的是「关系」。
+        凭证是钥匙，绑定是<strong>拿这把钥匙去开哪一扇门、开到什么程度</strong>。
+      </p>
+      <p>
+        按 WorkBuddy 官方《WorkBuddy × ima 功能指引》，
+        ima 知识库连接器<strong>按账号所在环境分两种</strong>：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>使用环境</th><th>提供的连接器</th><th>授权方式</th><th>能不能解绑</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>iOA 企业账号</strong></td>
+              <td>ima 知识库企业版 ＋ 个人版 双连接器</td>
+              <td>企业版走企业统一身份，<strong>无需单独扫码</strong></td>
+              <td>企业版<strong>不支持</strong>端内解绑，由企业统一管理</td>
+            </tr>
+            <tr>
+              <td><strong>其他企业旗舰版</strong></td>
+              <td>ima 知识库个人版 连接器</td>
+              <td>个人微信扫码授权</td>
+              <td><strong>支持</strong>随时解绑</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        官方原话：<strong>「两个连接器的授权状态相互独立、互不影响；
+        在连接器面板点击连接即可进入对应授权页，授权完成后连接状态即时刷新。」</strong>
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 绑定四步：每一步点完之后，它手上多了什么</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步 ▶</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="flow">
+              <div class="flow__node dim" id="d2-n1"><b>①</b>入口<br><span class="dim">资料库</span></div>
+              <div class="flow__path"><span class="flow__dot hold" id="d2-p1"></span></div>
+              <div class="flow__node dim" id="d2-n2"><b>②</b>授权<br><span class="dim">微信扫码</span></div>
+              <div class="flow__path"><span class="flow__dot hold" id="d2-p2"></span></div>
+              <div class="flow__node dim" id="d2-n3"><b>③</b>确认权限<br><span class="dim">三项</span></div>
+              <div class="flow__path"><span class="flow__dot hold" id="d2-p3"></span></div>
+              <div class="flow__node dim" id="d2-n4"><b>④</b>可引用<br><span class="dim">出现在列表</span></div>
+            </div>
+            <dl class="kvlist" id="d2-detail"></dl>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            步骤取自官方文档《WorkBuddy × ima 功能指引》「个人版连接器的连接步骤」，
+            文字做了教学化改写；界面名称随版本更新，<strong>以你实际使用的版本为准</strong>。
+          </div>
+        </div>
+      </div>
+
+      <h3>授权页上那三项权限，逐条看清楚</h3>
+      <p>
+        扫码之后还会弹一次确认页。官方写明的三项是原文照抄的，<strong>逐条读一遍再点同意</strong>：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>权限项（官方原文）</th><th>翻译成人话</th><th>你要想一下的是</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>在 WorkBuddy 中查看我的知识库列表</strong></td>
+              <td>它能看到你建了哪些库、叫什么名字</td>
+              <td>库名里别写敏感信息</td>
+            </tr>
+            <tr>
+              <td><strong>查看或搜索知识库资料</strong></td>
+              <td>它能读库里的文件内容</td>
+              <td>不该给 AI 看的东西别放进去</td>
+            </tr>
+            <tr>
+              <td><strong>将知识库文件添加到任务或者将文件保存到 ima 知识库</strong></td>
+              <td>它能把文件拉进任务，也能往你的库里写东西</td>
+              <td><strong>这是写权限</strong>——产物存回时用得到，也意味着它可能往里放东西</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">官方还有一句 TIP</span>
+        <strong>「WorkBuddy 连接资料库的 ima 知识库后将获得登录用户的 ima 知识库的权限。」</strong>
+        换句话说：<strong>它能看的范围 = 你这个账号本来就有的范围</strong>，不会因为你授权给它而变大。
+        但反过来也成立——<strong>你账号能看到的共享库内容，它一样能看到。</strong>
+      </div>
+
+      <h3>引到任务里的两种方式</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>方式</th><th>在哪操作</th><th>适合什么时候</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>从资料库添加</strong></td>
+              <td>左侧「资料库 → ima 知识库」里选中文件，点「添加到任务」</td>
+              <td>你已经知道要用哪一份</td>
+            </tr>
+            <tr>
+              <td><strong>在对话框添加</strong></td>
+              <td>新建任务输入框上方的上传文件图标 → 打开 ima 知识库，可勾选整个库或选文件</td>
+              <td>要它在一个范围内自己找</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        产物也能存回去：在右侧产物里找到文件，点<strong>「上传到云端」→ 选 ima 知识库</strong>，
+        按<strong>个人 / 共享 / 订阅</strong>三类库选一个存。
+        这就是官方说的「让知识库持续增值」——生成的正式内容回传进去，下次还能被调用。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·绑定 ima 知识库，逐条核对三项权限 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个已连接的 ima 知识库，
+          ＋ 一份「它现在能做什么、不能做什么」的核对结论。</p>
+
+        <p><strong>第 1 步 · 走完绑定（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在 WorkBuddy 左侧边栏点「资料库」，选「ima 知识库」</b><span>
+            官方路径就是这一条，不是「连接器」那一个入口。</span></li>
+          <li><b>点「立即前往授权」</b><span>用微信扫码登录 ima。<span class="task__warn">扫的是你建库那个账号</span>，
+            扫错了账号，后面看到的是另一个人的库。</span></li>
+          <li><b>在确认页上，把三项权限逐条读完再点同意</b><span>
+            三条分别是「查看我的知识库列表」「查看或搜索知识库资料」
+            「将知识库文件添加到任务或者将文件保存到 ima 知识库」。</span></li>
+          <li><b>回到 WorkBuddy，确认知识库已经出现在列表里</b><span>
+            没出现就刷新一次连接状态（官方说授权完成后状态即时刷新）。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 让它报一遍自己有什么（3 分钟）</strong></p>
+        <p>新建一个对话，把下面这段指令整段发出去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="权限核对指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你现在已经连上了我的 ima 知识库。请做三件事：
+
+1. 列出你能看到的全部知识库名称和类型（个人 / 共享 / 订阅）；
+2. 逐条说明你现在对我这些知识库能做什么、不能做什么；
+3. 说明如果没有我的明确指令，你会不会主动去读或改这些库里的内容。
+
+要求：只说你实际具备的能力，不要推测、不要把"理论上可以"写成"可以"。
+不确定的地方直接写"不确定"。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 再让它从库里取出一份文件（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在输入框上方的「添加文件」图标处打开 ima 知识库</b><span>
+            勾选整个库（不是单个文件）——这一节要验证的是「整个库能不能被引用」。</span></li>
+          <li><b>把下面这段指令发出去</b><span>整段复制，一个字别改。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="取出指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请从我刚才添加的 ima 知识库里，列出里面实际有哪些资料，
+每条给出：资料名称 + 一句话说明它讲了什么。
+只允许列出库里真实存在的内容；库里没有的不要补，读不到就写"读不到"。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>列表里出现了你在上一课建的那个主题库</b><span>
+            名字应该和你建库时一致。<br>
+            <em>列表是空的</em>：先确认扫码的是同一个账号；还不行就点「解除绑定」重新绑一次
+            （个人版连接器支持解绑）。</span></li>
+          <li><b>它说出的能力范围，和三项权限对得上</b><span>
+            看列表 / 搜索读内容 / 添加和保存文件——三条都在，而且<strong>没有多出别的</strong>。<br>
+            <em>它自称还能做别的</em>：让它说清是哪一项权限允许的；说不清就按「不确定」处理，别信。</span></li>
+          <li><b>它明确说了「没有你的指令不会主动去读或改」</b><span>
+            这对应官方的权限边界「不主动定时抓取」。<br>
+            <em>它含糊其辞</em>：补一句「请只回答是或否，并说明理由」，再问一次。</span></li>
+          <li><b>第 3 步拿到的资料清单和库里的实际内容对得上</b><span>
+            你传了 3 份，它就该列出 3 份左右，不该多出你没传过的东西。<br>
+            <em>多出了没见过的资料名</em>：⚠️ 两种可能——它读了别的库，或者它在编。
+            让它逐条标出「这条出自哪个库」，标不出来的就是编的。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：绑定成功的界面截图
+          ＋ 第 2 步那份「能做什么 / 不能做什么」的回答。
+          这个库<strong>留着别动</strong>，实操③ 要在里面问答。</p>
+      </div>
+    </section>
+
+    <!-- 三、带引用问答 -->
+    <section class="sec" id="s-ask">
+      <h2>三、带引用问答：让它照着你的资料说<span class="sec__tag">方法</span></h2>
+      <p>
+        连上了、也引用了，接下来才是真正容易翻车的地方。
+        <strong>它读了你的库，不代表它会照着你的库说。</strong>
+        RAG 那一步（切片 → 向量化 → 检索 → 增强生成）它自己就跑完了，
+        你唯一能抓住的是<strong>它在答案里留下的引用</strong>。回顾原理翻
+        <a class="xref" data-lesson="15">第 15 次课</a>。
+      </p>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 有引用 ≠ 能核对：两种答案，你该收哪一种</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo3">
+              <button type="button" data-tab="cited" class="on">带引用</button>
+              <button type="button" data-tab="plain">没有引用</button>
+            </div>
+            <button class="btn btn--ghost" type="button" id="d3-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d3-ref">—</b><span>标出的引用条数</span></div>
+              <div class="kpi"><b class="acc" id="d3-check">—</b><span>你能不能核对</span></div>
+            </div>
+            <dl class="kvlist" id="d3-detail"></dl>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            两段答案是<strong>离线预置的示意文本</strong>，用来对比答案结构，
+            真实效果请在你自己的知识库上验证。
+          </div>
+        </div>
+      </div>
+
+      <h3>一条合格的引用，要有三样东西</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>要素</th><th>长什么样</th><th>缺了会怎样</th></tr></thead>
+          <tbody>
+            <tr><td><strong>文件名</strong></td><td>《课程笔记-切片.md》</td><td>你不知道去哪儿找</td></tr>
+            <tr><td><strong>位置</strong></td><td>第 2 节「切片时的两个坑」</td><td>一份长文件里大海捞针</td></tr>
+            <tr><td><strong>原句</strong></td><td>把资料里那句话原样摘出来</td><td>你分不清是引用还是它自己的总结</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        三样齐了还只算「标了引用」。上一课讲过的<strong>三查</strong>在这里照样走一遍：
+        <strong>查引用</strong>（有没有标）→ <strong>查原文</strong>（点回去核，资料里是不是真这么写）
+        → <strong>查边界</strong>（资料里没有的，它是不说话还是照编）。
+      </p>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">积分口径，顺手记一下</span>
+        按官方《连接器》一节的说明：<strong>连接器自身的读写不消耗积分；
+        WorkBuddy 对外部数据进行理解、汇总时会消耗积分。</strong>
+        翻库、列清单这类动作本身不贵，<strong>让它读完再总结、再成文才花钱</strong>。
+        所以「每次都让它把整个库读一遍」是既慢又费的做法——
+        先锁定库或文件，再提问。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·问两组问题，把引用逐条核回去 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：两份带引用的回答，
+          ＋ 一张「引用核对表」（每条结论 → 出处 → 核没核过 → 核的结果）。</p>
+
+        <p><strong>第 1 步 · 问第一组：答案确实在库里（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话</b><span><span class="task__warn">必须新建</span>，
+            别接着实操② 的对话问——它的上下文里已经有库的内容了，这次实验就不准了。</span></li>
+          <li><b>用输入框上方的「添加文件」打开 ima 知识库，勾选你那个主题库</b><span>
+            勾选整个库，不要勾单份文件。</span></li>
+          <li><b>把下面这段指令整段发出去</b><span>三组约束一句都不能少。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="Q1 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据我添加的 ima 知识库里的内容回答，不允许使用库外的任何知识：
+这门课给文件命名的规则是什么？切片时要避开的两个坑叫什么名字？
+
+输出要求：
+1. 每一条结论后面必须跟一条引用，格式为
+   【引用】文件名 · 位置 · 资料里的原句（原样摘抄，不要改写）；
+2. 库里没有的信息不要补，直接写"库里没有这项信息"；
+3. 答完附一张引用核对表，三列：结论 / 出处 / 我该怎么核。
+
+如果检索不到相关内容，直接说"没有检索到"，不要用自己的知识回答。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 问第二组：跨两份资料才能答（3 分钟）</strong></p>
+        <p>这一组的目的，是看它能不能把<strong>两份资料里的内容拼起来</strong>——
+          这是知识库问答比单文件问答强的地方：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="Q2 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据我添加的 ima 知识库回答，不允许使用库外的任何知识：
+把知识库里的课程笔记和我交过的那份作业对照一下——
+笔记里提到的做法，有哪些在我那份作业里其实还没做到？
+
+要求：
+1. 必须同时引用课程笔记和作业这两份资料，逐条对照；
+2. 每条结论后面给出【引用】文件名 · 位置 · 原句；
+3. 只讲两份资料里都能找到依据的部分，只在一边出现的不要写结论。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它把核对表补完整（2 分钟）</strong></p>
+        <p>在你<strong>认为最关键的那一条</strong>上追一句，把下面这段紧接着发过去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="追问 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>挑你这次回答里最关键的一条结论，把它的引用补全成三样：
+1. 出自哪个文件的哪一小节；
+2. 资料里的原句（原样摘抄，不要改写、不要概括）；
+3. 你判断这条结论时，还参考了库里的哪些其他片段。
+
+如果这条结论其实不是来自库里，明说"这条不是来自库里"。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>Q1 的每条结论后面都有【引用】，而且三样齐全</b><span>
+            文件名、位置、原句——缺一样就不算合格。<br>
+            <em>只给了文件名</em>：把「文件名 · 位置 · 原句（原样摘抄，不要改写）」
+            这句单独再发一次，让它按格式重出。</span></li>
+          <li><b>你点开核过至少一条</b><span>
+            拿它给的「位置」回到 ima 里翻到那一处，看资料里是不是真这么写。<br>
+            <em>点不回去 / 原文对不上</em>：这条答案<strong>按没有引用处理</strong>，
+            不要拿它当结论用。</span></li>
+          <li><b>Q2 同时提到了两份资料</b><span>
+            笔记里的做法 ＋ 作业里的实际情况，两边都点到，而且各自有引用。<br>
+            <em>它只讲了一边</em>：补一句「必须同时引用课程笔记和作业两份资料，逐条对照」。</span></li>
+          <li><b>追问后，它能说清那条结论出自哪里</b><span>
+            这是最难的一条，也是最有价值的一条。<br>
+            <em>它说「这条不是来自库里」</em>：恭喜，实验成功了——
+            这正是你要的结果：<strong>它自己承认了这条没有依据</strong>。把这轮对话留着，
+            实操④ 要接着用。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：Q1、Q2 两份回答截图 ＋ 引用核对表 ＋ 一句「我核了哪一条、结果对不对」。</p>
+      </div>
+    </section>
+
+    <!-- 四、权限边界与拒答 -->
+    <section class="sec" id="s-edge">
+      <h2>四、权限边界与拒答策略<span class="sec__tag">红线</span></h2>
+      <p>
+        前面三节都在让它「多做一点」。这一节反过来——<strong>让它在该停的地方停下来。</strong>
+        两件事：<strong>它不该碰的东西有哪些</strong>，以及<strong>资料里没有时它该怎么答</strong>。
+      </p>
+
+      <h3>官方写的三条权限边界</h3>
+      <p>WorkBuddy 官方《连接器》一节给出的边界，原文三条，一条比一条实在：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>边界（官方原文）</th><th>什么意思</th><th>你怎么验证</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>每个连接器独立授权</strong></td>
+              <td>连了 ima 不代表连了邮箱、不代表连了网盘</td>
+              <td>去「连接器」页面看，只有你授权的才亮着</td>
+            </tr>
+            <tr>
+              <td><strong>不主动定时抓取</strong></td>
+              <td>你不发指令，它不会自己去翻你的库</td>
+              <td>实操② 第 2 步已经让它亲口确认过一次</td>
+            </tr>
+            <tr>
+              <td><strong>不超出您已有权限范围</strong></td>
+              <td>它看到的 = 你这个账号本来就能看到的</td>
+              <td>你账号看不到的共享库内容，它也拿不到</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">反过来想这一条</span>
+        「不超出你已有权限」意味着：<strong>共享知识库里，同库成员能看到的东西，它也能看到。</strong>
+        所以<strong>不要把别人的个人信息、没公开的成绩、身份证号之类放进共享库</strong>
+        ——放进去等于同时给了它。这一条不是它的问题，是<strong>你放什么进去</strong>的问题。
+      </div>
+
+      <h3>资料里没有时，它该怎么答</h3>
+      <p>
+        这是本课最后一个、也是最实用的一招。上一课说过：
+        <strong>指望「提醒它别瞎编」基本没用</strong>，你越说「不知道就说不知道」，
+        它越可能先编一段再补一句「仅供参考」。
+        有效的是<strong>把三件事同时写进指令</strong>：
+      </p>
+      <ol class="steps">
+        <li><b>限定依据范围</b><span>「只依据 XX 知识库」——先圈住它能在哪儿找。</span></li>
+        <li><b>写死红线</b><span>「不允许使用库外的任何知识」——不许它拿常识补。</span></li>
+        <li><b>说清缺信息怎么办</b><span>「库里没有就直接回答『库里没有这项信息』」——给它一个体面的退路，
+          它才不用靠编来交差。</span></li>
+      </ol>
+      <p class="note">
+        三句的顺序也有讲究：<strong>限定范围放最前面最稳</strong>。
+        放在末尾，它读完全文可能已经先入为主地开始编了。
+      </p>
+
+      <div class="demo" id="demo4">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">④ 资料里没有时：三种回答里只有一种能收</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo4">
+              <button type="button" data-tab="fake" class="on">照编一段</button>
+              <button type="button" data-tab="vague">含糊带过</button>
+              <button type="button" data-tab="refuse">明确拒答</button>
+            </div>
+            <button class="btn btn--ghost" type="button" id="d4-reset">重置</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b class="acc" id="d4-verdict">—</b><span>判定</span></div>
+              <div class="kpi"><b id="d4-why">—</b><span>为什么</span></div>
+            </div>
+            <dl class="kvlist" id="d4-detail"></dl>
+          </div>
+          <div class="demo__out log" id="d4-out"></div>
+          <div class="demo__note">
+            三段回答均为<strong>离线预置的示意文本</strong>，
+            用来训练「一眼看出它在编」的判断力，不对应任何真实产品输出。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·撞一次边界，看它会不会明确拒答 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一组「库里根本没有」的问答，
+          ＋ 一份边界检查报告（哪些能做、哪些不做、依据哪条权限）。</p>
+
+        <p><strong>第 1 步 · 问一个库里绝对没有的问题（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话</b><span><span class="task__warn">又是新建</span>——
+            上一节的对话里已经问过库里的内容，接着问它就能猜到「还是那个库」。</span></li>
+          <li><b>还是勾选同一个 ima 知识库</b><span>库要在，问题要超出这个库。
+            这样才测得出「它会不会越界去补」。</span></li>
+          <li><b>把下面这段指令整段发出去</b><span>问的是你的资料里<strong>绝不可能有</strong>的东西。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="Q3 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>只依据我添加的 ima 知识库回答，不允许使用库外的任何知识，
+不允许用常识、推测、行业通例来补：
+
+这门课期末考试的具体时间是几月几日？试卷一共有几道大题？
+实训室工作日的开放时间是几点？
+
+如果库里没有这些信息，请直接回答"库里没有这项信息"，
+一条都不要少答，也不要把没查到的写成【待确认】之外的任何具体内容。
+答完请说明：这几条你分别检索了哪些片段，检索结果是什么。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 再让它自查一遍边界（3 分钟）</strong></p>
+        <p>把下面这段紧接着发在同一个对话里：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="边界检查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>针对我现在连上的 ima 知识库，给我一份边界检查报告，四列：
+
+1. 能做：你确认自己可以做的事；
+2. 不能做：你做不到、或不被允许做的事；
+3. 要我先确认：需要我明确指令你才会做的事；
+4. 依据：上面每一条分别对应哪一项已授权的权限。
+
+要求：
+- 只写你确实具备的能力，不确定的写"不确定"；
+- 特别说明：如果没有我的指令，你会不会主动读取或修改这些库；
+- 特别说明：共享知识库里其他成员的资料，你能看到哪些。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>Q3 明确说了「库里没有」，而不是给了日期和题数</b><span>
+            这是本组最关键的一条。<br>
+            <em>它照样给了具体时间</em>：⚠️ 说明「不允许使用库外的任何知识」这句没写住。
+            把这句<strong>挪到指令第一句</strong>再问一次；还是编，就说明这次问答没真正走知识库——
+            回头检查第 1 步的库是不是真的勾选上了。</span></li>
+          <li><b>它说清了检索了哪些片段</b><span>
+            能说出「检索了哪几段、结果是什么」，说明它真的查了，而不是凭空答。<br>
+            <em>它说不出检索过程</em>：补一句「请说明你检索时实际读取了哪几个片段」，再问一次。</span></li>
+          <li><b>边界报告里，「不能做」那一列不是空的</b><span>
+            敢于说自己不能做什么，才是判断准确的信号。<br>
+            <em>全是「能做」</em>：⚠️ 它在讨好你。补一句「请重点列出你做不到的事」，
+            让它重出一版。</span></li>
+          <li><b>「要我先确认」那一列里，出现了写操作</b><span>
+            往库里保存文件、把文件加进任务这类动作，应该属于「需要你明确指令才做」。<br>
+            <em>它把写操作归进了「能做」</em>：让它补一句「指的是你已授权我做，
+            但我仍会在执行前等你确认」，然后按它说的再验证一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：Q3 的回答截图 ＋ 边界检查报告
+          ＋ 一句「它拒答了吗，你怎么判断的」。</p>
+        <p class="note">
+          收尾动作：如果你用的是<strong>个人版连接器</strong>，
+          可以在「资料库 → ima 知识库」右上角点<strong>「解除绑定」</strong>随时断开。
+          <strong>企业版连接器由企业统一管理，端内不支持解绑</strong>——
+          这一点官方写得很清楚，别在实训机上反复试。
+        </p>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">一句话收口</span>
+        <strong>连接的价值不是「它能碰到多少资料」，而是「它碰到的每一样，你都知道、都能收回来。」</strong>
+        所以每次授权之前看一眼权限项，每次拿到答案之后点一次引用——
+        这两下手动，AI 替不了你。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>扫码授权和 API Key 这两种凭证，最主要的差别是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 扫码授权更快，别的都一样</li>
+            <li>B. 扫码是一次授权关系、凭据由 WorkBuddy 维护且可解绑；API Key 是一串字符串，谁拿到谁能用，且不会自己失效</li>
+            <li>C. API Key 只能在手机小程序上用</li>
+            <li>D. 用了 API Key 就不需要扫码了，二者只能选一个</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>扫码像领临时工牌：<strong>授权关系由系统管着，个人版随时能解绑</strong>。
+            API Key 像配了把家门钥匙：<strong>字符串一旦被别人拿到就等于账号被打开，而且它不会自己失效</strong>。
+            所以 API Key 那三条红线（不硬编码、不贴对话、不交第三方）一条都不能破。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>在 WorkBuddy 里绑定 ima 知识库，官方给的入口是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 左侧边栏「资料库」→「ima 知识库」</li>
+            <li>B. 左侧边栏「连接器」→ 搜索「腾讯 ima」</li>
+            <li>C. 设置 → 账号 → 第三方授权</li>
+            <li>D. 对话框里输入「@ima」</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A。</b>官方文档《WorkBuddy × ima 功能指引》写的路径是
+            <strong>「在左侧边栏点击资料库，选择 ima 知识库」</strong>，再点「立即前往授权」。
+            「连接器」是 QQ 邮箱、腾讯文档、腾讯乐享、TAPD、腾讯网盘这些的入口，
+            ima 知识库<strong>不走那里</strong>——这是最容易记混的一处。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>判断：答案后面带了引用，就说明这条内容一定来自你的知识库。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，标了引用就是有依据</li>
+            <li>B. 错误，引用标了不代表对，必须点回原文核过才算数</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>它可能标了一份资料、但结论是自己补的，也可能读错了原文。
+            合格的引用要三样齐全——<strong>文件名 / 位置 / 原句</strong>，
+            然后你还得<strong>点回去核</strong>。点不回去的引用，和没有引用是一样的。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>想让它在资料里没有时明确拒答，指令里必须同时写清什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 多说几遍「不要瞎编」</li>
+            <li>B. 限定依据范围 ＋ 写死红线（不允许用库外知识）＋ 说清缺信息时怎么答</li>
+            <li>C. 把问题问得再详细一点就够了</li>
+            <li>D. 让它多检索几遍</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>A、C、D 都是在「求它自觉」，没有约束力。
+            有效写法要三件齐：①<strong>限定范围</strong>（只依据哪个库）；
+            ②<strong>写死红线</strong>（不允许用库外知识、不许用常识补）；
+            ③<strong>给退路</strong>（库里没有就直接回答「库里没有这项信息」）。
+            而且限定范围放在<strong>指令第一句</strong>最稳。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>关于权限边界，下面哪一条是官方口径？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 连上 ima 之后，所有连接器一起生效</li>
+            <li>B. 它会在后台定时抓取你的知识库，保持资料最新</li>
+            <li>C. 每个连接器独立授权、不主动定时抓取、不超出你已有权限范围</li>
+            <li>D. 它能看到的范围比你账号本身更大，因为授权给了它额外权限</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>这是官方《连接器》一节原文的三条边界。
+            A 违反「独立授权」；B 违反「不主动定时抓取」；D 正好说反了——
+            官方说得很明确：<strong>「不超出您已有权限范围」，它能看到的 = 你账号本来就有的范围</strong>。
+            反过来想这一条更实用：共享库里同库成员能看到的东西，它一样能看到，
+            所以<strong>别把别人的个人信息放进共享库</strong>。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>两条凭证路，风险完全不同</strong>：扫码授权像临时工牌（可解绑、凭据由系统管）；
+            API Key 像家门钥匙（<b>不硬编码、不贴对话、不交第三方</b>）；</li>
+          <li><strong>绑定走「资料库 → ima 知识库」，不是「连接器」</strong>——
+            微信扫码后逐条核对<b>三项权限</b>：看列表 / 搜索读内容 / 添加与保存文件；</li>
+          <li><strong>引用要三样齐全</strong>：<b>文件名 · 位置 · 原句</b>，
+            然后按三查走一遍——查引用、查原文、查边界；</li>
+          <li><strong>拒答指令三件事</strong>：限定范围 + 写死红线 + 给退路，
+            限定范围放<b>第一句</b>最稳；</li>
+          <li><strong>权限边界三条</strong>：独立授权 / 不主动定时抓取 / 不超出你已有权限——
+            反过来就是<b>共享库里别放别人的个人信息</b>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：这一课你打通的是「一个连接器」。
+        它的价值已经能看见了——<strong>沉淀 → 调用 → 输出 → 回存</strong>这条闭环跑得通，
+        知识库才会越用越厚。
+        下一课换个位置：<a class="xref" data-lesson="17">第 17 次课</a>把同样的资料
+        <strong>换成本地结构化知识库</strong>，看看云端和本地两套方案各自适合什么。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 16 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）在 WorkBuddy 里绑定 ima 知识库，官方文档给出的入口路径是？
+A. 左侧边栏「连接器」→ 搜索「腾讯 ima」
+B. 左侧边栏「资料库」→「ima 知识库」
+C. 设置 → 账号 → 第三方授权
+D. 对话框输入「@ima」自动连接
+【答案】B
+【解析】官方《WorkBuddy × ima 功能指引》写的是「在左侧边栏点击资料库，选择 ima 知识库」，再点「立即前往授权」用微信扫码。「连接器」页面是 QQ 邮箱、腾讯文档、腾讯乐享、TAPD、腾讯网盘这些连接器的入口，ima 知识库不走那里——这是最容易记混的一处。
+
+2.（多选）关于 API Key 的安全做法，下面哪些是对的？
+A. 不把它硬编码进代码或脚本
+B. 不把整串密钥贴进对话记录
+C. 不把它交给来源不明的第三方工具或「一键配置脚本」
+D. 为了方便，直接写在项目的 README 里共享给同学
+【答案】ABC
+【解析】官方安全提示原文：「API 密钥与 Token 是访问您第三方账号的钥匙，请妥善保管，避免在公共设备或共享环境填写；不再使用的连接器建议及时撤销授权。」D 是最典型的反面做法——写进 README 就等于公开。密钥应该放在本地配置文件或环境变量里，让它去读文件，而不是你把内容复述给它。
+
+3.（多选）个人版 ima 连接器用微信扫码授权后，WorkBuddy 将获得哪几项权限？
+A. 在 WorkBuddy 中查看我的知识库列表
+B. 查看或搜索知识库资料
+C. 将知识库文件添加到任务或者将文件保存到 ima 知识库
+D. 修改我的 ima 账号密码和绑定手机
+【答案】ABC
+【解析】这三项是官方文档原文，授权页上会逐条列出，点同意前要逐条看完。其中 C 是写权限——产物存回 ima 时用得到，也意味着它可能往你的库里放东西。D 不在授权范围内，任何要求你提供账号密码的页面都要警惕。
+
+4.（单选）想让 AI 只依据你的知识库回答、库里没有的不要自己补，下面哪条指令最有效？
+A. 请回答我的问题，尽量准确一点
+B. 请回答我的问题，不知道的就说不知道
+C. 只依据 XX 知识库回答，不允许使用库外的任何知识；库里没有的直接回答"库里没有这项信息"，不要用常识或推测来补
+D. 请多检索几遍资料再回答
+【答案】C
+【解析】A、B、D 都是在「求它自觉」，没有约束力。有效写法要同时做到三点：①限定依据范围（只依据哪个库）；②写死红线（不允许用库外知识）；③明确缺信息时怎么办（直接说没有，不许用常识补）。而且限定范围要放在指令第一句才最稳。
+
+5.（判断）AI 给出的答案后面带了引用，就说明这条内容一定来自你的知识库、内容一定正确。
+A. 正确，标了引用就是有依据
+B. 错误，引用标了不代表对，必须点回原文核过才算数
+【答案】B（错误）
+【解析】它可能标了一份资料、但结论是自己补的，也可能读错了原文。合格的引用要三样齐全——文件名 / 位置 / 原句，而且点得回去、原文确实这么写，这条答案才算数。点不回去的引用，和没有引用是一样的。这一步 AI 自己判不了，必须人来。
+
+6.（多选）关于连接器的权限边界与积分，下面哪些说法符合官方口径？
+A. 每个连接器独立授权，连了 ima 不代表连了邮箱和网盘
+B. 没有你的指令，它不会主动定时抓取你的知识库
+C. 它能看到的范围不会超出你这个账号本来就有的权限范围
+D. 连接器自身读写不消耗积分，但对外部数据进行理解、汇总时会消耗积分
+【答案】ABCD
+【解析】A、B、C 是官方《连接器》一节原文的三条权限边界；D 是官方的积分口径。特别提醒 C 反过来想更实用：你账号能看到的共享库内容，它一样能看到，所以不要把别人的个人信息、没公开的成绩放进共享库——放进去等于同时给了它。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 密钥放在哪 ---------- */
+  var D1 = {
+    chat: {
+      level: "高", spread: "对话记录",
+      kv: "<dt>会去哪</dt><dd>对话记录、同步备份、导出的文本、聊天截图</dd>" +
+          "<dt>为什么危险</dt><dd>对话是你最常转发、最常截图的东西，密钥跟着走</dd>" +
+          "<dt>正确做法</dt><dd>让它去读本地文件，不要把内容复述给它</dd>",
+      log: [
+        '<span class="dim">>>> 我把它贴进对话框，让它帮我配置</span>',
+        '<span class="no">✗ 这串字符串从此躺在对话记录里</span>',
+        '<span class="dim">它可能被同步、被导出、被截图、被转给同学</span>',
+        '<span class="hl">要配置就说「去读我的本地文件」，别说内容</span>',
+      ]
+    },
+    code: {
+      level: "高", spread: "代码与仓库",
+      kv: "<dt>会去哪</dt><dd>脚本文件、提交历史、打包产物</dd>" +
+          "<dt>为什么危险</dt><dd>代码一分享就泄露，而且提交历史里删不掉</dd>" +
+          "<dt>正确做法</dt><dd>用环境变量或本地配置文件，代码里只写变量名</dd>",
+      log: [
+        '<span class="dim">>>> 我把它写死在脚本第 12 行</span>',
+        '<span class="no">✗ 脚本一分享、一提交，密钥跟着走</span>',
+        '<span class="dim">就算后来删了，提交历史里还留着</span>',
+        '<span class="hl">代码里只写变量名，值放在环境里</span>',
+      ]
+    },
+    local: {
+      level: "低", spread: "仅本机",
+      kv: "<dt>会去哪</dt><dd>只在你这台电脑的用户目录下</dd>" +
+          "<dt>为什么相对安全</dt><dd>不进对话、不进代码、不进仓库，暴露面最小</dd>" +
+          "<dt>还要注意</dt><dd>别把它放到工作目录里——工作目录随时可能被 AI 读走</dd>",
+      log: [
+        '<span class="dim">>>> 写进 %USERPROFILE%\\.config\\ima\\api_key</span>',
+        '<span class="ok">✓ 不进对话、不进代码、不进仓库</span>',
+        '<span class="dim">需要用时让工具自己读这个文件</span>',
+        '<span class="hl">这是本页推荐的做法</span>',
+      ]
+    },
+    repo: {
+      level: "极高", spread: "公开可见",
+      kv: "<dt>会去哪</dt><dd>代码仓库、群文件、截图、搜索引擎缓存</dd>" +
+          "<dt>为什么最危险</dt><dd>一旦公开，几分钟内就会被自动化扫描工具抓走</dd>" +
+          "<dt>补救</dt><dd>立刻回凭证页重新获取，让这串字符串失效</dd>",
+      log: [
+        '<span class="dim">>>> 不小心把配置文件传进仓库 / 发到群里</span>',
+        '<span class="no">✗ 公开仓库有自动化脚本在扫密钥，几分钟就被抓走</span>',
+        '<span class="no">✗ 删掉文件也没用，提交历史里还在</span>',
+        '<span class="hl">立刻回 ima.qq.com/agent-interface 重新获取，旧的作废</span>',
+      ]
+    }
+  };
+  var d1key = "chat";
+  function d1Render() {
+    var t = D1[d1key];
+    if ($("d1-level")) $("d1-level").textContent = t.level;
+    if ($("d1-spread")) $("d1-spread").textContent = t.spread;
+    if ($("d1-detail")) $("d1-detail").innerHTML = t.kv;
+    if (window.Site && window.Site.type && $("d1-out")) window.Site.type($("d1-out"), t.log);
+  }
+  var d1btns = document.querySelectorAll('#demo1 button[data-tab]');
+  for (var i = 0; i < d1btns.length; i++) {
+    d1btns[i].addEventListener("click", function () {
+      d1key = this.getAttribute("data-tab");
+      d1Render();
+    });
+  }
+  if ($("d1-reset")) $("d1-reset").addEventListener("click", function () {
+    d1key = "chat";
+    for (var j = 0; j < d1btns.length; j++) {
+      d1btns[j].classList.toggle("on", d1btns[j].getAttribute("data-tab") === "chat");
+    }
+    d1Render();
+  });
+  d1Render();
+
+  /* ---------- 演示② 绑定四步 ---------- */
+  var D2 = [
+    {
+      kv: "<dt>这一步</dt><dd>在左侧边栏点击「资料库」，选择「ima 知识库」</dd>" +
+          "<dt>容易记错</dt><dd>不是「连接器」——那是邮箱、文档、乐享、TAPD 的入口</dd>",
+      log: [
+        '<span class="hl">第 ① 步 · 找到入口</span>',
+        '<span class="dim">左侧边栏 → 资料库 → ima 知识库</span>',
+        '<span class="dim">此时还没授权，点进去只会看到「立即前往授权」</span>',
+      ]
+    },
+    {
+      kv: "<dt>这一步</dt><dd>点「立即前往授权」，用微信扫码登录 ima</dd>" +
+          "<dt>容易记错</dt><dd>要扫你建库时那个账号，扫错了看到的是另一个人的库</dd>",
+      log: [
+        '<span class="hl">第 ② 步 · 微信扫码</span>',
+        '<span class="dim">企业版连接器走企业统一身份，无需单独扫码</span>',
+        '<span class="ok">✓ 扫码完成，进入授权确认页</span>',
+      ]
+    },
+    {
+      kv: "<dt>这一步</dt><dd>逐条看完三项权限，再点同意</dd>" +
+          "<dt>三项是什么</dt><dd>看列表 / 搜索读内容 / 添加与保存文件</dd>",
+      log: [
+        '<span class="hl">第 ③ 步 · 确认权限</span>',
+        '<span class="dim">1 在 WorkBuddy 中查看我的知识库列表</span>',
+        '<span class="dim">2 查看或搜索知识库资料</span>',
+        '<span class="dim">3 将知识库文件添加到任务或者将文件保存到 ima 知识库</span>',
+        '<span class="hl">第三条是写权限 —— 想清楚再点同意</span>',
+      ]
+    },
+    {
+      kv: "<dt>这一步</dt><dd>回到 WorkBuddy，知识库出现在可引用列表里</dd>" +
+          "<dt>接下来</dt><dd>从资料库添加，或在对话框的「添加文件」里勾选整个库</dd>",
+      log: [
+        '<span class="hl">第 ④ 步 · 可以引用了</span>',
+        '<span class="ok">✓ 知识库名称出现在 WorkBuddy 的列表里</span>',
+        '<span class="dim">不出现就刷新一次连接状态</span>',
+        '<span class="hl">连上 ≠ 答得对 —— 下一节才是关键</span>',
+      ]
+    }
+  ];
+  var d2step = -1;
+  function d2Render() {
+    for (var k = 0; k < 4; k++) {
+      var node = $("d2-n" + (k + 1));
+      if (node) {
+        node.classList.toggle("on", k === d2step);
+        node.classList.toggle("dim", k !== d2step);
+      }
+      var path = $("d2-p" + (k + 1));
+      if (path) {
+        path.className = "flow__dot" + (k < d2step ? " run" : k === d2step ? " run" : " hold");
+      }
+    }
+    var detail = $("d2-detail");
+    if (detail) {
+      detail.innerHTML = d2step < 0
+        ? "<dt>当前进度</dt><dd>还没开始 —— 点「下一步」逐步走完绑定的四步</dd>"
+        : D2[d2step].kv;
+    }
+    var out = $("d2-out");
+    if (out && window.Site && window.Site.type) {
+      if (d2step < 0) {
+        out.innerHTML = '<span class="dim">四步走完，你就知道每一步点完之后它手上多了点什么。</span>';
+      } else {
+        window.Site.type(out, D2[d2step].log);
+      }
+    }
+    if ($("d2-next")) $("d2-next").textContent = d2step >= 3 ? "走完了 ▶" : "下一步 ▶";
+  }
+  if ($("d2-next")) $("d2-next").addEventListener("click", function () {
+    d2step = d2step >= 3 ? -1 : d2step + 1;
+    d2Render();
+  });
+  if ($("d2-reset")) $("d2-reset").addEventListener("click", function () {
+    d2step = -1;
+    d2Render();
+  });
+  d2Render();
+
+  /* ---------- 演示③ 带引用 vs 没有引用 ---------- */
+  var D3 = {
+    cited: {
+      ref: "3 条", check: "能核",
+      kv: "<dt>引用长什么样</dt><dd>【引用】课程笔记-切片.md · 第 2 节 · 「按标题切，不要按字数硬切」</dd>" +
+          "<dt>三样齐了吗</dt><dd>文件名 ✓　位置 ✓　原句 ✓</dd>" +
+          "<dt>你还要做什么</dt><dd>点回去核 —— 标了不代表对</dd>",
+      log: [
+        '<span class="dim">>>> 切片时要避开的两个坑叫什么？</span>',
+        '第一个坑是【标题锚定法】要解决的：一个知识点被切成两半。',
+        '<span class="dim">【引用】课程笔记-切片.md · 第 2 节 · 「按标题切，不要按字数硬切」</span>',
+        '第二个坑对应【一库一任务】：多个无关主题混进同一个库。',
+        '<span class="dim">【引用】课程笔记-切片.md · 第 2 节 · 「按任务目标分开建库」</span>',
+        '<span class="ok">✓ 每条都能点回去核 —— 核不了就是它读错了</span>',
+      ]
+    },
+    plain: {
+      ref: "0 条", check: "核不了",
+      kv: "<dt>引用长什么样</dt><dd>（没有）</dd>" +
+          "<dt>问题在哪</dt><dd>答得很顺，但你分不清哪句来自资料、哪句是它自己补的</dd>" +
+          "<dt>怎么办</dt><dd>把「文件名 · 位置 · 原句」的格式要求加进指令再问一次</dd>",
+      log: [
+        '<span class="dim">>>> 切片时要避开的两个坑叫什么？</span>',
+        '切片时要注意块的大小，太大太小都不合适；另外还要注意不同主题之间不要混在一起，',
+        '建议按任务目标分开管理知识库，这样检索效果更好。',
+        '<span class="no">✗ 一条引用都没有 —— 这段很可能来自它的通用知识</span>',
+        '<span class="hl">没有引用的长答案，当它没说</span>',
+      ]
+    }
+  };
+  var d3key = "cited";
+  function d3Render() {
+    var t = D3[d3key];
+    if ($("d3-ref")) $("d3-ref").textContent = t.ref;
+    if ($("d3-check")) $("d3-check").textContent = t.check;
+    if ($("d3-detail")) $("d3-detail").innerHTML = t.kv;
+    if (window.Site && window.Site.type && $("d3-out")) window.Site.type($("d3-out"), t.log);
+  }
+  var d3btns = document.querySelectorAll('#demo3 button[data-tab]');
+  for (var m = 0; m < d3btns.length; m++) {
+    d3btns[m].addEventListener("click", function () {
+      d3key = this.getAttribute("data-tab");
+      d3Render();
+    });
+  }
+  if ($("d3-reset")) $("d3-reset").addEventListener("click", function () {
+    d3key = "cited";
+    for (var n = 0; n < d3btns.length; n++) {
+      d3btns[n].classList.toggle("on", d3btns[n].getAttribute("data-tab") === "cited");
+    }
+    d3Render();
+  });
+  d3Render();
+
+  /* ---------- 演示④ 拒答三种 ---------- */
+  var D4 = {
+    fake: {
+      verdict: "不合格", why: "照编一段",
+      kv: "<dt>它做了什么</dt><dd>库里没有，它用常识补了个看起来很像的答案</dd>" +
+          "<dt>为什么最危险</dt><dd>写得越具体、越像真的，你越不会去核</dd>" +
+          "<dt>补救</dt><dd>把「不允许使用库外的任何知识」挪到指令第一句再问</dd>",
+      log: [
+        '<span class="dim">>>> 期末考几月几日？试卷几道大题？</span>',
+        '期末考试安排在 2027 年 1 月 12 日，试卷共五大题。',
+        '<span class="no">✗ 这个日期和题数是我编的 —— 库里根本没写</span>',
+        '<span class="no">✗ 越具体越危险：你一看有零有整就不去核了</span>',
+        '<span class="hl">判定：不合格，这条答案不能要</span>',
+      ]
+    },
+    vague: {
+      verdict: "不合格", why: "含糊带过",
+      kv: "<dt>它做了什么</dt><dd>没编具体数字，但用一堆通用建议把问题绕过去了</dd>" +
+          "<dt>为什么也不行</dt><dd>答了等于没答，还让你误以为它查过了</dd>" +
+          "<dt>补救</dt><dd>补一句「没有就直接回答『库里没有这项信息』」</dd>",
+      log: [
+        '<span class="dim">>>> 期末考几月几日？试卷几道大题？</span>',
+        '考试时间一般由学校教务统一安排，建议关注教务系统通知；',
+        '试卷题型通常包括选择、判断、简答等，具体以考前通知为准。',
+        '<span class="no">✗ 一句有用的都没有，还写得像查过一样</span>',
+        '<span class="hl">判定：不合格 —— 没编，但也没答</span>',
+      ]
+    },
+    refuse: {
+      verdict: "合格", why: "明确拒答",
+      kv: "<dt>它做了什么</dt><dd>直接说库里没有，并说明检索了哪些片段</dd>" +
+          "<dt>为什么这才对</dt><dd>它在没有依据时停下来了，而不是靠编来交差</dd>" +
+          "<dt>顺带的好处</dt><dd>它告诉你检索了什么，你能判断这次到底有没有走知识库</dd>",
+      log: [
+        '<span class="dim">>>> 期末考几月几日？试卷几道大题？</span>',
+        '<span class="dim">检索「期末」「考试」「试卷」… 命中 0 个相关片段</span>',
+        '库里没有这项信息。',
+        '<span class="ok">✓ 它在没有依据的地方停住了 —— 这正是你要的</span>',
+        '<span class="hl">判定：合格。知识库的价值不是答得多，是没依据时不乱说</span>',
+      ]
+    }
+  };
+  var d4key = "fake";
+  function d4Render() {
+    var t = D4[d4key];
+    if ($("d4-verdict")) $("d4-verdict").textContent = t.verdict;
+    if ($("d4-why")) $("d4-why").textContent = t.why;
+    if ($("d4-detail")) $("d4-detail").innerHTML = t.kv;
+    if (window.Site && window.Site.type && $("d4-out")) window.Site.type($("d4-out"), t.log);
+  }
+  var d4btns = document.querySelectorAll('#demo4 button[data-tab]');
+  for (var p = 0; p < d4btns.length; p++) {
+    d4btns[p].addEventListener("click", function () {
+      d4key = this.getAttribute("data-tab");
+      d4Render();
+    });
+  }
+  if ($("d4-reset")) $("d4-reset").addEventListener("click", function () {
+    d4key = "fake";
+    for (var q = 0; q < d4btns.length; q++) {
+      d4btns[q].classList.toggle("on", d4btns[q].getAttribute("data-tab") === "fake");
+    }
+    d4Render();
+  });
+  d4Render();
+})();
+</script>
+</body>
+</html>
