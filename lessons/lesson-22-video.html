@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第22次课 AI 视频制作与资讯整合实战｜AIGC应用与实践</title>
+<meta name="description" content="从脚本到成片，从信息到简报：多模态视频生产流程、资讯搜集与简报整合、视频场景应用。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="22" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 多模态实战</span></h2>
+      <p class="lead">
+        一支 30 秒的校园活动短片，最花时间的从来不是「生成」那一下，而是生成之前的三步：
+        画面里要出现哪些事实、这些事实从哪来、成片发出去要过哪几道关。
+        这三步没定住，AI 出来的片子越好看，越容易把「看起来像真的」和「真的可信」混在一起。
+      </p>
+      <p>
+        这一课按 course-map 里第 22 课的链路走完一遍：<strong>脚本 → 画面素材 → 简报与口播 → 合成 → 检查交付</strong>，
+        同一批资讯既喂给视频，也喂给简报。你会遇到四个典型问题：
+        只会说「帮我做个读书节视频」，出来的东西每次都不一样、改无从下手；
+        画面很漂亮，里面的时间地点场次是 AI 自己编的；
+        活动资讯散在通知、公众号、海报里，简报和视频各说各的；
+        同一支片子投到校内大屏和手机竖屏，规格和口径完全不同。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        <strong>生成视频不等于可以发布视频。</strong>AI 可以写脚本、备画面、压口播、按指令合成，
+        但事实、授权、标识和最终投放口径仍要由人验收。<br>
+        本课涉及 WorkBuddy 功能的口径，全部取自官方客户端用户文档 <code>www.workbuddy.cn</code>，
+        <strong>核对日期 2026-09-26</strong>。官方客户端用户文档<strong>目前没有专门的「视频生成」说明页</strong>，
+        能查到的只有更新日志里的能力条目与实践案例里的脚本示例；
+        因此凡是官方文档没写明的入口名称、模型名称、可调参数，本课一律写成<strong>「不确定，以你实际使用的版本为准」</strong>，
+        不编造按钮、模型和路径。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>能说出 AI 视频生产的<strong>四段链路</strong>（脚本 → 画面素材 → 口播字幕 → 合成检查），并指出每一段的验收问题；</li>
+          <li>能独立完成一支 30 秒短片的<strong>分镜脚本</strong>，做到时长可核对、每格画面都能对回信息来源；</li>
+          <li>能让 AI 搜集并整合资讯，产出<strong>结论先行、冲突保留、缺口可见</strong>的一页式简报；</li>
+          <li>能把简报压成 30 秒<strong>口播与字幕</strong>，并与画面素材按时间轴对齐；</li>
+          <li>能按事实、标识、素材、规格四层完成<strong>成片检查</strong>，并说出两个投放场景分别要改哪三处。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-flow"><b>01</b>多模态视频生产流程 <em>＋实操①</em></a>
+        <a href="#s-source"><b>02</b>资讯搜集与画面素材 <em>＋实操②</em></a>
+        <a href="#s-brief"><b>03</b>简报整合与剪辑合成 <em>＋实操③</em></a>
+        <a href="#s-apply"><b>04</b>视频场景应用与合规 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="10"></a>里的「大纲先行」和「不确定就标【待补】」，
+        以及<a class="xref" data-lesson="13"></a>里「每段产出都要能验收」的写法。<br>
+        <strong>后续</strong>：本课形成的分镜脚本、资讯清单和四查清单，都会变成可复用的模板；
+        下一课进入<a class="xref" data-lesson="23"></a>，把这类重复任务沉淀成岗位工作流。
+      </div>
+    </section>
+
+    <section class="sec" id="s-flow">
+      <h2>一、多模态视频生产流程<span class="sec__tag">本课核心</span></h2>
+      <p>
+        很多人把 AI 视频理解成「一句话的事」：把主题丢进去，等它吐一个 mp4。
+        实际操作中，这种做法的问题不在第一版好不好看，而在<strong>第二版没法改</strong>——
+        你不知道它哪一格画面对应哪句话，也就没法只改那一格，只能整支重来。
+      </p>
+      <p>
+        可复用的做法是把一支片子拆成<strong>四段链路</strong>，每段只回答一个问题，每段都有可验收的产出物。
+        本课统一场景是「为校园读书节做一支 30 秒宣传短片 + 一份活动资讯简报」，四段链路全程都用这个场景。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>链路段</th><th>这一段要回答什么</th><th>产出物</th><th>验收问题</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 脚本与分镜</strong></td><td>30 秒讲哪几件事、顺序是什么</td><td>分镜脚本表</td><td>时长合计是否为 30 秒</td></tr>
+            <tr><td><strong>② 画面素材</strong></td><td>每格画面拍什么、生成什么、信息从哪来</td><td>画面素材对照表</td><td>每格能否对回一条来源</td></tr>
+            <tr><td><strong>③ 口播与字幕</strong></td><td>嘴上说什么、屏幕上留什么字</td><td>口播字幕时间轴</td><td>字数是否撑得住 30 秒</td></tr>
+            <tr><td><strong>④ 合成与检查</strong></td><td>画面、声音、字幕怎么拼、能不能发</td><td>成片 + 检查报告</td><td>四查是否全部通过</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 一句话要成片 vs 按四段推进，差别在返工能不能收敛</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--accent" type="button" id="d1-oneshot">一句话直接要成片</button>
+            <button class="btn btn--primary" type="button" id="d1-chain">按四段链路推进</button>
+          </div>
+          <div class="demo__stage">
+            <div class="flow" id="d1-flow"></div>
+            <div class="kpis">
+              <div class="kpi"><b id="d1-redo">—</b><span>要重做的环节</span></div>
+              <div class="kpi"><b class="acc" id="d1-usable">—</b><span>成片可用度</span></div>
+              <div class="kpi"><b id="d1-trace">—</b><span>事实能否追溯</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d1-out">点一个按钮，看两种做法在链路上的差别。</div>
+          <div class="demo__note"><strong>教学示意，非实测数值。</strong>演示强调的是链路拆分的必要性，不是规定返工次数。</div>
+        </div>
+      </div>
+
+      <h3>官方口径：这一块能查到什么</h3>
+      <p>
+        官方客户端用户文档里，和「视频」直接相关的公开内容目前只有两类：实践案例里的一个脚本示例，
+        加上更新日志里的若干条能力条目。本课只引用这些，其余一律标不确定。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>官方页面</th><th>原文要点</th><th>本课怎么用</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>实践四：自媒体运营 · 视频内容生成</strong></td>
+              <td>适用场景：<strong>「需要将脚本、口播文案、镜头分镜或视频说明快速整理出来」</strong>；
+                  推荐做法：<strong>「说明视频时长、平台类型、目标受众与输出形式」</strong></td>
+              <td>这正是实操① 的写法来源：先要脚本与分镜，不是先要成片</td>
+            </tr>
+            <tr>
+              <td><strong>更新日志 5.5.5（2026-09-10）</strong></td>
+              <td>「新增创意设计能力，支持图片生成、视频生成和品牌设计等场景」</td>
+              <td>说明视频生成能力存在，但<strong>文档未写明入口与参数</strong></td>
+            </tr>
+            <tr>
+              <td><strong>更新日志 5.5.1（2026-09-02）</strong></td>
+              <td>「视频生成支持选择画面比例、是否带声音，并可描述不希望出现的内容」</td>
+              <td>实操④ 里据此写场景参数，但仍注明以实际版本为准</td>
+            </tr>
+            <tr>
+              <td><strong>更新日志 5.5.3（2026-09-04）</strong></td>
+              <td>「提升 Kling V3 文生视频和图生视频的参数兼容性，支持 720P、1080P 输出」</td>
+              <td>官方日志提到过这个模型名；<strong>当前客户端实际调用哪个模型，本课不确定</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        以上条目核对日期 2026-09-26，来源为 <code>www.workbuddy.cn</code> 客户端用户文档的
+        「实践四：自媒体运营」与「WorkBuddy 更新日志」。未使用开放平台（open.workbuddy.cn）文档替代客户端口径。
+      </p>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">关于入口、模型与参数：只说官方写明的</span>
+        官方「快速开始」页列出的<strong>设计创意</strong>场景为：产品设计、PPT 设计、交互原型、品牌设计、海报设计；
+        「设计创意（WorkBuddy × Ardot）」页列出的支持类型为：移动端 App 界面、网站页面 / Landing Page、品牌 Logo、
+        海报 / Banner、PPT 演示文稿。<strong>这两页都没有把「视频生成」列为设计创意模式的支持类型。</strong><br>
+        因此本课的立场是：<strong>视频生成的具体入口名称、是否需要切换到某个模式、可调参数有哪些、时长上限是多少，
+        一律不确定，以你实际使用的版本为准</strong>。指令里统一加一句兜底要求——
+        「做不到就明确告诉我做不到，并给出替代方案，不要假装成功」。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·生成 30 秒读书节短片的分镜脚本 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 5 镜头、合计 30 秒的分镜脚本表，每个镜头都写明时长、画面、口播、字幕和信息来源。</p>
+
+        <p><strong>第 1 步 · 复制下面这张活动信息卡</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 活动信息卡（课堂模拟数据）">
+          <div class="codeblock__bar"></div>
+<pre><code>【课堂模拟数据 · 非真实活动信息，真实发布前必须替换为学校正式通知】
+活动名称：校园读书节
+主题：读一本好书，遇一群同好
+时间：2026年10月12日—10月23日
+地点：学校图书馆一楼大厅、教学楼A栋报告厅
+主办：学校图书馆
+重点环节：图书漂流集市、名师导读讲座、读书笔记评选、闭馆夜读
+参与对象：全校学生
+报名方式：到图书馆服务台登记
+用途：一支 30 秒宣传短片 + 一页式活动资讯简报
+限制：画面里不出现真人面孔；不使用来源不明的网络图片、音乐和字体</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面这段指令连同活动信息卡一起发给 WorkBuddy</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 生成分镜脚本">
+          <div class="codeblock__bar"></div>
+<pre><code>请为上面的活动生成一份 30 秒宣传短片的分镜脚本。只输出脚本，不要生成视频文件，也不要写讲稿。
+固定 5 个镜头，每个镜头 6 秒，合计 30 秒。
+表格格式：镜头号｜时长｜画面内容｜口播文案｜屏幕字幕｜信息来源。
+必须做到：
+1. 第1镜头在 3 秒内说清活动名称和主题，第5镜头必须有明确的行动引导（去哪、什么时候、怎么报名）；
+2. 每条「屏幕字幕」不超过 12 个汉字，口播文案合计不超过 110 个汉字（按每秒约 3.5 字估算）；
+3. 「信息来源」只能填活动信息卡里已有的字段，信息卡里没有的内容一律写【待补】，
+   不许自己补一个时间、地点、场次或数字；
+4. 画面里不出现真人面孔，不使用来源不明的网络图片、音乐和字体，不出现第三方品牌标识；
+5. 最后单独列一节「本脚本的事实缺口」，把所有【待补】项逐条列出来。
+不要写镜头之外的文学性描写，不要增加第 6 个镜头。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 AI 按下面四条自查并直接改脚本</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请复核刚才的分镜脚本并直接修正，输出修正后的完整脚本，不只列修改意见：
+1. 五个镜头时长合计必须正好 30 秒，不得出现 5 秒或 7 秒的镜头；
+2. 每条字幕不超过 12 个汉字，口播合计不超过 110 个汉字，超出就删字，不缩小字号蒙混；
+3. 【待补】项不得被替换成具体时间、地点或数字，缺就是缺；
+4. 第5镜头必须有行动引导，且只包含活动信息卡里已有的报名方式。
+不得新增镜头，不得改写活动名称和主题。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>时长合计正好 30 秒</b><span>五个 6 秒镜头，没有第 6 个镜头。<br><em>合不上 30 秒</em>：点名那个镜头要求改成 6 秒，不允许靠增减镜头凑数。</span></li>
+          <li><b>字幕与口播字数都在上限内</b><span>每条字幕不超过 12 个汉字，口播合计不超过 110 个汉字。<br><em>超出</em>：让它删字而不是缩小字号——成片上字号已经定死了。</span></li>
+          <li><b>【待补】还在，没有被编成事实</b><span>信息卡里没有的场次、人数、奖品一律是【待补】。<br><em>出现编造的数字</em>：把「不许自己补一个数字」提到指令第一行再发一次。</span></li>
+          <li><b>第 5 镜头有行动引导</b><span>写清去哪、什么时候、怎么报名，且只用作信息卡里的方式。<br><em>结尾是口号</em>：点名第 5 镜头要求改成具体动作，口号不能替代行动引导。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-source">
+      <h2>二、资讯搜集与画面素材<span class="sec__tag">素材</span></h2>
+      <p>
+        视频和简报最常见的打架方式是：片子里说「三场讲座」，简报里写「两场讲座」，两边都挺像真的。
+        根源在于它们其实<strong>共用同一批事实素材</strong>，却被当成两件事分开做了一遍。
+      </p>
+      <p>
+        正确的顺序是先有<strong>一份带来源的资讯清单</strong>，再由它同时派生出画面素材和简报。
+        清单里每一条都要能回答四个问题：来源是谁、什么时候的、能不能复核、和其他条冲突时怎么办。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>资料状态</th><th>清单里怎么写</th><th>能不能进成片</th></tr></thead>
+          <tbody>
+            <tr><td><strong>单来源、可复核</strong></td><td>写内容 + 来源名称 + 日期</td><td>可以</td></tr>
+            <tr><td><strong>两个来源冲突</strong></td><td>两个都列，标【待确认】</td><td>不进成片，改用不涉及该数字的说法</td></tr>
+            <tr><td><strong>官方未公布</strong></td><td>写【未公布】，不补数字</td><td>不进成片</td></tr>
+            <tr><td><strong>查不到</strong></td><td>写【待补】，并进「缺口」小节</td><td>不进成片，等补到再改</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>官方口径：资讯简报能查到什么</h3>
+      <p>
+        官方「实践五：每日自动推送资讯简报」给出的流程是：<strong>先手动触发第一条简报，确认内容与发送链路正常，
+        再创建定时推送任务</strong>；个性化调整可以从四个方向改（新增数据源、调整资讯范围、调整写作风格、限制发送日期）；
+        使用建议是「先验证发送链路」「控制内容长度」「逐步细化规则」。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">一个版本差异，正好当教学点</span>
+        官方「实践五」页里用的是「自动化任务」，但更新日志 <strong>5.5.4（2026-09-08）</strong>写明：
+        客户端已将「自动化」统一更名为<strong>「定时任务」</strong>。
+        文档更新慢于客户端是常态——<strong>遇到名称对不上，以你客户端上实际看到的为准</strong>，
+        并在作业里写明你看到的是哪一个。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·按脚本逐格锁定画面素材与信息来源 <em>约 7 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一张 5 行的「镜头—画面素材—信息来源」对照表，外加每个镜头的画面文件（当前版本能生成时）或画面描述卡（不能生成时）。</p>
+
+        <p><strong>第 1 步 · 复制下面这份素材准备规则</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 画面素材规则（课堂统一口径）">
+          <div class="codeblock__bar"></div>
+<pre><code>【画面素材规则 · 课堂统一口径】
+允许：AI 生成的场景画面；自己拍摄且无真人面孔的校园空景；学校提供的授权素材。
+禁止：来源不明的网络图片、音乐、字体；任何真人面孔（学生、教师、工作人员）；
+      校名、校徽、商标以外的第三方品牌标识。
+每格画面必须能对回一条资讯来源；画面里出现的文字（书名、时间、地点）必须与活动信息卡完全一致。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把下面这段指令连同素材规则、实操① 的脚本一起发给 WorkBuddy</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 逐格备画面">
+          <div class="codeblock__bar"></div>
+<pre><code>请按实操① 确认的 5 个镜头，逐格生成画面素材，并输出一张对照表。
+表格格式：镜头号｜画面内容（一句话）｜素材类型（AI生成/自拍/授权）｜信息来源｜是否含真人面孔（是/否）。
+必须做到：
+1. 每格画面只服务该镜头的字幕，不堆与字幕无关的元素；
+2. 画面里出现的书名、时间、地点必须与活动信息卡完全一致，不一致的一律标【待补】；
+3. 不出现任何真人面孔，不出现第三方品牌标识；
+4. 素材来源不明的格子直接写【未取得授权】，不要改用网络图片代替；
+5. 若当前版本无法生成图像或视频片段，请明确告诉我「当前无法生成画面文件」，
+   并把每格画面改写成一段可直接交给剪辑的画面描述卡（景别、主体、动作、色调、画面上的文字）。
+   不要假装已经生成成功，不要编造文件名。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 AI 逐格复核这张对照表</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请逐格复核刚才的对照表并直接修正，输出修正后的完整表格：
+1. 每格画面的「信息来源」必须能回到活动信息卡，空白的一律改成【待补】；
+2. 「是否含真人面孔」为「是」的格子必须改成「否」，并同步改写画面内容；
+3. 【未取得授权】的格子保持原样，不得替换成网络图片；
+4. 画面里出现的文字必须与信息卡逐字一致，不一致的标【待补】；
+5. 若你无法生成画面文件，必须在表格下方单独写明原因和替代方案，不得输出虚构的文件名。
+不得新增镜头，不得新增素材类型。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>5 行都在，每行都有信息来源</b><span>来源空白的一律是【待补】，不是留空。<br><em>整行来源为空</em>：让它补【待补】并写进缺口清单，不允许用「校园常见做法」搪塞。</span></li>
+          <li><b>没有一格含真人面孔</b><span>「是否含真人面孔」列全部是「否」。<br><em>出现「是」</em>：点名该格要求改写画面，这是红线不是偏好。</span></li>
+          <li><b>画面文字与信息卡逐字一致</b><span>时间、地点、活动名称一字不差。<br><em>出现不一致</em>：标【待补】而不是让 AI 自己统一口径。</span></li>
+          <li><b>生成结果如实</b><span>能生成就有画面文件；不能生成就写明「当前无法生成画面文件」并给出描述卡。<br><em>出现虚构文件名</em>：把「不要编造文件名」提到指令首行再发一次——这一条最容易被忽略。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-brief">
+      <h2>三、简报整合与剪辑合成<span class="sec__tag">整合</span></h2>
+      <p>
+        资讯清单攒够了，最常见的结果是一份「流水账简报」：十条资讯排下来，读者看完不知道重点是什么。
+        简报不是资讯的容器，它是<strong>结论的容器</strong>——读者只看开头一句就应该知道这件事跟他有没有关。
+      </p>
+      <p>
+        一页式简报固定四段，顺序不能变。它还有一个额外用途：<strong>简报就是视频的解说底稿</strong>，
+        口播和字幕直接从简报里压出来，这样片子和简报不可能各说各的。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>简报段落</th><th>写什么</th><th>在 30 秒成片里对应什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 一句话结论</strong></td><td>活动是什么、给谁的、值不值得去</td><td>第 1 镜头的口播</td></tr>
+            <tr><td><strong>② 三条要点</strong></td><td>时间地点 / 重点环节 / 参与方式</td><td>第 2、3、4 镜头的画面与字幕</td></tr>
+            <tr><td><strong>③ 来源清单</strong></td><td>逐条列来源名称与日期，进不了片子但留在简报里</td><td>不进成片，作为事实台账</td></tr>
+            <tr><td><strong>④ 待确认与缺口</strong></td><td>冲突项、【未公布】、【待补】</td><td>不进成片，是下一轮要补的活</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">判断简报能不能用</span>
+        一句话检验：把简报遮住只看第一句，读者能不能决定「我要不要继续看」。
+        不能，就是流水账。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·整合一页式简报并压成 30 秒成片 <em>约 13 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一页式《校园读书节资讯简报》+ 一支 30 秒成片 <code>校园读书节宣传短片_v1.mp4</code>；当前版本无法合成时，则是一份可直接执行的合成说明单。</p>
+
+        <p><strong>第 1 步 · 复制下面这份资讯清单</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 资讯清单（课堂模拟数据，含冲突与缺口）">
+          <div class="codeblock__bar"></div>
+<pre><code>【课堂模拟数据 · 非真实资讯，来源名称均为示例】
+01｜读书节时间：10月12日—10月23日｜来源：校园通知（模拟）｜日期：2026-09-20
+02｜图书漂流集市地点：图书馆一楼大厅｜来源：图书馆公告（模拟）｜日期：2026-09-22
+03｜名师导读讲座场次：3 场｜来源：图书馆公告（模拟）｜日期：2026-09-22
+04｜读书笔记评选投稿截止：10月18日｜来源：学生会推文（模拟）｜日期：2026-09-24
+05｜闭馆夜读时间：10月23日 19:00—21:00｜来源：学生会推文（模拟）｜日期：2026-09-24
+06｜报名方式：图书馆服务台登记｜来源：校园通知（模拟）｜日期：2026-09-20
+07｜参与对象：全校学生｜来源：图书馆公告（模拟）｜日期：2026-09-22
+08｜名师导读讲座地点：教学楼A栋报告厅｜来源：学生会推文（模拟）｜日期：2026-09-24
+09｜名师导读讲座场次：2 场【与第03条冲突】｜来源：校园通知（模拟）｜日期：2026-09-20
+10｜配套活动奖品数量：未公布｜来源：图书馆公告（模拟）｜日期：2026-09-22</code></pre>
+        </div>
+        <p class="note">课堂统一用模拟清单，是因为联网结果每个人都不一样，没法一起讲评；真实任务里，同样的清单要换成带来源和日期的真资讯。</p>
+
+        <p><strong>第 2 步 · 先把清单整合成一页式简报</strong>（复制发送）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 A · 整合成简报">
+          <div class="codeblock__bar"></div>
+<pre><code>请把上面的资讯清单整合成一页式《校园读书节资讯简报》。
+固定四段，顺序不变：① 一句话结论（活动是什么、给谁的）② 三条要点（时间地点、重点环节、参与方式）
+③ 来源清单（逐条列出来源名称与日期）④ 待确认与缺口。
+必须做到：
+1. 结论和要点只能依据清单里的信息，清单里没有的一律写【待补】；
+2. 第03条与第09条的场次冲突必须原样保留，写成【待确认：2 场 / 3 场】，不许自己选一个；
+3. 第10条「未公布」继续保持【未公布】，不得补一个数字；
+4. 简报总字数不超过 400 个汉字，一页读完；
+5. 全部为模拟数据，简报末尾必须注明「本简报为课堂模拟数据，非真实活动信息」。
+不要输出四段之外的多余分析，不要新增清单里没有的资讯。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 把简报压成口播与字幕，与实操① 的 5 个镜头对齐</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 B · 口播与字幕时间轴">
+          <div class="codeblock__bar"></div>
+<pre><code>请把刚才的简报压成 30 秒短片的口播与字幕，与实操① 的 5 个镜头对齐。
+输出表格：镜头号｜时间区间｜口播文案｜屏幕字幕。
+必须做到：
+1. 五个镜头时间区间连续且合计 30 秒：0-6 / 6-12 / 12-18 / 18-24 / 24-30；
+2. 口播合计不超过 110 个汉字，每条字幕不超过 12 个汉字；
+3. 【待确认】【未公布】【待补】的内容一律不进成片；冲突的场次改用不涉及数字的说法；
+4. 只使用简报里已有的信息，不得新增书名、人名、时间和数字。
+不要输出任何其他分析。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 按时间轴合成成片</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 C · 合成成片">
+          <div class="codeblock__bar"></div>
+<pre><code>请按上面的镜头时间轴，把实操② 的画面素材、口播文案和字幕合成 30 秒成片，
+输出 mp4 文件，文件名「校园读书节宣传短片_v1.mp4」。
+要求：
+1. 画幅 16:9，片长 30 秒；字幕全程可见，字号在手机上可读；
+2. 若当前版本支持在生成时选择画面比例、是否带声音或描述不希望出现的内容，
+   请按 16:9、带声音、不出现真人面孔与第三方品牌标识来设置；
+3. 声音优先使用无版权风险的音乐或纯旁白，授权不确定的一律不用，并在结果里写【音乐未确定】；
+4. 若当前版本无法直接合成视频文件，请明确告诉我「当前无法合成成片」，
+   并输出一份合成说明单：每个镜头的画面文件、口播、字幕、时间区间、转场方式，以及下一步交给谁做。
+   不要编造文件名，不要声称已经生成了 mp4。</code></pre>
+        </div>
+
+        <p><strong>第 5 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>简报是四段且一页读完</b><span>结论、三条要点、来源清单、待确认与缺口，顺序不变，不超过 400 字。<br><em>写成流水账</em>：让它把结论提到最前，要点压到三条。</span></li>
+          <li><b>冲突与缺口原样保留</b><span>场次仍是【待确认：2 场 / 3 场】，奖品仍是【未公布】。<br><em>被统一成一个数字</em>：把「不许自己选一个」提到指令首行再发一次。</span></li>
+          <li><b>口播字幕与镜头对齐</b><span>五个区间连续，合计 30 秒，字数在上限内。<br><em>区间对不上</em>：让它按 0-6 / 6-12 / 12-18 / 18-24 / 24-30 重排，不允许自由发挥。</span></li>
+          <li><b>合成结果如实</b><span>能合成就有 <code>校园读书节宣传短片_v1.mp4</code>；不能合成就有合成说明单。<br><em>出现虚构的 mp4</em>：要求它确认文件是否真的存在，不存在就改出说明单。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<strong>简报</strong> + <strong>成片（或合成说明单）</strong>，两个都要留着，下一节还要用。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-apply">
+      <h2>四、视频场景应用与合规<span class="sec__tag">交付</span></h2>
+      <p>
+        最后一步最容易被跳过：同一支片子投到不同地方，要求根本不一样。
+        校内大屏是<strong>无声播放</strong>，字幕必须撑起全部信息；手机竖屏是<strong>有声播放</strong>，
+        前 3 秒抓不住人就划走了。改画幅、改钩子、改字幕位置，是三件不同的活。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>投放场景</th><th>画幅与声音</th><th>必须改的三处</th></tr></thead>
+          <tbody>
+            <tr><td><strong>校内大屏</strong></td><td>16:9，无声</td><td>全程字幕、前 3 秒出活动名称、信息不依赖声音</td></tr>
+            <tr><td><strong>视频号 / 公众号</strong></td><td>9:16，有声</td><td>前 3 秒钩子、字幕常驻、声音为旁白加轻音乐</td></tr>
+            <tr><td><strong>班级群 / 通知</strong></td><td>不限，常被静音</td><td>压缩到 15 秒、保留行动引导、附简报链接</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>合规是教学点，不是免责声明</h3>
+      <p>
+        AI 生成合成内容在我国已经有明确的标识要求。
+        据中央网信办发布的消息，《人工智能生成合成内容标识办法》由国家网信办、工业和信息化部、公安部、
+        国家广播电视总局联合发布，<strong>自 2025 年 9 月 1 日起施行</strong>；配套的强制性国家标准
+        《网络安全技术 人工智能生成合成内容标识方法》同步实施。
+        标识分两类：<strong>显式标识</strong>（能被用户明显感知到的文字、声音、图形提示）与
+        <strong>隐式标识</strong>（嵌入文件元数据、不易感知但可追溯的标识）。
+        办法同时明确：任何组织和个人不得恶意删除、篡改、伪造、隐匿标识。
+      </p>
+      <div class="callout callout--danger">
+        <span class="callout__t">三条红线，发布前必查</span>
+        <strong>① 标识</strong>：AI 生成合成的画面要加可被明显感知的提示，文件元数据中的标识不得删除或篡改；
+        具体样式以你所用平台的规则为准。<br>
+        <strong>② 肖像</strong>：不出现任何未取得授权的真人面孔，尤其涉及学生和未成年人时必须单独取得书面同意。<br>
+        <strong>③ 素材</strong>：不使用来源不明的网络图片、音乐、字体，不使用第三方品牌标识。
+      </div>
+      <p class="note">
+        以上合规口径核对日期 2026-09-26，依据为中央网信办发布的《人工智能生成合成内容标识办法》相关消息及配套强制性国标的公开报道。
+        具体标识样式、平台细则与执行要求以最新官方文本和投放平台规则为准；
+        WorkBuddy 官方客户端用户文档未对生成内容的标识方式作出说明，本课不代其宣称任何内置标识能力。
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 发布前四查漏掉任意一项，成片就发不出去</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--primary" type="button" id="d2-ok">四查全过</button>
+            <button class="btn btn--accent" type="button" id="d2-tag">漏掉 AI 标识</button>
+            <button class="btn btn--accent" type="button" id="d2-face">画面含真人面孔</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d2-fact">—</b><span>一查事实</span></div>
+              <div class="kpi"><b class="acc" id="d2-tag2">—</b><span>二查标识</span></div>
+              <div class="kpi"><b id="d2-asset">—</b><span>三查素材</span></div>
+              <div class="kpi"><b id="d2-go">—</b><span>能否发布</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d2-out">点一个按钮，看漏掉哪一项会卡在哪一步。</div>
+          <div class="demo__note"><strong>教学示意，非实测数据。</strong>演示用于建立「四查是串联关系」的印象，不是判定具体平台规则。</div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·四查成片并给出两个场景的版本说明 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份成片检查报告（四查逐项结果）+ 校内大屏与手机竖屏两个场景的版本说明。</p>
+
+        <p><strong>第 1 步 · 复制下面这份发布前四查清单</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 发布前四查清单">
+          <div class="codeblock__bar"></div>
+<pre><code>【发布前四查 · 课堂统一口径】
+一查事实：片中的时间、地点、场次、报名方式与活动信息卡一致；冲突项不进成片；【待补】不入片。
+二查标识：按《人工智能生成合成内容标识办法》（2025-09-01 施行）要求，AI 生成合成内容需要标识；
+          片头或起始画面要有可被明显感知的提示文字，文件元数据中保留隐式标识，
+          不得删除、篡改、伪造、隐匿。
+三查素材：无真人面孔；无来源不明的图片、音乐、字体；无第三方品牌标识；音乐授权明确。
+四查规格：片长、画幅、字幕可读性、音量与导出格式符合投放场景要求。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 先只让它报告，不要立刻改</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 四查并输出问题清单">
+          <div class="codeblock__bar"></div>
+<pre><code>请按上面的四查清单检查「校园读书节宣传短片_v1.mp4」，先输出问题清单，不要立刻修改。
+清单格式：检查项｜结果（通过/不通过/需人工确认）｜证据｜建议动作。
+必须做到：
+1. 无法从文件判断的项目写【需人工确认】，不要猜测；
+2. 事实以活动信息卡和资讯清单为准，不一致的点名到第几秒；
+3. 标识一项必须明确写出片头提示文字的位置与内容；
+4. 素材一项必须逐个镜头说明是否含真人面孔、音乐来源是否明确。
+不要编造检查结果。
+若当前没有成片文件（上一环节未能合成），改为检查「合成说明单」是否完整可执行。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 AI 给出两个投放场景的版本说明</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 两个场景的版本说明">
+          <div class="codeblock__bar"></div>
+<pre><code>请为下面两个投放场景各写一份版本说明，不要生成新文件：
+场景A 校内大屏（教学楼大厅，无声播放）：画幅 16:9，全程字幕，前 3 秒出现活动名称，无声音。
+场景B 视频号/公众号（手机竖屏，有声播放）：画幅 9:16，前 3 秒钩子，字幕常驻，声音为旁白加轻音乐。
+每份说明输出：画幅｜时长｜必须改动的三处｜改动后可交付的对象｜风险提示。
+必须做到：
+1. 两个场景的改动各自不超过三处，超出就挑最重要的三处；
+2. 事实信息一律不得改动；
+3. 涉及画幅、声音或画面比例的生成参数，以你当前使用的版本实际支持的为准；
+   版本不支持的改动写成「需人工在剪辑软件中处理」，不要假定一定有开关。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四查逐项有结果</b><span>每项是通过、不通过或【需人工确认】，没有空白。<br><em>出现猜出来的结果</em>：要求改成【需人工确认】，不允许把猜测写成结论。</span></li>
+          <li><b>事实不一致点名到秒</b><span>哪一秒的哪个信息与信息卡不符写清楚。<br><em>只写「基本一致」</em>：要求逐秒对照，模糊表述等于没查。</span></li>
+          <li><b>标识一项写到了具体位置</b><span>片头提示文字在哪、写什么。<br><em>只写「已标识」</em>：要求补上位置与文字内容，这一项最容易被一句话带过。</span></li>
+          <li><b>两个场景各三处改动且不动事实</b><span>改动都是画幅、钩子、字幕、声音层面的。<br><em>改动涉及时间或场次</em>：打回重写，事实信息在任何场景下都不能改。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己判断，再点开答案。解析不只告诉你选什么，还说明其他做法为什么不稳。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>做一支 30 秒宣传短片，第一步最应该让 AI 产出什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 直接生成一支 mp4 成片</li>
+            <li>B. 一份先定好镜头数与时长合计的分镜脚本</li>
+            <li>C. 一段优美的活动介绍文案</li>
+            <li>D. 一套配色与字体方案</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B。</b>官方「实践四」给的口径就是把脚本、口播文案、镜头分镜先整理出来。
+            A 会让你拿到一个改不动的整体；C 只是文字，落不到画面；D 只处理外观，解决不了「30 秒讲哪几件事」。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>资讯清单里两条来源给出的讲座场次不一致（2 场 / 3 场），简报里应该怎么写？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 选更常见的那个数字写进去</li>
+            <li>B. 两个都保留，标【待确认：2 场 / 3 场】</li>
+            <li>C. 取平均值写成 2.5 场</li>
+            <li>D. 删掉这条，假装没有这个字段</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B。</b>冲突本身就是必须让读者看到的信息。A、C 都是替读者做决定；D 把风险藏起来了，后续没人知道要去补。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>多选：哪些内容不应该出现在成片里？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 来源互相冲突的场次数字</li>
+            <li>B. 官方明确「未公布」的奖品数量</li>
+            <li>C. 活动名称、时间、报名方式（信息卡里已有的）</li>
+            <li>D. 未取得授权的真人面孔</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：ABD。</b>冲突项、未公布项和未授权素材都不能进成片，只能留在简报的「待确认与缺口」里。
+            C 是信息卡里已有的确定事实，正是成片该讲的内容。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：让 AI 生成画面素材时，如果它实际上没有生成成功，可以在回复里先给出一个文件名，等下轮再补。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B（错误）。</b>虚构的文件名会让后面所有环节建立在不存在的文件上，等做到合成才发现，整条链路都要返工。
+            正确写法是在指令里写死「做不到就明确告诉我做不到，并给出替代方案，不要编造文件名」。</div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>把同一支片子投到校内大屏和手机竖屏，下面哪种说法是对的？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 内容不用改，只需要改一下导出格式</li>
+            <li>B. 画幅、钩子位置和字幕策略都要改，但事实信息一律不动</li>
+            <li>C. 因为大屏无声，可以把不确定的场次数字放上去，反正听不清</li>
+            <li>D. 竖屏版可以把字幕去掉，靠声音讲清楚</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans"><b>答案：B。</b>场景决定的是画幅、钩子、字幕与声音，事实信息在任何场景下都不能改。
+            C 把不确定信息公开播放，风险更大；D 会让静音播放的观众完全看不懂。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>四段链路</strong>：脚本 → 画面素材 → 口播字幕 → 合成检查，每段一个产出物、一个验收问题；</li>
+          <li><strong>脚本先行</strong>：30 秒 = 5 个 6 秒镜头，字幕每条 12 字、口播合计 110 字，超了就删字；</li>
+          <li><strong>共用素材</strong>：视频和简报来自同一份带来源的资讯清单，冲突保留【待确认】、未公布保留【未公布】；</li>
+          <li><strong>如实兜底</strong>：生成不了就明说并给替代方案，不编造文件名、不假装成功；</li>
+          <li><strong>四查交付</strong>：事实 → 标识 → 素材 → 规格，漏一项就发不出去；场景只改画幅、钩子、字幕与声音。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天走完的是「从资讯到成片」的完整链路。
+        下一课进入<a class="xref" data-lesson="23"></a>，把这类反复出现的活——搜集、整合、出稿、检查——
+        沉淀成你岗位上的固定工作流；今天这份四查清单和分镜脚本模板，直接就能用。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角“复制”就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 22 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）按官方「实践四：自媒体运营」，使用 AI 做视频内容时，第一步最适合让它产出什么？
+A. 直接生成一段完整视频文件
+B. 脚本、口播文案、镜头分镜或视频说明
+C. 一份投放数据分析报告
+D. 一套片头片尾模板
+【答案】B
+【解析】官方该节的适用场景原文就是「需要将脚本、口播文案、镜头分镜或视频说明快速整理出来」，推荐做法是说明视频时长、平台类型、目标受众与输出形式。A 跳过了可验收的中间产物，改起来无从下手。
+
+2.（多选）一支 30 秒短片的分镜脚本，应符合哪些要求？
+A. 各镜头时长合计正好 30 秒
+B. 每条字幕控制在 12 个汉字以内
+C. 信息卡里没有的内容写成【待补】，不自行补充
+D. 为了让内容更丰富，可以再加第 6 个镜头
+【答案】ABC
+【解析】ABC 分别保证时长可核对、字幕可读、事实不编造。D 破坏了「固定 5 个镜头」的约束，时长账也就对不上了。
+
+3.（判断）资讯清单中两条来源给出的场次互相冲突时，简报里应保留冲突并标注【待确认】，成片中则改用不涉及该数字的说法。
+A. 正确
+B. 错误
+【答案】A（正确）
+【解析】冲突是需要被看见的信息，简报里必须原样保留；成片面向公众且不便追问，因此改用不涉及该数字的说法，等核实后再补。
+
+4.（单选）让 AI 生成画面素材时，指令里为什么要写「做不到就告诉我做不到，不要编造文件名」？
+A. 这样可以让 AI 生成得更快
+B. 虚构的文件名会让后续所有环节建立在不存在的文件上，最后整条链路返工
+C. 这是官方强制要求的固定句式
+D. 为了让生成结果更美观
+【答案】B
+【解析】这是防「静默失败」的兜底写法。官方客户端用户文档没有专门的视频生成说明页，入口、模型和参数是否可用因版本而异，指令里必须留一句兜底。A、C、D 都与实际原因无关。
+
+5.（多选）成片发布前的「四查」包括哪几项？
+A. 事实：时间、地点、场次、报名方式与信息卡一致
+B. 标识：AI 生成合成内容按规定标识，且不删除、篡改、隐匿
+C. 素材：无真人面孔、无来源不明的图片音乐字体、无第三方品牌标识
+D. 规格：片长、画幅、字幕可读性、音量与导出格式符合投放场景
+【答案】ABCD
+【解析】四查是串联关系，漏任意一项成片都不能发。其中标识一项的依据是《人工智能生成合成内容标识办法》（2025 年 9 月 1 日施行）及同步实施的强制性国家标准。
+
+6.（判断）关于 WorkBuddy 的视频生成能力，官方客户端用户文档目前有专门的「视频生成」功能说明页，详细列出了入口名称、模型名称与可调参数。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】核对日期 2026-09-26，官方客户端用户文档没有专门的视频生成说明页；能查到的公开口径只有「实践四：自媒体运营」里的脚本示例，以及更新日志 5.5.5、5.5.1、5.5.3 中对能力、参数与模型兼容性的条目。入口、模型与参数一律以实际使用的版本为准，不能自行编造。</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        只看三项：答案是否对应题目；多选题有没有漏选或多选；
+        解析能否说明错误选项错在链路顺序、事实标注、能力口径还是合规要求。
+      </div>
+      <p class="note">
+        WorkBuddy 产品事实核对日期：2026-09-26，依据为 <code>www.workbuddy.cn</code> 客户端用户文档的
+        「实践四：自媒体运营」「实践五：每日自动推送资讯简报」「快速开始」「设计创意（WorkBuddy × Ardot）」「WorkBuddy 更新日志」；
+        未使用开放平台（open.workbuddy.cn）文档替代客户端口径。
+        合规依据核对日期同为 2026-09-26，来源为中央网信办关于《人工智能生成合成内容标识办法》的公开发布消息及配套强制性国标的公开报道。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* 演示①：四段链路 vs 一句话要成片 */
+  var NODES = [
+    { icon: "①", t: "脚本与分镜" },
+    { icon: "②", t: "画面素材" },
+    { icon: "③", t: "口播与字幕" },
+    { icon: "④", t: "合成成片" },
+    { icon: "⑤", t: "检查交付" }
+  ];
+
+  function d1Render(onIdx, dots) {
+    var html = "";
+    for (var i = 0; i < NODES.length; i++) {
+      var cls = onIdx.indexOf(i) >= 0 ? "on" : "dim";
+      html += '<div class="flow__node ' + cls + '"><b>' + NODES[i].icon + "</b>" + NODES[i].t + "</div>";
+      if (i < NODES.length - 1) {
+        html += '<div class="flow__path"><span class="flow__dot ' + dots[i] + '"></span></div>';
+      }
+    }
+    $("d1-flow").innerHTML = html;
+  }
+
+  function d1Chain() {
+    d1Render([0, 1, 2, 3, 4], ["run", "run", "run", "run"]);
+    $("d1-redo").textContent = "0 处";
+    $("d1-usable").textContent = "高";
+    $("d1-trace").textContent = "可追溯";
+    $("d1-out").innerHTML =
+      "<span class='ok'>✓ 四段都有产出物：</span>脚本、画面表、字幕时间轴、成片各自可改，"
+      + "问题定位到具体一格，返工收敛。";
+  }
+
+  function d1OneShot() {
+    d1Render([3, 4], ["hold", "hold", "hold", "run"]);
+    $("d1-redo").textContent = "3 处";
+    $("d1-usable").textContent = "低";
+    $("d1-trace").textContent = "不可追溯";
+    $("d1-out").innerHTML =
+      "<span class='no'>✗ 前四段没有产出物：</span>拿到的是一整支片子，改哪一句都要整支重来，"
+      + "检查阶段发现事实问题，只能退回脚本。";
+  }
+
+  /* 演示②：发布前四查 */
+  function d2Show(mode) {
+    var fact = "一致", tag = "有", asset = "无风险", go = "可发布";
+    var msg = "";
+    if (mode === "tag") {
+      tag = "缺失";
+      go = "不可发布";
+      msg = "<span class='no'>✗ 缺标识：</span>AI 生成合成内容未作显式标识。"
+        + "按规定不得删除、篡改、隐匿标识，补上片头提示文字后再走一遍检查。";
+    } else if (mode === "face") {
+      asset = "含真人面孔";
+      go = "不可发布";
+      msg = "<span class='no'>✗ 素材不合规：</span>画面出现未取得授权的真人面孔。"
+        + "正确做法是该格改画，或在取得书面同意后再用，不能用打码蒙混。";
+    } else {
+      msg = "<span class='ok'>✓ 四项都过：</span>事实对得上、标识在、素材干净、规格符合场景，可以发布。";
+    }
+    $("d2-fact").textContent = fact;
+    $("d2-tag2").textContent = tag;
+    $("d2-asset").textContent = asset;
+    $("d2-go").textContent = go;
+    $("d2-out").innerHTML = msg;
+  }
+
+  $("d1-chain").addEventListener("click", d1Chain);
+  $("d1-oneshot").addEventListener("click", d1OneShot);
+  $("d2-ok").addEventListener("click", function () { d2Show("ok"); });
+  $("d2-tag").addEventListener("click", function () { d2Show("tag"); });
+  $("d2-face").addEventListener("click", function () { d2Show("face"); });
+
+  d1Chain();
+  d2Show("ok");
+})();
+</script>
+</body>
+</html>

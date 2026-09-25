@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第23次课 岗位与行业实战｜AIGC应用与实践</title>
+<meta name="description" content="把你的岗位做成 AI 工作流：电商运营专员的高频任务清单、典型工作流长什么样、哪些沉淀成 Skill、哪些做成自动化，以及沉淀之后怎么维护。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="23" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="8">第 8 次课</a>教你<strong>怎么造一个技能</strong>，
+        <a class="xref" data-lesson="18">第 18 次课</a>教你<strong>怎么接外部工具、怎么让它定时自己跑</strong>。
+        但这两课都跳过了更早的一步——<strong>在你自己的岗位上，究竟哪些活值得被做成技能、哪些值得被做成自动化</strong>。
+      </p>
+      <p>这一课补的就是这一步。方法只有一句话：<strong>先看清你一周在忙什么，再挑出其中高频、重复的那几件，往下沉淀。</strong></p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>忙了一周，说不出忙了哪几件</strong></td><td>任务都在脑子里，没清单就谈不上挑出「哪件该交给 AI」</td></tr>
+            <tr><td><strong>学了一堆 AI 用法，回岗位还是想到什么问什么</strong></td><td>学的是功能，没落到自己的活上——功能不会自己来找你</td></tr>
+            <tr><td><strong>装了十几个技能，常不超过两个</strong></td><td>装的都是「看起来厉害」的，不是「我每周真要做」的</td></tr>
+            <tr><td><strong>上次写得挺好的提示词，这次又从零写</strong></td><td>用过就丢，没沉淀——同样的话每周都要重新说一遍</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课<strong>不再重复</strong>第 8 次课「怎么装、怎么造技能」的操作步骤，也<strong>不再重复</strong>第 18 次课
+        「怎么接连接器、怎么建定时任务」的操作步骤——需要用到时只给一句入口提示和一个 <code>xref</code> 链接。<br>
+        另外，四个实操<strong>前后相接、共用一个岗位</strong>：电商运营专员。
+        ① 列的清单是 ② 的选料，② 画的工作流是 ③ 的图纸，③ 沉淀的技能是 ④ 自动化的零件。
+        四步走完，你手上是一套能一直用的岗位小系统，不是四份互不相干的练习。
+      </div>
+      <p class="note">
+        本课涉及的产品口径（技能、自动化任务、权限边界）取自 <strong>www.workbuddy.cn 客户端用户文档</strong>，
+        核对日期 <strong>2026-09-26</strong>，界面随版本更新，以你实际使用的版本为准。<br>
+        岗位场景与店铺数据为<strong>教学示意（模拟数据）</strong>，用于讲清方法；
+        真实平台的活动规则、违禁词、上架规范等，一律<strong>以平台当前规则为准</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>让 AI 列出一个岗位一周的高频任务清单，并能指出它漏了什么、多写了什么；</li>
+          <li>说出一条工作流的四段（<strong>输入 / 处理 / 输出 / 验收</strong>），并把岗位上的一件活写成这四段；</li>
+          <li>用「<strong>频率 × 步骤是否固定</strong>」判断一件活该沉淀成技能、该做成自动化，还是直接下指令就行；</li>
+          <li>独立完成一次「把工作流里最重复的一步做成技能，并换一份材料再跑一次验证它稳不稳」；</li>
+          <li>说清沉淀之后要维护哪三样东西，以及自动化任务为什么必须写死<strong>产出位置</strong>和<strong>失败处理</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-list"><b>01</b>岗位高频任务清单怎么列 <em>＋实操①</em></a>
+        <a href="#s-flow"><b>02</b>典型行业工作流长什么样 <em>＋实操②</em></a>
+        <a href="#s-split"><b>03</b>哪些沉淀成 Skill、哪些做成自动化 <em>＋实操③</em></a>
+        <a href="#s-keep"><b>04</b>沉淀之后怎么维护 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="8">第 8 次课</a>的技能怎么造、怎么用；
+        <a class="xref" data-lesson="18">第 18 次课</a>的连接器与定时自动化、最小权限原则。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="24">第 24 次课</a>要做岗位调研与职业规划，
+        今天这份<strong>岗位高频任务清单</strong>就是它最直接的素材——有清单，谈能力和谈去向才有着落。
+      </div>
+    </section>
+
+    <section class="sec" id="s-list">
+      <h2>一、岗位高频任务清单：先看清你一周到底在忙什么<span class="sec__tag">起点</span></h2>
+      <p>
+        绝大多数人列不出自己的任务清单。不是因为记性差，而是因为<strong>日常工作是流水账，不是条目</strong>——
+        你记得「周一上午在改标题」，不记得「改标题这件事一周要做几次、每次多久」。
+      </p>
+      <p>
+        本课全程用一个岗位当例子：<strong>电商运营专员</strong>（某店铺，经营家居收纳类日用品，一个店两人轮班，模拟数据）。
+        选它是因为这个岗位的任务<strong>高频、重复、而且一半是文案活</strong>——正好是 AI 最能帮上忙的那类。
+      </p>
+
+      <h3>三种列法，只有第三种靠谱</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>列法</th><th>怎么做</th><th>毛病</th></tr></thead>
+          <tbody>
+            <tr><td><strong>凭印象列</strong></td><td>坐下来想「我平时都干啥」</td><td>想得起来的都是最近三天的事，周期长的（周报、月度活动报名）全漏</td></tr>
+            <tr><td><strong>翻聊天记录列</strong></td><td>翻工作群、翻后台操作日志</td><td>信息够全，但翻一小时也理不出条目，人还没开始干就累了</td></tr>
+            <tr><td><strong>让 AI 先列，你来审</strong></td><td>把一周流水账丢给它，让它出清单，你补漏、删多、改错</td><td>它列的会有错，但<strong>审一遍比从零列一遍快十倍</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">为什么一定要有素材</span>
+        清单的原料是<strong>你这周真实发生过的事</strong>，不是岗位说明书。
+        岗位说明书上写「负责店铺日常运营」，这句话没法拆、也没法交给 AI；
+        而「周一上午改了 6 个老商品标题」这条，一看就知道能不能交给 AI。
+      </div>
+
+      <h3>清单至少要有这四列</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>列</th><th>写什么</th><th>为什么这一列不能省</th></tr></thead>
+          <tbody>
+            <tr><td><strong>任务</strong></td><td>一件具体的事，一句说完</td><td>写「数据分析」没法下手，写「每天早上汇总昨日销量退款做日报表」才可以</td></tr>
+            <tr><td><strong>频率</strong></td><td>每天 / 每周几次 / 每月</td><td><strong>频率决定值不值得沉淀</strong>——一个月一次的活，做成技能也用不上第二次</td></tr>
+            <tr><td><strong>单次耗时</strong></td><td>大概多少分钟</td><td>省时间才是目的；一次 3 分钟的事，花 20 分钟去沉淀是亏的</td></tr>
+            <tr><td><strong>步骤是否固定</strong></td><td>固定 / 半固定 / 每次不同</td><td><strong>步骤不固定就不该自动化</strong>——它每次长的都不一样，机器不知道该按哪套走</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 这条活值不值得交给 AI，看这四问</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-a">每天 9 点做昨日销量日报</button>
+            <button class="btn btn--ghost" type="button" id="d1-b">给新品写三段卖点文案</button>
+            <button class="btn btn--ghost" type="button" id="d1-c">处理一次顾客差评投诉</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>频率</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>步骤</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>判断含量</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三条任务的频率与耗时取自本课模拟的岗位素材，
+            结论由页面预置的四问判定表得出，用来演示判断思路，不是任何平台的真实统计。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让 AI 列出电商运营专员一周的高频任务清单 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-岗位高频任务清单.md</code>——
+          12 条以上任务，每条带频率、单次耗时、步骤是否固定，末尾标出 3 条最值得沉淀的。</p>
+
+        <p><strong>第 1 步 · 把这一周的流水账复制下来（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务</b><span>工作目录选 <code>wb-试验</code>（沿用前几课那个目录即可）。</span></li>
+          <li><b>点下面这块右上角「复制」，先粘进记事本暂存</b><span>这就是你给它的原料——一周里真实发生过的事。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 电商运营专员一周流水账（模拟）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【电商运营专员 · 一周工作流水（模拟素材，非真实店铺数据）】
+
+周一
+- 08:50 打开后台，把昨天的销量、访客数、退款数抄进日报表，发给店长
+- 10:30 上新两款折叠收纳箱，写标题、卖点、详情文案
+- 14:00 把商品参数发给美工，催主图
+- 20:00 回复买家留言，三十多条，大半是问尺寸和发货时间
+
+周二
+- 08:50 同样的日报表，再抄一遍数据
+- 10:00 改了 6 个老商品的标题，因为最近搜索词变了
+- 14:30 报了一个平台活动，填报名表、传资质
+- 21:00 截了 5 家同行店的同类商品页，把价格和卖点记进表格
+
+周三
+- 08:50 同样的日报表
+- 09:30 看昨天的退款，挑出 3 笔疑似质量问题，登记
+- 15:00 写本周的推广计划，发给主管
+- 17:00 整理竞品价格表，跟我们自己的价对了一遍
+
+周四
+- 08:50 同样的日报表
+- 11:00 上一批新品没图，临时下架了 4 个
+- 15:30 客服转来一个差评，跟顾客沟通后改了详情里的尺寸描述
+- 19:00 做下周的活动选品清单
+
+周五
+- 08:50 同样的日报表
+- 10:00 周会，报本周数据
+- 14:00 写本周总结，交给店长
+- 16:00 把下周要上的 8 款商品参数整理成一张表
+
+周六（轮休，只处理了一次）
+- 20:00 手机上看了一眼数据，发现一款爆品断货，临时改了库存和推荐位
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它把清单列出来（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令整段复制，跟第 1 步的素材一起发出去</b><span>
+            素材在前、指令在后，中间空一行。
+            <span class="task__warn">整段粘贴，不要自己改写</span>——里面的列名和约束是一套的，改一半它会漏列。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="列清单的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我给你一份电商运营专员一周的工作流水账（上面那段）。请把它整理成岗位高频任务清单，
+存成工作目录下的 01-岗位高频任务清单.md。
+
+清单用表格输出，四列一列都不能少：
+| 任务 | 频率 | 单次耗时 | 步骤是否固定 |
+- 任务：一句说完一件具体的事，不要写"数据分析""日常运营"这种笼统词；
+- 频率：写清每天 / 每周几次 / 每月，能用数字就用数字；
+- 单次耗时：按流水账里的时间估算，写大概分钟数；
+- 步骤是否固定：只能填"固定 / 半固定 / 每次不同"三个之一。
+
+规则：
+1. 只许从流水账里提炼，不许自己补充这个岗位可能还做的事；
+2. 同一件事在一周里出现多次的，合并成一条，在频率里写清次数；
+3. 不能确定的频率或耗时，写"待确认"，不要自己编一个数字；
+4. 表格之后再加一段"最值得沉淀的 3 件事"，每件一句话说清为什么值得。
+
+不要修改工作目录里已有的任何文件，只新建这一个文件。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>看它有没有真的落成文件</b><span>只在对话里给了表格不算完成，工作目录里要有
+            <code>01-岗位高频任务清单.md</code>。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 让它自己回头查漏，你只负责核对（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>漏项一定有人会漏，所以这一步交给它自己查——
+            你只核对它查出来的对不对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="查漏指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在把流水账和刚才那份清单逐条对一遍，回答三件事：
+1. 流水账里提到过、但清单里没有的任务，列出来，并补进清单；
+2. 清单里有、但流水账里根本没出现的任务，点出来，从清单里删掉；
+3. 频率或耗时写成"待确认"的，说明为什么定不下来。
+改完直接覆盖 01-岗位高频任务清单.md，并在文件末尾加一段"本次修订说明"。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>打开修订后的文件，看「本次修订说明」那段</b><span>它补了哪几条、删了哪几条，都该写在那儿。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>清单有 12 条以上，且四列齐全</b><span>少于 12 条说明它把多件事合并成一件了。<br>
+            <em>条数不够</em>：补一句「不要把不同的事合并，宁可多列几条」，让它重出一遍。</span></li>
+          <li><b>「每天 08:50 做日报表」这条在清单里，频率写的是每周 6 次左右</b><span>
+            这是全清单里频率最高的一条，漏了它说明流水账没被认真读。<br>
+            <em>被合并成「数据整理」</em>：点名要它拆出来，单独列一条。</span></li>
+          <li><b>修订说明里至少补了 1 条漏项、删了 0 条以上的多余项</b><span>
+            一条都没查出来，多半是它没真去对。<br>
+            <em>它一条都没补</em>：把流水账再贴一次，让它「按周一到周六逐天对，每天单独报一遍」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这份 <code>01-岗位高频任务清单.md</code>。下一节要直接从里面挑一条来画工作流。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-flow">
+      <h2>二、典型行业工作流：把一件活写成四段<span class="sec__tag">方法</span></h2>
+      <p>
+        清单有了，下一步最容易卡住：<strong>一条任务到底是怎么走完的，说不清</strong>。
+        你心里知道「上新要写文案」，但说不出这件事从哪开始、到哪结束、做成什么样算好。
+      </p>
+      <p>
+        说不清的后果很直接——你把活丢给 AI，它这次做成这样、下次做成那样，
+        你只能每次都重新解释一遍。<strong>不是 AI 不稳定，是你没给它一张稳定的图纸。</strong>
+      </p>
+      <p>这张图纸就叫<strong>工作流</strong>。它只有四段，一段都不能少：</p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>回答什么</th><th>常见错误</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>① 输入</strong></td>
+              <td>开工前必须拿到什么（文件名、字段、谁给的）</td>
+              <td>写「商品资料」——它不知道去哪拿、也不知道里面有哪些字段</td>
+            </tr>
+            <tr>
+              <td><strong>② 处理</strong></td>
+              <td>按什么步骤做，一二三步写清楚</td>
+              <td>写「分析并优化」——这不是步骤，是愿望</td>
+            </tr>
+            <tr>
+              <td><strong>③ 输出</strong></td>
+              <td>落到哪个文件、什么格式、有哪些字段</td>
+              <td>写「给一份文案」——没有文件名，就没有交接，也没有复用</td>
+            </tr>
+            <tr>
+              <td><strong>④ 验收</strong></td>
+              <td>做到什么算做完，写成能判断的陈述句</td>
+              <td><strong>这一栏空着</strong>——空着就等于每次结果好坏全靠运气</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 一条工作流的四段：点「下一步」看它怎么走完</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>①</b>输入<br><span class="dim">商品参数表</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>②</b>处理<br><span class="dim">提炼卖点 → 写三段</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>③</b>输出<br><span class="dim">内容包 md</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>④</b>验收<br><span class="dim">人逐条核</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意。</strong>四段内容取自本课模拟的「新品上架内容包」工作流，
+            用来演示一段一段走的顺序，不是真实后台的执行记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">四段里最容易被省掉的是「验收」</span>
+        验收不是「检查一下」这种话，而是<strong>能一句判断对错的标准</strong>：
+        「三条卖点都对应参数表里的一行，多出来的删掉」「价格、材质、尺寸不得与参数表不一致，不一致标【待核】」。<br>
+        写成这样，AI 才知道做到哪一步算完；也只有这样，你才有资格把这件事交给它自己跑。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·把「新品上架内容包」写成四段工作流 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-工作流-新品上架内容包.md</code>——
+          输入、处理、输出、验收四段齐全，并标出哪一步最重复、哪一步必须由人拍板。</p>
+
+        <p><strong>第 1 步 · 复制这次要用的素材（2 分钟）</strong></p>
+        <p>从清单里挑<strong>「上新写标题、卖点、详情」</strong>这一条来画。它的原料是下面两份：
+          一份新品参数，一份往期写得不错的文案（当范本）。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 新品参数 + 往期范本（模拟）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【文件一　新品参数（本次要上的那款）】
+
+商品名：折叠收纳箱 大号
+类目：家居收纳 / 收纳箱
+材质：牛津布 + 内置钢架
+尺寸：展开 50×40×33 cm，折叠后厚 8 cm
+容量：66 L
+颜色：米白 / 浅灰
+承重：标注 20 kg（实测数据暂无）
+特点：两侧提手、顶部可视窗口、可折叠收纳、无需安装
+适用：换季衣物、被子、儿童玩具
+价格：日常价 89 元，活动价 69 元
+库存：320 件
+发货：48 小时内，从广州仓发
+售后：7 天无理由（以平台当前规则为准）
+备注：主图还没出，缺实拍图
+
+【文件二　往期范本（上一次卖得不错的那款）】
+
+标题：折叠收纳箱 大号 66L 牛津布钢架 可折叠免安装 被子衣物整理箱
+卖点三段：
+- 装得下：66 L 大容量，一箱装下冬天的厚被子，换季不用到处塞
+- 收得起：折叠后只有 8 cm 厚，用完塞进床底或衣柜缝，不占地
+- 拿得稳：内置钢架加两侧提手，装满 20 kg 提起不变形
+详情开头：换季最麻烦的不是收拾，是收拾完往哪放。这个箱子展开能装一床被子，
+用完折成 8 厘米塞床底，明年拿出来接着用。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按四段写出工作流（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令，跟上面两份素材一起发出去</b><span>素材在前、指令在后。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="画工作流的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我要把"新品上架内容包"这件事做成一个能反复跑的工作流。内容包指三样：商品标题、三段卖点、详情开头。
+请根据我给的新品参数和往期范本，写出工作流，存成 02-工作流-新品上架内容包.md。
+
+文件必须包含这四段，一段都不能少，每段用二级标题分开：
+1. 输入：开工前必须拿到什么，写清文件名和字段（例如 商品参数表.csv 里要有 尺寸/材质/容量/价格 这几个字段）。
+   参数缺的字段，写清"缺了就标【待补】，不许自己填"。
+2. 处理：写成能照着做的一二三步，每步一句话，不许写"分析并优化"这种空话。
+3. 输出：写死文件名和格式（内容包含：标题一行、卖点三条、详情开头一段），
+   并说明它落在工作目录的哪个位置。
+4. 验收：至少三条能判断对错的陈述句，例如"三条卖点各自对应参数表里的一行，
+   参数表里没有的卖点一律删除"。
+
+写完再补两段：
+- 【最重复的一步】：这四段里哪一步每次做的动作完全一样，指出来，说清为什么；
+- 【必须人拍板的一步】：哪一步不能交给机器自己定，指出来，说清为什么。
+
+约束：不许编造参数里没有的卖点；涉及平台规则的地方写"以平台当前规则为准"，不要写死。
+只新建这一个文件，不要改动工作目录里已有的文件。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它把工作流真跑一遍，用产出验图纸（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>图纸画得对不对，跑一遍就知道——
+            跑不通的地方正是图纸写得含糊的地方。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="试跑指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按刚才那份工作流，用这次的新品参数跑一遍，产出存成 03-内容包-样品.md。
+跑完对照"验收"那三条，逐条说明自己做到了没有；没做到的那条，说明卡在输入还是处理。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四段齐全，且「输出」写死了文件名</b><span>
+            写「生成一份内容包」这种空话不合格，必须是 <code>03-内容包-样品.md</code> 这种能落盘的。<br>
+            <em>写得含糊</em>：补一句「输出必须写死文件名，格式 03-内容包-样品.md」。</span></li>
+          <li><b>「验收」至少三条，且每条都能判断对错</b><span>
+            「认真检查」不算，「三条卖点各自对应参数表一行」才算。<br>
+            <em>写得像口号</em>：补一句「每条验收必须写成能回答是或否的陈述句」。</span></li>
+          <li><b>「最重复的一步」被指出来了，且指向写卖点</b><span>
+            四段里真正每次动作一样的，是「按参数提炼卖点、套三段结构」——下一节就沉淀它。<br>
+            <em>它指的是别的步骤</em>：让它按「每次做的动作是否完全一样」重新判断一遍，
+            这一句是判断的唯一标准。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-工作流-新品上架内容包.md</code> + <code>03-内容包-样品.md</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-split">
+      <h2>三、哪些沉淀成 Skill，哪些做成自动化<span class="sec__tag">本课核心</span></h2>
+      <p>
+        工作流画好了，接下来是这一课真正要教的那个判断：<strong>这条活，该不该往下沉淀？沉淀成什么？</strong>
+      </p>
+      <p>
+        判断只看两个变量：<strong>它到点自己跑，还是你说一句它才做</strong>；<strong>它的步骤固定不固定</strong>。
+        两个变量一交叉，答案就出来了：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th></th><th>步骤固定（能写成一二三步）</th><th>步骤每次都不一样</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>你说一句，它做一次</strong></td>
+              <td><span class="badge badge--p">沉淀成 Skill</span><br>写一次，以后一句话就能调出来</td>
+              <td>直接下指令就行<br>做成技能也没第二次会用</td>
+            </tr>
+            <tr>
+              <td><strong>到点 / 批量，它自己跑</strong></td>
+              <td><span class="badge badge--a">做成自动化</span><br>自动化里挂那个 Skill，两者不冲突</td>
+              <td><strong>先别做</strong><br>自己还没跑熟的东西，交给机器只会稳定地产出错的结果</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>对照这张表，本课这条工作流的分工就很清楚了：</p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>这一段</th><th>变量</th><th>结论</th></tr></thead>
+          <tbody>
+            <tr><td>按参数写三段卖点</td><td>你说才做 + 步骤固定</td><td><strong>沉淀成 Skill</strong></td></tr>
+            <tr><td>每天早上扫待上架商品批量出草稿</td><td>到点跑 + 步骤固定</td><td><strong>做成自动化</strong>（里面挂上面那个 Skill）</td></tr>
+            <tr><td>质量和尺寸写不写、活参不参加</td><td>步骤不固定 + 要担责</td><td><strong>留给人</strong>，机器只出草稿</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">技能和自动化不是二选一</span>
+        自动化管的是<strong>什么时候跑</strong>，技能管的是<strong>怎么跑</strong>。
+        所以正确做法是先有技能、再有自动化——自动化里调用那个技能，
+        规则只写一份，改规则时改技能就够了。<strong>没有技能支撑的自动化，等于把一堆要求硬塞进定时任务里，改一处要动两处。</strong>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">自动化的红线：能自动的是「出草稿」，不是「替你决定」</span>
+        电商岗位上这几件事<strong>绝对不要交出去</strong>：改价格、上下架、发布内容、回复评价、给顾客退款。<br>
+        能自动的只有<strong>生成草稿并落到指定目录</strong>——看完、改完、由你发出去。
+        最小权限原则在第 18 次课讲过，落到岗位上就三句：
+        <strong>只读该读的那张表、只写该写的那个目录、绝不碰发布与交易。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·把「按参数写三段卖点」沉淀成技能，并换一款商品验它稳不稳 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个名为 <code>ec-selling-points</code> 的技能，
+          外加它跑出来的两份产出——同一套规则用在两款不同商品上，格式一致。</p>
+
+        <p><strong>第 1 步 · 用第 8 次课的方法建技能（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>入口：左侧边栏「技能」→ 右上角「添加技能」→「创建技能」</b><span>
+            创建步骤第 8 次课讲过，这里不重复；本课只给你<strong>该往里写什么</strong>。</span></li>
+          <li><b>把下面整段粘进创建框，回车</b><span>
+            <span class="task__warn">技能名保持 <code>ec-selling-points</code> 不要改</span>——
+            后面第 4 步的自动化要靠名字找到它。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="创建技能的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个技能，技能名用 ec-selling-points。
+
+【这个技能用来做什么】
+根据商品参数，写出三段式卖点文案：装得下 / 收得起 / 拿得稳 这种结构，
+每段一句口语，先给具体事实，再说这个事实对买家意味着什么。
+
+【我希望它输出什么】
+标题一行（不超过 30 字，含品名 + 容量 + 材质 + 核心特点）
+卖点三条（每条不超过 40 字，格式为「短前缀：事实 + 对买家的好处」）
+详情开头一段（不超过 80 字，从一个具体麻烦场景切入，不铺背景）
+
+【必须遵守的规则】
+1. 只用参数里有的信息，参数里没有的一律不写，不许用"优质""高品质""匠心"这类没有信息量的词；
+2. 参数里缺的字段（例如承重没有实测数据），写【待补】，不许自己编一个数；
+3. 涉及平台规则（7 天无理由、发货时效等）一律写"以平台当前规则为准"，不写死；
+4. 只读不写：默认只把结果输出在对话里，落盘必须等我明确说文件名。
+
+【它什么时候该被使用】
+当我说"写卖点""写内容包""上新文案""三段式卖点"这类话的时候。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 新建对话，用它跑第一款商品（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话</b><span>⚠️ 必须新建——刚建好的技能在旧对话里常常不生效，
+            这是第 8 次课就踩过的坑。</span></li>
+          <li><b>把下面这段参数贴进去，空一行，再贴一行指令</b><span>一起发送。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第一款商品参数 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>商品名：折叠收纳箱 大号
+材质：牛津布 + 内置钢架
+尺寸：展开 50×40×33 cm，折叠后厚 8 cm
+容量：66 L
+承重：标注 20 kg（实测数据暂无）
+特点：两侧提手、顶部可视窗口、可折叠、免安装
+价格：日常价 89 元，活动价 69 元
+发货：48 小时内，广州仓
+</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="调用指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用 ec-selling-points 技能，根据上面的参数写三段式卖点，存成 03-内容包-样品.md。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 换一款商品再跑一次，验它稳不稳（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>再新建一个对话</b><span>两次都用同一个技能、不同的商品，才叫验证。</span></li>
+          <li><b>把下面这段参数和指令一起发出去</b><span>看它这次的结构跟上次一不一样。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第二款商品参数 + 指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>商品名：桌面收纳盒 三层
+材质：PP 塑料
+尺寸：24×18×30 cm
+容量：每层约 4 L，共三层
+承重：单层 3 kg
+特点：可叠加、抽屉式、带隔板、免安装
+价格：日常价 39 元
+发货：48 小时内，广州仓
+
+用 ec-selling-points 技能，根据上面的参数写三段式卖点，存成 03-内容包-样品2.md。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>两份产出的结构完全一致</b><span>都是「标题一行 + 卖点三条 + 详情开头一段」，
+            每条卖点都是「短前缀：事实 + 好处」这个形状。<br>
+            <em>两次长得不一样</em>：说明技能里的输出格式没写死，让它把「输出什么」那段改写成
+            「标题一行不超过 30 字；卖点三条每条不超过 40 字，格式固定为短前缀 + 冒号 + 内容」。</span></li>
+          <li><b>两份里都没有参数之外的信息</b><span>重点查「承重 20 kg」——参数里写着「实测数据暂无」，
+            它要是直接写成「承重 20 kg 不变形」，就是编了。<br>
+            <em>发现它编了</em>：补一条「参数标了暂无 / 待实测的字段，一律写【待补】，不许当成已确认数据来写」。</span></li>
+          <li><b>空话词一个都没有</b><span>「优质」「高品质」「匠心」「精美」这类词出现了，就是规则没生效。<br>
+            <em>还有漏网的</em>：把那几个词点名写进技能的禁止清单，让它只改这一条，不要整份重写。</span></li>
+        </ol>
+        <p class="note">沉淀的价值不在「这次写得有多好」，而在<strong>换个商品再来一次，还是这个水准</strong>。
+          一次写得好是运气，两次都一样才叫沉淀。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-keep">
+      <h2>四、沉淀之后怎么维护<span class="sec__tag">收口</span></h2>
+      <p>
+        技能装上、自动化开起来，最容易出现的不是「它坏了」，而是<strong>它没坏，但已经过时了</strong>：
+        平台改了标题字数上限、店铺换了主推类目、禁用的词表更新了——
+        它还在按三个月前的规矩干活，而且干得又快又稳，错得也又快又稳。
+      </p>
+      <p>所以沉淀完不算完，还得维护三样东西：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维护什么</th><th>具体写什么</th><th>多久做一次</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>版本记录</strong></td>
+              <td>改了哪条规则、为什么改、谁改的。写在技能文件里或单独一张维护卡</td>
+              <td>每改一次记一次，不记就查不回</td>
+            </tr>
+            <tr>
+              <td><strong>回归样例</strong></td>
+              <td>固定留一份商品参数当「标准考卷」，改完规则拿它跑一遍，看结构有没有散</td>
+              <td>每次改规则后必跑；平时一个月跑一次</td>
+            </tr>
+            <tr>
+              <td><strong>停用条件</strong></td>
+              <td>什么情况下关掉它（连续三个月没用 / 规则改了两次以上 / 换了岗位）</td>
+              <td>季度清一次，不用的关掉，别堆着</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">自动化任务还要多写两样</span>
+        第 18 次课讲过，这里落到岗位上再强调一次：执行时你不在场，所以
+        <strong>产出位置必须写死</strong>（不然找不到结果）、<strong>失败必须留痕</strong>
+        （不然它可能每天静默失败一次，你三个月后才发现）。
+        这两样没写的自动化，不是员工，是定时埋雷。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·把每日内容包做成定时自动化，并配一张维护卡 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个每天 09:00 自动跑的定时任务（只出草稿、不发布），
+          外加一份 <code>04-沉淀维护卡.md</code>——版本记录、回归样例、停用条件三样齐全。</p>
+
+        <p><strong>第 1 步 · 把定时任务建出来（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面整段指令复制，发出去</b><span>
+            创建定时任务的入口和前置条件第 18 次课讲过，这里不重复；
+            本课的重点是<strong>这段指令里的权限边界</strong>——一句都不能删。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="定时任务创建指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>帮我创建一个定时自动化任务，配置如下：
+
+任务内容：每天早上扫描工作目录下的 待上架商品.csv，
+  对每个商品调用 ec-selling-points 技能生成内容包草稿（标题一行 + 卖点三条 + 详情开头一段）。
+执行频率：每天 09:00 执行一次。
+产出位置：每个商品单独一个文件，落到 草稿/内容包/ 目录下，
+  文件名格式为 内容包-商品ID-日期.md，同一天重跑则覆盖。
+
+权限边界（必须严格遵守）：
+- 只读 待上架商品.csv，不读工作目录里的任何其他文件；
+- 只写 草稿/内容包/ 目录，不改动任何已有文件；
+- 绝不改价格、绝不上下架、绝不发布、绝不回复评价、绝不退款；
+- 拿不到商品参数的行，跳过并在产出里记一行"跳过：参数缺失"，不要自己补。
+
+失败处理：如果读不到 CSV、目录不存在或技能调用失败，
+  生成 草稿/内容包/执行失败.md，写明失败时间、失败环节和原因，不要什么都不留。
+
+创建完成后，把这份配置逐条读给我听一遍，让我核对。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 核对三处，并手动触发一次（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>逐项核它复述的配置：频率、产出位置、失败处理</b><span>
+            三处缺一处就让它补。<em>它没提失败处理</em>：直接补上面那段「失败处理」，
+            这是自动化最容易漏的一项。</span></li>
+          <li><b>手动触发一次</b><span>不等明天九点——立刻验证它能跑通、产出落在
+            <code>草稿/内容包/</code> 里。<em>无法立刻触发</em>：至少核完配置，
+            记下首次执行时间，到点回来检查。</span></li>
+          <li><b>验证后把多余权限收回来</b><span>确认它只用了「读一张表 + 写一个目录」，
+            其余一律收回——这本身就是最小权限的实践。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 让它把维护卡写出来（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>维护卡是沉淀的最后一块拼图——
+            没有它，三个月后没人记得这套东西当初为什么这么定。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="维护卡指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>为这次沉淀下来的两样东西（技能 ec-selling-points、每天 09:00 的内容包定时任务）
+写一张维护卡，存成 04-沉淀维护卡.md，包含三部分：
+
+1. 版本记录：表格形式，列为 日期 / 改了什么 / 为什么改 / 谁改的。
+   今天这一行填"初版建立"，改动原因写"从 02-工作流-新品上架内容包.md 沉淀而来"。
+
+2. 回归样例：指定 03-内容包-样品.md 这份为固定考卷，
+   写清"以后每次改完技能规则，都用它重跑一遍，比对结构是否仍是
+   标题一行 + 卖点三条 + 详情开头一段"。
+
+3. 停用条件：列出三条可判断的关停标准，例如
+   "连续三个月没有实际调用"、"平台标题字数规则变更后未同步"、"本人不再负责该店铺"。
+   每条写清关停时该做什么（关闭即可，不必卸载）。
+
+不要修改工作目录里已有的任何文件，只新建这一个文件。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>定时任务的配置里，权限边界那四条一条都没被它省掉</b><span>
+            重点看「绝不改价格 / 绝不上下架 / 绝不发布 / 绝不退款」。<br>
+            <em>被它简化了</em>：把上面那段权限边界原样再发一次，明确「这四条必须原文保留在任务配置里」。</span></li>
+          <li><b>手动触发后，<code>草稿/内容包/</code> 里真的有产出文件</b><span>
+            只在对话里给了内容包不算完成，必须在指定目录落盘。<br>
+            <em>没落盘</em>：补一句「每个商品单独存成文件，路径 草稿/内容包/内容包-商品ID-日期.md」。</span></li>
+          <li><b>维护卡三部分齐全，且停用条件是可判断的陈述句</b><span>
+            「觉得不好用就停用」不合格；「连续三个月没有实际调用」才算。<br>
+            <em>写得像口号</em>：补一句「每条停用条件必须能回答是或否，并写清关停时做什么」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：定时任务配置截图（或手动触发的产出文件）+ <code>04-沉淀维护卡.md</code>。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">把四步串起来看</span>
+        列清单，是<strong>看清自己在忙什么</strong>；画工作流，是<strong>把一件事说清楚</strong>；
+        沉淀技能，是<strong>让做法留下来</strong>；做成自动化，是<strong>让它自己按时跑</strong>。<br>
+        四步走到最后，你做的不是「用了几次 AI」，而是<strong>把自己岗位上的一套活，改造成了一个能一直运转的小系统</strong>——
+        换个人接手，照着清单、工作流和维护卡也能跑起来。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>列岗位高频任务清单时，为什么一定要给 AI 一份「一周流水账」，而不是让它按岗位名称直接列？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 流水账字数多，AI 更爱读长文本</li>
+            <li>B. 清单的原料必须是真实发生过的事，岗位名称太笼统，拆不出可执行的条目</li>
+            <li>C. 不给素材它就会拒绝回答</li>
+            <li>D. 流水账里自带频率统计，AI 不用算</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>「负责店铺日常运营」这类说法没法拆、也没法交给 AI；
+            「周一上午改了 6 个老商品标题」才看得出频率和步骤。
+            A、C 都不成立；D 说反了——频率恰恰是 AI 从流水账里<strong>数出来</strong>的，不是自带的。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>一条工作流的四段里，最容易被省掉、也最不该省的是哪一段？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 输入</li>
+            <li>B. 处理</li>
+            <li>C. 输出</li>
+            <li>D. 验收</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：D。</b>前三段写不出来，活根本跑不起来，所以不容易漏；
+            验收漏了照样能跑，只是<strong>每次结果好坏全靠运气</strong>。
+            验收要写成能判断对错的陈述句，比如「三条卖点各自对应参数表里的一行」，
+            写成「认真检查」等于没写。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>一件「每周都要做、步骤完全固定、但每次都等你说了才做」的事，应该怎么办？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 沉淀成 Skill</li>
+            <li>B. 做成定时自动化</li>
+            <li>C. 直接下指令就行，不用沉淀</li>
+            <li>D. 先别管，等它变成每天做再说</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A。</b>判断只看两个变量：<strong>谁触发</strong>和<strong>步骤固不固定</strong>。
+            你说才做 → 不该自动化（B 错）；步骤固定且每周都做 → 不该只下一次性指令（C 错）。
+            D 也不对：每周做一次就已经够本了，不必等到每天。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：把一件活做成自动化之后，就不用再维护技能了——反正它每天都跑，跑得好好的。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>自动化越稳定，过时之后错得越稳定——
+            平台改了规则、类目换了主推，它还在按三个月前的规矩批量产出。
+            所以要留<strong>版本记录、回归样例、停用条件</strong>这三样，改完规则拿固定样例重跑一遍再放它回去。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>多选：给电商岗位配自动化任务时，下列哪些做法符合最小权限原则？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 只读那张待上架商品表，其他文件一概不读</li>
+            <li>B. 只把草稿写进指定目录，不改动已有文件</li>
+            <li>C. 生成草稿后自动发布，省一道人工</li>
+            <li>D. 把改价、上下架、退款一并交给它，反正它跑得快</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：AB。</b>能自动的是<strong>出草稿</strong>，不是<strong>替你决定</strong>。
+            C、D 都越过了红线：发布、改价、上下架、退款这类动作一旦出错，
+            损失立刻落到店铺头上，而且你在场与否都拦不住。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>清单的原料是<strong>流水账</strong>：让 AI 先列、你来审，比从零列快十倍；四列是<strong>任务 / 频率 / 耗时 / 步骤是否固定</strong>；</li>
+          <li>工作流只有四段：<strong>输入 → 处理 → 输出 → 验收</strong>，最容易漏也最不该漏的是<strong>验收</strong>；</li>
+          <li>沉淀与否只看两个变量：<strong>谁触发 × 步骤固不固定</strong>；你说才做且步骤固定 → <strong>Skill</strong>，到点跑且步骤固定 → <strong>自动化</strong>；</li>
+          <li>技能和自动化<strong>不是二选一</strong>：自动化管什么时候跑，技能管怎么跑，自动化里挂技能；</li>
+          <li>沉淀之后维护三样：<strong>版本记录、回归样例、停用条件</strong>；自动化必须<strong>写死产出位置、失败留痕、权限最小</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天这份岗位高频任务清单，是你第一次把自己的工作当成一套<strong>流程</strong>来看。
+        下一课 <a class="xref" data-lesson="24">AI 辅助职业规划与岗位调研</a>
+        要谈「你往哪走」——有这份清单在手，谈能力和去向才有依据，不再是凭感觉。
+      </p>
+      <p class="note">
+        本页产品口径取自 www.workbuddy.cn 客户端用户文档，核对日期 <strong>2026-09-26</strong>；
+        岗位场景与店铺数据为教学示意（模拟数据），平台规则以平台当前规则为准。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 23 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）岗位高频任务清单里，哪一列直接决定这件活值不值得沉淀？
+A. 任务名称
+B. 频率
+C. 记录日期
+D. 负责人的姓名
+【答案】B
+【解析】频率决定"会不会有第二次"。一个月才做一次的活，做成技能也等不到第二次调用，沉淀的成本收不回来。耗时列只决定省多少时间，不决定值不值得做。
+
+2.（多选）一条完整的工作流应当包含下面哪几段？
+A. 输入
+B. 处理
+C. 输出
+D. 验收
+【答案】ABCD
+【解析】四段缺一不可。实践中漏得最多的是"验收"，而验收恰恰是判断结果好坏的唯一依据——写成"认真检查"这种话不算验收，要写成能回答是或否的陈述句。
+
+3.（单选）一件"每周都要做、步骤完全固定、每次由你说一句才做"的事，最合适的处理方式是？
+A. 直接下指令，每次重新说一遍要求
+B. 沉淀成 Skill
+C. 做成每天定时执行的自动化任务
+D. 交给连接器去做
+【答案】B
+【解析】判断只看两个变量：谁触发、步骤固不固定。你说才做就不该自动化，步骤固定且每周都做就不该每次重说。C 把"你说才做"变成了"到点自己跑"，改变了触发方式；D 与本题无关，连接器解决的是接外部工具，不是沉淀做法。
+
+4.（多选）关于 Skill 与自动化任务的关系，下面说法正确的是？
+A. 自动化管"什么时候跑"，技能管"怎么跑"
+B. 自动化任务里可以调用已经做好的技能
+C. 有了自动化就不需要技能了
+D. 两者是二选一，做了一样就不必做另一样
+【答案】AB
+【解析】C、D 都把两者对立起来了。规则写一份放在技能里、由自动化去调用，改规则时只改技能就够；没有技能支撑的自动化，等于把一堆要求硬塞进定时任务，改一处要动两处。
+
+5.（判断）把工作沉淀成自动化任务之后，就可以一直放着不管，因为它每天都在稳定执行。
+【答案】错误
+【解析】自动化越稳定，过时之后错得越稳定：平台改了规则、店铺换了主推类目，它还在按老规矩批量产出。所以要留版本记录、回归样例、停用条件这三样，改完规则用固定样例重跑一遍再放它回去。
+
+6.（多选）给电商岗位配置自动化任务时，符合最小权限原则的做法包括？
+A. 只读完成本次任务必需的那张表
+B. 只把草稿写入指定目录，不改动已有文件
+C. 生成草稿后由人确认再发布
+D. 把改价、上下架、退款一并交给自动化执行
+【答案】ABC
+【解析】能自动的是"出草稿"，不是"替你决定"。D 越过红线：改价、上下架、退款一旦出错，损失直接落到店铺头上，而且执行时你不在场，拦不住。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 这条活值不值得交给 AI ---------- */
+  var D1 = {
+    "d1-a": {
+      name: "每天早上做昨日销量日报",
+      freq: "每天 1 次",
+      fixed: "固定",
+      judge: "低",
+      result: "做成自动化",
+      lines: [
+        "<span class='hl'>四问逐条过：</span>",
+        "  ① 频率够高吗？　每天 1 次　<span class='ok'>✓ 够</span>",
+        "  ② 步骤固定吗？　取数 → 算同比 → 标异常 → 出表　<span class='ok'>✓ 固定</span>",
+        "  ③ 要人拍板吗？　数字是现成的，判断含量低　<span class='ok'>✓ 不用</span>",
+        "  ④ 到点跑还是你说才跑？　每天都在固定时间做",
+        "",
+        "<span class='hl'>结论：做成自动化。</span>到点自己跑 + 步骤固定，正落在表格右下那一格。",
+        "<span class='dim'>注意：它出的是日报草稿，异常要不要上报，仍然由人看。</span>"
+      ]
+    },
+    "d1-b": {
+      name: "给新品写三段卖点文案",
+      freq: "每周 3–5 次",
+      fixed: "固定",
+      judge: "中",
+      result: "沉淀成 Skill",
+      lines: [
+        "<span class='hl'>四问逐条过：</span>",
+        "  ① 频率够高吗？　每周 3–5 次　<span class='ok'>✓ 够</span>",
+        "  ② 步骤固定吗？　按参数提炼 → 套三段结构 → 控字数　<span class='ok'>✓ 固定</span>",
+        "  ③ 要人拍板吗？　写得好不好要人过目，但它不该每次从零学　<span class='hl'>△ 中等</span>",
+        "  ④ 到点跑还是你说才跑？　有新商品才写，是你说了才做",
+        "",
+        "<span class='hl'>结论：沉淀成 Skill。</span>你说才做 + 步骤固定，正落在表格左上那一格。",
+        "<span class='dim'>以后自动化要批量出草稿时，直接调用这个技能就行。</span>"
+      ]
+    },
+    "d1-c": {
+      name: "处理一次顾客差评投诉",
+      freq: "不定时",
+      fixed: "每次不同",
+      judge: "高",
+      result: "直接下指令，人拍板",
+      lines: [
+        "<span class='hl'>四问逐条过：</span>",
+        "  ① 频率够高吗？　不定时，谈不上周期　<span class='no'>✗ 不够</span>",
+        "  ② 步骤固定吗？　每单情况都不一样，没有一二三步　<span class='no'>✗ 不固定</span>",
+        "  ③ 要人拍板吗？　要道歉、要赔偿、要担责　<span class='no'>✗ 全靠人</span>",
+        "  ④ 到点跑还是你说才跑？　发生了才处理",
+        "",
+        "<span class='hl'>结论：直接下指令，让 AI 帮你起草话术，决定由人做。</span>",
+        "<span class='dim'>这类活做成自动化最危险：它会把上一单的处理方式套到下一单上。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.freq;
+    $("d1-k2").textContent = d.fixed;
+    $("d1-k3").textContent = d.judge;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-a", "d1-b", "d1-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+
+  /* ---------- 演示② 工作流四段逐步播放 ---------- */
+  var D2_STEPS = [
+    {
+      lines: [
+        "<span class='hl'>① 输入：开工前必须拿到什么</span>",
+        "  商品参数表：尺寸 / 材质 / 容量 / 承重 / 价格 / 发货",
+        "  往期范本：上次卖得不错的那款的标题与三步结构",
+        "  参数里缺的字段：标【待补】，不许自己填一个数",
+        "<span class='dim'>这一段的价值：下次不用再翻聊天记录找参数在哪。</span>"
+      ]
+    },
+    {
+      lines: [
+        "<span class='hl'>② 处理：一二三步写清楚</span>",
+        "  第 1 步：从参数表里挑出能变成事实的字段（容量、折叠厚度、承重）",
+        "  第 2 步：每个事实配一句「对买家意味着什么」，组成三段",
+        "  第 3 步：套往期范本的结构，控字数（标题 30 字内、卖点每条 40 字内）",
+        "<span class='dim'>写成「分析并优化」不算步骤——那只是愿望。</span>"
+      ]
+    },
+    {
+      lines: [
+        "<span class='hl'>③ 输出：写死文件名和格式</span>",
+        "  文件：03-内容包-样品.md",
+        "  内容：标题一行 + 卖点三条 + 详情开头一段",
+        "<span class='dim'>没有文件名就没有交接，也没有下次复用。</span>"
+      ]
+    },
+    {
+      lines: [
+        "<span class='hl'>④ 验收：写成能判断对错的陈述句</span>",
+        "  · 三条卖点各自对应参数表里的一行，多出来的删掉",
+        "  · 尺寸、材质、价格与参数表一致；不一致的标【待核】",
+        "  · 平台规则相关的一律写「以平台当前规则为准」",
+        "<span class='ok'>✓ 四段走完，这件事才算有了图纸</span>"
+      ]
+    }
+  ];
+  var d2Step = 0;
+  function d2Render() {
+    for (var i = 1; i <= 4; i++) {
+      var n = $("d2-n" + i);
+      n.className = "flow__node" + (i === d2Step ? " on" : " dim");
+      if (i < 4) {
+        var dot = $("d2-d" + i);
+        dot.className = "flow__dot" + (i < d2Step ? " run" : "");
+      }
+    }
+    if (d2Step > 0) window.Site.type($("d2-out"), D2_STEPS[d2Step - 1].lines, null);
+    else { $("d2-out").innerHTML = ""; }
+  }
+  $("d2-next").addEventListener("click", function () {
+    d2Step = d2Step >= 4 ? 1 : d2Step + 1;
+    d2Render();
+  });
+  $("d2-reset").addEventListener("click", function () {
+    d2Step = 0;
+    d2Render();
+  });
+})();
+</script>
+</body>
+</html>

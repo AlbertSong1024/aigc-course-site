@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第26次课 AI 模拟面试｜AIGC应用与实践</title>
+<meta name="description" content="把回答练到条件反射：60 秒自我介绍公式、三类高频面试题、STAR 应答、压力面试对抗与 AI 复盘——用 AI 当陪练，不当代笔。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="26" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="25">第 25 次课</a>把简历改到能过筛——那是一页纸的事。
+        但简历过关之后还有一关：<strong>坐在对面那个人会追问</strong>。
+        简历上写「整理旧书交换数据 800 余条」，面试官一句「重复的书名你是怎么判定的」，答不上来，这一条就等于没写。
+      </p>
+      <p>
+        这一课就解决这一件事：<strong>用 AI 当陪练，把答案练到不用想。</strong>
+        它的正确用法是<strong>出题、挑刺、追问</strong>，不是「帮我写一份自我介绍」——
+        写出来的答案你背得再熟，一被追问就露馅，因为那件事你没做过。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>背了一份标准答案，被追一句就卡壳</strong></td><td>背的是句子，不是经历——句子背完了就到头了，经历可以一直往下说</td></tr>
+            <tr><td><strong>「介绍一下自己」讲了三分钟，自己也不知道重点</strong></td><td>没有结构，想到哪说到哪；面试官听完只记得你很紧张</td></tr>
+            <tr><td><strong>说「我负责数据整理」，说不出整理了多少条、用了什么规则</strong></td><td>讲动词没讲事实；没有细节的回答在面试官耳朵里等于「这段不是我做的」</td></tr>
+            <tr><td><strong>面试官一质疑就改口，前后说法对不上</strong></td><td>没被追问过，第一次遇到压力就慌；慌了就补新数字，补的数字最容易被拆穿</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课有一条主线，四个实操全挂在它上面：<strong>AI 是陪练，不是答案库。</strong><br>
+        所有回答必须来自<strong>你自己真有的经历</strong>；AI 只负责出题、挑毛病、逼你把细节说圆。
+        凡是它替你编出来、而你没有的经历，一律不写进答案——写了就是给自己埋雷。<br>
+        另外，四个实操<strong>前后相接、共用一个人</strong>：本课模拟的一位大三学生，目标岗位是
+        <strong>人工智能训练师 / AI 应用开发助理</strong>。
+        ① 练出的自我介绍是 ② 的答题底料，② 里最难答的那道题在 ③ 用 STAR 展开讲，
+        ③ 讲完的那件事在 ④ 被压力面试官追着拆。四步走完，你手上是一套<strong>经得起追问的面试素材</strong>，不是四份互不相干的练习。
+      </div>
+      <p class="note">
+        本课涉及的产品口径取自 <strong>www.workbuddy.cn 客户端用户文档</strong>，核对日期 <strong>2026-09-26</strong>，
+        界面随版本更新，以你实际使用的版本为准。<br>
+        课内的学生经历、项目数据、岗位 JD 全部为<strong>教学示意（模拟素材）</strong>，用于讲清方法；
+        涉及面试节奏、语速字数一类说法属于<strong>普遍经验，非官方数据</strong>，不同行业、不同面试官差别很大，只作参考。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 60 秒自我介绍的三段公式（<strong>我是谁 → 我做过什么最有说服力的一件事 → 我为什么来这个岗</strong>），并按它写出一段 200–240 字的稿子；</li>
+          <li>让 AI 按<strong>自我介绍类 / 项目经历类 / 职业规划类</strong>各出 3 道题，逐题作答，并看懂它给出的评分与问题清单；</li>
+          <li>用 STAR 把一件事讲成<strong>四段</strong>，其中「R 结果」可量化，并能接住 AI 连追两层的细节追问而不改口；</li>
+          <li>在 AI 扮演的压力面试官<strong>质疑、打断、追矛盾</strong>时，用「承认边界 + 补一个细节」应对，不编新事实；</li>
+          <li>判断一份 AI 给的答案<strong>能不能用</strong>——判据是：里面有没有你自己没有的经历。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-intro"><b>01</b>自我介绍公式：60 秒里该装什么 <em>＋实操①</em></a>
+        <a href="#s-types"><b>02</b>三类高频面试题：每类想听的不是同一件事 <em>＋实操②</em></a>
+        <a href="#s-star"><b>03</b>STAR 应答：把一件事说圆、说到位 <em>＋实操③</em></a>
+        <a href="#s-pressure"><b>04</b>压力面试与 AI 点评：被追问还能站住 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="25">第 25 次课</a>用 STAR 改写过的简历经历——
+        本课所有回答就建立在那几段经历上，简历里没有的，面试里也不该凭空出现。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="27">第 27 次课</a>要用 Codex 做编程任务，
+        那件事的前提是<strong>把任务说清楚、说得可验收</strong>——今天练的「说细节、说量化、不编内容」是同一套本事。
+      </div>
+    </section>
+
+    <section class="sec" id="s-intro">
+      <h2>一、自我介绍公式：60 秒里该装什么<span class="sec__tag">开局</span></h2>
+      <p>
+        「请简单介绍一下自己」是面试里唯一一道<strong>你一定能提前准备</strong>的题，
+        也是丢分最多的一道题。丢分的原因不是紧张，是<strong>没人规定过这 60 秒里该装什么</strong>——
+        于是有人从家乡讲起，有人把简历念一遍，有人讲了三分钟还没讲到自己会干什么。
+      </p>
+      <p>
+        公式只有三段，顺序不能变：<strong>我是谁 → 我做过什么最有说服力的一件事 → 我为什么来这个岗</strong>。
+        三段各管一件事，缺一段，面试官就得自己猜。
+      </p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>说什么</th><th>大约占多长</th><th>最常见的跑偏</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>① 我是谁</strong></td>
+              <td>身份 + 专业 + 一个定位词，一句带过</td>
+              <td>10 秒</td>
+              <td>从籍贯、爱好、性格讲起——面试官要的是「你能干什么」，不是「你是谁」</td>
+            </tr>
+            <tr>
+              <td><strong>② 最有说服力的一件事</strong></td>
+              <td>一件<strong>具体的、带结果的</strong>事，说清你做了什么、结果是多少</td>
+              <td>35 秒</td>
+              <td>报一串项目名却不讲结果；或者讲「我们团队做了……」，听不出你干了哪部分</td>
+            </tr>
+            <tr>
+              <td><strong>③ 为什么来这个岗</strong></td>
+              <td>把岗位要求和上面那件事<strong>接起来</strong>，说清为什么是你</td>
+              <td>15 秒</td>
+              <td>说「贵司平台好、我想学习」——这话对任何公司都成立，等于没说</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一道「介绍一下自己」，跑题版和合格版差在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-a">跑题版</button>
+            <button class="btn btn--ghost" type="button" id="d1-b">空话版</button>
+            <button class="btn btn--main" type="button" id="d1-c">合格版</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>时长</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>可核事实</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>能被追问的点</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三版讲稿与点评取自本课模拟的学生素材，
+            时长按正常语速（每分钟约 200–240 字，属普遍经验，非官方数据）估算，用来演示三段公式的差别。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">「能被追问」是好事，不是缺点</span>
+        合格版自我介绍里有 2 个点会被追问——<strong>这说明你给了事实</strong>。
+        面试官追问「这 12 个人是怎么统计的」，你答得上来，这一条就从「听起来不错」变成「真的做过」。
+        反倒是零追问点的空话版最危险：不是因为它完美，而是因为<strong>没东西可问，也就没东西可信</strong>。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·写一段 60 秒自我介绍，让 AI 按 HR 视角点评并迭代 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-自我介绍-60秒.md</code>——
+          初稿一段、HR 视角点评一份（指出三处硬伤与两个会追问的点）、按点评改出的定稿一段，末尾附「改动说明」。</p>
+
+        <p><strong>第 1 步 · 把这次要用的经历卡取出来（2 分钟）</strong></p>
+        <p>
+          下面这张卡是本次练习的原料。<span class="task__warn">卡里最后一栏「不是我做的部分」不许删</span>——
+          它是后面两次追问练习的依据，删了就没法练「承认边界」。
+        </p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 模拟学生经历卡（教学示意，非真实个人数据）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【模拟学生经历卡（教学示意，非真实个人数据）】
+
+基本情况：林小满，大三，人工智能技术应用专业，2027 届。
+目标岗位：人工智能训练师 / AI 应用开发助理。
+
+经历一　Ollama 本地问答小工具（2026 年 3 月—5 月，课程项目 + 自用）
+- 做了什么：在本机部署 qwen3:1.7b，写了一个命令行问答工具，支持把课程 PDF 切段后检索，
+  回答时附上出处页码；断网可用。
+- 用了什么：Ollama、Python、简单的分块与检索逻辑、命令行参数。
+- 可量化结果：灌入 6 门课的 PDF，共 320 余页；同楼层 12 名同学在用（按装机登记记的）。
+- 不是我做的部分：模型不是我训的，量化版本是官方提供的；检索只做了最朴素的切段匹配，
+  没做向量库，也没做过效果评测。
+
+经历二　校园旧书交换活动数据整理（2026 年 4 月，院学生会志愿工作）
+- 做了什么：活动收来 800 余条图书登记数据，Excel 里书名重复、分类混乱、ISBN 大量缺失。
+  我先定了一套合并规则，再用公式加 AI 辅助清洗，最后整理成可检索的书目清单。
+- 用了什么：Excel（去重、分列、条件格式）、一套自己写的清洗规则、AI 辅助做分类归并。
+- 可量化结果：原始 859 条 → 清洗后 812 条（合并 47 条重复，删除重复行与空行）；
+  整理耗时 3 天；活动当天按清单完成交换 200 余册。
+- 不是我做的部分：活动报名与现场摆摊是其他干事负责的；最终书目清单的排版是宣传部做的；
+  我没有参与统计「交换成功率」，这个数字我没有。
+
+应聘动机：两个项目都指向同一件事——把乱的数据变成能用的数据，
+而人工智能训练师的日常工作很大一块就是数据清洗与标注。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按三段公式写出初稿（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务</b><span>工作目录选 <code>wb-试验</code>（沿用前几课那个目录即可）。</span></li>
+          <li><b>把上面那张经历卡整段贴进对话，空一行，再把下面这段指令贴进去，一起发送</b><span>
+            <span class="task__warn">整段粘贴，不要自己改写</span>——三段顺序、字数上限、不许新增经历这三条是一套的，改一半它会开始发挥。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="写初稿的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你现在的角色是帮我打磨面试稿的教练。请根据上面的经历卡，写一段 60 秒的自我介绍初稿，
+存成工作目录下的 01-自我介绍-60秒.md。
+
+结构必须严格按三段，顺序不能变：
+1. 我是谁：身份 + 专业 + 一个定位词，一句带过；
+2. 我做过什么最有说服力的一件事：只挑经历卡里的一件事展开，
+   必须说清"我做了什么"和"结果是多少"；
+3. 我为什么来这个岗：把岗位要求（数据清洗、标注、提示词、工具落地）
+   和上面那件事接起来，不许写"贵司平台好""我想学习"这类对任何公司都成立的话。
+
+硬约束：
+- 全文 200—240 字，超出就删，不许为了凑字数加修饰；
+- 只许使用经历卡里已有的事实与数字，一个字都不许新增；
+- 经历卡里"不是我做的部分"绝对不许写进稿子；
+- 不许出现"熟练掌握""热爱""抗压能力强""团队精神"这类没有信息量的词。
+
+写完在文件末尾加一段"【初稿自检】"，逐条回答：三段是否齐全、字数多少、
+有没有用到卡外的事实。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它按 HR 视角挑刺，你只负责看它挑得对不对（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>这一步是整课的关键：<strong>它挑的毛病就是你面试时会被问到的地方</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="HR 视角点评指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在切换视角：你是一名看过三千份简历的 HR，正在听一个应届生讲这段自我介绍。
+请挑毛病，追加写进 01-自我介绍-60秒.md，标题为"【HR 视角点评】"。
+
+必须给出这三样，一样都不能少：
+1. 三处硬伤：按严重程度排序，每条写清"哪一句 → 为什么它是硬伤 → 换成什么说法会更好"；
+2. 两个会被追问的点：指出稿子里哪两处我会被追问，并各写一句"追问时我该怎么答"，
+   答案只能来自经历卡，卡里没有的写【卡里没有，需要我补真实经历】；
+3. 一句总评：整体像不像一个真做过事的人在说话，说清判断依据。
+
+不许把稿子改好——这一步只许点评，不许动手改。
+</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 让它按点评改出定稿（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>改完的版本才是你最终要练的那一段。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="改定稿的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按上面三处硬伤修改初稿，输出定稿，追加进 01-自我介绍-60秒.md，标题为"【定稿】"。
+
+要求：
+- 定稿仍然 200—240 字，三段结构不变；
+- 每一处改动都在"【改动说明】"里写清：改了哪一句、对应哪条硬伤、为什么这么改；
+- 经历卡之外的新事实仍然一个都不许加，没有就不写；
+- 点评里标了【卡里没有】的地方，定稿里保持不写，不要替我补。
+
+最后把定稿单独输出一遍，方便我照着念。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>定稿在 200—240 字之间，三段各就各位</b><span>
+            只有两段说明第三段被它写成套话又删了。<br>
+            <em>字数超了</em>：补一句「超过 240 字的从句一律拆掉，优先删修饰语，不许删事实」。</span></li>
+          <li><b>「HR 视角点评」里三处硬伤都指向了具体句子，且给了替换说法</b><span>
+            写「整体还不错，建议更自信一些」这种不算硬伤。<br>
+            <em>挑得太虚</em>：补一句「每条硬伤必须引用原句，并给出替换后的写法」。</span></li>
+          <li><b>定稿里没有出现经历卡之外的任何事实或数字</b><span>
+            重点查有没有多出「模型评测」「用户增长」这类卡里没有的内容。<br>
+            <em>它加戏了</em>：把经历卡再贴一次，明确「卡外事实一律删除，宁可少写」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这份 <code>01-自我介绍-60秒.md</code>。下一节要拿它当答题底料。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-types">
+      <h2>二、三类高频面试题：每类想听的不是同一件事<span class="sec__tag">方法</span></h2>
+      <p>
+        面试题目千变万化，但<strong>想确认的东西只有三类</strong>。
+        很多人答不好，不是因为不会说话，而是因为<strong>没听出这道题属于哪一类</strong>——
+        拿答「自我介绍」的方式去答「项目经历」，讲得越顺，越像背的。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>类型</th><th>典型问法</th><th>考官真正想确认</th><th>答错的典型样子</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>自我介绍类</strong></td>
+              <td>说说你自己 / 你为什么适合这个岗位 / 用三句话介绍你自己</td>
+              <td>你能不能在 60 秒里<strong>说清自己的价值</strong></td>
+              <td>按时间顺序报履历；或者讲性格、讲爱好，最后也没讲到能干什么</td>
+            </tr>
+            <tr>
+              <td><strong>项目经历类</strong></td>
+              <td>讲一个你做过的项目 / 你遇到最大的困难是什么 / 你和别人是怎么分工的</td>
+              <td>这件事<strong>是不是你真做的</strong>，细节站不站得住</td>
+              <td>只讲背景和分工，讲到「我做了什么」就一句带过；一被追问细节就说「大概是」</td>
+            </tr>
+            <tr>
+              <td><strong>职业规划类</strong></td>
+              <td>三年后你想成为什么样 / 为什么选我们 / 你最近在学什么</td>
+              <td>你是不是<strong>随便投的</strong>、能不能待得住</td>
+              <td>答「先学习再说」「公司平台好」——对任何公司都成立，等于没答</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        三类看着不一样，落到底下是同一件事：<strong>都要细节，都怕空话。</strong>
+        自我介绍类要的是「一件带结果的事」，项目经历类要的是「这件事里你亲手做的那部分」，
+        职业规划类要的是「你的选择和过去做过的事连得上」。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">让 AI 出题时，必须限定它「只从你的经历里出」</span>
+        不限定的话，它会按岗位JD出一堆通用题——那些题网上都有标准答案，练了等于没练。
+        限定之后出的题才<strong>贴着你的经历</strong>，才可能问到你没准备的地方。
+        <strong>练的价值恰恰在被问住的那一下</strong>，不在于答得漂亮。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让 AI 出三类共 9 道题，逐题作答、评分、指出问题 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-高频题演练.md</code>——
+          9 道题（三类各 3 题）、每题你的作答、AI 的评分与问题标注，末尾一段「最该补的三处细节」。</p>
+
+        <p><strong>第 1 步 · 让它出题：三类各 3 题，只能从你的经历里出（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话，先把经历卡贴进去</b><span>
+            沿用动手做 ① 那张卡（页面往上翻可再复制一次）。
+            <span class="task__warn">必须新建对话</span>——旧对话里它已经进入「改稿」状态，出题会带着上一轮的思路。</span></li>
+          <li><b>空一行，把下面这段指令贴进去，一起发送</b><span>素材在前、指令在后。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="出题指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你是人工智能训练师岗位（也接受 AI 应用开发助理）的面试官。请针对上面这张经历卡，
+出一套面试题，存成 02-高频题演练.md。
+
+数量与分布：共 9 题，三类各 3 题，分三节列出——
+第一节 自我介绍类 3 题；第二节 项目经历类 3 题；第三节 职业规划类 3 题。
+
+出题规则：
+1. 每一题都必须能从经历卡里找到答题素材，不许出通用题（例如"你的优缺点是什么"这类），
+   也不许出需要卡外信息才能答的题；
+2. 项目经历类至少有一题专门追问"不是我做的部分"那一栏涉及的边界；
+3. 每题后面附一行【考官想确认】，一句话写清这题到底在问什么；
+4. 不要给参考答案，也不要给答题思路——这一步只出题。
+
+出完在文件末尾加一句：答题要求为每题不超过 120 字，只能使用经历卡里的真实素材。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 逐题作答，每题单独发一条（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>按它的顺序，把第 1 题的作答发进对话</b><span>
+            每题<strong>单独发一条</strong>，不要九题一次发完——一次发完它只会笼统评价，逐题发才会逐题挑毛病。</span></li>
+          <li><b>作答只许用经历卡里的内容，卡里没有的就写「这段我没有，需要补真实经历」</b><span>
+            写出来不丢分，编出来才丢分。</span></li>
+          <li><b>九题发完后，把下面这段指令发进去</b><span>让它把九轮作答整理进文件。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="整理作答的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把我上面九条作答按题号整理进 02-高频题演练.md，每题下面分为三块：
+【我的作答】【你的评分】【问题标注】。
+评分用四个维度，各打 1—5 分并给出理由：切题 / 有细节 / 有量化 / 结构清楚。
+问题标注只写最要命的一条，写清"缺什么"，不要泛泛夸。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它挑出最该补的三处细节（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>这一步的产出是这轮练习真正的收获清单。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="收口指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>通读九题的作答与评分，在 02-高频题演练.md 末尾追加"【最该补的三处细节】"：
+1. 挑出三个在面试中最可能露馅的地方，每个写清：哪一题的哪一句 → 面试官会怎么追问
+   → 我现在答不上来是因为卡里没有，还是因为我没说出来；
+2. 区分标注：属于"卡里没有"的，写【需要真实经历补充】；
+   属于"卡里有但我没说"的，直接给出补进去的写法；
+3. 不许替我编造任何卡里没有的经历或数字，没有就说没有。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>9 道题分三节，且每题后面都有一行「考官想确认」</b><span>
+            缺这一行说明它是按模板批量出的题，不是为你出的。<br>
+            <em>没有这行</em>：补一句「每题必须附一行【考官想确认】，不写就不算完成」。</span></li>
+          <li><b>项目经历类里有一题在追问「不是我做的部分」那个边界</b><span>
+            例：「你说模型不是你训的，那如果让你调效果，你会从哪里下手？」<br>
+            <em>它回避了边界</em>：点名要求「至少一题必须追问经历卡里'不是我做的部分'」。</span></li>
+          <li><b>「最该补的三处细节」里把「卡里没有」和「卡里有但没说」分开了</b><span>
+            混在一起写，你就不知道该去补经历还是补说法。<br>
+            <em>没区分</em>：补一句「每条必须二选一标出：需要真实经历补充 / 卡里有但我没说」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-高频题演练.md</code>。第三类题里最难答的那道，下一节用 STAR 拆开讲。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-star">
+      <h2>三、STAR 应答：把一件事说圆、说到位<span class="sec__tag">本课核心</span></h2>
+      <p>
+        项目经历类题目最常见的两种死法：一种<strong>二十秒就没了</strong>——
+        「我做过一个旧书交换的数据整理，就是收数据然后清洗，最后整理成清单」，说完没了；
+        另一种<strong>讲了五分钟全是背景</strong>——活动怎么发起的、学生会怎么分工的，讲到正题时面试官已经走神了。
+      </p>
+      <p>
+        两种死法是同一个毛病：<strong>没有骨架</strong>。STAR 就是这副骨架，四段，一段都不能少：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>回答什么</th><th>大概几句</th><th>最容易塌的地方</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>S 情境</strong></td>
+              <td>什么时候、什么场景下发生的这件事</td>
+              <td>一两句</td>
+              <td><strong>讲太长</strong>——背景讲了一分钟，正事还没开始</td>
+            </tr>
+            <tr>
+              <td><strong>T 任务</strong></td>
+              <td>你要解决的具体问题是什么、做到什么算成</td>
+              <td>一句</td>
+              <td>写成「参与项目」这种岗位描述，看不出你被交待了什么</td>
+            </tr>
+            <tr>
+              <td><strong>A 行动</strong></td>
+              <td>你<strong>亲手</strong>做了哪几步，按一二三说</td>
+              <td>三到四句</td>
+              <td>全程说「我们」——听不出哪一步是你干的</td>
+            </tr>
+            <tr>
+              <td><strong>R 结果</strong></td>
+              <td>结果是多少，最好能和数字对上</td>
+              <td>一两句</td>
+              <td><strong>没有数字</strong>，只剩「效果很好」「得到了认可」</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② STAR 四段走完之后，再被追问两层还能不能站住</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
+            <button class="btn btn--accent" type="button" id="d2-ask">追问两层</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>S</b>情境<br><span class="dim">一两句</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>T</b>任务<br><span class="dim">一句</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>A</b>行动<br><span class="dim">我做的三步</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>R</b>结果<br><span class="dim">可量化</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>示例内容取自本课模拟的「校园旧书交换数据整理」经历，
+            用来演示四段的顺序与两轮追问的走向，不是任何真实面试的记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">追问两层，是检验真假的唯一办法</span>
+        第一层追问通常问<strong>「你是怎么做的」</strong>——照着准备过的答案都能答上来。
+        第二层追问的是<strong>「你刚才那句话里，有个东西对不上」</strong>——
+        859 条洗成 812 条，那 47 条去哪了？这种问题没准备过的人，只能现编，一编就露馅。<br>
+        所以练 STAR 不是练到「能讲完四段」，而是练到<strong>四段里随便挑一句往下挖，你都接得住</strong>。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·用 STAR 答一道行为面试题，让 AI 连追两层 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-STAR-项目经历.md</code>——
+          S/T/A/R 四段完整作答（R 带数字）、第一层两问与补答、第二层两问与补答、末尾「还能往下挖吗」自查。</p>
+
+        <p><strong>第 1 步 · 让它把那件事写成 STAR 四段（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把经历卡贴进去</b><span>
+            这次要展开的是<strong>经历二：校园旧书交换数据整理</strong>。
+            <span class="task__warn">必须新建对话</span>——上一轮它是「出题+评分」的身份，这轮要换成「写稿+追问」。</span></li>
+          <li><b>空一行，把下面这段指令贴进去，一起发送</b><span>把「R 必须可量化」和「不许编数字」同时写死，它才不会为了凑结果给你造一个数。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="STAR 写作指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>题目：讲一件你把一个混乱的数据整理成能用的数据的经历。
+请以模拟学生经历卡里的"校园旧书交换活动数据整理"为素材，按 STAR 四段作答，
+存成 03-STAR-项目经历.md。
+
+四段要求：
+- S 情境：不超过两句，只交代时间、场景、数据从哪来；
+- T 任务：一句写清"我要解决的具体问题是什么"，不许写"参与了数据整理"；
+- A 行动：写我亲手做的三到四步，每一步一句，主语必须是"我"，不许写"我们"；
+- R 结果：必须给出可量化的结果，直接引用经历卡里的数字
+  （原始条数、清洗后条数、耗时、活动当天交换册数），并加一句这个结果带来了什么。
+
+硬约束：
+1. 只许使用经历卡里的素材与数字，一个都不许新增；
+2. 经历卡里"不是我做的部分"（报名、摆摊、排版、交换成功率）一律不许出现在我做的事里；
+3. 如果某个结果确实没有数字，写【此项无量化数据】，不许自己估算一个数；
+4. 全文控制在 350 字以内。
+
+写完在末尾加一段"【四段自检】"：逐段标出字数，并说明 R 段用了哪几个来自卡里的数字。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它追第一层：挑两个最容易被问住的点（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            它问的是「怎么做到的」——这一层你照着四段答，通常接得住。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第一层追问指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在你是面试官。针对上面这份 STAR 作答，提出两个最可能被追问的问题，
+追加进 03-STAR-项目经历.md，标题为"【第一层追问】"。
+
+要求：
+- 两问都必须是"怎么做到的 / 为什么这么做"这一类，针对 A 行动里的具体步骤；
+- 每问后面不要给答案，等我回答；
+- 不要问笼统的"你有什么收获"，也不要夸我答得好。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>把这两问的作答发进对话</b><span>
+            作答只能取经历卡里的内容；卡里没有的，直接写「这段我没有，需要补真实经历」，
+            <span class="task__warn">不要编</span>——下一层就是靠这个把你问住的。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 让它追第二层：从你刚才的补答里找矛盾（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令发出去</b><span>
+            第二层才是关键——它要从你刚说的话里找对不上的地方。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第二层追问指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>继续当面试官，这是第二层追问：请从"我刚才的补答"里挑出两处最可能站不住的地方继续追问，
+追加进 03-STAR-项目经历.md，标题为"【第二层追问】"。
+
+优先挑这几类（挑到哪类就问哪类）：
+- 数字对不上：例如 859 条洗成 812 条，被合并的 47 条具体是哪些、怎么处理的；
+- 规则含糊：例如"按书名去重"到底以什么为准，同名不同版次算不算重复；
+- 边界越界：例如清洗规则是我定的，那谁审核的；我没有参与的部分为什么我没参与。
+两问都要具体到某一句原话，不许问空泛的问题。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>作答发进去，然后把下面这段指令发出去收口</b><span>让它自己判断这段经历还能不能往下挖。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="收口自查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>追加一段"【还能往下挖吗】"到 03-STAR-项目经历.md：
+1. 判断我这两层补答里，有没有出现经历卡之外的新事实或新数字，有就逐条点出来并标【卡外，需删除】；
+2. 指出还有哪一处再被追一层我就答不上来，写清那处缺的是"真实经历"还是"说法"；
+3. 给一句话结论：这段经历现在经得起几层追问。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>R 结果段里有来自经历卡的具体数字，且没有编造的新数字</b><span>
+            要能看到「859 → 812」「3 天」「200 余册」这类实数；写「效果很好」不合格。<br>
+            <em>它给的数卡里没有</em>：补一句「所有数字必须来自经历卡，卡里没有的写【此项无量化数据】」。</span></li>
+          <li><b>两层追问都指向了原话里的具体一处，不是泛泛而问</b><span>
+            「你有什么收获」不算第二层追问。<br>
+            <em>问得太虚</em>：补一句「每问必须引用我作答里的原话，再针对那句话追问」。</span></li>
+          <li><b>「还能往下挖吗」里点出了至少一处「再追一层就答不上来」的地方</b><span>
+            一条都没点出来，说明它没真去对，只是走过场。<br>
+            <em>它说"都很扎实"</em>：让它按「数字对不上 / 规则含糊 / 边界越界」三类逐个过一遍，每类至少报一条。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-STAR-项目经历.md</code>。下一节，压力面试官要拿这份东西来拆你。</p>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">讲不出来和编不出来，是两种不同的缺</span>
+        自查里如果标的是<strong>「缺说法」</strong>，改一改措辞就能补上；
+        如果标的是<strong>「缺真实经历」</strong>，那只能回去补经历——
+        这正是本课主线要说的：<strong>AI 能帮你把话说圆，补不了你没有的事。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-pressure">
+      <h2>四、压力面试与 AI 点评：被追问还能站住，才算会<span class="sec__tag">收口</span></h2>
+      <p>
+        前面三节练的都是<strong>你把话讲顺</strong>。真实的面试现场还有一半是<strong>对面不让你讲顺</strong>：
+        你讲到一半被打断、刚说完的数字被质疑、前后两句话被他对到一起发现矛盾。
+        很多人第一次遇到这种场面就慌，一慌就改口，改口就前后对不上——<strong>面试里最致命的从来不是答错，是改口。</strong>
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>压力动作</th><th>他实际在做什么</th><th>应对口诀</th><th>最忌讳的反应</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>质疑</strong><br><span class="note">「这个数字是真的吗」</span></td>
+              <td>不是真怀疑你造假，是看你说得确不确定</td>
+              <td><strong>先认边界，再补一个细节</strong>：说清这个数字怎么来的、统计口径是什么</td>
+              <td>马上改口说「大概……也可能是……」</td>
+            </tr>
+            <tr>
+              <td><strong>打断</strong><br><span class="note">「停一下，直接说结果」</span></td>
+              <td>看你有没有重点，能不能一句话给结论</td>
+              <td><strong>先给结论，再问要不要展开</strong>：一句说完结果，补一句「要我讲下过程吗」</td>
+              <td>被吓住，从头再讲一遍</td>
+            </tr>
+            <tr>
+              <td><strong>追矛盾</strong><br><span class="note">「你刚才说 A，现在又说 B」</span></td>
+              <td>看你是不是在现编</td>
+              <td><strong>承认，然后拿一件事把它接上</strong>：说清两句各自的语境，不硬拗</td>
+              <td>为了圆回来，现场造一个新说法</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 三种压力动作：同一件事，站得住和改口只差一句</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d3-a">质疑</button>
+            <button class="btn btn--ghost" type="button" id="d3-b">打断</button>
+            <button class="btn btn--main" type="button" id="d3-c">追矛盾</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d3-k1">—</b><span>应对动作</span></div>
+            <div class="kpi"><b class="acc" id="d3-k2">—</b><span>最忌讳</span></div>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意。</strong>三段对话取自本课模拟的面试场景，用来演示「承认边界 + 补细节」这个固定动作，
+            不是真实面试记录；各公司面试风格差异很大，此处只讲通用做法。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：被追问时绝不允许新增事实</span>
+        人在压力下最容易做的事，是为了把话圆回来<strong>临时补一个细节</strong>——
+        补的数字、补的环节、补的「我们还做了……」，全是你没准备过的，也就全是下一层追问的靶子。<br>
+        正确做法只有一句：<strong>这块我没参与，我了解的是……</strong>
+        承认不知道丢的是一分，编造被拆穿丢的是整场。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·让 AI 扮演压力面试官，你应对三轮，再要一份复盘 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>04-压力面试复盘.md</code>——
+          三轮压力对抗（质疑 / 打断 / 追矛盾）记录与你的应对、AI 的复盘要点，末尾「三条改法」。</p>
+
+        <p><strong>第 1 步 · 让它进入压力面试官角色（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把经历卡和 <code>03-STAR-项目经历.md</code> 的内容一起贴进去</b><span>
+            它要拆的就是你上一节写的那段。<span class="task__warn">必须新建对话</span>——
+            角色指令必须是对话的第一条，跟在别的任务后面它进入不了角色。</span></li>
+          <li><b>把下面这段角色指令贴在素材后面，一起发送</b><span>
+            <span class="task__warn">整段粘贴，不许删「不许放水」那几条</span>——删了它就会变成温和的问答，练不到压力。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="压力面试官角色指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>从现在起你是压力面试官，面试岗位：人工智能训练师。我是应届生，
+刚才已经用 STAR 讲过"校园旧书交换数据整理"这段经历（内容在上面）。
+
+请按三种压力动作各来一轮，一轮一次，等我回答后再上下一轮：
+第一轮 质疑：挑我作答里最不确定的一个数字，直接质疑它的真实性；
+第二轮 打断：我回答到一半时打断我，要求我只说结论，不许展开过程；
+第三轮 追矛盾：把我这一次回答和前面任何一处说法对起来，指出矛盾并要我解释。
+
+角色约束：
+1. 不许放水，不许安慰，不许说"答得不错"，每轮只给压力；
+2. 不许提前给提示，也不许告诉我"你可以这样答"；
+3. 每轮只问一个问题，不要一次抛好几个；
+4. 只针对上面素材里真实存在的内容提问，不要凭空造我的经历；
+5. 三轮走完之前不要退出角色。
+
+先发第一轮。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 三轮应对：每轮只做「承认边界 + 补一个细节」（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>第一轮作答时，把下面这段应对句式复制出来，按实际情况填进你的答案</b><span>
+            三个动作的顺序不能变：<strong>先认边界 → 再补一个细节 → 不新增事实</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="应对句式模板 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【应对句式（三类压力通用，只许往里填经历卡里已有的内容）】
+
+质疑：
+"这个数字是（说清来源与统计口径，例如：按装机登记记的 / 按清洗前后的行数算的）。
+它的口径是（一句话说清限定范围，例如：只算同楼层登记过的，没登记的不在内）。
+更精确的数字我没有，这块我不编。"
+
+打断：
+"结论是（一句说完结果，带数字）。过程要我展开讲吗？"
+
+追矛盾：
+"这两句说的不是同一件事：（分别说清各自的语境，两句都要来自经历卡）。
+我刚才那句讲得不准确，准确说法是（回到卡里的原话）。"
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>三轮全部答完后，把下面这段指令发出去，让它把过程写成文件</b><span>
+            记录交给它写，你只核对它有没有记错你的应对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="记录指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把刚才三轮对抗整理成 04-压力面试复盘.md，按"第一轮（质疑）/ 第二轮（打断）/ 第三轮（追矛盾）"
+分三节，每节写三部分：【你的提问】【我的应对】【这一轮我在测什么】（第三部分由你写，
+一句话说清这一轮想看我会不会改口）。
+不要美化我的应对，也不要替我补内容，我怎么答的就怎么记。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 退出角色，要一份复盘（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            这一步是四个实操的收口：<strong>让它把刚才你被问住的地方逐条摊开</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复盘指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>退出压力面试官角色，改回面试教练。请读 04-压力面试复盘.md，追加"【复盘要点】"：
+
+1. 三处最容易露馅的地方：逐条写清"哪一轮的哪一句 → 为什么这里最容易露馅 →
+   下次该怎么说"，改法必须基于经历卡里已有的内容；
+2. 改口检测：逐轮检查我有没有为了圆话而新增事实或数字，有就点出来并标【新增，需删除】；
+3. 三条改法：给出三条可以立刻照做的改动，每条写清"改前 / 改后"的对照；
+4. 一句总评：如果明天就去面试，我这四段素材里哪一段最稳、哪一段最危险。
+
+不许替我编造经历卡之外的经历或数字。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三轮压力动作齐了，且它全程没有安慰、没有提前给提示</b><span>
+            出现「答得不错」「你可以这样答」说明它没进角色，这一轮白练。<br>
+            <em>它放水了</em>：把角色指令里第 1、2 条再发一次，明确「重来第一轮，不许安慰、不许提示」。</span></li>
+          <li><b>「改口检测」里有明确结论，且点出了新增事实（哪怕结论是「没有新增」）</b><span>
+            这一栏空着，等于没做检测。<br>
+            <em>它没写这一栏</em>：补一句「必须逐轮列出我有没有新增事实或数字，没有也要写明『未发现新增』」。</span></li>
+          <li><b>「三条改法」每条都有改前 / 改后的对照，且改后内容全部来自经历卡</b><span>
+            只写「建议更具体一点」这种不算改法。<br>
+            <em>它改出了卡外内容</em>：把经历卡再贴一次，明确「改后文本里的每个事实都必须能在卡里找到出处」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>04-压力面试复盘.md</code>。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">把四步串起来看</span>
+        写自我介绍，是<strong>把价值说清</strong>；刷三类高频题，是<strong>把每类题听懂</strong>；
+        用 STAR 讲一件事，是<strong>把细节说圆</strong>；扛压力面试，是<strong>被拆了还不改口</strong>。<br>
+        四步走到最后，你练的不是「背会了九道题的答案」，而是——
+        <strong>随便从你的简历里挑一句，往下挖三层，你都接得住。</strong>
+        这才是把回答练到条件反射的意思。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>让 AI 写一份自我介绍然后背下来，最主要的毛病是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. AI 写的文笔不够好，读起来不自然</li>
+            <li>B. 背的是句子不是经历，一被追问就露馅</li>
+            <li>C. 面试官能一眼看出这是 AI 写的</li>
+            <li>D. 花的时间太长，不如自己写</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>句子背完就到头了，往下挖一层就没有了；而面试官恰恰是靠追问来判断真假的。
+            A、D 都不是主要问题——AI 写的稿子文字通常不差，也很快；
+            C 也不成立，重点不是「像不像 AI 写的」，而是<strong>里面有没有你真做过的事</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>多选：60 秒自我介绍的三段公式包括下面哪几段？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 我是谁</li>
+            <li>B. 我做过什么最有说服力的一件事</li>
+            <li>C. 我的家庭情况和兴趣爱好</li>
+            <li>D. 我为什么来这个岗</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABD。</b>三段各管一件事：身份、证据、匹配。
+            C 是最常见的跑偏——面试官要的是「你能干什么」，家庭与爱好在这 60 秒里不提供这个信息。
+            B 这一段要的是<strong>一件带结果的事</strong>，不是一串项目名。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>STAR 四段里，最常被省略量化数字、也最容易说塌的是哪一段？</span></div>
+          <ul class="quiz__opts">
+            <li>A. S 情境</li>
+            <li>B. T 任务</li>
+            <li>C. A 行动</li>
+            <li>D. R 结果</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：D。</b>R 段只剩「效果很好」「得到了认可」是最常见的塌陷。
+            S 讲太长、A 只说「我们」也都是毛病，但<strong>没有数字的 R 会让整段经历看起来没做完</strong>——
+            而且它正是面试官最爱追问的那一句。没有数字就写【此项无量化数据】，<strong>不要估一个数填上</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>压力面试中被追问到你确实不知道的地方，正确的做法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 立刻改口，换一个更稳妥的说法</li>
+            <li>B. 为了把话圆回来，临时补一个相关的细节</li>
+            <li>C. 承认这块我没参与，并把话题接回我确实了解的部分</li>
+            <li>D. 沉默几秒，等面试官自己换下一题</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>改口（A）和补细节（B）都是在压力下现编，
+            而现编的内容恰恰是下一层追问的靶子——<strong>面试里最致命的不是答错，是改口</strong>。
+            D 也不好，沉默解决不了问题。C 的做法是「承认边界 + 补一个真知道的细节」，
+            丢一分，但保住了整场的可信度。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：STAR 练到「能顺利讲完四段」，就已经经得起追问了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>讲完四段只是第一层——问的是「你是怎么做的」，照着准备过的稿子都能答。
+            第二层追的是<strong>「你刚才那句话里有个地方对不上」</strong>（例如 859 条洗成 812 条，差的 47 条去哪了），
+            这种问题没准备过就只能现编。标准应该是：<strong>四段里随便挑一句往下挖，你都接得住。</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>主线只有一句：<strong>AI 是陪练，不是答案库</strong>——它负责出题、挑刺、追问，答案必须来自你真有的经历；</li>
+          <li>60 秒自我介绍三段公式：<strong>我是谁 → 最有说服力的一件事 → 为什么来这个岗</strong>，约 200–240 字，<strong>能被追问是好事</strong>；</li>
+          <li>三类高频题想确认的不是同一件事：自我介绍看<strong>价值</strong>、项目经历看<strong>真假</strong>、职业规划看<strong>稳定</strong>，共同点是都要细节；</li>
+          <li>STAR 四段里<strong>R 必须可量化</strong>，A 段主语必须是「我」；练到「随便挑一句往下挖都接得住」才算过；</li>
+          <li>压力面试的固定动作是<strong>承认边界 + 补一个细节 + 不新增事实</strong>；<strong>最致命的不是答错，是改口</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天你会发现，最难的不是「答得漂不漂亮」，而是<strong>把事情说具体、说得可验收</strong>。
+        下一课 <a class="xref" data-lesson="27">Codex 入门</a> 要让 AI 帮你写代码、跑测试——
+        那时候你会发现，给 AI 下任务和给面试官讲故事用的是同一套本事：
+        <strong>说清输入、说清步骤、说清做到什么算完。</strong>
+      </p>
+      <p class="note">
+        本页产品口径取自 www.workbuddy.cn 客户端用户文档，核对日期 <strong>2026-09-26</strong>；
+        课内学生经历、项目数据与岗位信息为教学示意（模拟素材），
+        语速字数与面试节奏一类说法属普遍经验，非官方数据。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 26 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）用 AI 准备面试时，最符合本课主张的用法是？
+A. 让它写一份标准自我介绍，背熟后上场
+B. 让它出题、挑毛病、追问，逼我把细节说圆
+C. 让它替我把简历里没有的项目补进去，让经历更漂亮
+D. 让它猜面试官会问什么，把答案全部背下来
+【答案】B
+【解析】AI 是陪练不是答案库：它的价值在于"被追问、被挑刺"。A、D 是背句子，句子背完就到头，一追问就露馅；C 触碰红线——补进去的经历不是你做过的，面试时每一句都是靶子。
+
+2.（多选）60 秒自我介绍的三段公式应当包含？
+A. 我是谁（身份 + 专业 + 一个定位词）
+B. 我做过什么最有说服力的一件事（带结果）
+C. 我的家庭情况与兴趣爱好
+D. 我为什么来这个岗（把岗位要求和上面那件事接起来）
+【答案】ABD
+【解析】三段分别提供身份、证据、匹配。C 是常见跑偏：面试官要的是"你能干什么"，家庭与爱好在这 60 秒里不提供这个信息。B 段要的是一件带结果的具体事，不是一串项目名。
+
+3.（单选）STAR 四段中，最容易被省略量化数字、也最常被面试官追问的是哪一段？
+A. S 情境
+B. T 任务
+C. A 行动
+D. R 结果
+【答案】D
+【解析】R 段只剩"效果很好""得到了认可"是最典型的塌陷，没有数字的 R 会让整段经历看起来没做完。注意：没有数字时应写【此项无量化数据】，不能自己估算一个填上。
+
+4.（多选）判断下面哪些做法有助于让 STAR 作答经得起追问？
+A. A 行动段的主语写"我"，写清我亲手做了哪几步
+B. R 结果段给出可核实的数字，并说清数字的统计口径
+C. 为了显得完整，把同事负责的部分也说成自己做的
+D. 预先想好"被追问两层"时该怎么答，尤其是数字对不上的地方
+【答案】ABD
+【解析】C 是红线：不是你做的部分一律不能占为己有，面试官恰恰最爱追问分工边界。ABD 都是提高"抗追问能力"的做法，其中 B 的统计口径尤其关键——被质疑"这个数字是真的吗"时，答的就是口径。
+
+5.（判断）压力面试中被问到自己确实不知道的内容时，为了不让场面尴尬，可以临时补一个相关的细节把话圆过去。
+【答案】错误
+【解析】临时补的细节全是没准备过的，也就全是下一层追问的靶子。面试里最致命的不是答错，是改口。正确做法是"承认边界 + 补一个真知道的细节"：这块我没参与，我了解的是……，然后把话题接回自己确实做过的部分。
+
+6.（多选）让 AI 扮演压力面试官时，下面哪些约束是必须写进角色指令的？
+A. 不许放水、不许安慰、不许提前给提示
+B. 三轮压力动作（质疑 / 打断 / 追矛盾）各来一轮
+C. 只允许针对素材里真实存在的内容提问
+D. 允许它适当提示我该怎么答，以便我答得更好
+【答案】ABC
+【解析】D 与 A 直接冲突：一给提示就变回温和问答，练不到压力。B 保证三种动作都被覆盖，C 防止它凭空造你的经历——造出来的经历你答不上，也没有练习价值。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能不能分清「AI 该做的事（出题、挑刺、追问）」和「不该做的事（代写答案、补经历）」；
+        <strong>二是</strong>提到 STAR 时，是否意识到 R 必须可量化、且没有数字时不能编；
+        <strong>三是</strong>压力场景下，是否把「承认边界 + 不新增事实」当成第一反应，而不是改口或补细节。
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 自我介绍：跑题版 / 空话版 / 合格版 ---------- */
+  var D1 = {
+    "d1-a": {
+      t: "2 分 40 秒", f: "0 条", q: "0 个",
+      lines: [
+        "<span class='hl'>跑题版：「我来自……我平时喜欢……我性格比较……」</span>",
+        "  ① 我是谁　讲了籍贯、爱好、性格，没有一句讲能干什么",
+        "  ② 最有说服力的事　<span class='no'>✗ 缺</span>",
+        "  ③ 为什么来这个岗　<span class='no'>✗ 缺</span>",
+        "",
+        "<span class='no'>✗ 硬伤：三段里缺了两段。</span>",
+        "  面试官听完只记得「这个学生挺紧张」，不记得他会什么。",
+        "<span class='dim'>60 秒的题答了 2 分 40 秒，本身就是没结构的表现。</span>"
+      ]
+    },
+    "d1-b": {
+      t: "40 秒", f: "0 条", q: "0 个",
+      lines: [
+        "<span class='hl'>空话版：「我热爱人工智能，学习能力强，有团队精神……」</span>",
+        "  ① 我是谁　有了，但定位词是「热爱 AI」——人人都能说",
+        "  ② 最有说服力的事　<span class='no'>✗ 没有具体的事，只有形容词</span>",
+        "  ③ 为什么来这个岗　<span class='no'>✗ 缺</span>",
+        "",
+        "<span class='no'>✗ 硬伤：零个可核事实。</span>",
+        "  可核事实指「时间、数字、工具名、结果」这类能被追问的东西。",
+        "<span class='dim'>零追问点不是完美，是没东西可信——面试官连问都不知道问什么。</span>"
+      ]
+    },
+    "d1-c": {
+      t: "55 秒", f: "3 条", q: "2 个",
+      lines: [
+        "<span class='hl'>合格版：三段齐全，每段都落在事实上</span>",
+        "  ① 我是谁　「大三，人工智能技术应用专业，做数据清洗和本地工具落地」",
+        "  ② 一件事　「收来 859 条旧书登记数据，定了一套合并规则，",
+        "　　　　　　三天洗成 812 条可检索书目，当天按清单交换 200 余册」",
+        "  ③ 为什么来　「训练师的日常就是把乱数据整理成能用的数据，我干的就是这个」",
+        "",
+        "<span class='ok'>✓ 三段齐全，55 秒，3 条可核事实。</span>",
+        "  会被追问的 2 个点：12 名同学的数字怎么统计的 / 合并规则是谁定的",
+        "<span class='hl'>这两个点不是缺点——有事实才有得问，答得上来才叫真做过。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.t;
+    $("d1-k2").textContent = d.f;
+    $("d1-k3").textContent = d.q;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-a", "d1-b", "d1-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+
+  /* ---------- 演示② STAR 四段 + 追问两层 ---------- */
+  var D2_STEPS = [
+    [
+      "<span class='hl'>S 情境（一两句，别铺背景）</span>",
+      "  今年 4 月院学生会办旧书交换活动，收上来 800 多条图书登记数据，",
+      "  全是手工填的：书名重复、分类混乱、ISBN 大量缺失。",
+      "<span class='dim'>背景讲到这儿就停——再多讲一分钟，正事还没开始。</span>"
+    ],
+    [
+      "<span class='hl'>T 任务（一句，写清我要解决什么）</span>",
+      "  我要在活动开始前，把这批数据整理成一份能按书名检索的书目清单。",
+      "<span class='dim'>写成「参与了数据整理」不合格——那不是任务，是岗位描述。</span>"
+    ],
+    [
+      "<span class='hl'>A 行动（我亲手做的三步，主语必须是「我」）</span>",
+      "  第 1 步：我先定了一套合并规则——书名 + 作者 + 版次三者相同才算重复；",
+      "  第 2 步：我用 Excel 的分列和条件格式把分类字段统一，ISBN 缺失的用书名 + 作者兜底；",
+      "  第 3 步：我用 AI 辅助归并剩余的分类型目，再逐条抽查。",
+      "<span class='dim'>全程说「我们」是最常见的塌法：听不出哪一步是你干的。</span>"
+    ],
+    [
+      "<span class='hl'>R 结果（必须可量化）</span>",
+      "  原始 859 条 → 清洗后 812 条（合并 47 条重复、删掉空行与重复行），耗时 3 天；",
+      "  活动当天按这份清单完成交换 200 余册。",
+      "<span class='ok'>✓ 四段走完。但真正的考验在下面——</span>"
+    ]
+  ];
+  var D2_ASK = [
+    "<span class='hl'>第一层追问（怎么做到的）：</span>",
+    "  问：同名不同版次的书，你怎么判定是不是重复？",
+    "  答：书名 + 作者 + 版次三者相同才算；ISBN 缺失的用书名 + 作者兜底。",
+    "<span class='ok'>✓ 接得住——这是准备过的问题。</span>",
+    "",
+    "<span class='hl'>第二层追问（你刚才那句话对不上）：</span>",
+    "  问：859 条洗成 812 条，被合并掉的 47 条具体去哪了？",
+    "  没准备过的人：<span class='no'>现编一个去向 → 下一句就被拆穿</span>",
+    "  准备过的人：合并规则是「保留最早一条，其余归入同书名清单」，",
+    "　　　　　　　被合并的记录不删除，另存一张对照表，活动当天可查。",
+    "",
+    "<span class='hl'>结论：练 STAR 的标准不是讲完四段，是随便挑一句往下挖两层都接得住。</span>"
+  ];
+  var d2Step = 0;
+  function d2Render() {
+    for (var i = 1; i <= 4; i++) {
+      var n = $("d2-n" + i);
+      n.className = "flow__node" + (i === d2Step ? " on" : " dim");
+      if (i < 4) {
+        var dot = $("d2-d" + i);
+        dot.className = "flow__dot" + (i < d2Step ? " run" : "");
+      }
+    }
+    if (d2Step > 0) window.Site.type($("d2-out"), D2_STEPS[d2Step - 1], null);
+    else $("d2-out").innerHTML = "";
+  }
+  $("d2-next").addEventListener("click", function () {
+    d2Step = d2Step >= 4 ? 1 : d2Step + 1;
+    d2Render();
+  });
+  $("d2-ask").addEventListener("click", function () {
+    window.Site.type($("d2-out"), D2_ASK, null);
+  });
+  $("d2-reset").addEventListener("click", function () {
+    d2Step = 0;
+    d2Render();
+  });
+
+  /* ---------- 演示③ 三种压力动作的应对 ---------- */
+  var D3 = {
+    "d3-a": {
+      a: "认边界 + 补口径", b: "改口",
+      lines: [
+        "<span class='hl'>质疑：「你说 12 名同学在用，这个数字是真的吗？」</span>",
+        "  <span class='no'>✗ 改口：</span>「大概十几个吧，也可能更多一点……」",
+        "  <span class='ok'>✓ 认边界 + 补口径：</span>",
+        "    「按装机登记记的，只算同楼层登记过的人，没登记的不在内。",
+        "　　更精确的数字我没有，这块我不编。」",
+        "",
+        "<span class='hl'>他不是真怀疑你造假，是看你说得确不确定。</span>",
+        "<span class='dim'>口径说清了，数字经得住；一改口，整段都开始可疑。</span>"
+      ]
+    },
+    "d3-b": {
+      a: "先给结论", b: "从头再讲",
+      lines: [
+        "<span class='hl'>打断：「停一下，直接说结果。」</span>",
+        "  <span class='no'>✗ 从头再讲：</span>「那我从头说，活动是这样的……」",
+        "  <span class='ok'>✓ 先给结论：</span>",
+        "    「原始 859 条，三天洗成 812 条可检索书目，当天交换 200 余册。",
+        "　　过程要我展开讲吗？」",
+        "",
+        "<span class='hl'>打断考的是有没有重点，不是有没有礼貌。</span>",
+        "<span class='dim'>一句给结论，再问他要不要展开——主动权就回来了。</span>"
+      ]
+    },
+    "d3-c": {
+      a: "承认 + 接回来", b: "造新说法",
+      lines: [
+        "<span class='hl'>追矛盾：「你刚才说模型不是你训的，现在又说你在做检索，到底哪个是你做的？」</span>",
+        "  <span class='no'>✗ 造新说法：</span>「训练的部分我也参与了一些……」",
+        "  <span class='ok'>✓ 承认 + 接回来：</span>",
+        "    「这两句说的不是同一件事：模型是官方提供的量化版本，我没训过；",
+        "　　我做的是切段检索和出处标注，这部分是我写的。」",
+        "",
+        "<span class='hl'>承认不知道丢一分，编造被拆穿丢整场。</span>",
+        "<span class='dim'>面试里最致命的从来不是答错，是改口。</span>"
+      ]
+    }
+  };
+  function d3Run(key) {
+    var d = D3[key];
+    $("d3-k1").textContent = d.a;
+    $("d3-k2").textContent = d.b;
+    window.Site.type($("d3-out"), d.lines, null);
+  }
+  ["d3-a", "d3-b", "d3-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d3Run(id); });
+  });
+})();
+</script>
+</body>
+</html>
