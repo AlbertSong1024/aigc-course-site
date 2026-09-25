@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第21次课 模块二综合项目｜AIGC应用与实践</title>
+<meta name="description" content="需求分析→方案设计→实现→测试→项目文档与展示，模块二知识整合。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="21" data-root="../">
+
+<!-- 顶栏 / 侧边栏 / 面包屑 / 页面标题区 / 本页目录 / 上下课导航 / 页脚
+     全部由 assets/js/site.js 按 course-map.js 自动生成。
+     课时页里【不要】再写这些结构，否则会重复。 -->
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块二 · 收尾</span></h2>
+      <p class="lead">
+        从第 7 次课到现在，你攒了一抽屉招式：写任务说明、生成文档、清 Excel、做 PPT、
+        管文件、建知识库、接连接器。招式都会了，可真来一件活的时候，很多人还是卡在第一步——
+        <strong>不知道该先拿出哪一招</strong>。
+      </p>
+      <p>
+        这一课不讲新功能，只练一件事：<strong>把一堆零散招式，装进一件完整的事里</strong>。
+        全课只跟一条主线走：<strong>学生会每月要整理一次活动报销，再出一份月度简报，最后给指导老师交一页汇报</strong>。
+        跟着五阶段做完，你手上会留下：<strong>Excel 汇总表 + 月度简报 + 一页汇报 + 一份项目文档 + 一段 90 秒讲稿</strong>。
+      </p>
+      <ul>
+        <li>单个任务都能跑，串到一起就断：上一步产出的东西，下一步接不住；</li>
+        <li>每一步都在问 AI 要结果，可<strong>从来没确认过它对不对</strong>——直到答辩时才第一次自己看一遍；</li>
+        <li>做完了说不清自己做了什么：没文档、没自测记录，只剩一句「我用 AI 做的」；</li>
+        <li>同样的活下个月还得重来一遍，没有任何东西被留下来。</li>
+      </ul>
+      <div class="callout callout--warn">
+        <span class="callout__t">先说清楚三件事</span>
+        <strong>一、本课不教新功能。</strong>用到的招式全在<a class="xref" data-lesson="7">第 7 次课</a>到第
+        <a class="xref" data-lesson="20">第 20 次课</a>之间，需要回顾的地方给了链接<br>
+        <strong>二、本课所有数据都是模拟的。</strong>报销流水、人名、金额均为课堂虚构，
+        不要用真实票据和真人姓名做练习。<br>
+        <strong>三、工具入口会变。</strong>连接器、自动化这类能力的界面名称随版本更新明显，
+        本课只讲<strong>通用流程与判断原则</strong>，具体入口以你实际使用的版本为准。
+        <span class="note">本站核对日期：2026-09-26。</span>
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>把一段模糊的口头需求，问成一份<strong>六要素齐全的任务说明文件</strong>；</li>
+          <li>说出「这一步该用文档、表格、PPT、知识库、连接器还是自动化」的<strong>判断依据</strong>，并写出不用某个形态的理由；</li>
+          <li>独立完成一次真正的组合：产出<strong>汇总表 + 月度简报 + 一页汇报</strong>三份能打开能用的文件；</li>
+          <li>用<strong>行数 / 合计 / 事实 / 串档</strong>四项检查，查出 AI 汇总结论里的错，并说出「哪些必须人来判」；</li>
+          <li>写出一份<strong>项目文档</strong>（需求 / 方案 / 产出 / 自测 / 遗留 / 下次更快）和一段能直接念的<strong>90 秒讲稿</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-need"><b>01</b>需求分析：问成任务说明 <em>＋实操①</em></a>
+        <a href="#s-plan"><b>02</b>方案设计：这一步该用什么 <em>＋实操②</em></a>
+        <a href="#s-build"><b>03</b>实现：做出三份真文件 <em>＋实操③</em></a>
+        <a href="#s-accept"><b>04</b>测试、文档与展示 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素（本课全程按它写指令）、
+        <a class="xref" data-lesson="10">第 10 次课</a>的文档生成、
+        <a class="xref" data-lesson="11">第 11 次课</a>与<a class="xref" data-lesson="12">第 12 次课</a>的表格、
+        <a class="xref" data-lesson="13">第 13 次课</a>的 PPT、
+        <a class="xref" data-lesson="14">第 14 次课</a>的文件命名与纪要、
+        <a class="xref" data-lesson="15">第 15 次课</a>与<a class="xref" data-lesson="17">第 17 次课</a>的知识库、
+        <a class="xref" data-lesson="18">第 18 次课</a>的连接器与自动化。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="23">第 23 次课</a>要把这一套思路用在「你的岗位」上，
+        <a class="xref" data-lesson="31">第 31 次课</a>的综合项目里，本课这套文件可以直接当作作品。
+      </div>
+    </section>
+
+    <section class="sec" id="s-need">
+      <h2>一、需求分析：把一句话问成一份任务说明<span class="sec__tag">第一步</span></h2>
+      <p class="lead">
+        综合项目最容易翻车的位置，不是做不完，是<strong>一开始就没问清楚</strong>。
+        真实世界里没人会把需求写成清单给你，他们只会丢一句模糊的话过来。
+      </p>
+      <p>下面这句，就是本月任务的全部起点——学生会副主席在群里 @ 你：</p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="原始需求 · 就这么一句话">
+        <div class="codeblock__bar"></div>
+<pre><code>月底把报销那些票整一下，再出个简报，顺便给李老师一页汇报。</code></pre>
+      </div>
+      <p>
+        这句话里，<strong>时间、范围、对象、格式、验收，一个都没说</strong>。
+        你要是照着它直接开工，做出来多半是「方向对、细节全错」，然后返工一整遍。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>群里那句话（含糊版）</th><th>能开工的版本（可执行）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>目标</strong></td><td>「整一下」</td><td>把 9 条流水整理成可上报的报销台账</td></tr>
+            <tr><td><strong>输入</strong></td><td>「那些票」</td><td><code>input/2026-09-报销流水.csv</code></td></tr>
+            <tr><td><strong>动作</strong></td><td>「出个简报」</td><td>清洗 → 去重 → 部门汇总 → 写简报 → 写一页汇报</td></tr>
+            <tr><td><strong>约束</strong></td><td>没说</td><td>无发票的标【待核实】；金额保留两位小数；不动原始文件</td></tr>
+            <tr><td><strong>输出</strong></td><td>「给李老师一页」</td><td>三份文件，路径与文件名见方案</td></tr>
+            <tr><td><strong>验收</strong></td><td>没说</td><td>明细 8 行、合计 3951.50 元、三份文件都在 <code>output/</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">这条流程为什么值得单独练</span>
+        六要素是<a class="xref" data-lesson="7">第 7 次课</a>学过的东西，但那时它是一条<strong>要你写</strong>的指令；
+        放到综合项目里，它变成<strong>一份要存档的文件</strong>——
+        后面方案设计、自测、答辩讲稿全都要拿它当基准。<strong>第一步偷懒，后面每一步都要还。</strong>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">最容易犯的错：让它替你补信息</span>
+        你一开口问「帮我写个报销整理方案」，它不会说不知道，它会<strong>编一套看起来很合理的口径给你</strong>：
+        编耽误不了它，但坑全留给你。<br>
+        所以第一步的指令里必须写死一句：<strong>「缺的信息写『缺』，不许替我猜一个答案」</strong>。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·把一句话问成一份《任务说明.md》 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份六要素齐全的任务说明 Markdown 文件，存在工作目录的 <code>input/</code> 下。</p>
+        <p><strong>准备</strong>：在工作目录里建一个 <code>input</code> 文件夹（后面四段实操都用它当输入区）。</p>
+
+        <p><strong>第 1 步 · 先不许它动手，只让它列出缺什么（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令</b><span>整段粘贴，<span class="task__warn">不要自己改写措辞</span>——
+            「先不要动手」这句是这段指令的关键，删了就白做。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令①·只问缺口 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>下面这段话是学生会副主席在群里提的需求：
+
+「月底把报销那些票整一下，再出个简报，顺便给李老师一页汇报。」
+
+请你先不要动手做任何一个文件，只做一件事：
+按「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六要素，
+逐条列出这段话里缺哪些信息。
+
+输出一张三列表：
+| 要素 | 缺什么 | 不补上会有什么后果 |
+
+要求：
+1. 六个要素一个都不能跳过，连你觉得不重要的也要列出后果；
+2. 缺的东西写「缺」，不要替我猜一个答案，不要给建议口径；
+3. 「不补上会有什么后果」要具体到某一件会做错的事，不许写「影响效率」这类空话。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把已知信息发过去，让它据此定稿（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>先复制下面这份已知信息</b><span>这是模拟数据，照抄即可，不要改成你自己的真实班团数据。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 已知信息（模拟数据） · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【已知信息 · 模拟数据，用于课堂练习】
+1. 输入：本月报销流水，9 条记录，文件为 input/2026-09-报销流水.csv
+2. 时间范围：2026-09-01 至 2026-09-30
+3. 涉及部门：文艺部、体育部、宣传部、外联部，共 4 个
+4. 最终要交付三份文件：
+   - output/2026-09-报销汇总.xlsx（含「明细」「部门汇总」「待核实」三个工作表）
+   - output/2026-09-月度简报.docx（发给全会同学，800 字以内）
+   - output/2026-09-指导老师汇报.docx（给指导老师，控制在一页）
+5. 约束：
+   - 没有发票的那条标【待核实】，不许自己补数字
+   - 重复票据号只保留一条，并在「待核实」表里写明被删的那条
+   - 金额保留两位小数，不许四舍五入到整元
+   - 不许改动 input 目录里的原始文件
+6. 验收：
+   - 明细表 8 行（去重后），合计数与流水逐笔对得上
+   - 三份文件都在 output/ 下，文件名与上面对齐</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>紧接着把下面这段指令发过去</b><span>已知信息在前、指令在后，同一条消息里发。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令②·产出任务说明文件 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>根据上面这份已知信息，把群里的那段需求写成一份任务说明，
+按「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六要素逐条写清楚，
+每条一句话，写成 Markdown 文件，存到 input/任务说明.md。
+
+要求：
+1. 每条都以「目标：」「输入：」这类要素名开头，方便我一眼扫；
+2. 「约束」和「验收」两条必须写具体数字和文件路径，不许出现「规范」「适当」「尽量」这类词；
+3. 已知信息没提到的内容一律写【待补】，不要自己发明；
+4. 全文不超过 400 字。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>input/任务说明.md</code> 生成了，六要素一条不少</b><span>逐个要素数一遍。<br>
+            <em>少了某一要素</em>：直接点名——「缺了『约束』，补上」，不要重发整段指令。</span></li>
+          <li><b>「约束」和「验收」写的是数字和路径</b><span>「验收」那条应该能读出「8 行」「3951.50」
+            这类内容；读出「符合要求」就是没写。<br>
+            <em>写成了形容词</em>：补一句「『约束』和『验收』两条必须写具体数字和文件路径，不许写形容词」。</span></li>
+          <li><b>所有路径与已知信息完全一致</b><span>是 <code>input/</code> 和 <code>output/</code>，四个部门的写法也一致。<br>
+            <em>路径被它改了</em>：以已知信息为准，让它把路径改回来——后面三步都要靠这个路径找文件。</span></li>
+          <li><b>它没替你编</b><span>文件里出现【待补】才是对的；一处【待补】都没有，
+            多半是它自己把责任人和日期编上了。<br>
+            <em>没有【待补】</em>：补一句「我不知道的事写【待补】，不要编」，重新生成。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>input/任务说明.md</code>。<span class="task__warn">这个文件后面三段全程要用，别删</span></p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-plan">
+      <h2>二、方案设计：这一步到底该用什么<span class="sec__tag">关键</span></h2>
+      <p class="lead">
+        任务清楚了，下一步不是开工，是<strong>选型</strong>。
+        这一关最常听到的说法是「都行吧，看着办」——而「看着办」是综合项目里最贵的一句话。
+      </p>
+      <p>
+        选型不用背六边形，只用三个问题把它问出来：<strong>输入是什么？输出给谁看？多久要跑一次？</strong>
+        三个问题一答，形态基本就定了。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>形态</th><th>什么时候用它</th><th>本场景用在哪</th><th>课程出处</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>表格（Excel）</strong></td>
+              <td>要算数、要比大小、后续还会继续改</td>
+              <td>报销台账与部门汇总</td>
+              <td><a class="xref" data-lesson="11">第 11 次课</a>、<a class="xref" data-lesson="12">第 12 次课</a></td>
+            </tr>
+            <tr>
+              <td><strong>文档（Word）</strong></td>
+              <td>要人从头读到尾、要存档、要转发</td>
+              <td>月度简报、一页汇报</td>
+              <td><a class="xref" data-lesson="10">第 10 次课</a></td>
+            </tr>
+            <tr>
+              <td><strong>幻灯片（PPT）</strong></td>
+              <td>有人要在会议室里对着讲十分钟</td>
+              <td>这次<strong>不用</strong>——汇报是一页纸，投屏讲也用不上</td>
+              <td><a class="xref" data-lesson="13">第 13 次课</a></td>
+            </tr>
+            <tr>
+              <td><strong>知识库</strong></td>
+              <td>同样一句话你得解释第十遍了（标准、口径、老模板）</td>
+              <td>报销标准与往期模板</td>
+              <td><a class="xref" data-lesson="15">第 15 次课</a>、<a class="xref" data-lesson="17">第 17 次课</a></td>
+            </tr>
+            <tr>
+              <td><strong>连接器</strong></td>
+              <td>要用的东西压根不在你电脑里（在线表单、云文档、外部数据库）</td>
+              <td>报销申请如果来自在线表单，就从那里取</td>
+              <td><a class="xref" data-lesson="18">第 18 次课</a></td>
+            </tr>
+            <tr>
+              <td><strong>自动化</strong></td>
+              <td>日历上有它——每月、每周固定要跑一次</td>
+              <td>每月 1 号自动整理上月流水</td>
+              <td><a class="xref" data-lesson="18">第 18 次课</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">选型也包括「不用什么」</span>
+        合格的项目方案表里，<strong>每一格都要押一个明确的说法</strong>：
+        用这个，或者不用、为什么不用。<br>
+        写「也可以用 PPT，视情况而定」等于没写——后面照着做的人还是得停下来问你。
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 这一步该用什么：点一个产出，看它的形态、判断依据和最容易出错的地方</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="a" class="on">报销汇总表</button>
+              <button type="button" data-tab="b">月度简报</button>
+              <button type="button" data-tab="c">一页汇报</button>
+              <button type="button" data-tab="d">每月重跑</button>
+            </div>
+          </div>
+          <div class="demo__stage" data-tabpanel="a">
+            <dl class="kvlist">
+              <dt>形态</dt><dd>表格（Excel 三个工作表：明细 / 部门汇总 / 待核实）</dd>
+              <dt>判断依据</dt><dd>输入是<strong>一堆数字</strong>，输出还要继续算下去</dd>
+              <dt>用到的能力</dt><dd>数据清洗、去重、口径统一、分类汇总（第 11、12 次课）</dd>
+              <dt>最容易出错</dt><dd><strong>重复票据号没去掉</strong>、金额被四舍五入、无发票那条被静默删掉</dd>
+              <dt>验收动作</dt><dd>核行数、核合计数、核待核实清单，三条都得你自己看</dd>
+            </dl>
+          </div>
+          <div class="demo__stage" data-tabpanel="b" style="display:none">
+            <dl class="kvlist">
+              <dt>形态</dt><dd>文档（Word，800 字以内，发给全会同学）</dd>
+              <dt>判断依据</dt><dd>输出是<strong>给人从头读到尾的一段话</strong>，读完要能记住三件事</dd>
+              <dt>用到的能力</dt><dd>文档指令五要素、大纲先行、去 AI 味（第 10 次课）</dd>
+              <dt>最容易出错</dt><dd><strong>数字与汇总表脱节</strong>——它凭印象写一个大概的数</dd>
+              <dt>验收动作</dt><dd>把它写的每个数字，回汇总表里逐个找出处</dd>
+            </dl>
+          </div>
+          <div class="demo__stage" data-tabpanel="c" style="display:none">
+            <dl class="kvlist">
+              <dt>形态</dt><dd>文档（Word，一页，写给指导老师）</dd>
+              <dt>判断依据</dt><dd>读者是<strong>一个人</strong>、看的时间<strong>不到一分钟</strong>、只关心结论</dd>
+              <dt>用到的能力</dt><dd>对象决定语气与详略、只留三块（第 10 次课）</dd>
+              <dt>最容易出错</dt><dd>把简报<strong>通篇缩一遍</strong>交上去，结果是一页看不出重点的流水账</dd>
+              <dt>验收动作</dt><dd>遮住标题，只看这一页能不能答出「重点 / 问题 / 下月计划」</dd>
+            </dl>
+          </div>
+          <div class="demo__stage" data-tabpanel="d" style="display:none">
+            <dl class="kvlist">
+              <dt>形态</dt><dd>知识库 + 自动化（这是下个月能不能省力的一步）</dd>
+              <dt>判断依据</dt><dd>这件事<strong>日历上有它</strong>，而且口径每次都要解释一遍</dd>
+              <dt>用到的能力</dt><dd>知识库沉淀触发点、自动化任务三条铁律（第 17、18 次课）</dd>
+              <dt>最容易出错</dt><dd>把<strong>本月的数据</strong>也塞进知识库——该进库的只有标准和模板</dd>
+              <dt>验收动作</dt><dd>换一个月、换一批数据，问它「上次怎么做来着」，看它答不答得出来</dd>
+            </dl>
+          </div>
+          <div class="demo__note">
+            这里的金额、行数均为<strong>教学示意数据，非实测数值</strong>；
+            「第 N 次课」指本站对应的课时，点击左侧目录可直接跳转。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·产出一张《方案设计.md》选型表 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份四步走 + 六形态取舍的《方案设计.md》，存在 <code>input/</code> 下。</p>
+        <p><strong>第 1 步 · 让它先出方案，不许碰文件（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>确认 <code>input/任务说明.md</code> 还在</b><span>实操① 的成果，本段要基于它做。</span></li>
+          <li><b>复制下面这段指令发出去</b><span><span class="task__warn">「先不要生成任何文件」这句别删</span>——
+            它一上来就把三份文件做出来了，你就没法核选型了。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 先出方案 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我要把 input/任务说明.md 里的任务做成一个可执行的方案。
+请先不要生成任何成果文件，只输出一张方案表，四列：
+
+| 步骤 | 这一步做什么 | 用什么形态 | 为什么不用别的形态 |
+
+要求：
+1. 至少覆盖这四件事：
+   ① 报销流水清洗与汇总；
+   ② 月度简报撰写；
+   ③ 指导老师一页汇报；
+   ④ 这套活下个月还要重来一次时，怎么省力。
+2. 「形态」一列只能填一个词：表格 / 文档 / 幻灯片 / 知识库 / 连接器 / 自动化 / 纯人工；
+3. 「为什么不用别的形态」必须写具体理由，不许出现「都可以」「视情况而定」「也可以用」这类表达；
+4. 这次明确不用的形态要单独列一行，把不用的理由写清楚；
+5. 判断不了的事项写【待确认】，不要编造功能名称；
+6. 含糊表述一律改成明确做法，不许留「也许可以考虑」这类句子。
+
+确认方案之后我才会让你动手，先把方案写成 input/方案设计.md。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四件事一行不少</b><span>含第 ④ 件「下个月怎么办」——漏掉这项，就等于每月重来。<br>
+            <em>只写了三件事</em>：补一句「再加一条：下个月这套活怎么用自动化或知识库省力」。</span></li>
+          <li><b>每一行都押定了唯一形态</b><span>「形态」列只有一个词；出现「表格 + 文档」说明它没做决定。<br>
+            <em>写了两个</em>：让它把其中一个改成「不用」并写出理由。</span></li>
+          <li><b>幻灯片那一行写着「不用」且有具体理由</b><span>理由是「汇报交的是一页纸、没人对着讲」这类具体判断。<br>
+            <em>写着「视情况而定」</em>：补一句「不许写『视情况而定』，写出你建议用还是不用，并给一句理由」。</span></li>
+          <li><b>它没编造具体功能名</b><span>涉及入口的表达应该写成【待确认】。<br>
+            <em>出现了具体的菜单名</em>：以你实际使用的版本为准，核不实的删掉写【待确认】。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>input/方案设计.md</code>。<span class="task__warn">下一段实现全按这份来</span></p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-build">
+      <h2>三、实现：在一条主线上做出三份真文件<span class="sec__tag">主体</span></h2>
+      <p class="lead">
+        方案定了，这一段才动真格。注意这里的关键不是「做出来」，而是<strong>「一步一步做」</strong>：
+        每一步产出的文件，就是下一步的输入。断在哪里都容易，接住了才叫组合。
+      </p>
+      <p>
+        三个环节串起来是这样：<strong>流水 → 汇总表 → 简报 / 一页汇报</strong>。
+        箭头两头的东西必须能对上——简报里的每个数字，都要能在汇总表里找到出处。
+      </p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>环节</th><th>输入</th><th>输出</th><th>这一步最关键的一句指令</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 清洗汇总</strong></td><td>报销流水 CSV</td><td>报销汇总.xlsx</td><td>「先不要把文件做出来，先给我清洗口径表」</td></tr>
+            <tr><td><strong>② 写简报</strong></td><td>汇总表</td><td>月度简报.docx</td><td>「所有数字从汇总表取值，不许估算」</td></tr>
+            <tr><td><strong>③ 写汇报</strong></td><td>汇总表 + 待核实表</td><td>指导老师汇报.docx</td><td>「『存在的问题』从待核实表取，不许编」</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">别让它一步到位</span>
+        一次性丢一句「把三份都做了」，它会一口气跑到底，
+        中间那次<strong>最值钱的确认机会</strong>就没了——口径一旦错，三份文件全错，改起来比做还慢。
+        先拿口径表，确认后再出文件。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·做出「汇总表 + 简报 + 一页汇报」三件套 <em>约 15 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：<code>output/</code> 目录下三份能直接打开的文件，外加一份产出清单。</p>
+
+        <p><strong>第 1 步 · 备好输入：把流水存成 CSV（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面整段数据</b><span>这是一份<strong>故意埋了三个问题</strong>的模拟流水：
+            一条重复、一条无发票、一条缺票据号。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · input/2026-09-报销流水.csv · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>日期,部门,项目名称,票据号,金额(元),有无发票,报销人
+2026-09-03,文艺部,迎新晚会道具,FP-260901,486.00,有,张明
+2026-09-05,体育部,篮球赛用水,FP-260902,132.50,有,李婷
+2026-09-08,宣传部,海报印刷,FP-260903,320.00,无,王海
+2026-09-12,文艺部,麦克风租赁,FP-260904,600.00,有,张明
+2026-09-15,外联部,企业参访用车,FP-260905,880.00,有,陈晨
+2026-09-15,外联部,企业参访用车,FP-260905,880.00,有,陈晨
+2026-09-20,宣传部,推文奖品,【缺】,258.00,有,王海
+2026-09-23,体育部,裁判劳务,FP-260907,1200.00,有,李婷
+2026-09-26,文艺部,场地布置鲜花,FP-260908,75.00,有,张明</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>存成 <code>input/2026-09-报销流水.csv</code></b><span>用记事本或编辑器粘贴后另存，
+            编码选 UTF-8。<span class="task__warn">文件名一个字都不能差</span>——后面全都靠这个名字找它。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 先要「清洗口径表」，确认后才出文件（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令发出去</b><span>这一步只要口径，不要文件。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 先口径后文件 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按 input/方案设计.md 的第一步，处理 input/2026-09-报销流水.csv。
+先不要生成 xlsx 文件，先输出一张「清洗口径表」，写清三件事：
+
+1. 你识别出的问题记录有哪些（重复、缺票据号、无发票、金额异常），
+   逐条列出它所在的行号和原文内容；
+2. 每一类你打算怎么处理：去重 / 标【待核实】 / 保留不动，以及为什么；
+3. 去重之后的笔数、各部门小计、合计金额分别是多少（保留两位小数）。
+
+要求：
+- 金额一律保留两位小数，不许四舍五入到整元；
+- 没有发票的那条只能标【待核实】，不许自己补一个数；
+- 只标不改：你觉得异常但不能确定的，保留原值并说明，不许直接修改；
+- 不许改动 input 目录里的任何原始文件。
+
+我把口径确认之后，你再生成 output/2026-09-报销汇总.xlsx。</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>核它报出来的两个数</b><span>去重后应该是 <strong>8 笔、合计 3951.50 元</strong>，对得上才发下一步。<br>
+            <em>算出来是 4831.50</em>：重复那条没去；<em>是 3951 或 3952</em>：被四舍五入或丢了两位小数——
+            补一句「金额保留两位小数，不许四舍五入」重算。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 出汇总表，再顺着做简报和一页汇报（6 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令发出去</b><span>口径对了才发这句。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 三件套一起做 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>口径确认，按你列的方案执行，一共做三件事：
+
+一、output/2026-09-报销汇总.xlsx
+   三个工作表分别叫「明细」「部门汇总」「待核实」；
+   部门汇总按部门金额降序排列，合计写在最后一行。
+
+二、output/2026-09-月度简报.docx
+   读者：全会同学；800 字以内；语气平实，不要用套话；
+   必须包含：本月支出总额、各部门支出排行、一笔最值得说明的支出、待核实事项提醒；
+   所有数字从汇总表取值，不许估算，取不到的写【数据缺失】。
+
+三、output/2026-09-指导老师汇报.docx
+   读者：指导老师；控制在一页；只写三块：本月重点、存在的问题、下月计划；
+   「存在的问题」必须从「待核实」表里取，不许编。
+
+最后附一份产出清单：每个文件的文件名、行数或字数、关键数字的来源。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>output/</code> 下三份文件都在，文件名一字不差</b><span>含日期前缀 <code>2026-09-</code>。<br>
+            <em>出现「未命名(1)」或少了哪份</em>：补一句「文件名必须与上面一致，重命名为 xxx」，让它对齐。</span></li>
+          <li><b>明细表 8 行，合计 3951.50 元</b><span>原始 9 行去重后应该是 8 行；金额保留两位小数。<br>
+            <em>合计对不上</em>：把 CSV 和它的口径表一起发过去，让它逐笔对一遍。</span></li>
+          <li><b>「待核实」表里有那条无发票的记录</b><span>海报印刷 320.00 元那条应该写着【待核实】。<br>
+            <em>被删了或替它补了数</em>：⚠️ 这是最危险的一类错——
+            补一句「没有发票的记录必须原值保留进『待核实』表，不许删除、不许替我估算」。</span></li>
+          <li><b><code>input/</code> 里的原始 CSV 没被动过</b><span>打开看行数还是 9 行。<br>
+            <em>原始文件被改了</em>：说明「不许改动 input 里的文件」没生效，
+            从上面的素材把 CSV 重新存一份，重跑一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：三份文件 + 它给的产出清单。<span class="task__warn">产出清单下一段要拿来写项目文档</span></p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-accept">
+      <h2>四、测试、项目文档与展示<span class="sec__tag">收尾</span></h2>
+      <p class="lead">
+        文件做出来不等于做完了。综合项目和单点练习最后的区别在于：
+        <strong>单点做完就交，综合项目还要说清楚「它为什么可信」</strong>。
+      </p>
+      <p>
+        测试这一环，AI 能出力，但<strong>结论必须你来下</strong>——它不知道
+        「无发票那条」是怎么来的，也不会因为「它说通过了」就替真相负责。四项检查的分工是这样的：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>检查项</th><th>查什么</th><th>AI 能不能自己判</th></tr></thead>
+          <tbody>
+            <tr><td><strong>行数</strong></td><td>明细行数是否等于流水去重后的笔数</td><td>能，它自己会数</td></tr>
+            <tr><td><strong>合计</strong></td><td>合计数与明细逐笔相加是否一致、有没有丢小数</td><td>能，但要你自己抽一遍</td></tr>
+            <tr><td><strong>事实</strong></td><td>简报里每个数字都能在汇总表里找到出处</td><td>⚠️ 勉强，容易「凭印象复核」</td></tr>
+            <tr><td><strong>串档</strong></td><td>部门汇总的每行是否等于该部门明细之和</td><td>能指出，但改不改得看结果由谁签</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">让 AI 自测，就等于给了它一次自我辩护的机会</span>
+        它会倾向于得出「均可通过」的结论——这也不是它故意撒谎，而是<strong>它无法知道自己的数字是怎么来的</strong>。
+        所以自测指令里必须写死一句：<strong>「不通过就写不通过，不许给及格结论」</strong>，
+        并且最终由你复核。
+      </div>
+      <h3>文档与讲稿：写给三个月后的自己</h3>
+      <p>
+        项目文档不是给老师交差写的，是给<strong>三个月后已经忘了这件事的你</strong>写的：
+        他要照着这份文档能重做一遍。所以文档六块缺一不可——<strong>需求、方案、产出、自测、遗留、下次更快</strong>。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·自测 + 项目文档 + 90 秒讲稿 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一张自测表、一份《项目文档.md》、一段能直接念的讲稿。</p>
+
+        <p><strong>第 1 步 · 让它先自测，不许给及格结论（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令发出去</b><span>它刚做的三份文件还在工作目录里，它拿得到。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 自测四件事 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>对自己刚做好的三份产出做一遍自测，输出一张自测表，四列：
+
+| 检查项 | 你查的方法 | 结果 | 不通过的话怎么修 |
+
+必须覆盖这四项：
+1. 行数：明细表行数是否等于流水去重后的笔数；
+2. 合计：汇总表的合计数，是否与明细逐笔相加一致，是否保留了两位小数；
+3. 事实：月度简报里出现的每一个数字，逐个列出「数字 → 出处」，
+   找不到的写【未能验证】，不许凭印象给结论；
+4. 串档：部门汇总里每行的金额，是否等于该部门明细之和，有没有串行。
+
+要求：
+- 不通过就写「不通过」，把原因写清，不许写成「基本通过」「大体没问题」；
+- 你无法验证的事项写【未能验证】，不要推断；
+- 不许修改任何已经生成的文件，只报告。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按六块写项目文档（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令发出去</b><span>模板已经在指令里，它会照着六块写。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 项目文档六块 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把这次项目从头到尾整理成《项目文档.md》，存到 output/ 下。
+严格按下面六块写，每块一个二级标题，缺的内容写【待确认】，不许编：
+
+## 一、需求
+原始需求原文，加整理后的六要素，各一行。
+
+## 二、方案
+贴一张方案表（步骤 / 形态 / 为什么不用别的形态），
+并补一句：这次为什么不用幻灯片。
+
+## 三、产出清单
+文件名 / 完整路径 / 行数或字数 / 关键数字的来源。
+
+## 四、自测记录
+贴刚才那张自测表，并在后面加「人最终验收的结论」一小节，留空由我填。
+
+## 五、遗留问题
+还没解决的事：待核实票据、这次做得不足的地方，逐条列。
+
+## 六、下次怎么更快
+哪些步骤可以固化：沉淀成模板 / 放进知识库 / 做成自动化任务，各写一句具体做法。
+
+文档是写给「三个月后的自己」看的：他不知道今天发生了什么，但照着这份文档能重做一遍。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它写 90 秒讲稿（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令发出去</b><span>紧接着上一步，同一轮对话里发。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 90 秒讲稿 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>基于 output/项目文档.md，写一段 90 秒的项目展示讲稿，结构固定为三段：
+
+1. 原来这件事是怎么干的、麻烦在哪（一句）；
+2. 我做了一套什么方案、产出了哪三份文件（两句）；
+3. 结果省了多少事、还有什么没解决、下一步想固化什么（两句）。
+
+要求：
+- 全文不超过 300 字，口语，能念出来，不要书面语；
+- 不许出现「进一步」「切实」「有效」这类套话；
+- 必须提到至少一个具体数字（支出总额或笔数）；
+- 结尾必须留一个还没解决的问题，不许把成果说成「完美解决」。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这五条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>自测表里有一项明确写着「不通过」或【未能验证】</b><span>四项全通过反而可疑——真实项目不可能四项都干净。<br>
+            <em>全写通过</em>：补一句「再核一次第 3 项：把简报里每个数字的出处逐个列出来，找不到的写【未能验证】」。</span></li>
+          <li><b>项目文档六块标题都在，「遗留问题」那块不是空的</b><span>至少写着那条待核实票据。<br>
+            <em>遗留问题空着</em>：让它把「待核实」表的内容抄进来——这正是现成的遗留问题。</span></li>
+          <li><b>文档里写的三个文件名，与 output 里实际文件一一对应</b><span>逐个核文件名。<br>
+            <em>对不上</em>：以 output 实际文件为准改文档。</span></li>
+          <li><b>讲稿 300 字以内，且至少提到一个具体数字</b><span>「8 笔」「3951.50 元」这类都行。<br>
+            <em>全是形容词</em>：补一句「必须写出支出总额或笔数，不许只说『效率大幅提升』」。</span></li>
+          <li><b>讲稿结尾留着一个没解决的问题</b><span>写成「完美解决」说明它没按需求写。<br>
+            <em>被它写满了</em>：直接说「结尾改成『还有一条待核实票据没销完，这是我下一步要补的』」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：自测表 + <code>output/项目文档.md</code> + 90 秒讲稿。</p>
+        <p class="note">自测和文档都可以交给 AI 起草，但<strong>最终那句「验收通过」只能由你说</strong>——
+          这也是本次综合项目最后一环真正考的东西。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>拿到一句模糊需求（「月底把报销整一下」），第一步最合适做什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 直接把这句话发过去，让它先做起来再说</li>
+            <li>B. 让它按六要素列出还缺哪些信息，等你补齐</li>
+            <li>C. 先自己把数据整理干净，再交给 AI</li>
+            <li>D. 先问指导老师批不批</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>综合项目的返工，八成发生在<strong>开头没问清楚</strong>。
+            A 的问题是它会替你补一套看似合理的口径，错得很隐蔽；C 是把自己当工具用，
+            而且你这时的整理多半缺规则；D 是管理动作，跟需求澄清无关。
+            正确做法是先列缺口、你补齐、再定稿成一份任务说明文件。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>多选：判断「这一步该用什么形态」，主要看哪几项？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 输入是什么</li>
+            <li>B. 输出给谁看</li>
+            <li>C. 多久要跑一次</li>
+            <li>D. 这个功能最近火不火</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>输入是数字就用表格，是人要读的一段话就用文档，
+            是定期任务就考虑自动化；<strong>反复要用的标准和口径放知识库</strong>。
+            D 是选型最常见的干扰项——工具热度和这件事该用什么没关系。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>下面哪一项最适合放进知识库，而不是做成一次性文档？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 本月报销合计 3951.50 元</li>
+            <li>B. 报销标准与口径（可报销范围、需要什么凭证）</li>
+            <li>C. 本月的月度简报正文</li>
+            <li>D. 这次项目的产出清单</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>知识库存的是<strong>反复要用、同时又不会每月变</strong>的东西——
+            判断标准就是那句「同样的话你要解释第十遍了」。
+            A、C、D 都是本月这一次的产出，写进文档即可，塞进知识库反而污染检索。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：AI 交来的自测结论写着「全部通过」，就可以认为这一条不用再核了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，它自己查过了</li>
+            <li>B. 错误，自测结论最终必须由人来验收</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>AI 不知道自己的数字是怎么来的，
+            自测时倾向于得出「均可通过」的结论——这不是撒谎，是<strong>它确实无法回溯自己的数据来源</strong>。
+            所以自测指令里要写死「不通过就写不通过」，并且最终由你抽验。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>项目文档最主要写给谁看？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 给指导老师打分用</li>
+            <li>B. 给三个月后的自己看，照着它能重做一遍</li>
+            <li>C. 给 AI 看，下次让它接着干</li>
+            <li>D. 给下一届存档，越厚越好</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>这个判据决定文档的取舍：写给老师看就会堆形容词，
+            写给三个月后的自己你就会老老实实写下<strong>路径、口径、自测方法和遗留问题</strong>。
+            文档六块里最容易被省略、也最不该省的是<strong>「遗留问题」</strong>——
+            没有它，下一个人会踩同一个坑。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>综合项目的第一步不是打开工具，是<strong>把模糊需求问成六要素齐全的任务说明文件</strong>——它后面全程是基准；</li>
+          <li>选型只用三问：<strong>输入是什么 / 输出给谁看 / 多久跑一次</strong>；每个形态要么用、要么写出不用的理由；</li>
+          <li>实现别一步到位：<strong>先拿口径表、确认后才出文件</strong>，口径一错就是三份全错；</li>
+          <li>测试四项 <strong>行数 / 合计 / 事实 / 串档</strong>：AI 能查，<strong>结论必须你来下</strong>，异常只标不改；</li>
+          <li>文档六块 <strong>需求 / 方案 / 产出 / 自测 / 遗留 / 下次更快</strong>，讲稿结构固定：
+            <strong>原来怎么干 → 做了什么 → 结果和没解决的事</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天这套「先问清、再选型、分步做、最后自测留痕」的流程，
+        明天要装到你自己的岗位上——<a class="xref" data-lesson="23">第 23 次课</a>会把一个岗位的高频任务摊开，
+        让你挑出哪些能沉淀成 Skill、哪些能做成自动化任务。<strong>本月这套《项目文档》留好，那是你的模板底稿。</strong>
+      </p>
+      <p class="note">本页报表金额、行数均为<strong>教学示意数据，非实测数值</strong>；
+        工具入口与界面名称随版本变化，具体以实际版本为准。本站核对日期 <strong>2026-09-26</strong>。</p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 21 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）学生会副主席在群里说「月底把报销整一下」，接到这样的需求，第一步最合适的做法是？
+A. 直接把这句话发给 AI，让它马上开始做文件
+B. 先让 AI 按六要素列出还缺哪些信息，等信息补齐后再动手
+C. 先把文件夹整理干净，理顺了再交给 AI
+D. 先请示指导老师批不批准
+【答案】B
+【解析】综合项目的返工大多发生在「开头没问清楚」。A 的隐患是它会替你补一套看似合理的口径，错得很隐蔽；C 是把自己当工具用，而且这时的整理通常缺规则；D 属于管理流程，不是需求澄清。正确顺序是：列缺口 → 你补齐 → 定稿成任务说明文件。
+
+2.（多选）判断「这一步该用哪种形态」，主要依据是哪几项？
+A. 输入是什么
+B. 输出给谁看
+C. 这件事多久要跑一次
+D. 这个功能最近火不火
+【答案】ABC
+【解析】输入是数字就用表格，是人要读的一段话就用文档，定期任务就考虑自动化，反复要用的标准与口径放知识库。D 是最常见的干扰项——工具热度与这件事该用什么无关，选型不能跟着宣传走。
+
+3.（单选）下面哪一项最适合放进知识库，而不是做成一次性文档？
+A. 本月报销合计 3951.50 元
+B. 报销标准与口径（可报销范围、需要什么凭证）
+C. 本月的月度简报正文
+D. 本次项目的产出清单
+【答案】B
+【解析】知识库存的是「反复要用、同时又不会每月变」的东西，判断标准就是那句「同样的话你得解释第十遍了」。A、C、D 都是本次的一次性产出，写进文档即可；把一次性数据塞进知识库，反而会污染检索结果。
+
+4.（判断）在方案表里写「这一步也可以用 PPT，视情况而定」，属于合格的表述。
+A. 正确，给学生留了灵活空间
+B. 错误，方案必须押定唯一形态并写出理由
+【答案】B（错误）
+【解析】方案设计最怕模棱两可。合格的表述是「用这个」或者「不用，因为……」，每一格都要押明确的说法。写「视情况而定」等于把决策推给后面照着做的人，他会停下来重新问一遍——这正是模糊选型带来的额外成本。
+
+5.（多选）AI 交来的自测结论已经通过，下面哪些事仍然必须由人来验收？
+A. 汇总表的合计数与原始流水能不能对上
+B. 没有发票的那条是被标成【待核实】，还是被替补了一个数字
+C. 月度简报里出现的数据，是不是真的能在汇总表里找到出处
+D. 它说通过了，那就是通过了
+【答案】ABC
+【解析】自测表里 AI 能查的只有行数和合计这类机械项；而 C 这类「事实溯源」它最容易凭印象复核。D 是把责任交给了无法负责的一方：AI 不知道自己的数字是怎么来的，倾向给出「均可通过」的结论。所以自测指令里要写死「不通过就写不通过」，最终结论由人下。
+
+6.（单选）项目文档最主要的读者应该是谁？
+A. 给指导老师打分用
+B. 给三个月后的自己看，照着它能把这件事重做一遍
+C. 给 AI 看，下次让它直接接着干
+D. 给下一届存档，写得越厚越好
+【答案】B
+【解析】这个判据直接决定文档怎么写：写给老师看就会往里堆形容词，写给三个月后的自己看，你就会老老实实写下路径、口径、自测方法和遗留问题。文档六块中「遗留问题」最常被省掉，也最不该省——没有它，下一个人一定会踩同一个坑。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+</body>
+</html>

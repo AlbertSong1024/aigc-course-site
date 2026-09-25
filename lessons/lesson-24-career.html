@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第24次课 AI 辅助职业规划与岗位调研｜AIGC应用与实践</title>
+<meta name="description" content="SWOT 要填证据不是形容词，行业调研要带来源，JD 拆解要找出自己缺什么，行动计划要符合 SMART：用 AI 做完这四步，得到一份能力地图和一份能照着执行的计划。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="24" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三开局</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="23">第 23 次课</a>把岗位上的活拆成了清单和工作流，
+        回答的是「<strong>这份工作每天要干什么</strong>」。
+        从这一课开始，方向掉过来：回答「<strong>这个岗位要什么样的人，我还差什么</strong>」。
+      </p>
+      <p>
+        方向一换，AI 的用法也跟着换：前面两个模块，你让它<strong>干活</strong>；
+        这一课，你让它<strong>查资料、拆要求、列差距</strong>——它不会替你规划人生，
+        但能把你脑子里那团模糊的焦虑，整理成一张能照着执行的清单。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>简历投出去没回音</strong></td><td>不知道岗位到底要什么，只能按自己学过的课写，写完自己也没底</td></tr>
+            <tr><td><strong>「我挺适合这个岗位的」说不出依据</strong></td><td>SWOT 四格填的全是形容词，念给自己听都觉得空</td></tr>
+            <tr><td><strong>网上一搜一大堆说法，不知道信谁</strong></td><td>分不清哪句是查来的、哪句是 AI 顺着你编的，更没有来源可核</td></tr>
+            <tr><td><strong>想提升，但不知道先补哪一样</strong></td><td>什么都想学，计划写着「好好学习 Python」，最后一样也没补起来</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课<strong>不教怎么写简历</strong>（那是<a class="xref" data-lesson="25">第 25 次课</a>的事），
+        <strong>也不教怎么面试</strong>（那是<a class="xref" data-lesson="26">第 26 次课</a>的事）。
+        今天只做四件事：<strong>看清自己（SWOT）→ 看清外面（行业调研）→ 看清岗位要什么（JD 拆解）→ 列出补齐计划（能力地图 + SMART）</strong>。<br>
+        四个实操<strong>前后相接、共用一套设定</strong>：同一个虚拟角色（小林）、同一个目标岗位
+        （人工智能训练师 / AI 应用开发助理）。① 的背景卡是 ②③④ 的判断依据，
+        ③ 拆出来的差距清单是 ④ 的原料。四步走完，你手上是一套能一直改的规划，不是四份互不相干的练习。
+      </div>
+      <p class="note">
+        本页涉及的产品口径取自 <strong>www.workbuddy.cn 客户端用户文档</strong>，核对日期 <strong>2026-09-26</strong>；
+        界面随版本更新，以你实际使用的版本为准。<br>
+        本课的<strong>岗位、招聘启事、行业信息、个人背景均为教学示意（模拟数据）</strong>，
+        不对应任何真实公司与真实个人；真实薪资、岗位数量、招聘要求一律<strong>以你查到的为准</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 SWOT 四格各自回答哪一个问题，并让 AI 产出<strong>每格都带具体依据</strong>的分析，而不是四格形容词；</li>
+          <li>让 AI 做一次目标行业 / 岗位调研，产出<strong>每条结论都带来源</strong>的简报，并指出哪几条来源不可核对；</li>
+          <li>把一份招聘启事拆成<strong>硬技能 / 工具 / 软实力 / 加分项</strong>四类关键词，说出哪几条是自己没有的；</li>
+          <li>基于 SWOT 与 JD 差距，让 AI 产出一张能力地图（<strong>会 / 半会 / 不会 + 差距说明</strong>）；</li>
+          <li>写出符合 SMART 五要素的行动计划，并逐条自检出「这一条缺了哪一要素」。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-swot"><b>01</b>SWOT：四格填证据，不填形容词 <em>＋实操①</em></a>
+        <a href="#s-research"><b>02</b>行业调研：结论必须带来源 <em>＋实操②</em></a>
+        <a href="#s-jd"><b>03</b>JD 拆解：找出自己缺什么 <em>＋实操③</em></a>
+        <a href="#s-plan"><b>04</b>能力地图与 SMART 行动计划 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="23">第 23 次课</a>的岗位高频任务清单——
+        知道岗位每天在干什么，才知道该补什么能力。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="25">第 25 次课</a>要写简历，
+        今天拆出来的 <strong>JD 关键词就是简历里必须出现的词</strong>，
+        今天画的<strong>能力地图就是简历素材的索引</strong>——这一步偷懒，下一步就得重写。
+      </div>
+    </section>
+
+    <section class="sec" id="s-swot">
+      <h2>一、SWOT：四格里填的是证据，不是形容词<span class="sec__tag">起点</span></h2>
+      <p>
+        SWOT 大概是所有职业规划课的第一页，也是被用得最没用的一页。
+        大多数人交上来的版本长这样：优势「学习能力强」，劣势「经验不足」，机会「行业发展好」，威胁「竞争激烈」。
+      </p>
+      <p>
+        四格都对，四格都没用。因为它<strong>没法指导任何行动</strong>——
+        「学习能力强」不能告诉你该投哪类岗位，「行业发展好」不能告诉你该先补哪一样。
+        一份 SWOT 有没有用，只看一件事：<strong>每一条能不能定位到具体的一件事</strong>。
+      </p>
+
+      <h3>四个格子回答的是四个不同的问题</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>格</th><th>回答什么问题</th><th>依据从哪来</th><th>最常见的错</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>S 优势</strong></td>
+              <td>我身上有哪一样，是别人短时间学不会的</td>
+              <td>我<strong>做过</strong>的事：哪门课、哪个项目、哪一段经历</td>
+              <td>填性格形容词（「性格开朗」「有上进心」）</td>
+            </tr>
+            <tr>
+              <td><strong>W 劣势</strong></td>
+              <td>我缺哪一样，而它会被岗位明确要求</td>
+              <td>我<strong>没做过</strong>的事实：没实习、没用过某个工具</td>
+              <td>填缺点（「做事有点拖延」），而不是岗位要求的缺口</td>
+            </tr>
+            <tr>
+              <td><strong>O 机会</strong></td>
+              <td>外部环境里有什么是我能借的</td>
+              <td>可查证的外部事实：政策、城市、学校资源、招聘趋势</td>
+              <td>把愿望当机会（「AI 是风口」），或把自身特点塞进来</td>
+            </tr>
+            <tr>
+              <td><strong>T 威胁</strong></td>
+              <td>外部环境里有什么会挡住我</td>
+              <td>同样要<strong>可查证</strong>，不能是感觉</td>
+              <td>写「竞争激烈」——谁在竞争、competition 到什么程度，一句没说</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">一条判据就够了</span>
+        把这一条念给一个不认识你的人听，他能不能知道你说的是<strong>哪门课、哪个项目、哪一段经历</strong>？
+        能 → 是证据；不能 → 是形容词，删掉重来。<br>
+        还有一个最容易混的：<strong>S / W 看自己，O / T 看外面。</strong>
+        「我英语不好」是 W，「这个岗位普遍要求能读英文文档」才是 T——写错了整张表的逻辑就乱了。
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同样八个格子的内容，形容词版和证据版差在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-adj">形容词版</button>
+            <button class="btn btn--ghost" type="button" id="d1-ev">证据版</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>四格总条数</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>能定位到具体一件事的条数</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>能不能拿来指导行动</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>两版内容均为本课为讲清差别而编写的示例，
+            条数与判定由页面预置，不是任何真实学生的分析结论。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让 AI 做出一份每格都带依据的 SWOT <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-SWOT.md</code>——
+          四格齐全，每格不少于 3 条，每条都带「结论 + 依据 + 依据来源」，末尾还有一段清洗说明。</p>
+
+        <p><strong>第 1 步 · 把课堂统一背景卡复制下来（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务</b><span>工作目录选 <code>wb-试验</code>（沿用前几课那个目录即可）。</span></li>
+          <li><b>点下面这块右上角「复制」，先粘进记事本暂存</b><span>
+            这就是你给它的原料。<span class="task__warn">背景卡一个字都不要改</span>——
+            全班用同一份，讲评才对得上，后面三个实操也都靠它。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 课堂统一虚拟角色背景卡（模拟，非真实个人信息）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【学生背景卡 · 课堂统一虚拟角色，非真实个人信息】
+
+姓名：小林（虚拟角色）
+年级专业：大三，计算机应用技术专业
+
+已修课程：
+- Python 程序设计（成绩良好，做过课内实验）
+- 机器学习导论（学过概念与常见算法，未做过完整建模项目）
+- 数据库基础（会写基本 SQL 查询）
+- Web 前端基础（能写静态页面，未做过前后端联调）
+
+做过的项目（共两个，均为课程项目）：
+1. 校园二手书推荐系统：3 人小组，本人负责数据清洗与简单推荐逻辑，
+   用 Python + pandas 处理约 3000 行交易数据；代码在小组仓库里，本人没有独立维护过一个仓库。
+2. 课堂签到人脸识别 demo：调用现成的第三方接口完成，本人未自己训练过模型。
+
+工具使用情况：
+- Python：能写脚本处理表格数据，不熟虚拟环境与依赖管理
+- Git：只在课内用过 add / commit / push 三条命令，不会处理分支与冲突
+- Excel、飞书文档：日常在用
+- 大模型产品：日常会用来问问题、改文案，没有调过 API
+
+实习经历：无
+竞赛与证书：无学科竞赛经历，无职业资格证书；英语为 A 级，未通过四级
+可投入时间：每周约 6 小时可用于自学
+意向：希望在广州就业
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它把 SWOT 做出来（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令整段复制，跟第 1 步的背景卡一起发出去</b><span>
+            背景卡在前、指令在后，中间空一行。
+            <span class="task__warn">整段粘贴，不要自己改写</span>——里面的三行格式和五条规则是一套的，改一半它会漏字段。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="做 SWOT 的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>上面是一份学生背景卡。他的目标岗位是「人工智能训练师 / AI 应用开发助理」，意向城市广州。
+请根据这份背景卡做一份 SWOT 分析，存成工作目录下的 01-SWOT.md。
+
+四格一个都不能少，每格不少于 3 条。每条写成三行：
+- 结论：一句话说清这一条是什么；
+- 依据：对应背景卡里的哪一件具体的事（写清是哪门课、哪个项目、哪一段经历）；
+- 依据来源：写成能核对的出处，例如"背景卡·已修课程""背景卡·项目经历 1""背景卡·工具使用情况"。
+
+规则：
+1. 只许用背景卡里有的信息，不许补充背景卡里没有的经历；
+2. 不许写"学习能力强""沟通能力好""有上进心"这类没有依据的形容词——
+   写不出依据的条目直接删掉，不要硬凑够 3 条；
+3. 劣势（W）那一格，只写"岗位可能会要求、但我现在没有"的东西，不写性格缺点；
+4. 机会（O）和威胁（T）只能写外部环境（行业、政策、城市、学校资源），
+   不许写他自己的特点——自己的特点归 S 和 W；
+5. 背景卡里查不到的外部信息，写【待查】，不要自己编。
+只新建这一个文件，不要改动工作目录里已有的任何文件。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>看它有没有真的落成文件</b><span>只在对话里给了表格不算完成，工作目录里要有
+            <code>01-SWOT.md</code>。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 让它自己查形容词，你只负责核对（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            形容词一定会有漏网的，所以这一步交给它自己查——你只核对它删得对不对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="清洗形容词的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把刚才那份 01-SWOT.md 逐条过一遍，做一件事：
+对每一条，回答"能不能定位到具体的一件事"——
+念给一个不认识小林的人听，他能不能知道你说的是哪门课、哪个项目、哪一段经历？
+
+- 能：保留，在该条后面加一行"核验：通过"；
+- 不能：从文件里删掉，并在文件末尾的"本次清洗说明"里写清删了哪一条、为什么删。
+
+清洗完之后，如果某一格剩下不足 3 条，不要用形容词凑数，
+写"本格现有 N 条，缺口 X 条，需在做完行业调研后补充"，并说明缺的是哪一类信息。
+改完直接覆盖 01-SWOT.md。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>打开修订后的文件，看「本次清洗说明」那段</b><span>
+            它删了哪几条、哪几格不够，都该写在那儿。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四格齐全，且每条都有「依据」这一行，依据里出现了背景卡里的具体事实</b><span>
+            例如「校园二手书推荐系统」「Git 只会三条命令」这类，而不是「有一定的编程基础」。<br>
+            <em>依据写得笼统</em>：补一句「每条依据必须点名背景卡里的课程名、项目名或工具名，
+            写不出具体名字的条目直接删掉」，让它重出一遍。</span></li>
+          <li><b>「劣势」格里至少有一条是「岗位会要求、但我没有」这类</b><span>
+            典型是「无实习经历」「Git 不会处理分支」；如果整格都在写「做事拖延」这类性格，就是写偏了。<br>
+            <em>写成了性格缺点</em>：把规则第 3 条单独再发一次，明确「劣势只写能力缺口，不写性格」。</span></li>
+          <li><b>清洗说明里至少删掉了 1 条形容词</b><span>
+            一条都没删，多半是它没真去核——背景卡里「无实习经历」这种事实之外，
+            AI 顺手写形容词的概率很高。<br>
+            <em>它一条都没删</em>：补一句「逐条按『能不能定位到具体一件事』判断，一条一条报，不许整段跳过」，让它重查。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-SWOT.md</code>。第 4 节画能力地图时要直接引用它的「劣势」格。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-research">
+      <h2>二、行业调研：结论后面必须跟着来源<span class="sec__tag">方法</span></h2>
+      <p>
+        SWOT 看清了自己，下一步是看清外面。这一步最容易掉进的坑很具体：
+        你问 AI「人工智能训练师前景怎么样」，它会回给你一大段<strong>听起来很对的话</strong>——
+        结构完整、语气笃定，而且你一点办法都没有去验证。
+      </p>
+      <p>
+        问题不在它会不会编，而在于<strong>你分不清哪句是查来的、哪句是它顺着话头补的</strong>。
+        所以调研这一步唯一重要的规矩就是：<strong>每一条结论后面都挂着来源</strong>。
+        没有来源的结论，等于没有。
+      </p>
+
+      <h3>来源也有三六九等</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>等级</th><th>长什么样</th><th>能不能自己去核</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge--ok">可核对</span></td>
+              <td>有名有姓有出处：某公司招聘页、某政府部门发文、某平台统计（带时间）</td>
+              <td><strong>能</strong>，照着名字和链接点过去就能看到</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge--todo">半可核对</span></td>
+              <td>行业媒体文章、招聘平台聚合页——有来源但没标时间、没标统计范围</td>
+              <td>勉强能，但要看清<strong>是什么时候、什么范围</strong>的数据</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge--a">不可核对</span></td>
+              <td>「业内普遍认为」「据统计」「一般来说」「众所周知」</td>
+              <td><strong>不能</strong>——没有主体、没有时间，谁说的都不知道</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">薪资和数量，是最容易被编出来的两类数字</span>
+        「这个岗位月薪大概 8k–12k」「广州相关岗位有 3000 个」——
+        这类句子 AI 写得最顺，也最不可信，因为它没有随手可查的实时数据源。<br>
+        规矩只有一句：<strong>查不到就写【不确定 · 以我查到的为准】</strong>，
+        宁可留一个不确定，也不要拿一个编出来的数字去做人生决定。
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 三份简报摆在一起，哪一份才拿得出手</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d2-a">无来源版</button>
+            <button class="btn btn--ghost" type="button" id="d2-b">来源模糊版</button>
+            <button class="btn btn--ghost" type="button" id="d2-c">带来源版</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d2-k1">—</b><span>结论条数</span></div>
+            <div class="kpi"><b id="d2-k2">—</b><span>可核对来源条数</span></div>
+            <div class="kpi"><b class="acc" id="d2-k3">—</b><span>能不能拿去做决定</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三份简报均为本课编写的示例文本，
+            其中的行业信息不代表真实情况，仅用于演示「来源写到什么程度才算可核对」。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">调研的目的不是得到一个结论</span>
+        是得到一张<strong>你能自己去核的清单</strong>。
+        简报写完之后最值钱的部分不是正文，是末尾那张来源核对表——
+        哪条能核、哪条要再查、哪条干脆查不到，一目了然。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让 AI 做一次目标岗位调研，产出带来源的简报 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-行业调研简报.md</code>——
+          三段正文（岗位在干什么 / 想要什么样的人 / 入行门槛与路径），
+          外加末尾一张四列来源核对表。</p>
+
+        <p><strong>第 1 步 · 复制这次的调研目标（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>点下面这块右上角「复制」</b><span>调研目标写死，它才不会把话题扯到「人工智能行业整体趋势」上去。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 本次调研目标 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【本次调研目标】
+
+目标岗位：人工智能训练师 / AI 应用开发助理
+（相近叫法包括：AI 训练师、数据标注工程师、AI 应用开发工程师助理、Prompt 工程师助理）
+意向城市：广州
+调研用途：判断我（背景卡里那位学生）现在离这个岗位有多远，先补哪几样最划算
+调研范围：只查 2025 年以后的公开信息；薪资与岗位数量查不到就写【不确定】
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它带着来源规矩去查（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令，跟第 1 步的调研目标一起发出去</b><span>
+            目标在前、指令在后。<span class="task__warn">里面的「来源规矩」四条一句都不要删</span>——
+            删一条，它就会开始编。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="做行业调研的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我要调研的岗位是「人工智能训练师 / AI 应用开发助理」，城市广州（具体目标见上面那段）。
+请做一次岗位与行业调研，存成工作目录下的 02-行业调研简报.md。
+
+简报写三段，每段用二级标题分开：
+1. 这个岗位日常在干什么：列 5 条以上具体工作事项，
+   不要写"参与 AI 项目建设""协助算法工作"这种空话，要写到能想象出画面的程度；
+2. 现在招这类岗位想要什么样的人：分"硬要求"和"加分项"两栏，
+   写清招聘信息里反复出现的词，并注明这个词出现了几次；
+3. 入行门槛与常见路径：写清常见的学历与经验要求，
+   以及新人一般从哪一类岗位切入（不要写成励志建议，写招聘信息里实际反映出来的路径）。
+
+来源规矩（最重要，四条一条都不能违反）：
+1. 每条结论后面用括号标注来源：写清来源名称和链接（能拿到链接就拿链接），
+   例如（来源：某公司招聘页，2026-09 查）；
+2. 查不到的，原样写【未查到】，不许用"据了解""一般来说""众所周知"这类话带过；
+3. 涉及薪资、岗位数量、增长率这类数字，必须同时写清来源和统计口径
+   （哪个平台、什么时间、什么范围）；查不到就写【不确定 · 以我查到的为准】，
+   绝对不许自己编一个数字；
+4. 优先查 2025 年以后的信息，来源早于 2023 年的要标注年份，并提示可能已过时。
+
+文件末尾加一张来源核对表，四列：
+| 结论 | 来源 | 能不能自己去核（能 / 不能） | 核对日期 |
+表里行数必须等于正文结论条数，一条结论一行，不许合并。
+只新建这一个文件，不要改动工作目录里已有的任何文件。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它把说不清的来源重查一遍（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            第一遍一定会冒出「招聘网站」「行业报告」这种说了等于没说的来源，这一步就是治它的。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="来源复查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把 02-行业调研简报.md 里"来源"那一栏再检查一遍，做两件事：
+
+1. 把来源写成"招聘网站""网络资料""行业报告""相关研究"这种说不清是哪一份的条目
+   单独列出来，逐条重新查证，把来源换成具体名称加链接；
+   实在查不到的，改成【未查到】，不许留一个模糊来源在表里。
+2. 检查正文里有没有"业内普遍认为""据统计""越来越多企业"这类没有出处的说法，
+   有就标成【待核】，并在后面写一句"建议到哪类渠道核实"。
+
+改完直接覆盖 02-行业调研简报.md，并在末尾加一段"本次来源复查说明"，
+写清重查了几条、改了几条、还剩几条查不到。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>打开「本次来源复查说明」，数一下它改了几条</b><span>
+            一条都没改，说明它第一遍就没真去查。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>来源核对表的行数等于正文结论条数，且「能不能自己去核」一栏至少一半填「能」</b><span>
+            这是本实操的硬指标——表对不上，说明有结论没来源。<br>
+            <em>行数对不上</em>：补一句「正文每出现一条结论，表里必须有一行，逐条对照补齐」，让它重出。</span></li>
+          <li><b>简报里至少出现 1 条【未查到】或【不确定】</b><span>
+            一条都没有，反而可疑——真实调研不可能什么都查得到。<br>
+            <em>它什么都查到了</em>：把来源规矩第 2、3 条再发一次，要求它
+            「对每一条说明来源是哪个具体页面，说不出具体页面的改成【未查到】」。</span></li>
+          <li><b>涉及薪资、岗位数量的地方，要么带来源和统计口径，要么写【不确定 · 以我查到的为准】</b><span>
+            出现一个光秃秃的数字（例如「月薪 8k–12k」后面没有来源），就是没过关。<br>
+            <em>出现裸数字</em>：点名那一句，让它补来源；补不出来就改成【不确定 · 以我查到的为准】。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-行业调研简报.md</code>。下一节拆 JD 时，
+          它这里记下的「反复出现的词」正好可以拿来对照。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-jd">
+      <h2>三、JD 拆解：重点是找出自己缺什么<span class="sec__tag">本课核心</span></h2>
+      <p>
+        拿到一份招聘启事（JD），大部分人的第一句话是：「帮我看看我匹配度多少？」
+        AI 会很客气地回你一个 75%，再补几句夸奖。<strong>然后你什么也没得到</strong>——
+        75% 这个数字既不能告诉你该补什么，也不能告诉你能不能投。
+      </p>
+      <p>
+        拆解 JD 的正确姿势是把它当成一张<strong>考试范围</strong>：
+        先把它写的东西全部分类抄下来，再逐条跟自己对照，
+        最后得到一份<strong>差距清单</strong>。这份清单才是给你自己的。
+      </p>
+
+      <h3>四类关键词，分法要固定</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>类</th><th>是什么</th><th>怎么判断「我有没有」</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>硬技能</strong></td>
+              <td>会就是会、不会就是不会，<strong>能被考出来</strong>的能力：某门语言、某类算法、标注规范、SQL</td>
+              <td>拿一道题来考自己，答得上来才算「有」</td>
+            </tr>
+            <tr>
+              <td><strong>工具</strong></td>
+              <td>具体的软件、平台、框架、库的名字：Git、pandas、标注平台、向量数据库</td>
+              <td>用过才算「有」，只听说过算「没有」</td>
+            </tr>
+            <tr>
+              <td><strong>软实力</strong></td>
+              <td>JD 里写了但考不出来的：沟通、抗压、细致、文档习惯</td>
+              <td>不要花力气补这一类，准备<strong>例子</strong>就行</td>
+            </tr>
+            <tr>
+              <td><strong>加分项</strong></td>
+              <td>有就加分、没有不致命：实习、竞赛、作品链接、能读英文文档</td>
+              <td>没有不致命，但<strong>补起来最快的往往在这类里</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">频次比「有没有出现」更重要</span>
+        同一个词在 JD 里出现三次，和只在末尾出现一次，份量完全不同。
+        所以拆解表要数<strong>频次</strong>，还要抄<strong>它出现在哪一句</strong>——
+        出现在「岗位职责」里的词，通常才是这个岗位真正天天在用的东西。
+      </div>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 一句 JD 原话，该被拆进四类中的哪一格</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d3-hard">硬技能</button>
+            <button class="btn btn--ghost" type="button" id="d3-tool">工具</button>
+            <button class="btn btn--ghost" type="button" id="d3-soft">软实力</button>
+            <button class="btn btn--ghost" type="button" id="d3-plus">加分项</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d3-k1">—</b><span>这一类抄到几条</span></div>
+            <div class="kpi"><b id="d3-k2">—</b><span>小林已有的</span></div>
+            <div class="kpi"><b class="acc" id="d3-k3">—</b><span>小林缺的</span></div>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>演示中的招聘启事为本课模拟撰写，
+            「小林有没有」按本课背景卡判定，不代表任何真实岗位的招聘标准。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·拆一份招聘启事的关键词，列出差距清单 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-JD关键词拆解.md</code>——
+          四类关键词表（含原文出处与频次），外加一份按「补起来从快到慢」排好序的差距清单。</p>
+
+        <p><strong>第 1 步 · 复制这次要拆的招聘启事（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>点下面这块右上角「复制」</b><span>
+            这份 JD 是本课模拟撰写的教学材料，<span class="task__warn">不是任何公司的真实招聘信息</span>，
+            课上用它统一练习；课后你可以换成自己找到的真实 JD 再拆一遍。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 招聘启事（教学示意 · 模拟撰写）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【招聘启事 · 教学示意，本课模拟撰写，非任何公司的真实招聘信息】
+
+岗位名称：人工智能训练师 / AI 应用开发助理
+工作地点：广州市番禺区
+薪资范围：【不确定 · 以你查到的为准】（本课不提供薪资数字）
+学历要求：大专及以上，计算机、软件技术、人工智能技术应用等相关专业
+经验要求：应届生或 1 年以内经验可投
+
+岗位职责：
+1. 负责智能客服项目的语料清洗、数据标注与质量抽检，按规范维护标注集；
+2. 配合算法工程师做提示词（Prompt）调优，记录不同版本的效果差异，整理成对比文档；
+3. 使用 Python 编写数据处理脚本，完成批量数据清洗、去重与格式转换；
+4. 参与内部 AI 应用（知识库问答、文档自动摘要）的需求梳理与效果验收；
+5. 维护项目文档与测试用例，每周输出一份效果周报。
+
+任职要求：
+1. 掌握 Python 基础语法，能独立编写脚本处理 CSV 与 JSON 数据；
+2. 熟悉 pandas、numpy 等常用库，了解 Git 的基本操作；
+3. 了解大模型基本原理，用过至少一种主流大模型产品，知道提示词是什么；
+4. 做事细致，能接受重复性的数据核对工作，有文档编写习惯；
+5. 具备良好的沟通能力，能与产品和算法同学顺畅对接，能承受项目上线前的压力。
+
+加分项：
+1. 有数据标注、语料处理或 AI 相关实习、项目经历；
+2. 有公开的作品链接（GitHub、技术博客、可访问的项目演示）；
+3. 参加过人工智能类学科竞赛或相关培训并取得证书；
+4. 能阅读英文技术文档。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它把四类关键词拆出来（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令，跟上面那份 JD 一起发出去</b><span>
+            JD 在前、指令在后。<span class="task__warn">约束里「不许打匹配度分数」那句必须留着</span>——
+            不留，它一定先给你一个百分比。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="拆 JD 的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>上面是一份招聘启事。请把它拆成四类关键词，存成工作目录下的 03-JD关键词拆解.md。
+拆解时对照下面这份学生背景卡来判断"我有没有"（背景卡内容见本次对话前面那份，
+姓名为小林：大三计算机应用技术，学过 Python 程序设计、机器学习导论、数据库基础、Web 前端基础；
+做过校园二手书推荐系统（负责数据清洗，约 3000 行数据）和人脸识别 demo（调用现成接口）两个课程项目；
+Python 能写脚本、不熟虚拟环境；Git 只会 add/commit/push 三条命令；无实习、无竞赛、英语 A 级）。
+
+先输出四张表，四类一个都不能少，表头统一为：
+| 关键词 | 出现在 JD 的哪一句（原文摘抄） | 在 JD 里出现几次 | 我有没有（有 / 半会 / 没有） |
+- 硬技能：会就是会、不会就是不会、能被考出来的能力；
+- 工具：具体软件、平台、框架、库的名字；
+- 软实力：JD 里写了但考不出来的（沟通、抗压、细致、文档习惯这类）；
+- 加分项：有就加分、没有不致命的（实习、竞赛、作品链接、英语这类）。
+
+"我有没有"那一列按这个标准填，不许凭感觉：
+- 有：背景卡里有明确对应的课程或项目经历，经得起追问；
+- 半会：学过一点或用过一次，但说不出细节、经不起追问；
+- 没有：背景卡里完全找不到对应内容。
+
+四张表之后，加一段"差距清单"：把"没有"和"半会"的条目抄进来，每条写两行：
+- 现在：现状是什么（对照背景卡写具体，例如"只用过 add/commit/push，没处理过分支"）；
+- 补到什么程度：补到能在简历里写成一句完整经历、且经得起追问，算补完。
+  必须写成能回答是或否的标准，不许写"需要加强""多多练习"。
+
+约束：
+- 关键词只能从这份 JD 里摘，不许补充 JD 里没写的东西；
+- 频次按 JD 原文里实际出现的次数数，不许估；
+- 不许打匹配度分数，不许写"你很适合这个岗位"这类评价。
+只新建这一个文件，不要改动工作目录里已有的任何文件。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它把差距清单排好序（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            清单不排序等于没排——你还是不知道明天该先补哪一样。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="排序与复核指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把 03-JD关键词拆解.md 里的"差距清单"再过一遍，做两件事：
+
+1. 逐条检查"补到什么程度"这一行，看它是不是能回答是或否的标准。
+   写成"需要加强""多多练习""多加熟悉"的，改写成能判断的标准
+   （例如改成"能用 pandas 读一份 5000 行的 CSV，完成去重与缺失值处理，并写出处理过程注释"）。
+2. 按"补起来从快到慢"分三档重新排序：一周内能补 / 一个月内 / 三个月以上。
+   每档内部再按"对拿到面试帮助最大"排先后，并在每条后面写一句排序理由。
+
+改完直接覆盖 03-JD关键词拆解.md，并在末尾加一段"排序说明"，
+写清你为什么把第一条排在最前面。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>打开「排序说明」，看它第一条排的是哪一条、理由是什么</b><span>
+            理由里要是没提「补起来快」或「对面试帮助大」，就是没按规则排。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四类齐全，每类至少 3 条，且每条都抄了「出现在 JD 的哪一句」原文</b><span>
+            没有原文出处的，说明这条可能是它自己加的。<br>
+            <em>缺原文出处</em>：补一句「每条关键词必须抄出它在 JD 里的原句，抄不出来的删掉」。</span></li>
+          <li><b>「我有没有」那一列有「有 / 半会 / 没有」三种，不是全填「有」</b><span>
+            背景卡里「无实习、无竞赛、Git 只会三条命令」，至少这几条该是「没有」或「半会」。<br>
+            <em>它全填了「有」</em>：把背景卡再贴一次，要求它「逐条回到背景卡里找依据，找不到的只能填没有」。</span></li>
+          <li><b>差距清单每条都有「现在」和「补到什么程度」两行，且后者能回答是或否</b><span>
+            「Python 需要加强」不合格；「能独立跑通一段 pandas 清洗脚本并输出去重后的结果文件」才合格。<br>
+            <em>写得像口号</em>：把上面那段排序指令的第 1 条再发一次，点名让它只改那几行。</span></li>
+          <li><b>全文没有出现匹配度百分比，也没有夸奖式评价</b><span>
+            出现「匹配度 70%」这类字眼，说明它没守住约束。<br>
+            <em>还是给了分数</em>：补一句「删除所有匹配度评分与评价性语句，只保留四类表和差距清单」，让它重出。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-JD关键词拆解.md</code>。下一节的 SMART 行动计划，
+          每一条行动都要挂在这份清单的某一行上。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">匹配度是给别人的分数，差距清单才是给你自己的</span>
+        把 JD 拆完，你要是发现自己「没有」的条数比想象中多，那不是坏消息——
+        <strong>清单变长，意味着你终于知道该干什么了</strong>。
+        可怕的是拆完之后一片模糊，那说明这份 JD 你根本没读进去。
+      </div>
+    </section>
+
+    <section class="sec" id="s-plan">
+      <h2>四、能力地图与 SMART 行动计划<span class="sec__tag">收口</span></h2>
+      <p>
+        前三步做完，手上有四份东西：SWOT、行业简报、JD 拆解、差距清单。
+        但还差最后一步——大多数人到这儿会写出这么一段计划：
+        「下学期我要好好学习 Python，多做一些项目，争取找份实习。」
+      </p>
+      <p>
+        三句全是愿望，没有一句能执行。<strong>「好好学习」没有终点</strong>：
+        学到什么程度算学完了？不知道。不知道就没有完成的那天，也就永远在计划的第一行。
+      </p>
+
+      <h3>能力地图：先把「会 / 半会 / 不会」摊开</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>列</th><th>写什么</th><th>写砸了的样子</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>能力项</strong></td>
+              <td>从 JD 拆解的硬技能、工具类里逐条抄，一条一行</td>
+              <td>写「编程能力」——太笼统，没法判断会不会</td>
+            </tr>
+            <tr>
+              <td><strong>当前水平</strong></td>
+              <td>只能填三个之一：<strong>会 / 半会 / 不会</strong></td>
+              <td>填「一般」「还行」——这三个词没有边界</td>
+            </tr>
+            <tr>
+              <td><strong>差距说明</strong></td>
+              <td>对照 JD 的第几条要求，具体差在哪</td>
+              <td>写「需要提升」——等于没写</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>行动计划：一条要过五关（SMART）</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>要写清什么</th><th>不合格 vs 合格</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>S 具体</strong></td>
+              <td>补哪一项能力，补到什么程度，写成能演示出来的结果</td>
+              <td>✗「学一下 Git」<br>✓「能独立建分支、合并分支，并处理一次冲突」</td>
+            </tr>
+            <tr>
+              <td><strong>M 可衡量</strong></td>
+              <td>怎么判断补完了，写成<strong>能回答是或否</strong>的陈述句</td>
+              <td>✗「Python 有所提升」<br>✓「能独立跑通一段 pandas 脚本，输入 5000 行 CSV，输出去重后的结果文件」</td>
+            </tr>
+            <tr>
+              <td><strong>A 可达成</strong></td>
+              <td>按现有可投入时间估算要多久，写清估算依据</td>
+              <td>✗「一个月内精通大模型」<br>✓「每周 6 小时、约 4 周，每周完成 1 个小练习」</td>
+            </tr>
+            <tr>
+              <td><strong>R 相关</strong></td>
+              <td>对应 JD 拆解里的哪一条关键词，抄出来</td>
+              <td>✗「提升综合实力」<br>✓「对应 JD 任职要求第 2 条：熟悉 pandas」</td>
+            </tr>
+            <tr>
+              <td><strong>T 有期限</strong></td>
+              <td>写成具体日期</td>
+              <td>✗「下学期」「尽快」<br>✓「2026-11-15 前完成」</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo4">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">④ 同一件事的三句计划，逐关看它缺了哪一要素</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d4-v1">愿望版</button>
+            <button class="btn btn--ghost" type="button" id="d4-v2">缺期限版</button>
+            <button class="btn btn--ghost" type="button" id="d4-v3">合格版</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d4-k1">—</b><span>S 具体</span></div>
+            <div class="kpi"><b id="d4-k2">—</b><span>M 可衡量</span></div>
+            <div class="kpi"><b id="d4-k3">—</b><span>A 可达成</span></div>
+            <div class="kpi"><b id="d4-k4">—</b><span>R 相关</span></div>
+            <div class="kpi"><b class="acc" id="d4-k5">—</b><span>T 有期限</span></div>
+          </div>
+          <div class="demo__out log" id="d4-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三句计划均为本课编写的示例，
+            五关判定由页面预置的规则得出，用来演示「缺哪一要素就过不了关」。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">一次只列五条</span>
+        差距清单可能有十几条，但<strong>一次能认真推进的只有五条</strong>。
+        多出来的不是删掉，是写进「暂缓清单」——
+        写着「暂缓」比写在计划里假装自己在做，要诚实得多。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·产出能力地图 + 一份过五关的 SMART 行动计划 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：两份文件——<code>04-能力地图.md</code>（会 / 半会 / 不会 + 差距说明）
+          和 <code>05-行动计划.md</code>（每条过 SMART 五关，末尾带自检表）。</p>
+
+        <p><strong>第 1 步 · 让它基于前三份产出来做（6 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令整段复制发出去</b><span>
+            前三份文件已经在工作目录里，它读得到——
+            <span class="task__warn">不要重新贴一遍内容</span>，报文件名就够了，贴多了反而会串。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="能力地图 + 行动计划指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>工作目录里已经有这三份文件：01-SWOT.md、02-行业调研简报.md、03-JD关键词拆解.md，
+学生背景卡就是本次对话前面那份（小林，每周可投入约 6 小时自学）。
+请基于它们，产出两份文件。
+
+【文件一】04-能力地图.md
+一张表，三列：
+| 能力项 | 当前水平（会 / 半会 / 不会） | 差距说明 |
+- 能力项：从 03-JD关键词拆解.md 的硬技能类与工具类关键词里逐条抄，一条一行，不许合并；
+- 当前水平：按背景卡判断，只能填"会 / 半会 / 不会"三个之一；
+- 差距说明：写清对照 JD 的第几条要求、具体差在哪，不许写"需要提升"这种话。
+
+【文件二】05-行动计划.md
+针对 04-能力地图.md 里所有"不会"和"半会"的项，每条写一条行动。
+每条行动必须包含 SMART 五要素，缺一个就不合格：
+- S 具体：补哪一项能力，补到什么程度（写成能演示出来的结果）；
+- M 可衡量：怎么判断补完了，写成能回答是或否的陈述句；
+- A 可达成：基于每周约 6 小时的投入估算需要多久，并写清估算依据；
+- R 相关：对应 03-JD关键词拆解.md 里的哪一条关键词，把那一句抄出来；
+- T 有期限：写成 2026-xx-xx 这种具体日期，不许写"下学期""尽快""三个月内"。
+
+约束：
+1. 不许写"好好学习""多多练习""争取找实习"这类愿望；
+2. 一次最多列 5 条行动，超出 5 条的按"对拿到面试帮助最大"取舍，
+   被舍掉的写进文件末尾的"暂缓清单"，并注明什么时候回头看它；
+3. 涉及薪资、岗位数量等查不到的信息，一律写【不确定 · 以我查到的为准】，不许编数字。
+只新建这两个文件，不要改动工作目录里已有的任何文件。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它逐条自检 SMART，缺哪项当场补（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            第一遍一定有漏项的——漏项也是它自己查、自己补，你只核对补得对不对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="SMART 自检指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把 05-行动计划.md 逐条自检一遍：对每一条行动，按 S / M / A / R / T 五项，
+逐项标明"有"或"缺"，缺的那一项当场补上。
+
+补的时候注意两条：
+- M 那一栏必须是能回答是或否的陈述句，写成"有所提升""更加熟练"的要重写；
+- T 那一栏必须是 2026-xx-xx 这种具体日期，写成"尽快""下学期"的要改成日期。
+
+补完在文件末尾加一段"SMART 自检表"，六列：
+| 行动 | S | M | A | R | T |
+每格填"有"，或者填"补：……"（写明补了什么）。
+改完直接覆盖 05-行动计划.md。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 打开自检表，抽查第一条（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把自检表第一行那条行动，对照背景卡念一遍</b><span>
+            问自己一句：<strong>按这条做，到那天我手上会多出什么东西？</strong>
+            答不上来，说明这一条还没补到位。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>能力地图里每个「不会 / 半会」项的差距说明，都指到了 JD 的具体一条</b><span>
+            写「对应任职要求第 2 条：熟悉 pandas，本人只用过基础语法」这种才算。<br>
+            <em>没指到具体条目</em>：补一句「每条差距说明必须写明对照 JD 的第几条、原话是什么」，让它重写这一列。</span></li>
+          <li><b>行动计划每条五要素齐全，M 那一项能回答是或否</b><span>
+            「Python 有所提升」不合格；「能独立跑通一段 pandas 清洗脚本并输出结果文件」才合格。<br>
+            <em>M 写得像形容词</em>：把自检指令里那两条注意再发一次，点名让它只改 M 那一栏。</span></li>
+          <li><b>每条期限都是 2026-xx-xx 这种具体日期，全文没有「尽快 / 下学期 / 有时间就」</b><span>
+            这是 SMART 里最容易漏的一关，也是最容易被它用模糊词糊过去的一关。<br>
+            <em>出现模糊期限</em>：补一句「把所有期限改成具体日期，估算不出日期的写清为什么并给一个最晚日期」。</span></li>
+          <li><b>行动不超过 5 条，第 6 条以后进了「暂缓清单」并注明了回头看的时间</b><span>
+            列了八条还都写在计划里，等于没有优先级。<br>
+            <em>没有暂缓清单</em>：把约束第 2 条再发一次，让它把超出五条的部分挪进暂缓清单。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>04-能力地图.md</code> + <code>05-行动计划.md</code>。
+          这两份文件直接喂给<a class="xref" data-lesson="25">第 25 次课</a>写简历——
+          能力地图告诉你写什么，行动计划告诉你这段时间能补出什么可写的新东西。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">把四步串起来看</span>
+        SWOT 是<strong>看清自己手里有什么</strong>，行业调研是<strong>看清外面行情</strong>，
+        JD 拆解是<strong>看清这道门有多高</strong>，能力地图与 SMART 是<strong>算出先迈哪只脚</strong>。<br>
+        四步走到最后，你拿到的不是一句「你要加油」，而是
+        <strong>一份能照着执行、也能每周回头划掉一行的清单</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>SWOT 里「机会 O」这一格，应该填下面哪一类内容？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 我性格开朗，学东西快</li>
+            <li>B. 外部环境里我能借的东西，并且能说出是查到的哪一条</li>
+            <li>C. 我希望三年内做到技术主管</li>
+            <li>D. 我还没找到实习，这是最大的问题</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>S / W 看<strong>自己</strong>，O / T 看<strong>外面</strong>。
+            A 是自身特点，该归 S；C 是愿望，不是机会——愿望不能拿来指导行动；
+            D 是能力缺口，属于 W。而且 O 这一格同样要求<strong>可查证</strong>，
+            「AI 是风口」这种话没有出处，也不合格。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>让 AI 做行业调研时，为什么一定要它给每条结论标来源？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 标了来源，简报看起来更专业</li>
+            <li>B. 为了能自己去核——分得清哪句是查来的、哪句是它顺着话头补的</li>
+            <li>C. 不标来源它会拒绝回答</li>
+            <li>D. 来源越多，说明这个岗位越值得投</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>调研的价值不在「得到一个结论」，而在<strong>得到一张你能自己去核的清单</strong>。
+            A 是本末倒置；C 不成立；D 错得离谱——
+            来源数量跟岗位值不值得投没有任何关系，只有<strong>能不能核</strong>才是判据。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>把一份 JD 交给 AI，最该让它先给你什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 一个匹配度百分比，越高越适合投</li>
+            <li>B. 一段「你很适合这个岗位」的评价</li>
+            <li>C. 四类关键词表，加上一份「我缺什么」的差距清单</li>
+            <li>D. 一份帮你重写过的 JD，读起来更顺</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>JD 拆解的重点是<strong>找出自己缺什么</strong>，不是让 AI 夸你匹配度高。
+            A 和 B 都是给别人的分数，既不能告诉你补什么，也不能告诉你能不能投；
+            D 更没意义——岗位要求是被拆解的对象，不是被改写的对象。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：「学习能力强」可以作为 SWOT 优势格里的一条合格内容。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>判据只有一句：
+            念给不认识你的人听，他能不能知道你说的是<strong>哪门课、哪个项目、哪一段经历</strong>？
+            「学习能力强」谁都能写，定位不到任何一件具体的事，属于典型的形容词，
+            按本课的规矩应当<strong>直接删掉</strong>。
+            改成「两周内独立完成过校园二手书推荐系统的数据清洗（约 3000 行）」才算证据。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>多选：下面哪几条属于符合 SMART 的行动计划写法？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 2026-11-15 前，用 pandas 完成 3 份 5000 行以上 CSV 的清洗练习，每份写清处理步骤注释</li>
+            <li>B. 好好学习 Python，争取这学期有大进步</li>
+            <li>C. 11 月底前在 GitHub 上整理出两个课程项目的公开仓库，每个仓库有 README 和目录结构说明</li>
+            <li>D. 尽快熟悉 Git，有机会就练练</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：AC。</b>A 有具体结果、可数标准（3 份、5000 行）、具体日期；
+            C 同样写清了产出物（两个仓库 + README）和期限（11 月底前），而且对应 JD 的加分项。<br>
+            B 三样都缺：「好好学习」没有终点，「大进步」无法衡量，「这学期」不是具体日期；
+            D 的「尽快」和「有机会就」等于没有期限——<strong>T 这一关是最容易漏的</strong>。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>SWOT 不是填四格形容词，每格要落到<strong>具体证据</strong>——判据是「能不能定位到具体的一件事」；S / W 看自己，O / T 看外面；</li>
+          <li>行业调研的规矩是<strong>每条结论挂来源</strong>：可核对 > 半可核对 > 不可核对，查不到就写 <strong>【未查到】/【不确定】</strong>；</li>
+          <li>JD 拆成<strong>硬技能 / 工具 / 软实力 / 加分项</strong>四类，记频次、抄原文出处，重点是<strong>差距清单</strong>而不是匹配度分数；</li>
+          <li>能力地图三列：<strong>能力项 / 会·半会·不会 / 差距说明</strong>，差距说明必须指到 JD 的具体一条；</li>
+          <li>行动计划过 SMART 五关：<strong>具体 · 可衡量 · 可达成 · 相关 · 有期限</strong>，最多 5 条，期限写成具体日期，多出来的进暂缓清单。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天拆出来的 JD 关键词，就是简历里必须出现的词；
+        今天画的<strong>能力地图</strong>，就是写简历时的素材索引。
+        下一课 <a class="xref" data-lesson="25">AI 简历优化</a>
+        要解决的是「怎么把这些素材压进一页纸」——
+        有这一份地图在手，写简历不用再从空白页开始发愁。
+      </p>
+      <p class="note">
+        本页产品口径取自 www.workbuddy.cn 客户端用户文档，核对日期 <strong>2026-09-26</strong>；
+        岗位、招聘启事、背景卡与行业信息均为教学示意（模拟数据），
+        真实薪资、岗位数量与招聘要求一律<strong>以你查到的为准</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 24 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）判断 SWOT 里某一条内容合不合格，关键看什么？
+A. 这一条是不是正面的、听起来舒服
+B. 能不能定位到具体的一件事，并且有可核对的依据
+C. 四格里的条数是不是一样多
+D. 是不是由 AI 生成的
+【答案】B
+【解析】判据只有一句：念给不认识你的人听，他能不能知道你说的是哪门课、哪个项目、哪一段经历。A 错——劣势格本来就写负面的东西，照样可以很合格；C 错——条数是形式，不是质量；D 错——谁生成的不重要，能不能核对才重要。
+
+2.（多选）下面哪些属于 SWOT 中「机会 O」这一格的合格写法？
+A. 行业发展前景好，机会很多
+B. 广州市 2025 年发布的人工智能相关产业扶持政策（来源：市政府官网文件，2026-09 查）
+C. 学校与本地区某企业签有实习合作协议，本专业在合作范围内（来源：学院通知）
+D. 我性格开朗，容易和人处得来
+【答案】BC
+【解析】O 这一格只能写外部环境，而且必须可查证。B、C 都写清了具体出处；A 是典型的形容词加愿望，查不到任何依据；D 是自身特点，属于 S 而不是 O——把自身特点塞进机会格，是 SWOT 里最常见的错位。
+
+3.（单选）让 AI 做行业岗位调研时，遇到查不到的数据，正确的处理方式是？
+A. 让它按行业一般水平估算一个合理值
+B. 原样写【未查到】，不要硬填
+C. 用"据了解""一般来说"这类说法带过去
+D. 换个岗位重新调研，避开这个数据
+【答案】B
+【解析】查不到就写【未查到】，涉及数字时写【不确定 · 以我查到的为准】。A 是让 AI 编数字，拿编出来的数字做人生决定最危险；C 属于"不可核对"来源，等于没有来源；D 是回避问题，调研目的正是要把不确定之处摆到明面上。
+
+4.（多选）把一份招聘启事（JD）拆成关键词时，合理的分类包括哪些？
+A. 硬技能
+B. 工具
+C. 软实力
+D. 加分项
+【答案】ABCD
+【解析】四类各有各的用处：硬技能和工具是能补、也必须补的；软实力考不出来，准备例子就行；加分项没有不致命，但补起来最快的往往在这类里。同时要记频次、抄原文出处——出现在"岗位职责"里的词，通常才是这个岗位天天在用的东西。
+
+5.（判断）JD 拆解的主要目的，是让 AI 给出一个匹配度百分比，百分比越高说明越适合投递。
+【答案】错误
+【解析】匹配度是给别人的分数，既不能告诉你该补什么，也不能告诉你能不能投。拆解的重点是找出自己缺什么：分完四类、逐条对照自己的经历，得到一份差距清单，再按"补起来从快到慢"排序。清单变长不是坏消息——它意味着你终于知道该干什么了。
+
+6.（多选）一条符合 SMART 的行动计划，应当满足下面哪些要求？
+A. 写清补到什么程度，写成能演示出来的结果
+B. 有能判断完成与否的衡量标准
+C. 有写成 2026-xx-xx 这样的具体日期
+D. 期限写"尽快""下学期""有时间就"也算合格
+【答案】ABC
+【解析】D 错——"尽快""下学期"没有终点，是 SMART 里最容易漏的一关（T 有期限）。另外两条常见毛病：M 写成"有所提升"这种形容词不算可衡量；一次列的行动不要超过 5 条，多出来的写进暂缓清单，比假装自己在做要诚实。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 形容词版 vs 证据版 ---------- */
+  var D1 = {
+    "d1-adj": {
+      k1: "8 条",
+      k2: "0 条",
+      k3: "不能",
+      lines: [
+        "<span class='hl'>形容词版：四格都填满了，但没有一条能落地</span>",
+        "  S 优势：学习能力强 / 有上进心 / 性格开朗",
+        "  W 劣势：经验不足 / 做事有点拖延",
+        "  O 机会：人工智能是风口 / 行业发展前景好",
+        "  T 威胁：竞争激烈 / 大厂毕业生也在投",
+        "",
+        "  逐条过判据：念给不认识小林的人听，他能知道是哪门课、哪个项目吗？",
+        "    「学习能力强」　<span class='no'>✗ 定位不到任何一件事</span>",
+        "    「经验不足」　　<span class='no'>✗ 没说缺的是哪一样、会被哪条要求卡住</span>",
+        "    「人工智能是风口」<span class='no'>✗ 没有出处，查不到</span>",
+        "    「竞争激烈」　　<span class='no'>✗ 谁在竞争、竞争什么，一句没说</span>",
+        "",
+        "<span class='no'>结论：不能拿来指导行动。</span>照这张表，下一步该干什么？答不上来。"
+      ]
+    },
+    "d1-ev": {
+      k1: "8 条",
+      k2: "8 条",
+      k3: "能",
+      lines: [
+        "<span class='hl'>证据版：照样 8 条，但每一条都能定位到具体一件事</span>",
+        "  S 优势：独立完成过校园二手书推荐系统的数据清洗（约 3000 行）",
+        "          依据来源：背景卡 · 项目经历 1",
+        "  W 劣势：Git 只会 add / commit / push，没处理过分支与冲突",
+        "          依据来源：背景卡 · 工具使用情况",
+        "  O 机会：本校与本地企业有实习合作协议，本专业在合作范围内",
+        "          依据来源：学院通知（待补具体文件名，标【待查】）",
+        "  T 威胁：这类岗位普遍要求有标注或 AI 相关实习、项目经历",
+        "          依据来源：本次调研简报 · 硬要求栏（来源复查后填具体页面）",
+        "",
+        "  逐条过判据：每条都点名了课程、项目或工具，念出来就知道说的是哪件事。",
+        "",
+        "<span class='ok'>结论：能指导行动。</span>W 那一条直接变成下一步要补的东西：",
+        "<span class='dim'>「能独立建分支、合并分支，并处理一次冲突」——这就是行动计划的第一条。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.k1;
+    $("d1-k2").textContent = d.k2;
+    $("d1-k3").textContent = d.k3;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-adj", "d1-ev"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+
+  /* ---------- 演示② 三份简报，哪一份能用 ---------- */
+  var D2 = {
+    "d2-a": {
+      k1: "6 条",
+      k2: "0 条",
+      k3: "不能",
+      lines: [
+        "<span class='hl'>无来源版：读完觉得很顺，但一句也核不了</span>",
+        "  · 这个岗位主要负责数据标注与提示词调优　　（无来源）",
+        "  · 月薪大概在 8k 到 12k 之间　　（无来源）",
+        "  · 广州相关岗位数量不少，机会较多　　（无来源）",
+        "  · 业内普遍认为这个岗位未来三年需求会涨　　（无来源）",
+        "",
+        "  逐条查来源：",
+        "    「月薪 8k–12k」　<span class='no'>✗ 没有来源、没有统计口径，最容易被编出来的一类数字</span>",
+        "    「业内普遍认为」　<span class='no'>✗ 典型的不可核对来源，谁说的都不知道</span>",
+        "",
+        "<span class='no'>结论：不能拿去做决定。</span>拿一个编出来的薪资去做就业选择，代价太高。"
+      ]
+    },
+    "d2-b": {
+      k1: "6 条",
+      k2: "2 条",
+      k3: "勉强",
+      lines: [
+        "<span class='hl'>来源模糊版：写了来源，但说不清是哪一份</span>",
+        "  · 岗位主要负责数据标注与提示词调优　（来源：招聘网站）",
+        "  · 广州该类岗位增长较快　（来源：行业报告）",
+        "  · 多数要求大专以上学历　（来源：某公司招聘页，2026-09 查）",
+        "",
+        "  逐条查来源：",
+        "    「招聘网站」　<span class='no'>✗ 哪家？哪一页？点不过去</span>",
+        "    「行业报告」　<span class='no'>✗ 哪份报告？哪年？范围多大？</span>",
+        "    「某公司招聘页，2026-09 查」　<span class='ok'>✓ 有名有姓有时间，能点过去核</span>",
+        "",
+        "<span class='hl'>结论：勉强能用，但得先做一次来源复查。</span>",
+        "<span class='dim'>凡是「招聘网站」「行业报告」这种说法，一律当成没写来源，重查。</span>"
+      ]
+    },
+    "d2-c": {
+      k1: "6 条",
+      k2: "5 条",
+      k3: "能",
+      lines: [
+        "<span class='hl'>带来源版：每条都挂着一个能点过去的出处</span>",
+        "  · 岗位日常含语料清洗、标注与质量抽检　（来源：某招聘页·岗位职责，2026-09 查）",
+        "  · 反复出现的硬要求：Python、pandas、Git　（来源：3 份招聘页合并统计，2026-09 查）",
+        "  · 新人多从标注、数据助理岗切入　（来源：某招聘平台岗位描述汇总，2026-09 查）",
+        "  · 该类岗位的薪资区间　【不确定 · 以我查到的为准】",
+        "",
+        "  逐条查来源：",
+        "    有具体页面 + 查询时间　<span class='ok'>✓ 能自己点过去核对</span>",
+        "    查不到的那一条　<span class='ok'>✓ 写成【不确定】，没有硬填一个数字</span>",
+        "",
+        "<span class='ok'>结论：能拿去做决定。</span>末尾那张来源核对表才是这份简报最值钱的部分：",
+        "<span class='dim'>哪条能核、哪条要再查、哪条查不到，一目了然。</span>"
+      ]
+    }
+  };
+  function d2Run(key) {
+    var d = D2[key];
+    $("d2-k1").textContent = d.k1;
+    $("d2-k2").textContent = d.k2;
+    $("d2-k3").textContent = d.k3;
+    window.Site.type($("d2-out"), d.lines, null);
+  }
+  ["d2-a", "d2-b", "d2-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d2Run(id); });
+  });
+
+  /* ---------- 演示③ JD 原句该拆进哪一格 ---------- */
+  var D3 = {
+    "d3-hard": {
+      k1: "5 条",
+      k2: "2 条",
+      k3: "3 条",
+      lines: [
+        "<span class='hl'>硬技能：会就是会、不会就是不会，能被考出来的能力</span>",
+        "  JD 原句①：「掌握 Python 基础语法，能独立编写脚本处理 CSV 与 JSON 数据」",
+        "    归类理由：能出题考（给一份 CSV 让他清洗），不是软件名，属于能力",
+        "    小林有没有：<span class='ok'>有</span>　背景卡：Python 程序设计 + 项目里做过 3000 行数据清洗",
+        "",
+        "  JD 原句②：「了解大模型基本原理，知道提示词是什么」",
+        "    归类理由：概念与原理，属于认知类硬技能，面试问两句就露馅",
+        "    小林有没有：<span class='hl'>半会</span>　背景卡：机器学习导论学过概念，日常用对话产品但没调过 API",
+        "",
+        "<span class='dim'>这一类最该补——它直接决定简历上能不能写，也最经不起追问。</span>"
+      ]
+    },
+    "d3-tool": {
+      k1: "4 条",
+      k2: "1 条",
+      k3: "3 条",
+      lines: [
+        "<span class='hl'>工具：具体的软件、平台、框架、库的名字</span>",
+        "  JD 原句①：「熟悉 pandas、numpy 等常用库」",
+        "    归类理由：pandas 是库名，有就是有，没用过就是没用过",
+        "    小林有没有：<span class='hl'>半会</span>　背景卡：项目里用过 pandas，但不熟虚拟环境与依赖管理",
+        "",
+        "  JD 原句②：「了解 Git 的基本操作」",
+        "    归类理由：Git 是工具名，操作能不能做出来一试便知",
+        "    小林有没有：<span class='no'>没有</span>　背景卡：只会 add / commit / push，没处理过分支与冲突",
+        "",
+        "<span class='hl'>这一类补起来最快</span>——装好环境、照着做一遍就有东西可写，",
+        "<span class='dim'>所以它常常排在差距清单最前面。</span>"
+      ]
+    },
+    "d3-soft": {
+      k1: "4 条",
+      k2: "2 条",
+      k3: "2 条",
+      lines: [
+        "<span class='hl'>软实力：JD 里写了但考不出来的东西</span>",
+        "  JD 原句①：「做事细致，能接受重复性的数据核对工作」",
+        "    归类理由：没法出题考，只能靠举例说明",
+        "    小林有没有：<span class='ok'>有</span>　背景卡：做过 3000 行数据的清洗，本身就是重复性核对",
+        "",
+        "  JD 原句②：「能承受项目上线前的压力」",
+        "    归类理由：同样考不出来，属于态度类表述",
+        "    小林有没有：<span class='hl'>半会</span>　背景卡里没有对应事例，需要准备一个例子",
+        "",
+        "<span class='dim'>这一类不要花力气去「补」，花力气准备例子就行——</span>",
+        "<span class='dim'>把做过的事讲成一段有细节的经历，比写「抗压能力强」有用得多。</span>"
+      ]
+    },
+    "d3-plus": {
+      k1: "4 条",
+      k2: "0 条",
+      k3: "4 条",
+      lines: [
+        "<span class='hl'>加分项：有就加分，没有不致命</span>",
+        "  JD 原句①：「有公开的作品链接（GitHub、技术博客、可访问的项目演示）」",
+        "    归类理由：写在加分项栏，没有也不会直接出局",
+        "    小林有没有：<span class='no'>没有</span>　背景卡：代码在小组仓库里，本人没有独立维护的仓库",
+        "",
+        "  JD 原句②：「参加过人工智能类学科竞赛或相关培训并取得证书」",
+        "    小林有没有：<span class='no'>没有</span>　背景卡：无学科竞赛经历，无职业资格证书",
+        "",
+        "<span class='hl'>没有不致命，但补起来最快的往往就在这一类里</span>——",
+        "<span class='dim'>把两个课程项目整理成带 README 的公开仓库，一周内就能做完，</span>",
+        "<span class='dim'>却同时补掉了「作品链接」和「独立维护仓库」两条。</span>"
+      ]
+    }
+  };
+  function d3Run(key) {
+    var d = D3[key];
+    $("d3-k1").textContent = d.k1;
+    $("d3-k2").textContent = d.k2;
+    $("d3-k3").textContent = d.k3;
+    window.Site.type($("d3-out"), d.lines, null);
+  }
+  ["d3-hard", "d3-tool", "d3-soft", "d3-plus"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d3Run(id); });
+  });
+
+  /* ---------- 演示④ 同一件事的三句计划，过 SMART 五关 ---------- */
+  var D4 = {
+    "d4-v1": {
+      s: "✗", m: "✗", a: "✗", r: "✗", t: "✗",
+      lines: [
+        "<span class='hl'>愿望版：「下学期我要好好学习 Python，多做一些项目」</span>",
+        "",
+        "  S 具体　　<span class='no'>✗</span>　「好好学习」没有终点，学到什么程度算完不知道",
+        "  M 可衡量　<span class='no'>✗</span>　「多做一些项目」——做几个算多？无法判断",
+        "  A 可达成　<span class='no'>✗</span>　没说每周投入多少时间，估算没有依据",
+        "  R 相关　　<span class='no'>✗</span>　没写对应 JD 的哪一条要求",
+        "  T 有期限　<span class='no'>✗</span>　「下学期」不是日期",
+        "",
+        "<span class='no'>五关全没过。</span>它的问题不是写得少，而是<strong>没有一样能被检查</strong>：",
+        "<span class='dim'>到了学期末，你没法回答「我做到没有」——因为标准从来没写下来。</span>"
+      ]
+    },
+    "d4-v2": {
+      s: "✓", m: "✓", a: "✓", r: "✓", t: "✗",
+      lines: [
+        "<span class='hl'>缺期限版：「把两个课程项目整理成 GitHub 公开仓库，每个带 README」</span>",
+        "",
+        "  S 具体　　<span class='ok'>✓</span>　两个项目、每个带 README，有明确产出物",
+        "  M 可衡量　<span class='ok'>✓</span>　仓库建没建、README 有没有，回答是或即可",
+        "  A 可达成　<span class='ok'>✓</span>　按每周 6 小时估算，约两周能做完",
+        "  R 相关　　<span class='ok'>✓</span>　对应 JD 加分项第 2 条：有公开的作品链接",
+        "  T 有期限　<span class='no'>✗</span>　全文没写什么时候完成",
+        "",
+        "<span class='hl'>只差一关，但这一关最致命</span>——没有日期就没有「到期」这回事，",
+        "<span class='dim'>它会一直待在计划第一行，直到学期结束。</span>",
+        "<span class='dim'>改成「2026-11-15 前完成」，这一条就合格了。</span>"
+      ]
+    },
+    "d4-v3": {
+      s: "✓", m: "✓", a: "✓", r: "✓", t: "✓",
+      lines: [
+        "<span class='hl'>合格版：2026-11-15 前，用 pandas 完成 3 份 5000 行以上 CSV 的清洗练习</span>",
+        "",
+        "  S 具体　　<span class='ok'>✓</span>　补 pandas 数据清洗，结果是 3 份练习",
+        "  M 可衡量　<span class='ok'>✓</span>　「每份写清处理步骤注释 + 输出去重后的结果文件」，能回答是否完成",
+        "  A 可达成　<span class='ok'>✓</span>　每周 6 小时、每份约 4 小时，四周内可完成",
+        "  R 相关　　<span class='ok'>✓</span>　对应 JD 任职要求第 2 条：熟悉 pandas、numpy 等常用库",
+        "  T 有期限　<span class='ok'>✓</span>　2026-11-15，具体日期",
+        "",
+        "<span class='ok'>五关全过。</span>判据很简单：到那天，你手上会多出<strong>三份能给别人看的文件</strong>。",
+        "<span class='dim'>这就是「补完了」的样子——不是感觉变强了，是手里多了一样东西。</span>"
+      ]
+    }
+  };
+  function d4Run(key) {
+    var d = D4[key];
+    $("d4-k1").textContent = d.s;
+    $("d4-k2").textContent = d.m;
+    $("d4-k3").textContent = d.a;
+    $("d4-k4").textContent = d.r;
+    $("d4-k5").textContent = d.t;
+    window.Site.type($("d4-out"), d.lines, null);
+  }
+  ["d4-v1", "d4-v2", "d4-v3"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d4Run(id); });
+  });
+})();
+</script>
+</body>
+</html>

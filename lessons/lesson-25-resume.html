@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第25次课 AI 简历优化｜AIGC应用与实践</title>
+<meta name="description" content="一页纸讲清你的价值：HR 6 秒法则、STAR 法则改写经历、ATS 关键词优化，以及一条贯穿全课的真实性红线。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="25" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="24">第 24 次课</a>把目标岗位的 JD 拆开了——你知道那个岗位要什么关键词，
+        也知道自己缺哪几样。但「知道自己缺什么」和「简历上真的写出来」是两件事：
+        绝大多数人的简历还是<strong>岗位说明书式的职责罗列</strong>，写完自己读一遍都说不出「我到底做成了什么」。
+      </p>
+      <p>这一课就干这件事：<strong>把一页纸改到 6 秒内能让人记住你、机器能检索到你、面试时你答得上来。</strong></p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>投了几十份，一个回音都没有</strong></td><td>可能根本没被人眼看到——机器先筛一遍，关键词没对上就被丢掉了</td></tr>
+            <tr><td><strong>经历写满了，面试官记不住一条</strong></td><td>写的都是「负责……、参与……」，没有一件能复述出结果</td></tr>
+            <tr><td><strong>AI 改完之后漂亮得像别人</strong></td><td>词是它的，事不是你的；一追问就穿帮</td></tr>
+            <tr><td><strong>明明做过，简历上就是写不出来</strong></td><td>没量化：213 册书、62 条匹配这些数字，你数过但没往上写</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        <strong>本课有一条红线贯穿始终：简历上的每一句话都必须是真的。</strong>
+        AI 能把「整理了一下数据」写成「主导数据中台建设」，写得很漂亮，
+        但面试第一句追问就是「你具体做了哪一步」——<strong>答不上来的简历，比写得差的简历更糟</strong>：
+        写得差只是没机会，答不上来是直接出局。<br>
+        四个实操<strong>前后相接、共用一份素材</strong>：模拟学生陈晓雯的简历草稿 + 她的事实底稿。
+        ① 存下这两份文件，② ③ ④ 全部在它们上面改，改到能交出去为止。
+      </div>
+      <p class="note">
+        本课涉及的产品口径（对话框、文件、工作目录）取自 <strong>www.workbuddy.cn 客户端用户文档</strong>，
+        核对日期 <strong>2026-09-26</strong>，界面随版本更新，以你实际使用的版本为准。<br>
+        简历草稿、事实底稿、目标岗位 JD 均为<strong>教学示意（模拟素材）</strong>，用于讲清方法；
+        <strong>ATS（简历筛选系统）的具体机制各企业不同</strong>，本课只讲通用做法，
+        一律<strong>以你投递的企业的实际情况为准</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 HR「6 秒扫读」时真正被看到的是哪几块，并能指出一份简历上半页该删掉什么；</li>
+          <li>用 <strong>STAR 四段</strong>（情境 / 任务 / 行动 / 结果）把一条职责罗列式的经历改写出来，结果带自己数得出来的数字；</li>
+          <li>拿一份目标 JD 的关键词逐条查简历覆盖情况，并判断哪些<strong>真实拥有只是没写出来</strong>、哪些<strong>压根没做过不许补</strong>；</li>
+          <li>让 AI 扮演面试官，找出简历里<strong>经不起追问</strong>的表述，逐条改到能自圆其说；</li>
+          <li>独立完成一次「从草稿到终稿」的修改，并说清终稿里每一个数字的出处。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-six"><b>01</b>HR 6 秒法则：简历被怎么看 <em>＋实操①</em></a>
+        <a href="#s-star"><b>02</b>STAR 法则：把经历改写清楚 <em>＋实操②</em></a>
+        <a href="#s-ats"><b>03</b>ATS 关键词：让机器先看见你 <em>＋实操③</em></a>
+        <a href="#s-truth"><b>04</b>真实性原则：一句假话毁全篇 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="24">第 24 次课</a>的 JD 关键词拆解（本课实操③要用同一份 JD）；
+        <a class="xref" data-lesson="6">第 6 次课</a>的 Ollama 本地部署（素材里的课程项目就出自那里）；
+        <a class="xref" data-lesson="15">第 15 次课</a>的知识库与检索（素材里的检索环节出自那里）。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="26">第 26 次课</a>要模拟面试——
+        今天改的每一句话，明天都要<strong>用嘴讲一遍</strong>。这就是为什么本课死守真实性：
+        写的时候注水，面的时候就得现编。
+      </div>
+    </section>
+
+    <section class="sec" id="s-six">
+      <h2>一、HR 6 秒法则：你的简历到底被怎么看<span class="sec__tag">起点</span></h2>
+      <p>
+        先说一个很多人不愿意接受的事实：<strong>你的简历大概率不会被「读」，只会被「扫」。</strong>
+        招聘季一个岗位收几百份简历，看一份的时间常常只有几秒——不是因为 HR 不负责任，
+        而是因为在这几秒里他只需要回答一个问题：<strong>这份要不要往下看</strong>。
+      </p>
+      <p>
+        这个时间尺度常被称为「<strong>6 秒法则</strong>」（不同研究给出的数字从 6 秒到几十秒不等，
+        <span class="note">口径不一，本课采用流传最广的 6 秒说法，只用来说明「扫读」这件事确实存在</span>）。
+        它决定的不是「要不要你」，而是<strong>要不要继续读你</strong>。
+      </p>
+
+      <h3>6 秒里，眼睛扫过的是这四块</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>扫到的位置</th><th>它在找什么</th><th>常见扣分点</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>① 姓名 + 求职意向</strong></td>
+              <td>你是谁、你要应聘什么岗位</td>
+              <td>求职意向写三个方向，等于没方向；个人信息占掉半页</td>
+            </tr>
+            <tr>
+              <td><strong>② 最近的一段经历</strong></td>
+              <td>最近做过什么、跟这个岗位沾不沾边</td>
+              <td>最近一段写在第三页，前面全是课程列表</td>
+            </tr>
+            <tr>
+              <td><strong>③ 带数字的短句</strong></td>
+              <td>有没有一个能记住的结果</td>
+              <td>通篇「负责……、参与……」，一个数字都没有</td>
+            </tr>
+            <tr>
+              <td><strong>④ 技能栏的关键词</strong></td>
+              <td>工具、技术名词对不对得上</td>
+              <td>写「沟通能力强、抗压能力强」——这不是技能，是人品自述</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一件事的三种写法：6 秒后 HR 记住的是哪一种</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-a">A　负责搭建本地问答工具</button>
+            <button class="btn btn--ghost" type="button" id="d1-b">B　用 Ollama 整理了 48 份资料</button>
+            <button class="btn btn--ghost" type="button" id="d1-c">C　48 份资料切片入库，12 条测试里 9 条可用</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>6 秒后记住了吗</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>记住的是哪类信息</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>第一句追问你答得上吗</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数据。</strong>三种写法取自本课的模拟简历素材，
+            「记住 / 记不住」由页面预置的扫读判定规则得出，用来演示 6 秒法则，不是任何真实招聘的统计结果。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">6 秒法则的用法：不是让你堆亮点，是让你删废话</span>
+        一页纸的位置是固定的，写上身高、籍贯、QQ、家庭住址，就挤掉了一行能写结果的地方。
+        <strong>留在这页上的每一寸，都应该是「对方扫一眼就能记住」的东西。</strong>
+        判断标准只有一个：这句话删掉，会不会有人发现？
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让 AI 扮演 HR，6 秒扫一遍简历，说出记住了什么 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：工作目录里两份底料 <code>00-简历草稿.md</code>、<code>00-事实底稿.md</code>，
+          外加一份 <code>01-六秒自测报告.md</code>——HR 视角下「记住了什么 / 记不住什么 / 上半页该删什么」。</p>
+
+        <p><strong>第 1 步 · 把两份素材存进工作目录（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务</b><span>工作目录选 <code>wb-试验</code>（沿用前几课那个目录即可）。</span></li>
+          <li><b>点下面这块右上角「复制」，整段粘进输入框</b><span>
+            <span class="task__warn">整段粘贴，不要自己改写</span>——两份素材是一套的，
+            后面三个实操全部在这两份上面改。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 简历草稿 + 事实底稿（模拟）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【文件一　简历草稿（模拟素材，非真实简历）】
+
+个人简历
+
+姓名：陈晓雯　性别：女　出生年月：2005.08　民族：汉
+籍贯：广东茂名　政治面貌：共青团员　身高：162cm
+手机：138-0000-0000　邮箱：chenxw@example.com
+QQ：000000000　微信：cxw2005
+家庭住址：广东省茂名市某区某路某号
+婚姻状况：未婚　健康状况：良好
+
+求职意向：人工智能训练师 / AI 应用助理 / 数据助理（实习）
+
+教育背景
+广州城建职业学院　人工智能技术应用　专科　2024.09 – 2027.06（在读，大三）
+主修课程：Python 程序设计、数据结构、机器学习基础、数据库原理、Linux 操作系统、Web 前端基础
+在校情况：无挂科，考勤全勤
+
+项目经历
+项目一　基于 Ollama 的本地课程资料问答工具（课程项目，2026.03 – 2026.06）
+- 负责搭建本地问答工具
+- 参与需求分析和方案设计
+- 学习并使用了 Ollama 相关技术
+- 协助完成了测试工作
+- 提高了问答效率
+
+项目二　校园旧书交换活动数据整理（志愿活动，2025.11 – 2025.12）
+- 负责活动数据的整理与统计
+- 收集了同学们捐书的信息
+- 使用 Excel 做表格
+- 配合其他同学完成活动
+- 得到了老师的好评
+
+技能特长
+Python、Office 办公软件、沟通能力、学习能力、团队合作、抗压能力强
+
+自我评价
+本人性格开朗，吃苦耐劳，热爱学习，具有较强的团队合作精神和沟通能力，
+工作认真负责，能够承受较大的工作压力，希望能给我一个机会，我一定会努力学习。
+
+【文件二　事实底稿（模拟素材：这段时间真实发生过的事，供核对用）】
+
+项目一　本地课程资料问答工具
+- 时间：2026.03 – 2026.06，大二下学期的课程项目，4 人小组
+- 我的角色：组员，负责「资料入库 + 检索」这一块；组长负责整体方案与汇报
+- 数字：入库资料 48 份（PDF 32 份、Markdown 16 份），约 12 万字
+- 技术：用 Ollama 跑 qwen3:1.7b（第 6 次课装过）；做过文档切片；检索用 Chroma 存向量
+  （按教程配置，只做过最基础的写入与查询）；根据测试结果改过 3 版提示词
+- 结果：48 份资料里 41 份能一次检索到相关片段；自己写了 12 条常见问题的测试集，
+  其中 9 条回答被同组同学判为可用；同班 6 名同学试用过两周
+- 没做过的：没做模型微调、没做量化、没做严格的准确率评测、没上线公网
+
+项目二　校园旧书交换活动数据整理
+- 时间：2025.11 – 2025.12，学院青志队组织的活动，数据部分由我一个人负责
+- 数字：收到捐书 213 册、需求登记 87 条；用 Excel 按书名 + 版次去重，匹配成功 62 条
+- 结果：87 条需求里 62 条匹配成功，约 71%
+- 没做过的：没参与活动方案、没负责宣传、没有书面表彰
+
+技能（能举出例子的才算）
+- Python：写过课程作业级别的脚本（最长约 200 行），用过 pandas 读 Excel、做去重与匹配
+- Linux：课上用过 cd / ls / grep 这类基础命令，没做过部署运维
+- Ollama：装过、跑过 qwen3:1.7b，只用过这一个模型
+- 没接触过的：模型微调、CUDA、Kubernetes、千万级数据处理
+
+其他
+- 无挂科、无违纪；指导老师在活动总结会上口头说过一句「数据整理得挺清楚」，没有书面评价
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>素材后面空一行，接着把下面这句发出去</b><span>
+            先让它把两份素材落成文件——后面三步都只读这两个文件，不用反复粘贴。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="存文件的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把上面两份材料分别存成工作目录下的两个文件：
+- 00-简历草稿.md（只放「文件一 简历草稿」的内容，逐字照抄，不要改动一个字）
+- 00-事实底稿.md（只放「文件二 事实底稿」的内容，逐字照抄，不要改动一个字）
+存完各回我一句「已存」，并把两份文件的字数报给我。
+不要修改工作目录里已有的任何文件。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它当 HR，扫 6 秒（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令整段复制，发出去</b><span>
+            <span class="task__warn">这一步必须新建对话再发</span>——
+            上一步的素材还占着上下文，连着发它容易把「改动」和「扫读」混在一起。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="6 秒扫读指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在你是某公司招聘专员，桌上还有 200 份简历等着看。请读工作目录下的 00-简历草稿.md，
+然后用 6 秒的方式扫一遍（只扫，不细读），扫完立刻回答三件事：
+
+1.【记住了什么】最多列 3 条，只写你扫完还记得的内容；记不住就直说"没记住"，
+   不许回头去简历里找补，不许把没记住的写成记住了。
+2.【记不住什么】至少列 3 条，说明为什么扫过去没留下印象（例如：是职责罗列、没有数字、位置太靠后）。
+3.【你还会往下看吗】只回答"会 / 不会"，并给一句理由。
+
+输出成 01-六秒自测报告.md，报告开头写一句"本报告由 AI 扮演招聘专员模拟生成，仅用于练习"。
+不要改动 00-简历草稿.md 和 00-事实底稿.md。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它把上半页的冗余项点出来（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>
+            上半页占着最贵的版面，却常常塞满了没人看的东西——这一刀交给它砍。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="删冗余指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>接着看 00-简历草稿.md 的"个人信息 + 教育背景 + 求职意向"这三块，做两件事：
+1. 逐行标出【该删】，并给出一句理由。判断标准：这一行删掉，会不会有人发现？
+   不会发现的就删（例如身高、籍贯、QQ、家庭住址、婚姻状况、健康状况、"主修课程"里的课程清单）。
+2. 求职意向写了三个方向（人工智能训练师 / AI 应用助理 / 数据助理），
+   说明写三个方向的坏处，并给出一个"只留一个方向、另外两个并入技能栏关键词"的改法。
+把这两部分追加进 01-六秒自测报告.md，小标题用"三、上半页该删什么"。
+只追加，不要覆盖前面已经写好的内容。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>工作目录里有 <code>00-简历草稿.md</code> 和 <code>00-事实底稿.md</code></b><span>
+            这两个文件后面三步都要用，缺一个后面就跑不动。<br>
+            <em>只存了一个</em>：补一句「还有一份没存，把文件一 / 文件二也存成对应文件名」，让它补存。</span></li>
+          <li><b>报告里「记不住什么」至少 3 条，且都说到了「没有数字」或「职责罗列」</b><span>
+            这是这份草稿最大的毛病，点不出来说明它没真按 6 秒扫。<br>
+            <em>它写成了夸奖</em>：补一句「你是招聘专员，不是简历顾问，只报事实不要给建议」。</span></li>
+          <li><b>「该删」清单里点到了身高、籍贯、QQ、家庭住址这四行中的至少三行</b><span>
+            这四行就是最典型的占位废话。<br>
+            <em>没点全</em>：补一句「按『删掉会不会有人发现』逐行判断个人信息块，一行都不要跳过」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-六秒自测报告.md</code>。下一节要用它定位「哪条经历最该重写」。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-star">
+      <h2>二、STAR 法则：把「我做过」写成「我做成了什么」<span class="sec__tag">本课核心</span></h2>
+      <p>
+        扫读的问题解决了，接下来是更根本的问题：<strong>你写的是职责，不是经历。</strong>
+        「负责搭建本地问答工具」这句话，换任何一个人、任何一个项目都能用——
+        它就等于什么都没说。
+      </p>
+      <p>
+        STAR 是一套把职责翻译成结果的写法。四个字母对应四件事，
+        <strong>缺一段都不成立</strong>：
+      </p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>回答什么</th><th>这段最常见的毛病</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>S 情境</strong><br>Situation</td>
+              <td>当时是什么情况、麻烦在哪</td>
+              <td>写一大段项目背景，把「这项目多重要」讲半天</td>
+            </tr>
+            <tr>
+              <td><strong>T 任务</strong><br>Task</td>
+              <td>你要解决的具体问题、你的角色</td>
+              <td>角色写虚：「参与项目」——到底是你做还是旁边看</td>
+            </tr>
+            <tr>
+              <td><strong>A 行动</strong><br>Action</td>
+              <td>你具体做了哪几步，用了什么</td>
+              <td>写「学习并使用了相关技术」，一个动作都没有</td>
+            </tr>
+            <tr>
+              <td><strong>R 结果</strong><br>Result</td>
+              <td>做成了什么样，数字是多少</td>
+              <td><strong>这一段最常空着</strong>，或用「显著提高了效率」糊过去</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② STAR 四段怎么装配：点「下一步」看一句空话怎么变成一句有结果的经历</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>①</b>S 情境<br><span class="dim">麻烦在哪</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>②</b>T 任务<br><span class="dim">我负责哪块</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>③</b>A 行动<br><span class="dim">做了哪几步</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>④</b>R 结果<br><span class="dim">数字是多少</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意。</strong>四段内容取自本课模拟素材里的「本地课程资料问答工具」，
+            数字全部来自事实底稿，用来演示装配顺序，不是真实项目记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">R 这一段：数字必须是你自己数得出来的</span>
+        「提高了问答效率 30%」这种数字，如果没人测过，就是你给面试官递的一把刀——
+        他只要问一句「30% 是怎么算的」，你就得现编。<br>
+        能写的是这类：<strong>48 份资料里 41 份能一次检索到</strong>（我一份份对过）、
+        <strong>12 条测试问题里 9 条被判可用</strong>（我记了表）。
+        <strong>没测过的就写「未做系统评测」</strong>，这句话不丢人，编一个数才丢人。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·用 STAR 改写「本地课程资料问答工具」这段经历 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-STAR改写对照.md</code>——
+          改前原文、S/T/A/R 四段拆解、改后能直接贴回简历的三条要点（每条带数字）。</p>
+
+        <p><strong>第 1 步 · 让它把要改的那段原文取出来（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话，把下面这段指令发出去</b><span>
+            改之前先钉住原文——不然改完没法对照，也不知道它有没有偷偷加料。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="取原文指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>读工作目录下的 00-简历草稿.md，把"项目一　基于 Ollama 的本地课程资料问答工具"那一节
+下面的 5 条原文，逐字摘录出来，一条一行，不要做任何修改、不要合并、不要润色。
+摘录完回我一句"原文已取出"。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 按 STAR 四段改写，数字只许来自事实底稿（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令整段复制，紧接着发出去</b><span>
+            <span class="task__warn">「数字只许来自事实底稿」这句不许删</span>——
+            删了它就会自己编一个数，而这一步的全部意义就是逼它只用它有的。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="STAR 改写指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在读 00-事实底稿.md，按 STAR 四段改写刚才摘录的这段经历，输出成 02-STAR改写对照.md。
+
+结构照下面写，四段一段都不能少：
+【改前】刚才摘录的 5 条原文，逐字照抄。
+【S 情境】一到两句：当时是什么情况、麻烦在哪。不许铺项目背景。
+【T 任务】一到两句：我要解决的具体问题是什么、我在小组里负责哪一块。
+  角色必须如实写：是组员就写组员，只写自己负责的那部分。
+【A 行动】写成能照着做的一二三步，每步写清用了什么工具、做了什么动作。
+  不许写"学习并使用了相关技术"这种没有动作的话。
+【R 结果】只写事实底稿里有的数字，并给每个数字标出处（例如"48 份里 41 份：自己逐份核对"）。
+  事实底稿里没有的数字，一律写【无数据】，不许估算、不许编造。
+  没做过的评测就明确写"未做系统评测"。
+
+写完再加一段【改后要点】：把 STAR 压成 3 条能直接贴回简历的要点，
+每条不超过 40 字，用具体动作开头（例如"切片入库""用 Excel 去重匹配"），每条必须带一个数字。
+
+约束：不许新增事实底稿里没有的项目、角色、数字；不许改动 00-简历草稿.md 和 00-事实底稿.md。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它回头查一遍有没有偷偷加料（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>
+            这一步是查它，不是查你——它会不会为了「好看」多写一个词，一查就知道。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="核对指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把 02-STAR改写对照.md 和 00-事实底稿.md 逐句对一遍，找出三类问题：
+1. 事实底稿里找不到依据的表述（哪怕只是"主导""负责整体""显著"这类词也算）；
+2. 被放大的角色（例如底稿里写"组员、负责入库与检索"，改后写成了"负责搭建"）；
+3. 没有出处、也没有标【无数据】的数字。
+逐条列出来，每条给出改法并直接改掉；改完在文件末尾加一段"本次核对说明"，
+写清改了几处、都是哪一类问题。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>S / T / A / R 四段齐全，且 T 段写的是「组员，负责资料入库与检索」</b><span>
+            写成「负责搭建整个工具」就是放大角色——这正是本课的第三条红线。<br>
+            <em>它写大了</em>：补一句「角色必须照抄事实底稿，是组员就写组员，只写自己负责的部分」。</span></li>
+          <li><b>R 段的每个数字都能在事实底稿里找到出处，没有出处的标了【无数据】</b><span>
+            重点查有没有冒出「效率提升 30%」这类底稿里没有的数字。<br>
+            <em>冒出一个没出处的数字</em>：让它把那个数字删掉，改成【无数据】或换成底稿里有的数字。</span></li>
+          <li><b>改后 3 条要点每条不超过 40 字、以具体动作开头、都带数字</b><span>
+            「负责搭建本地问答工具」这类开头不合格，「切片入库 48 份课程资料（41 份一次检索命中）」才算。<br>
+            <em>还在用「负责 / 参与 / 协助」开头</em>：补一句「每条以具体动作开头（切片、去重、匹配、评测），不许用负责 / 参与 / 协助」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-STAR改写对照.md</code>。第 3 节的关键词优化要往这 3 条要点里补词。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-ats">
+      <h2>三、ATS 关键词：先让机器看见你<span class="sec__tag">方法</span></h2>
+      <p>
+        还有一种更憋屈的情况：<strong>简历写得不错，但压根没到人手里。</strong>
+        规模稍大的企业通常用 <strong>ATS</strong>（ applicant tracking system，简历筛选 / 候选人管理系统）
+        收简历、建库、按关键词检索和排序。<span class="note">各企业用的系统、字段、打分方式都不一样，
+        下面只讲通用做法，具体以你投递的那家企业的实际情况为准。</span>
+      </p>
+      <p>
+        不管系统怎么变，有一点是共通的：<strong>它主要认「词」</strong>。
+        JD 里写「检索增强生成（RAG）」，你简历里写「用了 AI 技术」，人就看得懂，机器对不上。
+      </p>
+
+      <h3>三个通用做法，跟系统无关</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>做法</th><th>具体怎么做</th><th>为什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>用 JD 里的原词</strong></td>
+              <td>JD 写「数据清洗」，你就写「数据清洗」，别写「处理数据」；JD 写「pandas」就写「pandas」</td>
+              <td>检索靠词匹配，同义替换在机器眼里是两个词</td>
+            </tr>
+            <tr>
+              <td><strong>文字要能被选中</strong></td>
+              <td>别把经历做成长图、别塞进文本框和艺术字；导出 PDF 时确认文字能复制</td>
+              <td>图里的字、文本框里的字，很多系统取不到</td>
+            </tr>
+            <tr>
+              <td><strong>版式从简、标题用标准词</strong></td>
+              <td>一栏排版；小节标题写「教育背景 / 项目经历 / 技能」，别写「我的故事」</td>
+              <td>分栏和自定义标题会打乱解析顺序，关键字可能被归错栏</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 关键词覆盖检查：JD 里的 11 个词，简历接住了几个</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d3-go">检查覆盖</button>
+            <button class="btn btn--ghost" type="button" id="d3-reset">重置</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d3-k1">—</b><span>已覆盖</span></div>
+            <div class="kpi"><b class="acc" id="d3-k2">—</b><span>真实拥有但没写</span></div>
+            <div class="kpi"><b id="d3-k3">—</b><span>没做过不许补</span></div>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数据。</strong>关键词取自本课的模拟 JD，
+            覆盖判定依据模拟的事实底稿，用来演示「三类处理」的判断思路，
+            不是任何企业 ATS 的真实打分结果。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：缺的关键词，只能补你真实拥有的</span>
+        查完会发现三类词，处理方式完全不同：
+        <strong>① 已覆盖</strong>——保留，并把证据写进句子里；
+        <strong>② 真实拥有但没写出来</strong>——补，用 JD 的原词补，例如把「文档切片入库」写成「文档切片与检索增强生成（RAG）」；
+        <strong>③ 压根没做过</strong>——<strong>一个字都不许加</strong>。
+        「模型微调」你没做过就是没做过，写上去的那一刻，你就得在面试里现场编一套微调流程。<br>
+        <strong>ATS 是给简历排优先级，不是给谎言发通行证。</strong>
+        为了过机器筛选而编造经历，等于把穿帮的时间点从面试推迟到试用期——那时的代价大得多。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·拿目标 JD 的关键词逐条查覆盖，只补真实拥有的 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-ATS关键词对照.md</code>——
+          11 个关键词逐条判定，分成「已覆盖 / 真实拥有待补 / 没做过不补」三类，
+          外加一份 <code>05-简历终稿.md</code>——该补的词改写进去了，没做过的一个都没加。</p>
+
+        <p><strong>第 1 步 · 把目标 JD 交给它，让它抽关键词（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话，先复制下面这份 JD 粘进去</b><span>
+            这份 JD 沿用<a class="xref" data-lesson="24">第 24 次课</a>拆过的那个岗位方向（模拟素材）。
+            <span class="task__warn">JD 在前、指令在后</span>，中间空一行。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 目标岗位 JD（模拟）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【目标岗位 JD（模拟素材，非真实招聘信息）】
+岗位：AI 应用实习生（实习，每周到岗 3 天以上）
+公司：某科技公司 · 企业知识库小组
+
+岗位职责
+1. 把企业内部文档整理入库，做切片、去重与标签；
+2. 编写与调优提示词，用大模型完成问答、摘要、抽取等任务；
+3. 用 Python / pandas 做数据清洗与统计，输出可复用的脚本；
+4. 配合完成检索效果的人工评测，记录问题清单。
+
+任职要求
+1. 大专及以上，计算机、人工智能相关专业；
+2. 了解检索增强生成（RAG）的基本流程，接触过向量库（如 Chroma、FAISS）；
+3. 会用 Python 做数据处理，熟悉 pandas、Excel；
+4. 用过至少一种本地大模型运行工具（Ollama、LM Studio 等）；
+5. 能读懂 Linux 基础命令，能看日志；
+6. 有文档整理、数据标注经验者优先。
+
+加分项
+- 做过提示词调优并有对比记录
+- 了解模型微调
+- 有团队协作的开源或课程项目经历
+</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>把下面这段指令跟 JD 一起发出去</b><span>先抽词，再查覆盖——不要让它一步做完，一步做完它就会顺手把没做过的也补上。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="抽关键词指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>从上面这份 JD 里抽出招聘方会拿来检索简历的关键词，要求：
+1. 只抽"能被机器匹配上的实词"：工具名、技术名、具体动作（例如 数据清洗、文档切片、提示词调优、RAG）。
+   不要抽"沟通能力""责任心""抗压能力"这类软性词——机器一般不用这些词检索。
+2. 保留 JD 里的原始写法，英文缩写带上中文全称（例如 检索增强生成（RAG））。
+3. 输出成表格：| 关键词 | 出现在 JD 的哪一条 |，按"任职要求 → 岗位职责 → 加分项"的顺序排。
+抽完回我一句"关键词共 N 个"，先不要做任何匹配。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 逐词查覆盖，分成三类（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            判断依据<strong>只能是 00-事实底稿.md</strong>——底稿里没有的，一律归到第三类。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="覆盖检查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在读工作目录下的 00-简历草稿.md 和 00-事实底稿.md，对上一步抽出的每个关键词逐条判定，
+输出成 03-ATS关键词对照.md，表格三列：| 关键词 | 判定 | 处理与依据 |
+
+判定只能填以下三类之一：
+- 【已覆盖】简历草稿里已经出现了这个词；
+- 【真实拥有待补】00-事实底稿.md 里能找到对应事实，但简历草稿里没写这个词；
+- 【没做过，不补】00-事实底稿.md 里找不到任何依据（例如 模型微调）。
+
+"处理与依据"这一列必须写清：
+- 已覆盖的：指出它出现在简历的哪一句，若那一句没有证据支撑，补一句证据；
+- 真实拥有待补的：写清依据出自事实底稿的哪一行，并给出准备补进简历的原句；
+- 没做过不补的：直接写"无依据，不补"，并说明补上去会在面试中遇到什么追问。
+
+最后加一段"改写清单"：把所有【真实拥有待补】的原句汇总，标明各补进简历的哪个位置。
+不许修改 00-简历草稿.md 和 00-事实底稿.md。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它把该补的词落进简历（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>
+            <span class="task__warn">只许按改写清单改</span>——这一步最怕它顺手把「模型微调」也写进去。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="落改指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按 03-ATS关键词对照.md 末尾的"改写清单"，把该补的词补进简历，结果存成 05-简历终稿.md
+（以 00-简历草稿.md 为底稿，不要原地覆盖 00-简历草稿.md）。
+
+改写规则：
+1. 只改被清单点名的句子，其余一字不动；
+2. 补词时用 JD 的原始写法（例如写"检索增强生成（RAG）"，不要写成"AI 检索技术"）；
+3. 补进来的每一个词后面都要有能自圆其说的限定，例如"Chroma（按教程配置，只做过最基础的
+   写入与查询）"、"Linux 基础命令（cd / ls / grep）"，不许把没做过的写成熟练；
+4. 技能栏里"沟通能力、学习能力、团队合作、抗压能力强"这类没有证据的软性词全部删除，
+   换成有工具名、能举出例子的条目；
+5. 清单里判定为【没做过，不补】的词，一个都不许出现在终稿里。
+
+改完回我一句"终稿已生成"，并列出这次一共补了哪几个词。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>11 个关键词逐条都有判定，没有一条留空或写「待定」</b><span>
+            判定只有三类，不存在第四类。<br>
+            <em>有词没判</em>：补一句「逐条判定，一个词都不能跳过；拿不准的按『无依据，不补』处理」。</span></li>
+          <li><b>「模型微调」被判为【没做过，不补】，且终稿里搜不到这个词</b><span>
+            这是本课的红线检查点——它要是偷偷写进去了，说明第三步的约束没生效。<br>
+            <em>终稿里出现了</em>：让它把该句删掉，并重申「事实底稿里没有依据的词一律不得写入终稿」。</span></li>
+          <li><b>补进终稿的每个词都带了限定或证据</b><span>
+            「熟悉 Chroma」不合格，「Chroma（按教程配置，只做过最基础的写入与查询）」才算。<br>
+            <em>写得像熟练工</em>：补一句「每个补进来的词，都要照事实底稿的口径写限定，不许升级成『熟悉』『精通』」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-ATS关键词对照.md</code> + <code>05-简历终稿.md</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-truth">
+      <h2>四、真实性原则：一句假话毁掉整份简历<span class="sec__tag">红线</span></h2>
+      <p>
+        到这里，简历已经好看了：有数字、有关键词、排版干净。
+        接下来这一节是整课最要紧的——<strong>好看到不像你自己的简历，是最危险的简历。</strong>
+      </p>
+      <p>
+        原因很实在：面试是一场<strong>逐句追问</strong>。简历上每一句话，
+        面试官都可能问「这一步具体怎么做的」「这个数字怎么来的」「组里几个人、你做了哪块」。
+        你写上去的每一个注水词，都是一张你自己发出去的追问邀请函。
+      </p>
+
+      <h3>三类注水，面试现场各有一种穿帮方式</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>注水类型</th><th>简历上的写法</th><th>面试官会怎么问</th><th>该怎么改</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>编造项目</strong></td>
+              <td>为了对上 JD，写一个从没做过的项目</td>
+              <td>「这个项目的数据从哪来的？你们怎么分工？」——第一句就卡住</td>
+              <td><strong>删掉</strong>。没做过就是不写，去补做，别去补写</td>
+            </tr>
+            <tr>
+              <td><strong>夸大角色</strong></td>
+              <td>组员写成「负责人」、参与讨论写成「主导方案设计」</td>
+              <td>「组里几个人？方案是你定的还是组长定的？」</td>
+              <td><strong>照实写角色 + 写清自己那块</strong>：「4 人小组，负责资料入库与检索」比「负责人」更有说服力</td>
+            </tr>
+            <tr>
+              <td><strong>数字注水</strong></td>
+              <td>没测过就写「效率提升 30%」「用户上千」</td>
+              <td>「30% 是怎么算的？样本多少？」</td>
+              <td><strong>换成你数得出来的数字</strong>；数不出来就写「未做系统评测」</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">一句判断标准</span>
+        写完任何一句，问自己：<strong>如果面试官让我把这句话讲三分钟，我讲得出来吗？</strong><br>
+        讲得出来，这句话就是你的；讲不出来，写得再漂亮也是借来的。
+        <strong>借来的句子，会在面试现场连本带利还回去。</strong>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">三条红线，任何时候都不要碰</span>
+        1. <strong>不许为了匹配 JD 编造没做过的项目</strong>——JD 缺的那一项，诚实的方式是写「了解，未实操」，
+        或者干脆用别的事实去靠，而不是造一个；<br>
+        2. <strong>不许夸大角色</strong>——参与者就是参与者，组员就是组员；把「我做的那块」写清楚，
+        比抢一个「负责人」的头衔管用；<br>
+        3. <strong>数字不许注水</strong>——写上去的数字必须能说出「这个数是怎么数的」；
+        说不出来就别写，或者写「未做系统评测」。<br>
+        另外记住：<strong>AI 不知道你做过什么</strong>，它只知道什么样的表述看起来厉害。
+        「不许编造」这句话必须在指令里写死，否则它默认会把空白处填满。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·让 AI 当面试官，挑出经不起追问的表述，逐条改到能自圆其说 <em>约 9 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>04-真实性审查表.md</code>（逐条列出原表述、追问、改法、证据出处），
+          以及一份改干净的 <code>05-简历终稿.md</code>——里面每一句你都能讲三分钟。</p>
+
+        <p><strong>第 1 步 · 让它当面试官逐句挑刺（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话，把下面这段指令整段复制发出去</b><span>
+            它手上有 <code>05-简历终稿.md</code>（上一步生成的）和 <code>00-事实底稿.md</code>，
+            两份一对照，注水就藏不住。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="真实性审查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在你是面试官，接下来我要用工作目录下的 05-简历终稿.md 去面试。
+请把它和 00-事实底稿.md 逐句对照，找出这份简历里"经不起追问"的表述，
+输出成 04-真实性审查表.md，表格五列：
+| 原表述 | 你会怎么追问 | 为什么这句答不上来 | 改后表述 | 证据出处 |
+
+要求：
+1. 至少找出 5 处。重点查三类：
+   - 角色被放大的（组员写成负责人、参与写成主导）；
+   - 没有数字支撑的形容词（"显著""大幅""熟练""精通""大幅提升效率"）；
+   - 事实底稿里根本找不到的事。
+2. "你会怎么追问"这一列，要写成面试官真会问的口语（例如"组里四个人，你到底负责哪一块？"）。
+3. "改后表述"必须能在 00-事实底稿.md 里找到依据；找不到依据的，改法写"删除"，
+   不许用更漂亮的空话去替换原来的空话。
+4. "证据出处"写清事实底稿里的哪一行；删除类的写"无依据，删除"。
+
+如果终稿里没有问题，就直说"未发现问题"，不要为了凑数硬找。
+不要修改 05-简历终稿.md，只生成审查表。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把审查结果落进终稿（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>
+            改的是终稿，不是底稿——底稿要留着当证据，改坏了就没得对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="落改指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按 04-真实性审查表.md 里的"改后表述"，逐条改 05-简历终稿.md，直接覆盖保存。
+
+规则：
+1. 只改被审查表点名的句子，没被点名的一个字都不动；
+2. 审查表里写"删除"的，直接删掉整句，不要用别的措辞替换；
+3. 本次修改不得新增任何 00-事实底稿.md 里没有的事实、数字或工具名；
+4. 改完在 05-简历终稿.md 末尾加一段"本次修订说明"，列出改了哪几句。
+
+改完回我一句"已改 N 处"，并把这 N 处原句和新句对照念一遍。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它做一次追问自检（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这句紧接着发出去</b><span>
+            这一步是整课的收口：<strong>答不上来的地方必须暴露出来，而不是留在面试现场才暴露。</strong></span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="追问自检指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>最后一步：把 05-简历终稿.md 当成别人的简历来面试，对它的每条经历各提 3 个追问
+（优先问角色、数字、具体做法），并逐条自答。
+
+自答必须只用 00-事实底稿.md 里的信息：
+- 能答上来的，写出答案并标注依据出处；
+- 答不上来的，原样标【答不上】，并在该句后面加一句"→ 面试前需补做或删除这句"。
+
+输出成 04-真实性审查表.md 的最后一节，小标题用"四、追问自检"。
+如果出现了【答不上】，在结尾列一张清单，告诉我这些句子接下来该怎么处理（补做 / 删除 / 改成更小的说法）。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>审查表至少点出 5 处，且追问写的是面试官真会问的口语</b><span>
+            「请详细说明」这种不算追问，「组里四个人，你到底负责哪一块？」才算。<br>
+            <em>追问写得太客气</em>：补一句「追问要写成面试现场的原话，越具体越好，不要写『请进一步说明』这种话」。</span></li>
+          <li><b>每一条「改后表述」都能在事实底稿里找到出处，没有出处的写的是「删除」</b><span>
+            用新空话替换旧空话，等于没改。<br>
+            <em>它换了个漂亮说法</em>：补一句「改法只有两种：照事实底稿写实，或删除；不许用另一种措辞包装」。</span></li>
+          <li><b>追问自检里没有残留的【答不上】</b><span>
+            有残留说明终稿里还有你讲不出三分钟的句子，那就是下课前必须处理掉的东西。<br>
+            <em>出现了【答不上】</em>：按它给的清单处理——能补做的补做（例如把 12 条测试集的结果真记一遍），
+            补不了的就删句，不要留着硬编。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>04-真实性审查表.md</code> + <code>05-简历终稿.md</code>。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">把四步串起来看</span>
+        ① 6 秒自测，是<strong>看别人怎么扫你</strong>；② STAR 改写，是<strong>把做过的事说清楚</strong>；
+        ③ 关键词优化，是<strong>让机器检索得到你</strong>；④ 真实性审查，是<strong>让你自己站得住</strong>。<br>
+        前三步让简历变好看，第四步决定这份简历<strong>是不是还是你的</strong>。
+        少了第四步，前面三步做得越好，面试现场塌得越狠。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>按「6 秒法则」，一份简历的前几秒最该被看到的是哪一类内容？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 完整的个人信息和家庭住址，方便联系</li>
+            <li>B. 求职意向 + 最近的经历 + 带数字的短句 + 能对上岗位的技能词</li>
+            <li>C. 从小学开始的完整履历，越详细越可信</li>
+            <li>D. 大段自我评价，说明自己吃苦耐劳</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>扫读时眼睛只落在四块：姓名与求职意向、最近一段经历、带数字的短句、技能栏关键词。
+            A 里的家庭住址、籍贯、身高这些都是占位废话；C 的早期履历在招聘时几乎不看；
+            D 的自我评价没有证据支撑，扫过去留不下任何印象。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>判断：STAR 里的 R（结果）可以写「显著提高了问答效率」，只要这件事确实是我做的。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>「显著提高」不是结果，是没有测量的形容词——
+            面试官一句「提高了多少、怎么算的」就能把你问住。
+            R 要写<strong>自己数得出来的数字</strong>（48 份里 41 份命中、12 条里 9 条可用）；
+            确实没测过就写「未做系统评测」，这比编一个数安全得多。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>多选：查 ATS 关键词覆盖时，下列哪些属于「真实拥有但没写出来」，可以补进简历？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 用过 Chroma 做过最基础的写入与查询，简历里只写了「做检索」</li>
+            <li>B. 用 pandas 做过 Excel 去重与匹配，简历里只写了「Python」</li>
+            <li>C. 从没做过的模型微调，JD 里却写了这条加分项</li>
+            <li>D. 只上过课、没实际处理过的千万级数据</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：AB。</b>判断标准只有一个：<strong>事实底稿里有没有依据</strong>。
+            A、B 都真做过，只是没用 JD 的原词，补上并带上限定（「按教程配置，只做过最基础的写入与查询」）即可。
+            C、D 完全没有依据，属于「不许补」——补上去的那一刻，你就得在面试里现场编一套做法。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>简历草稿里写「负责搭建本地问答工具」，而事实是「4 人小组的组员，负责资料入库与检索」。正确的改法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 保留「负责搭建」，因为面试官不会细问分工</li>
+            <li>B. 照实写成组员，并把自己负责的那块写具体</li>
+            <li>C. 改成「主导项目」，显得更有能力</li>
+            <li>D. 把这段整个删掉，反正只是课程项目</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>夸大角色是三条红线之一——「组里几个人？方案谁定的？」是面试官必问的一句。
+            照实写反而更有说服力：「4 人小组，负责资料入库与检索，48 份资料切片入库」
+            比一句「负责搭建」具体得多。A、C 都在赌面试官不问，赌输了就是出局；
+            D 因噎废食，课程项目只要写得实，一样是有效经历。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>多选：下列哪些表述最可能在面试中被问穿？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 学习并使用了 Ollama 相关技术</li>
+            <li>B. 提高了问答效率</li>
+            <li>C. 用 Excel 对 213 册捐书做去重，87 条需求匹配成功 62 条</li>
+            <li>D. 4 人小组里写「主导方案设计」，实际只参加过一次需求讨论</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABD。</b>A 是「没有动作的动作」——说不出装了哪个模型、跑了什么命令；
+            B 没有数字也没测过；D 是典型的角色放大。
+            C 反而最安全：213、87、62 这三个数都是自己一条条数出来的，
+            被追问时能讲清「按书名 + 版次去重，匹配成功 62 条」——<strong>能讲三分钟的句子，才是你的句子。</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>6 秒法则</strong>：简历是被扫的——扫的是<strong>求职意向、最近经历、带数字的短句、技能关键词</strong>；个人信息里删掉没人会发现的行；</li>
+          <li><strong>STAR 四段</strong>：情境 / 任务 / 行动 / 结果，缺一段就不成立；最容易空着的是 <strong>R</strong>，而 R 必须有数字；</li>
+          <li><strong>数字纪律</strong>：写上去的数字要能说出「怎么数的」；没测过就写<strong>未做系统评测</strong>，不许估算；</li>
+          <li><strong>ATS 关键词</strong>：用 JD 原词、文字要能被选中、版式从简标题标准；缺的词<strong>只补真实拥有的</strong>，没做过的一个字都不加（各企业系统不同，以实际情况为准）；</li>
+          <li><strong>真实性红线</strong>：不编造项目、不夸大角色、数字不注水；判断标准——<strong>这句话我能讲三分钟吗</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天改完的这份终稿，下一课 <a class="xref" data-lesson="26">AI 模拟面试</a>
+        要<strong>用嘴讲一遍</strong>。你会发现，STAR 写顺的那几条讲起来也顺，
+        而那些靠形容词撑起来的句子，一张嘴就露馅——这就是本课死守真实性的原因：
+        <strong>简历不是写给别人看的，是写给你自己在面试时讲的。</strong>
+      </p>
+      <p class="note">
+        本页产品口径取自 www.workbuddy.cn 客户端用户文档，核对日期 <strong>2026-09-26</strong>；
+        简历草稿、事实底稿与目标 JD 均为教学示意（模拟素材）；
+        ATS 的具体机制各企业不同，本课只讲通用做法，以你投递企业的实际情况为准。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 25 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）按"6 秒法则"，简历最该优先保证被看到的是哪部分内容？
+A. 完整的个人信息与家庭住址
+B. 求职意向、最近的经历、带数字的短句和对得上岗位的技能词
+C. 从小学开始的完整履历
+D. 大段自我评价
+【答案】B
+【解析】扫读时眼睛只落在四块：姓名与求职意向、最近一段经历、带数字的短句、技能栏关键词。A 里的身高籍贯住址属于占位废话；C 的早期履历招聘时几乎不看；D 的自我评价没有证据支撑，扫过去留不下印象。
+
+2.（多选）用 STAR 改写一段经历时，下列说法正确的有？
+A. S 情境要写清当时的麻烦，不要铺项目背景
+B. T 任务要如实写自己的角色，是组员就写组员
+C. A 行动要写成能照着做的一二三步
+D. R 结果不写数字也可以，形容词一样有说服力
+【答案】ABC
+【解析】D 错：R 是四段里最容易被省略、也最不该省略的一段。形容词（"显著提高""大幅优化"）在被追问"提高了多少、怎么算的"时答不上来；只有自己数得出来的数字才站得住，确实没测过就写"未做系统评测"。
+
+3.（单选）目标 JD 里有"模型微调"这个加分项，而你从没做过。正确的做法是？
+A. 写上去，反正面试官不一定懂
+B. 写"精通模型微调"，让简历更好看
+C. 不写；可如实写"了解，未实操"，或用别的真实经历去靠
+D. 删掉简历里所有技术词，避免被追问
+【答案】C
+【解析】这是本课的真实性红线：没做过的项目与技能一个字都不许加。补上去的那一刻，你就得在面试里现场编一套流程，穿帮的代价远大于少一个关键词的损失。D 也不可取——真实拥有的词照写，只是没做过的不写。
+
+4.（多选）为了让 ATS 能检索到你的简历，下列哪些做法属于通用做法？
+A. 技能与经历里使用 JD 中的原始写法（例如写"数据清洗"而不是"处理数据"）
+B. 把关键经历做成一张长图，视觉上更清楚
+C. 用一栏排版，小节标题写"教育背景 / 项目经历 / 技能"
+D. 导出 PDF 后确认文字可以被复制选中
+【答案】ACD
+【解析】B 错：图里的文字很多系统取不到，等于把自己的经历藏起来了。A 保证词能对上，C 保证解析顺序不乱，D 保证文字可被读取。注意各企业系统不同，具体以投递企业的实际情况为准。
+
+5.（判断）为了让简历更匹配 JD，可以把"4 人小组的组员"写成"项目负责人"，因为面试官通常不会细问分工。
+【答案】错误
+【解析】夸大角色是三条红线之一。"组里几个人、方案谁定的"是面试必问的一句，一问就穿帮。照实写反而更有说服力：写清自己负责的那一块（"负责资料入库与检索，48 份资料切片入库"），比抢一个"负责人"头衔有效得多。
+
+6.（多选）下列哪些表述经不起面试追问，需要修改或删除？
+A. 学习并使用了 Ollama 相关技术
+B. 显著提高了问答效率
+C. 用 Excel 对 213 册捐书做去重，87 条需求中匹配成功 62 条
+D. 实际只参加过一次需求讨论，却在简历里写"主导方案设计"
+【答案】ABD
+【解析】A 是没有动作的动作，说不出装了哪个模型、跑了什么命令；B 没有数字也没测过；D 是典型的角色放大。C 最安全：213、87、62 都是自己一条条数出来的，被追问时能讲清怎么做的——能讲三分钟的句子才属于你自己。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">交什么 · 评分看什么</span>
+        <strong>交付</strong>：<code>01-六秒自测报告.md</code>、<code>02-STAR改写对照.md</code>、
+        <code>03-ATS关键词对照.md</code>、<code>04-真实性审查表.md</code>、<code>05-简历终稿.md</code>。<br>
+        <strong>评分看三件事</strong>：① STAR 四段齐全且 R 段有数字；
+        ② 关键词对照表里每个判定都写了依据，没做过的词一个都没补进终稿；
+        ③ 终稿里每一句都能说出证据出处——追问自检里不留【答不上】。
+      </div>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 同一件事的三种写法：6 秒后记住了什么 ---------- */
+  var D1 = {
+    "d1-a": {
+      k1: "没记住", k2: "无", k3: "答不上",
+      lines: [
+        "<span class='hl'>扫读结果：</span>",
+        "  眼睛落在「负责」两个字上，扫过去，没有留下任何可复述的信息。",
+        "  <span class='no'>✗ 记不住</span>　「负责搭建」是岗位说明书用语，换谁都能写",
+        "  <span class='no'>✗ 无数字</span>　整句没有一个能记住的数",
+        "  <span class='no'>✗ 第一句追问：组里几个人，你具体负责哪一块？</span>",
+        "",
+        "<span class='hl'>结论：扫完等于没看。</span>这句话占了一行版面，却没换来一秒注意力。"
+      ]
+    },
+    "d1-b": {
+      k1: "模糊", k2: "工具名", k3: "答得上一半",
+      lines: [
+        "<span class='hl'>扫读结果：</span>",
+        "  眼睛被两个实词抓住了：Ollama、48 份。",
+        "  <span class='ok'>✓ 记住了工具名</span>　Ollama 是能跟岗位对上的词",
+        "  <span class='ok'>✓ 记住了规模</span>　48 份，是个能复述的数",
+        "  <span class='hl'>△ 但记不住结果</span>　整理完了又怎样？没说",
+        "  <span class='hl'>△ 第一句追问：48 份整理完之后，效果怎么样？</span>",
+        "",
+        "<span class='hl'>结论：比 A 强，但只停在「我做过」，没到「我做成了什么」。</span>"
+      ]
+    },
+    "d1-c": {
+      k1: "能复述", k2: "结果 + 数字", k3: "答得上",
+      lines: [
+        "<span class='hl'>扫读结果：</span>",
+        "  眼睛抓到的是一组成对的数字：48 份 → 41 份，12 条 → 9 条。",
+        "  <span class='ok'>✓ 记住了结果</span>　有终点，不是一个没做完的动作",
+        "  <span class='ok'>✓ 数字能复述</span>　两组数都是自己逐份对出来的",
+        "  <span class='ok'>✓ 第一句追问：9 条可用是怎么判的？</span>",
+        "  　→ 答得上：写了 12 条常见问题的测试集，逐条记了同组同学的判定。",
+        "",
+        "<span class='hl'>结论：这一条既被记住，又经得起追问。</span>",
+        "<span class='dim'>注意：能写成 C，前提是你真的数过——数字不是修饰，是凭据。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.k1;
+    $("d1-k2").textContent = d.k2;
+    $("d1-k3").textContent = d.k3;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-a", "d1-b", "d1-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+
+  /* ---------- 演示② STAR 四段装配 ---------- */
+  var D2_STEPS = [
+    {
+      lines: [
+        "<span class='hl'>① S 情境：当时的麻烦是什么</span>",
+        "  课程资料散在 48 份 PDF 和 Markdown 里，同学想找一句话要翻半天。",
+        "  一句就够，不要写「本项目面向人工智能专业课程体系……」这种开场。",
+        "<span class='dim'>这一段的作用：让读的人知道这件事为什么值得做。</span>"
+      ]
+    },
+    {
+      lines: [
+        "<span class='hl'>② T 任务：我负责哪一块</span>",
+        "  4 人小组（大二下课程项目），我负责资料入库与检索这一块。",
+        "  <span class='no'>✗ 不要写成「负责搭建本地问答工具」</span>——那是组长的活。",
+        "<span class='dim'>角色照实写，反而比抢一个「负责人」更有说服力。</span>"
+      ]
+    },
+    {
+      lines: [
+        "<span class='hl'>③ A 行动：做了哪几步</span>",
+        "  第 1 步：用 Ollama 跑 qwen3:1.7b，把 48 份资料切片，用 Chroma 存向量；",
+        "  第 2 步：写 12 条常见问题的测试集，逐条记录回答；",
+        "  第 3 步：按测试结果改了 3 版提示词。",
+        "  <span class='no'>✗ 不要写「学习并使用了相关技术」</span>——那不是一个动作。"
+      ]
+    },
+    {
+      lines: [
+        "<span class='hl'>④ R 结果：数字是多少，出处在哪</span>",
+        "  · 48 份资料里 41 份能一次检索到相关片段（自己逐份核对）",
+        "  · 12 条测试问题里 9 条被同组同学判为可用（自己记的表）",
+        "  · 未做严格准确率评测　<span class='dim'>——这句要写出来，不丢人</span>",
+        "<span class='ok'>✓ 四段装配完成：现在这句话既好看，又答得上追问</span>"
+      ]
+    }
+  ];
+  var d2Step = 0;
+  function d2Render() {
+    for (var i = 1; i <= 4; i++) {
+      var n = $("d2-n" + i);
+      n.className = "flow__node" + (i === d2Step ? " on" : " dim");
+      if (i < 4) {
+        var dot = $("d2-d" + i);
+        dot.className = "flow__dot" + (i < d2Step ? " run" : "");
+      }
+    }
+    if (d2Step > 0) window.Site.type($("d2-out"), D2_STEPS[d2Step - 1].lines, null);
+    else { $("d2-out").innerHTML = ""; }
+  }
+  $("d2-next").addEventListener("click", function () {
+    d2Step = d2Step >= 4 ? 1 : d2Step + 1;
+    d2Render();
+  });
+  $("d2-reset").addEventListener("click", function () {
+    d2Step = 0;
+    d2Render();
+  });
+
+  /* ---------- 演示③ 关键词覆盖检查 ---------- */
+  var D3_LINES = [
+    "<span class='hl'>JD 关键词 11 个，逐条判定：</span>",
+    "  1. 文档整理　　　<span class='ok'>✓ 已覆盖</span>（项目一、项目二都有）",
+    "  2. 切片　　　　　<span class='hl'>△ 真实拥有待补</span>（做了，简历没写这个词）",
+    "  3. 去重　　　　　<span class='hl'>△ 真实拥有待补</span>（Excel 去重，简历只写「做表格」）",
+    "  4. 提示词调优　　<span class='hl'>△ 真实拥有待补</span>（改过 3 版提示词，没写）",
+    "  5. 检索增强生成（RAG）　<span class='hl'>△ 真实拥有待补</span>（做的就是这件事，没用这个词）",
+    "  6. 向量库 Chroma　<span class='hl'>△ 真实拥有待补</span>（用过最基础的写入与查询，限定着写）",
+    "  7. Python　　　　<span class='ok'>✓ 已覆盖</span>（但没写证据，补 pandas 那句）",
+    "  8. pandas　　　　<span class='hl'>△ 真实拥有待补</span>（用过读 Excel、去重匹配）",
+    "  9. 数据清洗　　　<span class='hl'>△ 真实拥有待补</span>（去重匹配就是，用 JD 原词写）",
+    "  10. Ollama　　　 <span class='ok'>✓ 已覆盖</span>（项目标题里就有）",
+    "  11. Linux 基础命令　<span class='hl'>△ 真实拥有待补</span>（只会 cd / ls / grep，照实写）",
+    "",
+    "<span class='hl'>再看加分项里的「模型微调」：</span>",
+    "  <span class='no'>✗ 没做过，不补</span>　事实底稿里没有任何依据。",
+    "  补上去的代价：面试官一句「微调用的什么方法、数据多少条」就穿帮。",
+    "",
+    "<span class='ok'>✓ 结论：11 个词里 3 个已覆盖、7 个照实补；加分项里的「模型微调」坚决不碰。</span>"
+  ];
+  $("d3-go").addEventListener("click", function () {
+    $("d3-k1").textContent = "3 / 11";
+    $("d3-k2").textContent = "7 个";
+    $("d3-k3").textContent = "1 个";
+    window.Site.type($("d3-out"), D3_LINES, null);
+  });
+  $("d3-reset").addEventListener("click", function () {
+    $("d3-k1").textContent = "—";
+    $("d3-k2").textContent = "—";
+    $("d3-k3").textContent = "—";
+    $("d3-out").innerHTML = "";
+  });
+})();
+</script>
+</body>
+</html>
