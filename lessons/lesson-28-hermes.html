@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第28次课 Hermes-Agent｜AIGC应用与实践</title>
+<meta name="description" content="会成长的开源个人 AI 助手：跨会话记忆、自动技能创建、消息接入与 cron 定时、本地与 VPS 部署的数据边界——用卡片把「越用越懂你」的便利和风险一次说清。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="28" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="27">第 27 次课</a>解决的是「让 AI 改代码时，怎么划范围才安全」。
+        这一课换个角度：如果一个助手<strong>会记住你</strong>、<strong>会自己攒技能</strong>、
+        <strong>会按时主动找你</strong>——便利是明摆着的，但问题也跟着来了：
+        <strong>它记住的那些东西，归谁管？</strong>
+      </p>
+      <p>
+        主角是 Hermes-Agent：一个由 Nous Research 开源、主打「越用越懂你」的个人 AI 助手。
+        它和前几课那些「每次开新对话都从零开始」的工具最大的差别，就在这三件事上：
+        <strong>记忆、技能、定时任务</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>每次开新对话，都要重新说一遍「我喜欢分点、别写太长」</strong></td><td>普通对话的上下文关掉就没了，它没有<strong>跨会话记忆</strong></td></tr>
+            <tr><td><strong>同一个整理步骤讲了五遍，它每次还是从头想一遍</strong></td><td>重复做的事没被沉淀成<strong>可复用的技能</strong></td></tr>
+            <tr><td><strong>想让它每周五提醒我复盘，但它不会主动开口</strong></td><td>缺两样东西：<strong>按时间触发的 cron</strong> 和<strong>把消息送到你手上的通道</strong></td></tr>
+            <tr><td><strong>装自己电脑上还是云服务器上，一直拿不定主意</strong></td><td>这不是性能问题，是<strong>数据边界与维护责任</strong>的选择</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课是<strong>理论课，不要求安装 Hermes-Agent</strong>——它的版本、开源时间与能力变化很快，
+        课上只用卡片把「<strong>记忆、提醒、人工确认</strong>」三个概念走一遍（替代演示），
+        <strong>不接入个人账号</strong>，正式信息一律以官方来源复核。<br>
+        动手环节只有一个任务：<strong>让 AI 做出一张记忆卡、一张提醒卡、一条隐私边界</strong>，
+        你负责逐条核对——<strong>操作交给 AI，验收留给人</strong>。
+      </div>
+      <p class="note">
+        本课涉及的产品口径取自 Hermes Agent 官方文档（hermes-ai.net）与公开资料，
+        核对日期 <strong>2026-09-26</strong>；开源时间与具体版本以官方仓库为准。<br>
+        课内的偏好、待排任务、卡片内容全部为<strong>教学示意</strong>，不是任何真实个人数据。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出<strong>跨会话记忆</strong>是什么、能省下哪些重复说明，并说清<strong>哪些东西不该被长期保存</strong>；</li>
+          <li>说清<strong>自动技能创建</strong>把什么变成了什么（重复做的事 → 可复用步骤），以及形成技能前必须先确认的两件事；</li>
+          <li>分清<strong>消息接入、cron、工具</strong>三者各管什么，并说清组合之后为什么更需要权限与人工确认；</li>
+          <li>比较<strong>本地部署与 VPS</strong>的差别：数据可控性、维护责任、网络与安全责任；</li>
+          <li>用卡片做出<strong>记忆卡、提醒卡和一条隐私边界</strong>，并说清「什么时候必须人工确认」。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-memory"><b>01</b>跨会话记忆：它凭什么越用越懂你</a>
+        <a href="#s-skill"><b>02</b>自动技能创建：把重复做的事沉淀下来</a>
+        <a href="#s-auto"><b>03</b>消息接入、cron 与工具</a>
+        <a href="#s-bound"><b>04</b>本地 / VPS 与数据边界</a>
+        <a href="#s-practice"><b>05</b>动手做：三张卡验证三个概念 <em>＋实操①</em></a>
+        <a href="#s-quiz"><b>06</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="27">第 27 次课</a>的「先定范围、再看计划、最后人工验收」——
+        今天把这套动作从「文件夹边界」换成「<strong>隐私边界</strong>」。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="29">第 29 次课</a>看的是另一种 Agent 框架思路
+        （一切皆插件），到时候你会发现：<strong>能力越模块化，权限就越要一条条点名</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-memory">
+      <h2>一、跨会话记忆：它凭什么「越用越懂你」<span class="sec__tag">概念</span></h2>
+      <p>
+        先分清三样东西，很多人把它们混为一谈：<strong>会话里的上下文</strong>、
+        <strong>跨会话的记忆</strong>、<strong>沉淀下来的技能</strong>。
+        前一个是临时的，后两个是「它记住了你」的真正含义。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>层</th><th>保留多久</th><th>谁来写</th><th>例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>会话内上下文</strong></td><td>关掉对话就没了</td><td>你说一句它记一句</td><td>「刚才那段再改短一点」——换个对话它就不记得了</td></tr>
+            <tr><td><strong>跨会话记忆</strong></td><td>下次开新对话还在</td><td>它从对话里抽取后写下来</td><td>「这个用户喜欢分点、每次别超过三条」</td></tr>
+            <tr><td><strong>技能（程序性记忆）</strong></td><td>长期，还会被改进</td><td>它把重复做的事总结成步骤</td><td>「整理会议记录：先分结论/待办/负责人，日期缺的写待确认」</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        按 Hermes Agent 官方口径，记忆是<strong>它自己整理的</strong>：
+        它会周期性回顾近期对话，把可复用的模式抽出来，<strong>写回成技能或记忆条目</strong>；
+        跨会话的检索由 FTS5 负责。用一句大白话说就是——
+        <strong>你不用专门去「教」它，它自己在旁边记笔记。</strong>
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 三次对话之后，它记住了什么、又多出什么风险</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-c1">第 1 次对话</button>
+            <button class="btn btn--ghost" type="button" id="d1-c2">第 2 次对话</button>
+            <button class="btn btn--main" type="button" id="d1-c3">第 3 次对话</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>记忆条目</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>这次少说的说明</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>需要人清理的条目</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三次对话、记忆条目与「少说的说明」均为讲课用示意，
+            用来演示跨会话记忆的累积过程与它的代价，不是任何真实使用记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">省下来的重复说明，代价是「它替你记了」</span>
+        记忆的好处很实在：<strong>你不用每次从头介绍自己</strong>。
+        但代价同样实在——它记住的东西<strong>是你说过的话</strong>，
+        所以规矩只有一条：<strong>敏感信息和他人信息，不该被长期保存。</strong><br>
+        密码、身份证号、私人聊天记录、他人的联系方式——这些一旦进了记忆，
+        就不再是「你说了句什么」，而是<strong>它长期持有的一份数据</strong>。
+      </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV17vb562EyA&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】hermes 到底该怎么用？面向新手：从 0 到 1，带你捋清楚 hermes 智能体基础概念</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里哪一部分讲的是「它记住了你」，哪一部分讲的是「它自己攒出了一个技能」？</figcaption>
+      </figure>
+    </section>
+
+    <section class="sec" id="s-skill">
+      <h2>二、自动技能创建：把重复做的事沉淀下来<span class="sec__tag">概念</span></h2>
+      <p>
+        每周五你都要做同一件事：把这周的会议记录整理成「结论 / 待办 / 负责人」三栏。
+        做了五周，你就讲了五遍规则——<strong>第五周讲的和第一周一模一样</strong>。
+        这就是「没有技能」的典型样子：<strong>方法每次都从你的脑子里重新走一遍。</strong>
+      </p>
+      <p>
+        <strong>自动技能创建</strong>干的就是这件事：把重复任务的方法沉淀成可复用的步骤。
+        按官方口径，Hermes 的技能是「程序性记忆」——
+        <strong>一个小的 Markdown 文件</strong>，写清这个能力<strong>怎么做、什么时候用、要避开什么</strong>，
+        而且它在用的过程中还会继续改。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>阶段</th><th>发生了什么</th><th>这一步谁来把关</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 重复</strong></td><td>同一类任务做了好几遍，规则每次都重新讲</td><td>你：发现「这活我讲过三次了」</td></tr>
+            <tr><td><strong>② 抽取</strong></td><td>它从几次对话里抽出共同的做法</td><td>你：确认这次的方法是不是<strong>稳定的</strong></td></tr>
+            <tr><td><strong>③ 落成技能</strong></td><td>写成一个 Markdown：用途、输入、输出、步骤、要避开什么</td><td>你：确认<strong>输入和输出是不是明确</strong></td></tr>
+            <tr><td><strong>④ 调用</strong></td><td>下次遇到同类任务，直接按技能走</td><td>你：看它这次有没有照做</td></tr>
+            <tr><td><strong>⑤ 改进</strong></td><td>用着用着，它自己改技能</td><td>你：<strong>能不能改回来、能不能删掉</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        一张技能卡长这样（写法和<a class="xref" data-lesson="8">第 8 次课</a>讲的 Skill 是同一套思路，
+        区别只在于：<strong>那份是你自己写的，这份是它自己攒的</strong>）：
+      </p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="技能卡示意（教学示意）· 点右上角复制">
+        <div class="codeblock__bar"></div>
+<pre><code>【技能】会议记录整理成三栏
+用途：把一段杂乱的会议记录整理成 结论 / 待办 / 负责人 三栏。
+输入：一段原始会议记录文本。
+输出：一个 Markdown 表格，三栏齐全，每行一条。
+步骤：
+  1. 先通读，标出所有带时间与姓名的句子；
+  2. 结论只写已经定下来的事，正在讨论的不算结论；
+  3. 待办必须带负责人与截止日期，缺一样就写"待确认"；
+  4. 输出前自查：三栏有没有空着的行。
+要避开什么：
+  - 不许替说话人补全没说过的日期或负责人；
+  - 不许把"讨论中"写成"已决定"。
+</code></pre>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">形成技能前，先确认两件事</span>
+        <strong>一是方法稳定</strong>——这次这么做，下次还这么做；做一次就换一套规则的事，不配沉淀成技能。<br>
+        <strong>二是输入输出明确</strong>——给它什么、还给什么，说得清；说不清的技能，用起来只会更乱。<br>
+        还有一条底线：<strong>技能必须允许人工修改或删除。</strong>
+        它自己攒的东西，你改不了也删不掉，那就不是你的助手了。
+      </div>
+    </section>
+
+    <section class="sec" id="s-auto">
+      <h2>三、消息接入、cron 与工具：从「你问它答」到「它按时干」<span class="sec__tag">概念</span></h2>
+      <p>
+        记忆和技能解决的是「它懂不懂你」，这一节解决的是「<strong>你不在电脑前，它还能不能干活</strong>」。
+        三样东西各管一段，缺一样就断链：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>部件</th><th>管什么</th><th>没有它会怎样</th></tr></thead>
+          <tbody>
+            <tr><td><strong>消息接入</strong></td><td>任务从哪个聊天渠道进来、结果送到哪里去</td><td>你只能坐在电脑前跟它说话，离开就没了</td></tr>
+            <tr><td><strong>cron（定时）</strong></td><td>什么时候触发——每周五 17:00 就是 cron 的事</td><td>它永远等你先开口，不会主动找你</td></tr>
+            <tr><td><strong>工具</strong></td><td>真正去执行的动作：读文件、查资料、发消息、写文档</td><td>它只会说，不会做</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        按官方口径，Hermes 用一个网关接入十几个消息平台（既有 Telegram、Discord、WhatsApp 这类，
+        也有 Slack、钉钉、飞书、企业微信这类办公渠道），
+        内置的 cron 层可以把<strong>任意任务的定时执行结果投递到任意消息渠道</strong>；
+        工具这一侧还能接 MCP 服务器来扩展，并用<strong>允许清单</strong>把可用工具数量压住。
+      </p>
+      <p>
+        「每周五 17:00」这句话落到机器上，就是一行 cron 表达式——五位，从左往右分别是
+        <strong>分 / 时 / 日 / 月 / 周</strong>：
+      </p>
+      <div class="codeblock" data-lang="bash" data-name="cron 表达式 · 五位各管什么">
+        <div class="codeblock__bar"></div>
+<pre><code># 分  时  日  月  周
+0   17  *   *   5      # 每周五 17:00
+0   9   *   *   1-5    # 工作日每天 9:00
+30  8   1   *   *      # 每月 1 号 8:30
+</code></pre>
+      </div>
+      <p class="note">
+        cron 是类 Unix 系统通用的定时语法，各平台的写法与秒级支持略有差异，以你所用工具为准；
+        上面三行是教学示意，用来说明「时间」这一位是怎么被写死的。
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 同一张提醒卡：先确认再发，和直接发出去，差在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-a">只生成草稿（要确认）</button>
+            <button class="btn btn--ghost" type="button" id="d2-b">直接发送（不确认）</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="mock">
+            <div class="mock__bar">
+              <span class="mock__chip hi">提醒卡 · 草稿</span>
+              <span class="mock__chip">每周五 17:00</span>
+              <span class="mock__chip ac" id="d2-state">等待你确认</span>
+            </div>
+            <div class="mock__col"><b>时间</b><ul><li>每周五 17:00</li><li>触发方式：cron</li></ul><span class="mock__sub-hint">到点它自己醒</span></div>
+            <div class="mock__col"><b>内容</b><ul><li>本周复盘 3 项</li><li>每项不超过 20 分钟</li></ul><span class="mock__sub-hint">内容照记忆卡来写</span></div>
+            <div class="mock__col"><b>去向</b><ul><li>草稿：留在这里</li><li>发送：推到聊天渠道</li></ul><span class="mock__sub-hint">这一步最该被卡住</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>提醒卡内容、平台名与发送流程均为讲课用示意，
+            用来演示「人工确认」这一步放在哪儿，不是真实运行记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">组合起来更强，也更需要权限与确认</span>
+        单看每一样都挺好：<strong>消息接入</strong>让你随时能找它，<strong>cron</strong>让它按时干活，
+        <strong>工具</strong>让它真的能动手。三样接在一起，就是「你没开口，它已经把东西发出去了」。<br>
+        所以指令里必须写死一句：<strong>「只生成草稿，发送前必须让我确认。」</strong>
+        自动化的价值在于省事，不在于<strong>替你做决定</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-bound">
+      <h2>四、本地 / VPS 与数据边界：装在哪，谁负责<span class="sec__tag">概念</span></h2>
+      <p>
+        真要长期用，绕不开一个问题：<strong>它跑在哪台机器上？</strong>
+        装在自己笔记本上，关机就不跑；租一台云服务器（VPS），它 24 小时在线，
+        但那台机器的安全也得你来管。这不是性能问题，是<strong>责任问题</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>本地（自己的电脑）</th><th>VPS（云服务器）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>数据在哪</strong></td><td>在自己机器上，<strong>数据更可控</strong></td><td>在别人的机房里，可控性取决于服务商与你的配置</td></tr>
+            <tr><td><strong>谁维护</strong></td><td>你自己：升级、备份、重装都归你</td><td>基础运维多半有人管，但<strong>应用与权限还是你</strong></td></tr>
+            <tr><td><strong>能不能一直跑</strong></td><td>关机、断网就停</td><td><strong>便于持续运行</strong>，定时任务才真的准时</td></tr>
+            <tr><td><strong>网络与安全责任</strong></td><td>暴露面小，主要防本机木马与误操作</td><td><strong>多了网络安全责任</strong>：端口、登录、密钥都要管</td></tr>
+            <tr><td><strong>适合什么</strong></td><td>先试、先摸清边界；处理个人资料</td><td>需要定时与常驻、需要多端收消息的场景</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        官方给的选项比这两个更多：本地、Docker、SSH、Daytona、Singularity、Modal 共六种运行后端，
+        其中 serverless 那一类<strong>空闲时会休眠</strong>——
+        说白了就是：<strong>隔离程度和运行成本是可以按任务挑的</strong>。
+      </p>
+      <div class="callout callout--danger">
+        <span class="callout__t">本课的三条底线</span>
+        <strong>① 不要求安装</strong>——本课只做概念替代演示，能不能跑起来不影响你学这一课；<br>
+        <strong>② 不接入个人账号</strong>——一旦接了聊天账号，它读到的就不只是你发给它的那几句话；<br>
+        <strong>③ 事实以官方为准</strong>——这个工具的版本、开源时间与能力变化很快，
+        课上讲的和你现在看到的不一样很正常，<strong>正式使用前的第一件事是去官方仓库复核</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-practice">
+      <h2>五、动手做：三张卡验证三个概念<span class="sec__tag">替代演示</span></h2>
+      <p>
+        本课不安装 Hermes-Agent。你用已经装好的 WorkBuddy，
+        把「<strong>偏好记忆、定期提醒、人工确认</strong>」这三件事做成卡片走一遍——
+        <strong>工具换了，概念一个没少</strong>。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让它做出记忆卡、提醒卡和一条隐私边界 <em>本课主体</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>28-记忆与提醒.md</code>——
+          一张「主题—偏好—适用场景」记忆卡、一张每周五 17:00 的提醒卡草稿、
+          一条「可以记住 / 不能记住 / 什么时候必须人工确认」的隐私边界，
+          末尾一段三行比较（记忆卡 vs 提醒卡 vs 普通对话）。</p>
+
+        <p><strong>第 1 步 · 把这次要用的素材取出来</strong></p>
+        <p>
+          下面这份是本次练习的唯一素材，后面四条指令都围着它转。
+          <span class="task__warn">偏好这一行不要改</span>——改动会让四条指令对不上。
+        </p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 本周待排任务与一条学习偏好（教学示意）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【我的学习计划偏好（本次唯一要用的一条）】
+每次只列 3 项，每项不超过 20 分钟。
+
+【本周待排任务】
+1. 复习第 27 课：Codex 五步闭环
+2. 整理第 26 课的面试稿定稿
+3. 预习 Hermes 的"记忆"与"技能"两节
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 打开 WorkBuddy，让它做记忆卡</strong></p>
+        <ol class="steps">
+          <li><b>新建任务，工作目录选 <code>wb-试验</code></b><span>
+            沿用前几课那个目录即可。<span class="task__warn">必须新建任务</span>——
+            旧任务里它带着上一课的上下文，卡片会被写成别的东西。</span></li>
+          <li><b>把上面那份素材整段贴进对话，空一行，再把下面这段指令贴进去，一起发送</b><span>
+            素材在前、指令在后。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令① 记忆卡 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我的学习计划偏好是每次只列3项、每项不超过20分钟。请把它整理成"主题—偏好—适用场景"记忆卡。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它设计提醒卡（只出草稿）</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            <span class="task__warn">「只生成草稿，发送前必须让我确认」这句不许删</span>——
+            删了这一步就变成「它替你发」，本课要练的恰恰是被卡住的这一下。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令② 提醒卡 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请设计每周五17:00复盘提醒，只生成草稿，发送前必须让我确认。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 让它写出隐私边界，你来核</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            边界由它起草、<strong>由你签字</strong>：三行里少一行都不算完整。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令③ 隐私边界 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请在下面补一条隐私边界，分成三行写：
+【可以记住】哪些信息适合长期保存；
+【不能记住】哪些信息绝对不许长期保存（必须包含：密码、身份证号、私人聊天记录、他人联系方式）；
+【什么时候必须人工确认】列出发消息、删除数据、安装依赖这三类动作。
+不知道的写【待确认】，不许推测。</code></pre>
+        </div>
+
+        <p><strong>第 5 步 · 三行比较，收口成一份成品</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令发出去</b><span>
+            这一步的产出就是你要交的那份文件。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令④ 比较与收口 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用三行比较记忆卡、提醒卡、普通对话：
+第一行写"它记住什么"，第二行写"它什么时候主动"，第三行写"什么时候必须我确认"。
+然后把三张卡整理成一份成品，标题分别为【记忆卡】【提醒卡】【隐私边界】，
+存成 28-记忆与提醒.md。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>记忆卡是「主题—偏好—适用场景」三栏，偏好写的正是「每次只列 3 项、每项不超过 20 分钟」</b><span>
+            写成一段话、或者偏好被换了个说法，都不算数。<br>
+            <em>它写成一段话</em>：补一句「必须分成三栏，每栏一个标题，不要写成段落」。</span></li>
+          <li><b>提醒卡上写着每周五 17:00，并且明确标了「发送前要我确认」</b><span>
+            没有这句，说明第 3 步的约束没生效。<br>
+            <em>没写确认</em>：把指令② 原文再发一次，并补一句「在卡上单独写一行：状态＝草稿，待确认」。</span></li>
+          <li><b>隐私边界三行齐全，「不能记住」里四项一个不少</b><span>
+            密码、身份证号、私人聊天记录、他人联系方式，缺一项就是不合格。<br>
+            <em>它漏了某一项</em>：补一句「逐项核对这四项，缺哪项补哪项，并在末尾列一遍核对结果」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>28-记忆与提醒.md</code>（记忆卡 + 提醒卡 + 隐私边界 + 三行比较）。</p>
+      </div>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 对照检查表：三张卡逐条过一遍，缺哪条一眼看出来</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d3-check">逐条核对</button>
+            <button class="btn btn--ghost" type="button" id="d3-reset">重置</button>
+          </div>
+          <ul class="checklist">
+            <li><label><input type="checkbox" id="d3-c1">记忆卡：分成「主题 / 偏好 / 适用场景」三栏</label><span class="badge" id="d3-b1">待核</span></li>
+            <li><label><input type="checkbox" id="d3-c2">记忆卡：偏好内容与素材一字不差</label><span class="badge" id="d3-b2">待核</span></li>
+            <li><label><input type="checkbox" id="d3-c3">提醒卡：写清了「每周五 17:00」</label><span class="badge" id="d3-b3">待核</span></li>
+            <li><label><input type="checkbox" id="d3-c4">提醒卡：标了「发送前必须我确认」</label><span class="badge" id="d3-b4">待核</span></li>
+            <li><label><input type="checkbox" id="d3-c5">隐私边界：三行齐全（可以 / 不能 / 何时确认）</label><span class="badge" id="d3-b5">待核</span></li>
+            <li><label><input type="checkbox" id="d3-c6">隐私边界：「不能记住」里四项都在</label><span class="badge" id="d3-b6">待核</span></li>
+          </ul>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>六条判据取自本课实操的验收要求，
+            演示里的「合格 / 缺项」是讲课用示意结果，
+            <strong>你自己的卡片要照这六条逐条核对</strong>，不能以这个演示的结果代替。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">为什么本课不装 Hermes，也能学会</span>
+        记忆、技能、定时这三件事，<strong>是「个人助手」这一类工具的共同结构</strong>，
+        不是某一家产品的专利。今天你在 WorkBuddy 里把三张卡做出来，
+        明天换任何一个带记忆的助手，你要问的还是那三句：
+        <strong>它能记住什么？它什么时候主动？什么时候必须我确认？</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>「跨会话记忆」指的是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 同一段对话里，它能记住你前面说过的话</li>
+            <li>B. 换一个新对话，它仍然保留你的偏好或资料</li>
+            <li>C. 它能记住互联网上的公开知识</li>
+            <li>D. 它能记住上一次运行到哪一行代码</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>跨会话记忆的关键是「<strong>换个对话还在</strong>」。
+            A 说的是会话内上下文，关掉对话就没了；C 是模型本来就有的知识，跟记不记你无关。
+            记住 B 的代价也要记住：<strong>敏感信息和他人信息不该被长期保存</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>多选：自动技能创建把什么变成了什么？形成前要先确认什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 把重复任务的方法，沉淀成可复用的步骤</li>
+            <li>B. 先确认这个方法是不是稳定的</li>
+            <li>C. 先确认输入和输出是不是明确的</li>
+            <li>D. 先确认它能不能自己上网找新技能</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>A 是它的定义，B、C 是形成技能前的两道关。
+            D 不在其中——技能该怎么来是另一回事，本课关心的是
+            <strong>这个方法值不值得被固化</strong>。还有一条底线别忘了：
+            技能必须<strong>允许人工修改或删除</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>消息接入、cron、工具三者，各管什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 消息接入管「从哪进、送到哪」，cron 管「什么时候触发」，工具管「真正执行动作」</li>
+            <li>B. 消息接入管「什么时候触发」，cron 管「从哪进」，工具管界面</li>
+            <li>C. 三者是同一个功能的三种叫法</li>
+            <li>D. cron 就是消息接入，工具只是附属品</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A。</b>三段各自独立，缺一段就断链：没有 cron，它永远等你先开口；
+            没有消息通道，结果送不到你手上；没有工具，它只会说不会做。
+            B 把前两个说反了，C、D 直接否掉了分工——三样接在一起才叫自动化，
+            也才<strong>更需要权限与人工确认</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：自动化程度越高，就越应该让它在没人看着的时候直接把消息发出去。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>结论正好相反：<strong>越自动化，越要卡住「发出去」这一下</strong>。
+            本课指令里那句「只生成草稿，发送前必须让我确认」就是为此存在的——
+            自动化的价值在于省事，不在于<strong>替你做决定</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>关于本地部署与 VPS，说法正确的是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. VPS 一定比本地更安全，因为有专业机房</li>
+            <li>B. 本地数据更可控但要自己维护；VPS 便于持续运行，却多了网络与安全责任</li>
+            <li>C. 本地部署可以让定时任务 24 小时准时跑</li>
+            <li>D. 两者在权限边界上没有区别</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>这是一道<strong>责任题</strong>不是性能题。A 说反了——机器在别人机房，
+            可控性取决于服务商和你的配置；C 也不成立，本地关机断网就停，
+            定时任务正是 VPS 的强项；D 忽略了「数据在哪、谁维护」这个核心差别。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>多选：下面哪些内容<strong>不该</strong>被助手长期记住？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 密码与身份证号</li>
+            <li>B. 私人聊天记录</li>
+            <li>C. 他人的联系方式</li>
+            <li>D. 「我喜欢分点、每次别超过三条」这类格式偏好</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>前三类属于敏感信息或<strong>他人的信息</strong>，都不该被长期保存。
+            D 恰恰是<strong>最适合被记住</strong>的东西——非敏感、能省下重复说明、也不会牵连别人。
+            判断口径就一句：<strong>这条信息泄露出去，伤的是你还是别人？</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>三层要分清：<strong>会话内上下文（关掉就没）</strong>、<strong>跨会话记忆</strong>、<strong>技能（程序性记忆）</strong>；</li>
+          <li>跨会话记忆省的是<strong>重复说明</strong>，代价是它长期持有你的数据——<strong>敏感信息与他人信息不进记忆</strong>；</li>
+          <li>自动技能创建 = 把重复做的事沉淀成可复用步骤；形成前确认<strong>方法稳定、输入输出明确</strong>，并且<strong>人能改、能删</strong>；</li>
+          <li>消息接入管入口与去向、<strong>cron 管什么时候触发</strong>、工具管真正执行；三样接一起更需要权限与确认，指令里要写死<strong>「只生成草稿，发送前必须让我确认」</strong>；</li>
+          <li>本地 vs VPS 比的是责任：<strong>本地数据更可控但要自己维护，VPS 便于持续运行却多了网络与安全责任</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天我们把「记忆 / 提醒 / 确认」做成了三张卡，
+        看的是<strong>一个助手怎么越用越懂你</strong>。
+        下一课 <a class="xref" data-lesson="29">DeepSeek-Harness</a> 换到工程视角：
+        一个「一切皆插件」的 Agent 框架，怎么把能力拆成一个个可插拔的模块——
+        到那时你会发现，<strong>拆得越细，权限就越要一条一条点名</strong>，
+        和今天划隐私边界是同一件事的另一面。
+      </p>
+      <p class="note">
+        本页产品口径取自 Hermes Agent 官方文档与公开资料，核对日期 <strong>2026-09-26</strong>；
+        版本、开源时间与能力会变化，正式使用前请以官方仓库为准。课内卡片内容为教学示意。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 28 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）关于"跨会话记忆"，理解正确的是？
+A. 同一段对话里它能记住你前面说过的话
+B. 换一个新对话，它仍然保留你的偏好或资料
+C. 它能记住互联网上的公开知识
+D. 它能记住上次运行到哪一行代码
+【答案】B
+【解析】跨会话记忆的关键是"换个对话还在"。A 是会话内上下文，关掉对话就没了；C 是模型原有的知识，与记不记你无关。同时要记住它的代价：敏感信息和他人信息不该被长期保存。
+
+2.（多选）关于"自动技能创建"，下面哪些说法是对的？
+A. 它把重复任务的方法沉淀成可复用的步骤
+B. 形成技能前，要确认这个方法是不是稳定的
+C. 形成技能前，要确认输入和输出是不是明确的
+D. 技能一旦形成就不能再改，只能删掉重来
+【答案】ABC
+【解析】D 与底线冲突：技能必须允许人工修改或删除，而且它自己在使用中也会改进。A 是定义，B、C 是沉淀前的两道关——做一次就换一套规则的事，不配固化成技能。
+
+3.（单选）消息接入、cron、工具三者分别管什么？
+A. 消息接入管入口与去向，cron 管什么时候触发，工具管真正执行动作
+B. 消息接入管触发时间，cron 管入口，工具只管界面显示
+C. 三者是同一个功能的三种叫法
+D. cron 就是消息接入，工具可有可无
+【答案】A
+【解析】三段各管一段，缺一段就断链：没有 cron 它永远等你先开口，没有消息通道结果送不到你手上，没有工具它只会说不会做。三样接在一起才叫自动化，也才更需要权限与人工确认。
+
+4.（判断）自动化程度越高，就越应该让它在没人看着的时候直接把消息发出去。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】结论正好相反：越自动化，越要卡住"发出去"这一下。指令里必须写死"只生成草稿，发送前必须让我确认"。自动化的价值在于省事，不在于替你做决定。
+
+5.（多选）关于本地部署与 VPS（云服务器），说法正确的是？
+A. 本地部署数据更可控，但升级、备份、重装都要自己来
+B. VPS 便于持续运行，定时任务才真的准时
+C. VPS 会带来额外的网络与安全责任，端口、登录、密钥都要管
+D. VPS 因为有专业机房，所以一定比本地更安全
+【答案】ABC
+【解析】D 说反了：机器在别人的机房，可控性取决于服务商和你的配置，不是"机房专业=更安全"。ABC 分别对应数据可控性、持续运行能力和新增的安全责任，这是一道责任题而不是性能题。
+
+6.（多选）下面哪些内容不该被助手长期记住？
+A. 密码与身份证号
+B. 私人聊天记录
+C. 他人的联系方式
+D. "我喜欢分点、每次别超过三条"这类格式偏好
+【答案】ABC
+【解析】前三类属于敏感信息或他人的信息，都不该被长期保存。D 恰恰最适合被记住：非敏感、能省下重复说明、也不牵连别人。判断口径是——这条信息泄露出去，伤的是你还是别人？
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能否分清「会话内上下文」与「跨会话记忆」，不把两者混为一谈；
+        <strong>二是</strong>提到自动化时，是否主动想到「发送前必须人工确认」这一道闸；
+        <strong>三是</strong>比较本地与 VPS 时，说的是<strong>责任与数据边界</strong>，而不是单纯比性能或价格。
+      </div>
+      <p class="note">
+        本课要提交的实操成果：<strong>记忆卡 + 提醒卡 + 一条隐私边界</strong>，
+        建议按「第28次_Hermes-Agent_姓名」命名保存。<br>
+        课后延伸：若你课后自己部署或试用了这类带记忆的助手，写一段跨会话记忆体验——
+        重点写「它记住的哪一条让你省了事、哪一条让你后怕」。<br>
+        共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 三次对话：记忆怎么长 ---------- */
+  var D1 = {
+    "d1-c1": {
+      k1: "1 条", k2: "0 句", k3: "0 条",
+      lines: [
+        "<span class='hl'>第 1 次对话：你把偏好讲清楚了</span>",
+        "  你：「我的学习计划偏好是每次只列 3 项、每项不超过 20 分钟。」",
+        "  它：记下 1 条 → 主题＝学习计划；偏好＝3 项 / 每项 ≤20 分钟。",
+        "  <span class='dim'>这一次你没省任何话——记忆是从「你先说一遍」开始的。</span>"
+      ]
+    },
+    "d1-c2": {
+      k1: "1 条", k2: "2 句", k3: "0 条",
+      lines: [
+        "<span class='hl'>第 2 次对话：你只说了任务，没重复偏好</span>",
+        "  你：「按我的习惯，把这周要复习的三件事排一下。」",
+        "  它：调用记忆卡 → 每次 3 项、每项 ≤20 分钟。",
+        "  <span class='ok'>✓ 省下 2 句重复说明</span>，而且没有再追问你的格式要求。",
+        "",
+        "<span class='dim'>这就是跨会话记忆的全部价值：你少说，它照样做对。</span>"
+      ]
+    },
+    "d1-c3": {
+      k1: "2 条", k2: "3 句", k3: "1 条",
+      lines: [
+        "<span class='hl'>第 3 次对话：它开始自己攒东西了</span>",
+        "  你：「每周五提醒我复盘。」",
+        "  它：记下第 2 条 → 每周五 17:00 提醒复盘（cron）。",
+        "  <span class='ok'>✓ 省下 3 句</span>：不用再讲偏好，也不用再讲提醒规则。",
+        "",
+        "  <span class='no'>✗ 需要人清理的 1 条</span>：",
+        "    它顺手把「我在第 26 课做的面试稿」也记成了背景资料。",
+        "",
+        "<span class='hl'>结论：记忆会自己长。长的过程中，得有人定期回头看一眼。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.k1;
+    $("d1-k2").textContent = d.k2;
+    $("d1-k3").textContent = d.k3;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-c1", "d1-c2", "d1-c3"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+  $("d1-reset").addEventListener("click", function () {
+    $("d1-k1").textContent = "—";
+    $("d1-k2").textContent = "—";
+    $("d1-k3").textContent = "—";
+    $("d1-out").innerHTML = "";
+  });
+
+  /* ---------- 演示② 提醒卡：确认 vs 直接发送 ---------- */
+  var D2 = {
+    "d2-a": {
+      state: "已卡住 · 等你确认",
+      lines: [
+        "<span class='hl'>指令里写了「只生成草稿，发送前必须让我确认」——</span>",
+        "  它：提醒卡草稿已生成（每周五 17:00，本周复盘 3 项）。",
+        "  <span class='ok'>✓ 到这一步就停住了</span>，状态栏显示「等待你确认」。",
+        "  你：核一遍时间、内容、收件渠道，再决定发不发。",
+        "",
+        "<span class='hl'>发错的代价由你承担，所以按发送的那个键也得在你手上。</span>"
+      ]
+    },
+    "d2-b": {
+      state: "已发出 · 无法撤回",
+      lines: [
+        "<span class='hl'>指令里<strong>没写</strong>那句确认——</span>",
+        "  它：生成草稿 → 直接推到聊天渠道 → 完成。",
+        "  <span class='no'>✗ 时间写错了：发成了每周五 7:00</span>，",
+        "  <span class='no'>✗ 内容还带着上一版没删掉的旧任务</span>。",
+        "  等你看到的时候，消息已经在别人手机上了。",
+        "",
+        "<span class='hl'>自动化的价值是省事，不是替你做决定。</span>"
+      ]
+    }
+  };
+  function d2Run(key) {
+    var d = D2[key];
+    $("d2-state").textContent = d.state;
+    window.Site.type($("d2-out"), d.lines, null);
+  }
+  $("d2-a").addEventListener("click", function () { d2Run("d2-a"); });
+  $("d2-b").addEventListener("click", function () { d2Run("d2-b"); });
+  $("d2-reset").addEventListener("click", function () {
+    $("d2-state").textContent = "等待你确认";
+    $("d2-out").innerHTML = "";
+  });
+
+  /* ---------- 演示③ 对照检查表 ---------- */
+  var D3_ITEMS = [
+    { ok: true, tip: "三栏齐全，格式对" },
+    { ok: false, tip: "它把 20 分钟写成了 30 分钟" },
+    { ok: true, tip: "时间写的是每周五 17:00" },
+    { ok: true, tip: "单独标了「发送前我确认」" },
+    { ok: true, tip: "三行都在" },
+    { ok: false, tip: "漏了「他人联系方式」" }
+  ];
+  var D3_LINES = [
+    "<span class='hl'>六条判据，逐条过一遍（演示结果为教学示意）：</span>",
+    "  ① 记忆卡三栏　　　　<span class='ok'>✓ 合格</span>",
+    "  ② 偏好一字不差　　　<span class='no'>✗ 缺项</span>　20 分钟被写成 30 分钟",
+    "  ③ 提醒卡时间　　　　<span class='ok'>✓ 合格</span>",
+    "  ④ 发送前确认　　　　<span class='ok'>✓ 合格</span>",
+    "  ⑤ 隐私边界三行　　　<span class='ok'>✓ 合格</span>",
+    "  ⑥ 不能记住的四项　　<span class='no'>✗ 缺项</span>　漏了他人联系方式",
+    "",
+    "<span class='hl'>两处缺项怎么补：把判据原文发给它，让它逐条自查并标注修改位置。</span>",
+    "<span class='dim'>记住：这个演示替不了你——你自己的卡片要照这六条逐条核。</span>"
+  ];
+  $("d3-check").addEventListener("click", function () {
+    D3_ITEMS.forEach(function (it, i) {
+      var n = i + 1;
+      $("d3-c" + n).checked = it.ok;
+      var b = $("d3-b" + n);
+      b.textContent = it.ok ? "合格" : "缺项";
+      b.className = "badge " + (it.ok ? "badge--ok" : "badge--todo");
+    });
+    window.Site.type($("d3-out"), D3_LINES, null);
+  });
+  $("d3-reset").addEventListener("click", function () {
+    D3_ITEMS.forEach(function (it, i) {
+      var n = i + 1;
+      $("d3-c" + n).checked = false;
+      var b = $("d3-b" + n);
+      b.textContent = "待核";
+      b.className = "badge";
+    });
+    $("d3-out").innerHTML = "";
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
+</body>
+</html>

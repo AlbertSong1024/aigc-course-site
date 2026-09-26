@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第32次课 课程总结与项目答辩｜AIGC应用与实践</title>
+<meta name="description" content="结课答辩：3 分钟展示 + 2 分钟问答怎么组织，三模块知识体系怎么复盘，AIGC 学习闭环六步，以及人机协作与持续关注前沿。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="32" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三 · 结课</span></h2>
+      <p class="lead">
+        这是本门课最后一次课。<a class="xref" data-lesson="31">第 31 次课</a>你把三堆文件拼成了一套互相作证的求职包——
+        现在最后一关来了：<strong>站到人前，用 3 分钟把它讲清楚，再接住 2 分钟提问。</strong>
+        从<a class="xref" data-lesson="1">第 1 次课</a>的 AI 发展史到今天，32 次课做了一抽屉东西，
+        可如果让你现在说「我到底学会了什么」，很多人第一反应是<strong>开始报目录</strong>。
+      </p>
+      <p>
+        这一课就解决这一件事：<strong>用作品证明你学过，而不是复述你学过什么。</strong>
+        全课只跟一条主线走——从 32 次课的成果里挑出<strong>三件证据</strong>，
+        讲清「我解决了什么问题、我怎么做的、证据在哪、我还差什么」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>一上台就开始报课程目录</strong></td><td>复述的是课程结构，不是你的学习；听的人不知道你学会了什么</td></tr>
+            <tr><td><strong>讲得热闹，拿不出东西</strong></td><td>没有指定证据文件，讲到「我做了一个工具」就停了，打开不了</td></tr>
+            <tr><td><strong>3 分钟讲不完，前两页用了两分半</strong></td><td>把背景和过程讲太长，最有说服力的证据反而挤在最后一句</td></tr>
+            <tr><td><strong>被问到不会的就现编</strong></td><td>没准备过「不确定」该怎么说，一慌就补一个细节，一补就被追问</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        <strong>一、评价标准只有一条：真实、可说明、可核验。</strong>
+        <strong>不以华丽输出替代学习过程</strong>——PPT 做得漂亮不加分，
+        能打开一份你亲手做的文件、说清它证明了什么，才加分。<br>
+        <strong>二、四个实操前后相接，共用一套成果。</strong>
+        ① 挑出的三件证据是 ② 答辩稿的骨架，② 的稿子压成 ③ 的 4 页展示卡，
+        ③ 做完在 ④ 接受提问并按反馈改一处。四步走完，你手上是一套<strong>能当场展示的课程成果包</strong>。<br>
+        <strong>三、不确定就说不确定。</strong>问答环节被问到不会的，
+        正面回应「这一块我需要补充核验」，比现编一个说法稳得多。
+      </div>
+      <p class="note">
+        课内的成果清单、文件名、项目数字全部为<strong>教学示意（模拟素材）</strong>，用于讲清方法；
+        答辩时长与字数分配属于<strong>普遍经验，非官方数据</strong>，不同学校、不同答辩场合差别很大，只作参考。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出<strong>3 分钟展示 + 2 分钟问答</strong>各自要完成什么，并按它组织一次完整答辩；</li>
+          <li>从 32 次课的成果里挑出<strong>三件证据</strong>（概念图 / 工具作品 / 综合项目各一件），写清每件证明了什么能力；</li>
+          <li>把课程知识归纳为<strong>三个模块</strong>，并说明复盘时为什么要用作品证明、而不是复述目录；</li>
+          <li>说出<strong>AIGC 学习闭环六步</strong>，并指出自己每件作品走到了哪一步；</li>
+          <li>写一份<strong>约 360 字的答辩稿</strong>和一份<strong>下一阶段 30 天目标</strong>，交出完整的课程成果包。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-defense"><b>01</b>3 分钟展示 + 2 分钟问答 <em>＋实操①</em></a>
+        <a href="#s-map"><b>02</b>三模块知识体系：用作品证明</a>
+        <a href="#s-closed"><b>03</b>AIGC 学习闭环六步 <em>＋实操②</em></a>
+        <a href="#s-cards"><b>04</b>4 页展示卡与成果清单 <em>＋实操③</em></a>
+        <a href="#s-next"><b>05</b>人机协作与持续关注前沿 <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>06</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：模块一<a class="xref" data-lesson="1">第 1 次课</a>至<a class="xref" data-lesson="6">第 6 次课</a>的原理、
+        模块二<a class="xref" data-lesson="7">第 7 次课</a>至<a class="xref" data-lesson="23">第 23 次课</a>的智能体与办公实战、
+        模块三<a class="xref" data-lesson="24">第 24 次课</a>至<a class="xref" data-lesson="31">第 31 次课</a>的职业应用与综合项目。
+        本课要展示的证据，就出自这三段。<br>
+        <strong>后续</strong>：这是最后一课。结课之后的路在本课第五节——
+        <strong>工具会一直变，核验、隐私、版权这些习惯要留下来。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-defense">
+      <h2>一、3 分钟展示 + 2 分钟问答：答辩到底考什么<span class="sec__tag">本课核心</span></h2>
+      <p>
+        先破除一个误解：答辩不是<strong>把做过的东西汇报一遍</strong>。
+        汇报是「我做了 A、B、C」，答辩是「<strong>我解决了什么问题，我是怎么解决的，凭什么说解决了</strong>」。
+        前者听完只知道你很忙，后者听完知道你能不能干活。
+      </p>
+      <p>
+        项目答辩一般用<strong>3 分钟展示 + 2 分钟问答</strong>。两段考的不是同一种能力：
+        展示考你<strong>有没有重点</strong>，问答考你<strong>站不站得住</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>要讲清什么</th><th>最常见的跑偏</th><th>判据</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>展示</strong><br><span class="note">3 分钟</span></td>
+              <td>问题、方法、证据三件：要解决什么 → 我怎么做的 → 凭什么说成了</td>
+              <td>讲成课程回顾；或者三页都在讲背景，证据只有最后一句</td>
+              <td>听完能说出「他做成了什么」</td>
+            </tr>
+            <tr>
+              <td><strong>问答</strong><br><span class="note">2 分钟</span></td>
+              <td>正面回应；不确定的说明需要补充核验</td>
+              <td>被问到不会的就开始绕；或者临时补一个细节把话圆过去</td>
+              <td>每个回答有没有回到材料本身</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 3 分钟讲什么：四段怎么分，字数往哪堆</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d1-next">讲下一段</button>
+            <button class="btn btn--accent" type="button" id="d1-ask">进入问答</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>当前段</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>本段字数</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>累计字数</span></div>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d1-n1"><b>问题</b><br><span class="dim">我解决什么</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d1-d1"></span></div>
+            <div class="flow__node dim" id="d1-n2"><b>方法</b><br><span class="dim">我怎样做</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d1-d2"></span></div>
+            <div class="flow__node dim" id="d1-n3"><b>证据</b><br><span class="dim">结果是什么</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d1-d3"></span></div>
+            <div class="flow__node dim" id="d1-n4"><b>改进</b><br><span class="dim">还差什么</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>四段的字数按每分钟约 200–240 字（普遍经验，非官方数据）估算，
+            用来演示「证据段要占最大头」这个分配原则；实际答辩时长要求以你的学校与场合为准。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">不确定时，正面说需要补充核验</span>
+        问答环节最怕的不是答错，是<strong>为了不让场面尴尬而现编</strong>。
+        现编的细节你没准备过，也就全是下一问的靶子。<br>
+        正确的说法只有一句：<strong>「这一块我没有做到，我需要补充核验，核验的方向是……」</strong>
+        承认不知道丢的是一分，编造被拆穿丢的是整场。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让 AI 从课程成果里挑出三件证据，写清每件证明了什么</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-证据三件.md</code>——
+          概念图、工具作品、综合项目各一件，每件写清「文件名 / 来自第几次课 / 它证明的能力 / 打开后能看到什么」。</p>
+
+        <p><strong>第 1 步 · 把这份课程成果清单发过去</strong></p>
+        <p>
+          下面这份清单是本次练习的原料。<span class="task__warn">整段粘贴，不要自己改</span>——
+          这份清单里混着「拿得出手的」和「只是过程稿的」，正是要练筛选。
+        </p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 课程成果清单（教学示意，含过程稿与成品）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【课程成果清单 · 教学示意，非真实个人数据】
+
+一、概念理解类
+  C1 神经网络与 Transformer 结构图.pptx      （第3次课  成品，可打开）
+  C2 预训练与后训练流程对比.md                （第4次课  成品）
+  C3 RLHF 三阶段手绘笔记.jpg                  （第5次课  拍照件，能看清）
+  C4 课堂随堂草稿.docx                        （第1次课  过程稿，未整理）
+
+二、工具作品类
+  T1 Ollama 本地课程问答工具/                 （第6次课  成品，含源码与 README）
+  T2 发票报销自动整理.xlsx                    （第11次课 成品，含清洗前后对照）
+  T3 会议纪要自动整理 Skill/                  （第8次课  成品，含 SKILL.md）
+  T4 临时测试脚本.py                          （第12次课 过程稿，无说明）
+
+三、综合项目类
+  P1 模块二综合项目：办公自动化方案/          （第21次课 成品，含方案文档与三份产出）
+  P2 AI 视频资讯整合作品.mp4                  （第22次课 成品，2 分 30 秒）
+  P3 求职包/                                  （第31次课 成品，含岗位卡、一页简历、5 道问答、5 页展示稿）
+  P4 岗位工作流设计草稿.md                    （第23次课 过程稿，只写了一半）</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按规则挑三件，你核它有没有挑到过程稿</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务，把上面那整段清单贴进去</b><span>
+            <span class="task__warn">必须新建对话</span>——角色与规则要作为第一条进入。</span></li>
+          <li><b>空一行，把下面这段指令贴进去，一起发送</b><span>素材在前、指令在后。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="挑三件证据的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请从上面这份课程成果清单里挑出三件证据，存成 01-证据三件.md。
+
+挑选规则（三条，都必须满足）：
+1. 三类各一件：概念理解类一件、工具作品类一件、综合项目类一件；
+2. 每件必须是"成品"——标注为"过程稿""未整理""无说明"的一律不选；
+3. 每件必须是能当场打开给人看的东西（能打开的源文件，不是截图描述）。
+
+每件写四行，一行都不能少：
+- 文件名：清单里的原文件名（含目录名）
+- 来源：第几次课（按清单标注）
+- 它证明的能力：一句话，写清是"理解原理""会用工具"还是"能独立完成一件事"
+- 打开后能看到什么：三小条，写清别人点开这个文件最先看到的三样东西
+
+硬约束：
+1. 不懂怎么判断"能不能打开"的，就按清单里的格式判断，不要假设某个文件的内容；
+2. 不许把过程稿包装成成品，遇到就写"此类目前只有过程稿，需要补的是……"；
+3. 末尾加一段【为什么不选其他几件】：逐条说明被排除的理由，理由必须具体。
+
+不知道的就写"待确认"，不要替我猜文件内容。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 核它挑的三件是不是真的能打开</strong></p>
+        <ol class="steps">
+          <li><b>按它写的「打开后能看到什么」，逐个真的打开那三个文件核对</b><span>
+            它写的东西和你打开看到的不一样，说明它在猜。</span></li>
+          <li><b>把对不上的地方发回去让它改</b><span>用下面这段文字，把【文件名】换成实际的。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="退回核对的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【文件名】这一件，你写的"打开后能看到什么"和实际打开看到的不一样：
+实际看到的是【写你打开后看到的三样东西】。
+请按实际内容改写这一条，并把"它证明的能力"也重新判断一次——
+如果按实际内容它证明不了原来写的那种能力，就降级写成它真正能证明的能力。
+改完把这一件重新输出一遍。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三件分别来自概念理解类、工具作品类、综合项目类</b><span>
+            两件来自同一类，说明它没按分类挑。<br>
+            <em>类没分开</em>：把三类名单再发一次，明确「三类各一件」。</span></li>
+          <li><b>三件全是成品，没有混入过程稿</b><span>
+            重点查它有没有把「岗位工作流设计草稿」或「临时测试脚本」选进来。<br>
+            <em>混进过程稿</em>：补一句「过程稿一律不选，此类若只有过程稿就写需要补什么」。</span></li>
+          <li><b>每件「打开后能看到什么」和你实际打开看到的一致</b><span>
+            这一步只有你能核——它猜的内容通常写得很漂亮，也很空。<br>
+            <em>对不上</em>：用上面的退回指令让它按实际内容改写。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-证据三件.md</code>。它就是第 3 页「三件证据」的内容，也是答辩稿的骨架。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-map">
+      <h2>二、三模块知识体系：复盘要用作品证明<span class="sec__tag">关键</span></h2>
+      <p>
+        32 次课听起来很多，归纳起来是三段。
+        这三段不是按时间切的，是按<strong>「你在学什么」</strong>切的：
+        先知道 AI 是怎么回事，再学会让 AI 替你干活，最后把这些本事用到自己的职业上。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>模块</th><th>课次</th><th>这一段解决什么</th><th>代表成果长什么样</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>模块一 理论基础</strong></td>
+              <td><a class="xref" data-lesson="1">第 1 次课</a>–<a class="xref" data-lesson="6">第 6 次课</a></td>
+              <td>AI 到底是怎么「想」出来的——原理、训练、绘图</td>
+              <td>能讲清一个原理的图或笔记，如 Transformer 结构图</td>
+            </tr>
+            <tr>
+              <td><strong>模块二 智能体与办公实践</strong></td>
+              <td><a class="xref" data-lesson="7">第 7 次课</a>–<a class="xref" data-lesson="23">第 23 次课</a></td>
+              <td>让 AI 真的替你干活——技能、专家、文档表格 PPT、知识库、多智能体</td>
+              <td>能打开能用的东西：一个工具、一张清洗过的表、一套方案</td>
+            </tr>
+            <tr>
+              <td><strong>模块三 职业应用与综合项目</strong></td>
+              <td><a class="xref" data-lesson="24">第 24 次课</a>–<a class="xref" data-lesson="32">第 32 次课</a></td>
+              <td>把本事用在自己身上——岗位调研、简历、面试、求职包、答辩</td>
+              <td>指向一个具体岗位的一整套材料</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 全课程知识地图：点一个模块，看它该拿出什么来证明</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d2-m1">模块一</button>
+            <button class="btn btn--ghost" type="button" id="d2-m2">模块二</button>
+            <button class="btn btn--main" type="button" id="d2-m3">模块三</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d2-k1">—</b><span>课次范围</span></div>
+            <div class="kpi"><b id="d2-k2">—</b><span>要证明什么</span></div>
+            <div class="kpi"><b class="acc" id="d2-k3">—</b><span>拿出什么</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>模块划分取自本课程授课安排（模块一 1–6、模块二 7–23、模块三 24–32），
+            用于演示「复盘要拿作品，不是背目录」；各模块的代表成果为示例，以你自己实际做出的文件为准。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">复述目录 ≠ 证明学习</span>
+        「我学了原理、学了智能体、学了办公、学了职业」——这句话<strong>任何人把目录念一遍都能说</strong>，
+        它不能证明你学会了什么。<br>
+        能证明的是：<strong>打开一个文件，说清它是哪次课做的、当时要解决什么问题、现在看还有哪里可以改。</strong>
+        三件证据 + 一句改进，比三分钟目录管用得多。
+      </div>
+    </section>
+
+    <section class="sec" id="s-closed">
+      <h2>三、AIGC 学习闭环：每件作品都能说清走到哪一步<span class="sec__tag">方法</span></h2>
+      <p>
+        这门课从头到尾其实只教了一件事，一件事重复了 32 次：
+        <strong>提出任务 → 提供材料 → 选择工具 → 生成结果 → 人工核验 → 修改保存。</strong>
+        这六步叫 AIGC 学习闭环。
+      </p>
+      <p>
+        它为什么值得在最后一课单独讲？因为答辩时老师真正想看的，
+        不是你的成果有多漂亮，而是<strong>你能不能说出这件作品走过哪几步</strong>——
+        尤其是<strong>第五步「人工核验」你到底做没做</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>步</th><th>做什么</th><th>谁负责</th><th>最常塌的地方</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 提出任务</strong></td><td>说清目标、输入、动作、约束、输出、验收</td><td>人</td><td>一句话需求丢过去，让 AI 自己猜</td></tr>
+            <tr><td><strong>② 提供材料</strong></td><td>把原始资料给足，缺的写明</td><td>人</td><td>不给材料，指望它凭空生成</td></tr>
+            <tr><td><strong>③ 选择工具</strong></td><td>文档 / 表格 / PPT / 知识库 / 连接器 / 代码</td><td>人（可问 AI）</td><td>什么活都用一个形态做</td></tr>
+            <tr><td><strong>④ 生成结果</strong></td><td>让工具跑出初稿</td><td>AI</td><td>把初稿当成品，直接交</td></tr>
+            <tr><td><strong>⑤ 人工核验</strong></td><td>核数字、核事实、核边界</td><td><strong>人，不能让</strong></td><td><strong>这一步最常被整个跳掉</strong></td></tr>
+            <tr><td><strong>⑥ 修改保存</strong></td><td>按核验结果改，按规范命名存档</td><td>人</td><td>改完不保存，下次从头再来</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">答辩里最好用的一句话</span>
+        讲三件证据时，每件补一句「这件走过闭环的第几步，其中第五步我核了什么」——
+        例如「清洗前后 859 → 812 是我自己逐笔对的，不是它报的」。
+        <strong>说出这一句，老师就知道你不是在展示一个生成结果，而是在展示一个你管过的过程。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让它按四块写出 360 字答辩稿，你核有没有复述目录</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-答辩稿-360字.md</code>——
+          按「我解决的问题 → 我怎样做 → 结果证据 → 一次改进」四块写成的约 360 字稿子，
+          末尾附「三件证据各走到闭环第几步」。</p>
+
+        <p><strong>第 1 步 · 把上一节挑出的三件证据喂给它</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，先把 <code>01-证据三件.md</code> 的内容整段贴进去</b><span>
+            <span class="task__warn">必须新建对话</span>——上一轮它是「挑选员」，这轮要换成「写稿」。</span></li>
+          <li><b>空一行，把下面这段指令贴进去，一起发送</b><span>素材在前、指令在后，同一条消息发。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="写 360 字答辩稿的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请根据上面这三件证据，写一份 3 分钟项目答辩稿，存成 02-答辩稿-360字.md。
+
+四块，顺序不能变，字数按这个比例分配：
+1. 我解决的问题：约 60 字，只讲一件具体的事，不许讲课程背景；
+2. 我怎样做　　：约 120 字，写我亲手做的步骤，主语必须是"我"，不许写"我们"；
+3. 结果证据　　：约 120 字，必须点名三件证据的文件名，并带至少一个数字；
+4. 一次改进　　：约 60 字，写清一件我现在能指出来的不足，以及打算怎么改。
+
+全文约 360 字，正负不超过 30 字。
+
+硬约束（四条，一条都不能破）：
+1. 不许复述课程目录——出现"我学了模块一、模块二、模块三"这类句子就算不合格；
+2. 只许使用 01-证据三件.md 里已有的文件名与事实，不许新增任何经历或数字；
+3. 不许出现"熟练掌握""热爱""抗压能力强"这类没有信息量的词；
+4. 证据段必须写清文件名，方便我讲的时候当场打开。
+
+写完在末尾加一段【闭环定位】：逐件说明这三件证据各走过 AIGC 学习闭环
+（提出任务→提供材料→选择工具→生成结果→人工核验→修改保存）的第几步，
+并写清每件在"人工核验"那一步我具体核了什么。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它自查有没有写成目录复述</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>这一步决定这份稿子能不能拿去讲。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="稿子自查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 02-答辩稿-360字.md 末尾追加"【稿子自查】"，逐条回答：
+1. 全文多少字？四块的字数分别是多少？
+2. 有没有出现复述课程目录的句子？有就整句点出来并标【需删除】；
+3. 有没有出现 01-证据三件.md 之外的经历或数字？有就逐条点出并标【新增，需删除】；
+4. 证据段有没有点名三个文件名？没点名的补上；
+5. 一句结论：这份稿子现在能不能照着念完 3 分钟。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>全文约 360 字，四块齐全，证据段占了最大头</b><span>
+            四块里「我怎样做」写了两百字、证据只有一句，就是分配反了。<br>
+            <em>分配反了</em>：补一句「按 60 / 120 / 120 / 60 重写，证据段不许压缩」。</span></li>
+          <li><b>全文没有复述课程目录的句子</b><span>
+            出现「我学了模块一……」就是最典型的跑偏。<br>
+            <em>写成目录了</em>：明确「删掉所有回顾课程结构的句子，只讲这一件事」。</span></li>
+          <li><b>【闭环定位】里写清了每件证据在「人工核验」那一步核了什么</b><span>
+            只写「走过六步」不算，要说你核了什么。<br>
+            <em>写得太虚</em>：补一句「每件必须写清人工核验那一步我具体对了哪些数字或事实」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-答辩稿-360字.md</code>。下一节把它压成 4 页展示卡。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-cards">
+      <h2>四、4 页展示卡：每页不超过 3 点<span class="sec__tag">方法</span></h2>
+      <p>
+        稿子是自己念的，展示卡是给台下看的。两者不是同一件事：
+        稿子可以有完整的句子，展示卡<strong>只能留要点</strong>——
+        因为台下的人一边看一边听，你写满一页字，他就<strong>只能看你写的，听不进你讲的</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>页</th><th>讲什么</th><th>要点上限</th><th>最容易写坏的地方</th></tr></thead>
+          <tbody>
+            <tr><td><strong>第 1 页 主题与目标</strong></td><td>这次展示的是哪件事、当初要解决什么</td><td>3 点</td><td>写成「课程总结」四个大字，看不出是哪件事</td></tr>
+            <tr><td><strong>第 2 页 完成过程</strong></td><td>我亲手做的几步，按一二三写</td><td>3 点</td><td>写「查阅资料、团队协作」，看不出你干了哪一步</td></tr>
+            <tr><td><strong>第 3 页 三件证据</strong></td><td>三件证据的文件名 + 各证明什么</td><td>3 点</td><td>只写文件名不写证明了什么；或者三件都是同一类</td></tr>
+            <tr><td><strong>第 4 页 改进与下一步</strong></td><td>一处不足 + 下一步怎么补</td><td>3 点</td><td>写「继续努力学习」，看不出具体要补什么</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">第 3 页是全场唯一「硬证据」页</span>
+        前两页讲的是你的说法，第 3 页是<strong>能被打开验证的东西</strong>。
+        所以这一页必须写<strong>文件名</strong>，而且要写到你讲的时候能当场点开的那一个。
+        只写「做了一个工具」等于没证据——<strong>打开不了的文件，在答辩里不算证据。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·把答辩稿压成 4 页展示卡，每页不超过 3 点</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-展示卡4页.md</code>——
+          四页、每页不超过 3 个要点、第 3 页带三个可打开的文件名，用 WPS 做成 4 页演示文稿。</p>
+
+        <p><strong>第 1 步 · 让它把稿子压成要点</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把 <code>02-答辩稿-360字.md</code> 的内容整段贴进去</b><span>
+            <span class="task__warn">必须新建对话</span>——从「写稿」切到「提炼要点」，沿用旧对话它会把整段稿子直接贴到卡片上。</span></li>
+          <li><b>把下面这段指令贴在后面，一起发送</b><span>「不许把整句搬上去」这句是关键。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="压成 4 页展示卡的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请把上面这份答辩稿压成 4 页展示卡，存成 03-展示卡4页.md。
+
+四页固定结构：
+第1页 主题与目标　第2页 完成过程　第3页 三件证据　第4页 改进与下一步
+
+硬约束：
+1. 每页不超过 3 个要点，每个要点一句话、不超过 20 字；
+2. 不许把稿子里的整句搬上去——要点是"能提醒我讲什么"的提示，不是要念的稿；
+3. 第 3 页必须写三个文件名（来自 01-证据三件.md），每个文件名后面用括号标它证明什么；
+4. 第 4 页要写清"一处不足 + 具体怎么补"，不许写"继续努力学习"这类话；
+5. 每页后面附一行【我要讲的一句话】：我讲这一页时开口的第一句，要口语化。
+
+输出格式用 Markdown 的二级标题分四页，方便我直接抄进 WPS。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 用 WPS 做成 4 页演示文稿</strong></p>
+        <ol class="steps">
+          <li><b>打开 WPS 演示，新建空白演示文稿，按 <code>03-展示卡4页.md</code> 的四页各建一页</b><span>
+            每页只放要点，字号统一；不要把整段稿子粘进文本框。</span></li>
+          <li><b>把三件证据的文件复制进同一个文件夹，确认能当场打开</b><span>
+            <span class="task__warn">这一步不能省</span>——第 3 页写的文件名打不开，这一页就等于空的。</span></li>
+          <li><b>把文稿按 <code>03-展示卡4页-姓名.pptx</code> 保存</b><span>与证据文件放在同一个文件夹里。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四页齐全，每页要点不超过 3 个、每句不超过 20 字</b><span>
+            一页塞七八行就是没提炼，台下的人会去看字不听你讲。<br>
+            <em>写太满</em>：补一句「每页只留 3 个要点，每句不超过 20 字，多余的删掉」。</span></li>
+          <li><b>第 3 页写了三个文件名，且这三个文件真的能打开</b><span>
+            文件名对不上、或者文件在另一台电脑里，这一页就是空的。<br>
+            <em>打不开</em>：把文件复制到同一个文件夹，重新核对文件名。</span></li>
+          <li><b>每页都有【我要讲的一句话】，且是口语</b><span>
+            写成书面标题（如「成果证据展示」）不算，要像人开口说的第一句。<br>
+            <em>太书面</em>：补一句「开口第一句要口语化，例如『这三样东西我现在就能打开给你看』」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-展示卡4页.md</code> 与 <code>03-展示卡4页-姓名.pptx</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-next">
+      <h2>五、人机协作与持续关注前沿<span class="sec__tag">收口</span></h2>
+      <p>
+        这门课到这就结束了，但工具不会停在这一版。
+        所以最后要交代清楚两件事：<strong>人和 AI 各自负责什么</strong>，
+        以及<strong>课程结束之后你该怎么继续</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>事项</th><th>谁负责</th><th>为什么不能换</th></tr></thead>
+          <tbody>
+            <tr><td><strong>定目标</strong>（要解决什么问题）</td><td>人</td><td>AI 不知道你真正要什么，它只会给一个合理的猜测</td></tr>
+            <tr><td><strong>供事实</strong>（材料、数字、经历）</td><td>人</td><td>它补出来的事实没有出处，一核验就塌</td></tr>
+            <tr><td><strong>做核验</strong>（对数字、对事实、对边界）</td><td>人</td><td>这一步是闭环里唯一不能让出去的一步</td></tr>
+            <tr><td><strong>担责任</strong>（发出去的东西你负责）</td><td>人</td><td>材料出问题，承担责任的是签名那个人</td></tr>
+            <tr><td><strong>出初稿</strong>（跑第一遍、批量、格式化）</td><td>AI</td><td>这部分交给它，省下的是你的时间</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        课程结束之后，有三件事值得一直带着：<strong>关注工具变化</strong>（版本、入口、能力几乎每几个月就变一次）、
+        <strong>保持核验习惯</strong>（凡是它给的结论，尤其是数字与事实，一律自己过一遍）、
+        <strong>守住隐私与版权</strong>（不把他人信息、涉密材料、未经授权的内容丢进工具）。
+        这三条比任何一个具体功能都活得久。
+      </p>
+      <div class="callout callout--danger">
+        <span class="callout__t">三条长期红线</span>
+        <strong>隐私</strong>：他人姓名、联系方式、身份证号、住址，以及公司内部涉密材料，不进任何工具。<br>
+        <strong>版权</strong>：别人写的文章、设计、代码，不署自己的名；引用要标出处。<br>
+        <strong>核验</strong>：它给的每个数字、每条事实、每个出处，发出去之前自己过一遍——
+        <strong>核验这一步，永远留给人。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·让 AI 当听众提两类反馈，你改一处后提交课程成果包</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>04-成果清单.md</code>——
+          听众反馈两条、你据此改动的一处（改前 / 改后）、下一阶段 30 天目标，
+          外加一个按 <code>第32次_课程总结与项目答辩_姓名</code> 命名的成果文件夹。</p>
+
+        <p><strong>第 1 步 · 让它当听众，只给两类反馈</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把 <code>01-证据三件.md</code> 与 <code>02-答辩稿-360字.md</code> 的内容依次贴进去</b><span>
+            <span class="task__warn">必须新建对话</span>——它这轮的身份是听众，不是作者。</span></li>
+          <li><b>把下面这段指令贴在后面，一起发送</b><span>
+            「只给两类反馈」这句不许删，删了它会开始帮你重写稿子。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="听众反馈指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>现在你是台下的听众，刚听完我用 3 分钟讲完上面这份答辩稿。
+请只给两类反馈，各一条，存成 04-成果清单.md 的开头两节：
+
+第一节【最清楚的证据】：三件证据里，哪一件听完最让人信服？
+写清是哪一件、为什么是它（要指到具体的一句或一个数）。
+
+第二节【最需要补充的一点】：哪一处的证据最薄？
+写清是哪一页的哪一句，以及"要补的是真实经历，还是只是说法没讲清"——
+这两类必须二选一标出来。
+
+角色约束：
+1. 只给这两条反馈，不许帮我重写稿子，也不许夸我；
+2. 每条都要指到具体的句子或文件，不许写"整体不错，建议更自信"这类空话；
+3. 不许替我编造任何我没有的经历或数字。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 按「最需要补充的一点」改一处</strong></p>
+        <ol class="steps">
+          <li><b>改的是它指出的那一处，只改一处</b><span>
+            改的是说法就改说法，改的是证据就补真实材料；<span class="task__warn">不许为了改而改</span>。</span></li>
+          <li><b>把改动发回去，让它记进成果清单</b><span>记录交给它写，你只核有没有记错改了哪一句。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="记录改动 + 生成 30 天目标的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我按你的第二条反馈改了一处，改动是：【写清改了哪一句、改前是什么、改后是什么】。
+请在 04-成果清单.md 里追加两节：
+
+第三节【我改的这一处】：写清改前原句、改后原句、改的依据；
+如果这一处属于"要补真实经历"，就写【需补真实经历：……】，不要替我编。
+
+第四节【下一阶段 30 天目标】：按下面三条写，一条都不能少——
+1. 一件 30 天内要完成的具体事（要有能打开的结果，例如"做出 X 文件"）；
+2. 一个要继续跟下去的工具或方向（写清为什么是它）；
+3. 一条我要守住的核验或隐私习惯（写清在什么场景下会用到）。
+
+要求：三条都要具体到能执行的动作，不许写"继续学习""多加练习"这类话。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 收齐提交</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令发出去，让它生成成果清单的最后一节</b><span>这一步是整套材料的封口。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="成果清单收口指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 04-成果清单.md 末尾追加第五节【成果清单】：
+逐条列出本次课程成果包里的全部文件，按四栏写——
+文件名 | 类型（答辩稿 / 展示卡 / 证据 / 过程文件） | 来自第几次课 | 能不能当场打开。
+
+要求：
+1. 必须包含这三样：成果清单本身、答辩稿、4 页展示卡；
+2. 证据类文件逐一列出，与 01-证据三件.md 保持一致；
+3. "能不能当场打开"一律按实际情况写，没验证过的写【未验证】；
+4. 末尾写一句：这套材料对应 AIGC 学习闭环的哪几步，其中人工核验核了什么。</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>把全部文件收进一个文件夹，按 <code>第32次_课程总结与项目答辩_姓名</code> 命名</b><span>
+            里面应有：<code>01-证据三件.md</code>、<code>02-答辩稿-360字.md</code>、
+            <code>03-展示卡4页.md</code>、<code>03-展示卡4页-姓名.pptx</code>、
+            <code>04-成果清单.md</code>，以及三件证据原件。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>听众反馈只有两条，且每条都指到了具体句子或文件</b><span>
+            出现「整体不错」说明它没进角色。<br>
+            <em>它放水了</em>：把角色约束第 2 条再发一次，明确「不许夸，每条必须指到具体句子」。</span></li>
+          <li><b>「最需要补充的一点」里把「补真实经历」和「只是说法没讲清」分开了</b><span>
+            混在一起，你就不知道该去补材料还是改措辞。<br>
+            <em>没区分</em>：补一句「必须二选一标出：要补真实经历 / 只是说法没讲清」。</span></li>
+          <li><b>【我改的这一处】有改前 / 改后原句对照</b><span>
+            只写「已优化表述」不算改。<br>
+            <em>写得太虚</em>：补一句「必须写出改前与改后的完整原句」。</span></li>
+          <li><b>30 天目标三条都能直接执行，文件夹已按要求命名且文件齐全</b><span>
+            打开文件夹数一遍：清单、答辩稿、展示卡、三件证据。<br>
+            <em>少了展示卡 pptx</em>：回到 <code>03-展示卡4页.md</code>，按第 2 步补做演示文稿。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：按规范命名的课程成果包文件夹。到这里，本门课的成果就齐了。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>3 分钟展示要讲清的三件事是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 学校、专业、成绩</li>
+            <li>B. 问题、方法、证据</li>
+            <li>C. 背景、分工、致谢</li>
+            <li>D. 工具、版本、参数</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>答辩不是「把做过的东西汇报一遍」，而是要讲清
+            <strong>要解决什么 → 我怎么做的 → 凭什么说成了</strong>。<br>
+            A 是自我介绍该做的事，不是答辩；C 是论文答辩的套路；
+            D 讲成了工具说明——参数讲得再细，也回答不了「你解决什么问题」。
+            判据很简单：<strong>听完能说出「他做成了什么」。</strong>
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>答辩提问环节被问到自己确实没做到的事，正确的做法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 换一个更稳妥的说法绕过去</li>
+            <li>B. 临时补一个相关的细节把话圆过去</li>
+            <li>C. 正面说明这一块需要补充核验，并说清核验方向</li>
+            <li>D. 沉默几秒，等提问的人自己换下一题</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>A、B 都是在压力下现编，而现编的内容恰恰是下一问的靶子。
+            D 也不能解决问题，沉默只会让场面更僵。<br>
+            正确说法只有一句：<strong>「这一块我没有做到，我需要补充核验，核验的方向是……」</strong>
+            承认不知道丢的是一分，编造被拆穿丢的是整场——
+            这条和第 26 次课练的「承认边界 + 不新增事实」是同一件事。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>判断：复盘这门课，把三个模块的目录讲一遍，就能证明自己学会了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>「我学了原理、学了智能体、学了办公、学了职业」
+            这句话<strong>任何人把目录念一遍都能说</strong>，它不含有任何关于你的信息。<br>
+            能证明的是：<strong>打开一个文件，说清它是哪次课做的、当时要解决什么问题、现在看还有哪里可以改。</strong>
+            这也是本课主线——<strong>用作品证明学习，而不是复述目录。</strong>
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>多选：AIGC 学习闭环六步中，必须由人来做的有哪几步？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 提出任务</li>
+            <li>B. 提供材料</li>
+            <li>C. 生成结果</li>
+            <li>D. 人工核验</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABD。</b>闭环六步是「提出任务 → 提供材料 → 选择工具 → 生成结果 → 人工核验 → 修改保存」，
+            其中<strong>生成结果</strong>这一步交给 AI——这也正是我们用它的原因。<br>
+            其余几步都得人来：目标只有你知道，材料与事实只有你有，
+            核验更是<strong>唯一不能让出去的一步</strong>。
+            答辩时说出「这一步我核了什么」，比展示一个漂亮的生成结果更有说服力。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>4 页展示卡里，全场唯一「硬证据」页是第几页？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 第 1 页 主题与目标</li>
+            <li>B. 第 2 页 完成过程</li>
+            <li>C. 第 3 页 三件证据</li>
+            <li>D. 第 4 页 改进与下一步</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>前两页讲的是你的说法，第 3 页是<strong>能被打开验证的东西</strong>，
+            所以这一页必须写到<strong>文件名</strong>——要写到你讲的时候能当场点开的那一个。<br>
+            只写「做了一个工具」等于没证据：<strong>打开不了的文件，在答辩里不算证据。</strong>
+            第 4 页的「改进」是加分项，但它证明的是你的反思，不是你会不会做。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>判断：工具迭代很快，所以只要一直跟进新工具，核验、隐私、版权这些习惯可以以后再说。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>恰恰相反：<strong>工具会一直变，习惯要留下来。</strong>
+            版本、入口、能力几乎每几个月就变一次，今天背下来的操作明年可能就失效；
+            而核验、隐私、版权这三条，<strong>比任何一个具体功能都活得久</strong>。<br>
+            尤其是核验——它给的每个数字、每条事实、每个出处，发出去之前都得自己过一遍。
+            人机协作的分工说得很清楚：<strong>人负责目标、事实、责任和最终决定。</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>答辩评价标准只有一条：<strong>真实、可说明、可核验</strong>；<strong>不以华丽输出替代学习过程</strong>；</li>
+          <li>3 分钟展示讲清<strong>问题 / 方法 / 证据</strong>，2 分钟问答<strong>正面回应</strong>，不确定就说<strong>需要补充核验</strong>；</li>
+          <li>三模块：<strong>理论基础（1–6）→ 智能体与办公实践（7–23）→ 职业应用与综合项目（24–32）</strong>；复盘<strong>用作品证明，不复述目录</strong>；</li>
+          <li>AIGC 学习闭环六步：<strong>提任务 → 供材料 → 选工具 → 生成结果 → 人工核验 → 修改保存</strong>，<strong>核验那一步不能让</strong>；</li>
+          <li>人机协作：<strong>人负责目标、事实、责任与最终决定</strong>；长期守住<strong>核验、隐私、版权</strong>三条红线。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：这是本门课的最后一课，也是你手上第一次有了一整套
+        <strong>能打开、能说明、能核验</strong>的成果——
+        三件证据、一份 360 字答辩稿、4 页展示卡、一份求职包。
+        接下来 30 天，把「下一阶段目标」里那件具体的事做出来，
+        做的时候仍然走那条闭环：<strong>提任务 → 供材料 → 选工具 → 生成结果 → 人工核验 → 修改保存。</strong>
+        工具会换，这套动作不换。
+      </p>
+      <p class="note">
+        课内成果清单、文件名与项目数字为教学示意（模拟素材）；
+        答辩时长与字数分配属普遍经验，非官方数据，实际要求以你的学校与场合为准。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 32 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）项目答辩的 3 分钟展示，应当重点讲清的是？
+A. 学校、专业与学习成绩
+B. 要解决的问题、采用的方法、可以出示的证据
+C. 课程一共学了哪几个模块
+D. 使用的工具版本号与参数设置
+【答案】B
+【解析】答辩不是汇报"我做了 A、B、C"，而是讲清"我解决了什么问题、怎么解决的、凭什么说解决了"。A 属于自我介绍；C 是复述目录，不能证明你学会了什么；D 讲成了工具说明，参数再细也回答不了"你解决什么问题"。
+
+2.（多选）AIGC 学习闭环包括下面哪些环节？
+A. 提出任务
+B. 提供材料
+C. 人工核验
+D. 修改保存
+【答案】ABCD
+【解析】闭环六步为：提出任务 → 提供材料 → 选择工具 → 生成结果 → 人工核验 → 修改保存。四项的原文都在其中，缺一不可。其中"人工核验"是最常被整步跳过的一步，也是答辩时最能体现你"管过这个过程"的一步。
+
+3.（判断）答辩提问环节被问到自己没有做到的事情时，可以临时补一个相关的细节把话圆过去，避免场面尴尬。
+【答案】错误
+【解析】现编的细节你没准备过，也就全是下一问的靶子。正确做法是正面说明"这一块我需要补充核验"，并说清核验方向。承认不知道丢的是一分，编造被拆穿丢的是整场。
+
+4.（单选）4 页展示卡中，必须写到具体文件名的是哪一页？
+A. 第1页 主题与目标
+B. 第2页 完成过程
+C. 第3页 三件证据
+D. 第4页 改进与下一步
+【答案】C
+【解析】第 3 页是全场唯一能被打开验证的一页，所以必须写文件名，而且要写到讲的时候能当场点开的那个。只写"做了一个工具"等于没证据——打开不了的文件，在答辩里不算证据。
+
+5.（多选）关于人机协作的分工，下列说法正确的有？
+A. 定目标由人负责
+B. 供事实由人负责
+C. 做核验由人负责，且不能让出去
+D. 出初稿可以交给 AI
+【答案】ABCD
+【解析】四句都符合本课口径：人负责目标、事实、责任与最终决定；AI 负责跑第一遍、批量与格式化。核验是闭环里唯一不能让出去的一步——它给的每个数字、每条事实、每个出处，发出去之前都得自己过一遍。
+
+6.（判断）课程结束后，只要持续跟进新工具就够了，核验、隐私、版权这些习惯等以后用到时再注意也不迟。
+【答案】错误
+【解析】工具的版本、入口、能力几乎每几个月就变一次，今天背下的操作明年可能失效；而核验、隐私、版权这三条比任何一个具体功能都活得久。正确做法是"关注工具变化"与"保持核验、隐私、版权习惯"两者并行。</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能不能分清「答辩」与「汇报」——展示讲的是问题、方法、证据，不是课程目录；
+        <strong>二是</strong>是否意识到闭环里<strong>人工核验那一步不能让给 AI</strong>；
+        <strong>三是</strong>遇到不确定时，第一反应是不是「说明需要补充核验」，而不是现编或绕开。
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1J3411K7Bd&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】论文答辩PPT及答辩技巧｜答辩必看</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里讲的展示结构，哪些能直接搬到你那 4 页展示卡上，哪些是论文答辩特有、不能照搬的？</figcaption>
+      </figure>
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 3 分钟展示四段的字数分配 ---------- */
+  var D1_STEPS = [
+    {
+      seg: "问题", words: "约 60 字", total: "60 / 360",
+      lines: [
+        "<span class='hl'>第 1 段 · 我解决的问题（约 60 字）</span>",
+        "  开口就讲一件具体的事，不铺背景：",
+        "  「课程资料散在几十个 PDF 里，想找一句话得翻半天，我想让它能直接问。」",
+        "  <span class='no'>✗ 反面：从「这学期我们学了 AI 的原理」讲起——</span>",
+        "  　听众在前 30 秒还不知道你要解决什么，后面就很难接上。",
+        "<span class='dim'>这一段只做一件事：让听众知道「问题是什么」。</span>"
+      ]
+    },
+    {
+      seg: "方法", words: "约 120 字", total: "180 / 360",
+      lines: [
+        "<span class='hl'>第 2 段 · 我怎样做（约 120 字）</span>",
+        "  写我亲手做的步骤，主语必须是「我」，按一二三说：",
+        "  「我先在本机部署了模型，再把 PDF 切段做检索，最后让它回答时附上出处页码。」",
+        "  <span class='no'>✗ 反面：全程说「我们小组做了……」——听不出哪一步是你干的。</span>",
+        "<span class='dim'>这一段回答的是「是不是你做的」，细节要能被追问。</span>"
+      ]
+    },
+    {
+      seg: "证据", words: "约 120 字", total: "300 / 360",
+      lines: [
+        "<span class='hl'>第 3 段 · 结果证据（约 120 字，全场最重的一段）</span>",
+        "  点名三件证据的文件名，并带数字：",
+        "  「灌入 6 门课共 320 余页，同楼层 12 名同学在用；",
+        "　　859 条图书数据三天洗成 812 条，当天交换 200 余册。」",
+        "  <span class='ok'>✓ 这一段要占最大头——它是全场唯一能被打开验证的部分。</span>",
+        "<span class='dim'>打开不了的文件，在答辩里不算证据。</span>"
+      ]
+    },
+    {
+      seg: "改进", words: "约 60 字", total: "360 / 360",
+      lines: [
+        "<span class='hl'>第 4 段 · 一次改进（约 60 字）</span>",
+        "  只讲一处不足 + 打算怎么改，讲多了就变成自我检讨：",
+        "  「检索只做了切段匹配，没做向量库；下一步我打算补上并做一次效果对比。」",
+        "  <span class='ok'>✓ 四段走完，约 360 字。</span>",
+        "<span class='hl'>能指出一处不足，恰恰说明你知道自己做的是什么。</span>"
+      ]
+    }
+  ];
+  var D1_ASK = [
+    "<span class='hl'>进入 2 分钟问答</span>",
+    "  问答考的不是「答得漂不漂亮」，是<strong>站不站得住</strong>。三种情况：",
+    "",
+    "  ① 他会追问细节：「这 12 个人是怎么统计的？」",
+    "　　按闭环第 5 步答——说清口径，答不上的就说我核过的是哪一部分。",
+    "",
+    "  ② 他会指出矛盾：「你刚才说 A，现在又说 B。」",
+    "　　承认，然后把两句各自的语境说清，<span class='no'>不要现场造一个新说法</span>。",
+    "",
+    "  ③ 他会问到你真没做的：「这部分是你做的吗？」",
+    "　　<span class='ok'>✓ 正确答法：</span>「这一块我没有做到，我需要补充核验，",
+    "　　　核验的方向是……」",
+    "　　<span class='no'>✗ 最忌讳：</span>为了不让场面尴尬，临时补一个细节。",
+    "",
+    "<span class='hl'>承认不知道丢的是一分，编造被拆穿丢的是整场。</span>"
+  ];
+  var d1Step = 0;
+  function d1Render() {
+    for (var i = 1; i <= 4; i++) {
+      var n = $("d1-n" + i);
+      n.className = "flow__node" + (i === d1Step ? " on" : " dim");
+      if (i < 4) {
+        var dot = $("d1-d" + i);
+        dot.className = "flow__dot" + (i < d1Step ? " run" : "");
+      }
+    }
+    if (d1Step > 0) {
+      var s = D1_STEPS[d1Step - 1];
+      $("d1-k1").textContent = s.seg;
+      $("d1-k2").textContent = s.words;
+      $("d1-k3").textContent = s.total;
+      window.Site.type($("d1-out"), s.lines, null);
+    } else {
+      $("d1-k1").textContent = "—";
+      $("d1-k2").textContent = "—";
+      $("d1-k3").textContent = "—";
+      $("d1-out").innerHTML = "";
+    }
+  }
+  $("d1-next").addEventListener("click", function () {
+    d1Step = d1Step >= 4 ? 1 : d1Step + 1;
+    d1Render();
+  });
+  $("d1-ask").addEventListener("click", function () {
+    d1Step = 4;
+    d1Render();
+    $("d1-k1").textContent = "问答";
+    $("d1-k2").textContent = "3—4 问";
+    $("d1-k3").textContent = "360 + 问答";
+    window.Site.type($("d1-out"), D1_ASK, null);
+  });
+  $("d1-reset").addEventListener("click", function () {
+    d1Step = 0;
+    d1Render();
+  });
+
+  /* ---------- 演示② 全课程知识地图 ---------- */
+  var D2 = {
+    "d2-m1": {
+      k: ["第 1—6 次课", "懂原理", "概念图 / 笔记"],
+      lines: [
+        "<span class='hl'>模块一 · 理论基础（第 1—6 次课）</span>",
+        "  这一段解决：AI 到底是怎么「想」出来的——发展史、输入输出、Transformer、",
+        "  预训练与后训练、RLHF、绘图原理。",
+        "  要证明什么：<strong>你能讲清一个原理</strong>，而不只是听说过这个名字。",
+        "  拿出什么：能打开的一张图或一份笔记（例如 Transformer 结构图），",
+        "  　　　　　　并能说出图上每一块在干什么。",
+        "  <span class='no'>✗ 拿不出的：只记得「我学过 Transformer」，讲不出结构。</span>",
+        "<span class='dim'>对应课次：第1—6次课。</span>"
+      ]
+    },
+    "d2-m2": {
+      k: ["第 7—23 次课", "会让它干活", "工具 / 表格 / 方案"],
+      lines: [
+        "<span class='hl'>模块二 · 智能体与办公实践（第 7—23 次课）</span>",
+        "  这一段解决：让 AI 真的替你干活——技能、专家与专家团、文档、表格、PPT、",
+        "  文件与纪要、RAG 与知识库、连接器与自动化、多智能体、内容生产与视频、岗位工作流。",
+        "  要证明什么：<strong>你能独立完成一件事</strong>，有能打开能用的产物。",
+        "  拿出什么：一个工具（含源码与说明）、一张清洗过的表、一套方案文档。",
+        "  <span class='no'>✗ 拿不出的：只有聊天记录里的结果，没有存下来的文件。</span>",
+        "<span class='dim'>对应课次：第7—23次课，综合项目见第21次课。</span>"
+      ]
+    },
+    "d2-m3": {
+      k: ["第 24—32 次课", "用在自己身上", "求职包 / 成果包"],
+      lines: [
+        "<span class='hl'>模块三 · 职业应用与综合项目（第 24—32 次课）</span>",
+        "  这一段解决：把本事用在自己身上——职业规划与岗位调研、简历优化、模拟面试、",
+        "  学习助手与知识管理、求职包、课程答辩。",
+        "  要证明什么：<strong>你的成果指向一个具体的岗位或方向</strong>，材料互相作证。",
+        "  拿出什么：岗位卡 + 一页简历 + 5 道问答 + 5 页展示稿（求职包），",
+        "  　　　　　　以及本课的三件证据与答辩稿。",
+        "  <span class='ok'>✓ 这一段是前两段的落点：原理懂了、工具会了，最终要落到自己身上。</span>",
+        "<span class='dim'>对应课次：第24—32次课。</span>"
+      ]
+    }
+  };
+  function d2Reset() {
+    ["d2-k1", "d2-k2", "d2-k3"].forEach(function (id) { $(id).textContent = "—"; });
+    $("d2-out").innerHTML = "";
+  }
+  function d2Run(key) {
+    var d = D2[key];
+    $("d2-k1").textContent = d.k[0];
+    $("d2-k2").textContent = d.k[1];
+    $("d2-k3").textContent = d.k[2];
+    window.Site.type($("d2-out"), d.lines, null);
+  }
+  ["d2-m1", "d2-m2", "d2-m3"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d2Run(id); });
+  });
+  $("d2-reset").addEventListener("click", d2Reset);
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
+</body>
+</html>
