@@ -57,6 +57,20 @@
     return null;
   }
 
+  /* ---------- 课程总览（首页 / 非课时页时的兜底素材） ---------- */
+  function courseOverview() {
+    var CM = window.COURSE_MAP;
+    if (!CM || !CM.modules) return "";
+    var lines = [];
+    CM.modules.forEach(function (m) {
+      lines.push("模块" + m.no + "：" + m.name + "（" + m.range + "）");
+      (m.lessons || []).forEach(function (l) {
+        lines.push("  第 " + l.no + " 次课 " + l.title + (l.subtitle ? "——" + l.subtitle : "") + "（" + l.type + "）");
+      });
+    });
+    return "【课程总览】\n" + lines.join("\n");
+  }
+
   /* ---------- 取当前课时正文（RAG 素材） ---------- */
   function lessonContext() {
     var main = document.getElementById("main");
@@ -64,27 +78,53 @@
     txt = txt.replace(/\s+/g, " ").trim();
     if (txt.length > 8000) txt = txt.slice(0, 8000) + " …（已截断，完整内容请在本页阅读）";
     var c = curLesson();
-    var head = c ? ("课程：AIGC应用与实践。当前是第 " + c.no + " 次课《" + c.title + "》" +
-      (c.subtitle ? "（" + c.subtitle + "）" : "") + "。") : "课程：AIGC应用与实践。";
-    return head + "\n\n【当前课时正文】\n" + txt;
+    if (c) {
+      var head = "课程：AIGC应用与实践。当前是第 " + c.no + " 次课《" + c.title + "》" +
+        (c.subtitle ? "（" + c.subtitle + "）" : "") + "。";
+      return head + "\n\n【当前课时正文】\n" + txt;
+    }
+    /* 首页 / 非课时页：页面正文是导航，不是教学材料。
+       旧实现会把首页导航文本当「课程资料」塞给模型，答案质量很差。
+       改为注入课程总览，这样在首页问「这门课讲什么」也能答得准。 */
+    return "课程：AIGC应用与实践（共 32 次课 / 64 课时）。当前不在具体课时页，" +
+      "以下是全课程的课次总览，请据此回答；涉及某一课的细节时，引导学生点进对应课时页。\n\n" +
+      courseOverview();
+  }
+
+  /* ---------- 分词：中文按「整词 + 2-gram」切，英文数字按词切 ----------
+     旧实现把「怎么安装」当成一个整词，导致永远命中不了只写了「安装」的章节。
+     这里对中文长词额外切出 2-gram（如「怎么安装」→ 怎么/么安/安装），
+     并给整词更高权重，保证精确匹配优先于碎片匹配。            */
+  function tokenize(q) {
+    var raw = (String(q).replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, " ")
+      .match(/[\u4e00-\u9fa5]+|[a-zA-Z0-9]+/g) || []);
+    var seen = {}, out = [];
+    function push(s, w) {
+      s = s.toLowerCase();
+      if (s.length < 2 || seen[s]) return;
+      seen[s] = 1; out.push({ s: s, w: w });
+    }
+    raw.forEach(function (t) {
+      if (/^[a-zA-Z0-9]+$/.test(t)) { push(t, 1.5); return; }
+      if (t.length > 1) push(t, 2);            // 整词权重最高
+      for (var i = 0; i + 2 <= t.length; i++) push(t.slice(i, i + 2), 1); // 2-gram
+    });
+    return out;
   }
 
   /* ---------- 离线关键词匹配（search-index.js） ---------- */
   function offlineSearch(q) {
     var idx = window.SITE_SECTION_INDEX || [];
     if (!idx.length) return [];
-    var toks = (q.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, " ").match(/[\u4e00-\u9fa5]+|[a-zA-Z0-9]+/g) || [])
-      .filter(function (t) { return t.length > 1; });
+    var toks = tokenize(q);
     if (!toks.length) return [];
     var out = idx.map(function (e) {
       var title = (e.title || "").toLowerCase();
       var hint = (e.hint || "").toLowerCase();
-      var hay = title + " " + hint + " 第" + e.lesson + "课";
       var s = 0;
       toks.forEach(function (t) {
-        t = t.toLowerCase();
-        if (title.indexOf(t) >= 0) s += 3;
-        else if (hint.indexOf(t) >= 0) s += 1;
+        if (title.indexOf(t.s) >= 0) s += 3 * t.w;
+        else if (hint.indexOf(t.s) >= 0) s += 1 * t.w;
       });
       return { e: e, s: s };
     }).filter(function (x) { return x.s > 0; })
@@ -173,6 +213,7 @@
       '<label>模型名（自定义）</label><input id="at-cmodel" type="text" placeholder="model-id"></div>' +
       '<div class="at-hint" id="at-sethint"></div>' +
       '<div class="at-rows"><button class="at-cancel" id="at-cset" type="button">取消</button>' +
+      '<button class="at-cancel" id="at-clear" type="button">清除 Key</button>' +
       '<button class="at-save" id="at-ssave" type="button">保存</button></div></div>';
 
     document.body.appendChild(ov);
@@ -186,7 +227,8 @@
       setmask: setmask, prov: setmask.querySelector("#at-prov"), key: setmask.querySelector("#at-key"),
       curl: setmask.querySelector("#at-curl"), cmodel: setmask.querySelector("#at-cmodel"),
       customBox: setmask.querySelector("#at-custom-box"), sethint: setmask.querySelector("#at-sethint"),
-      cset: setmask.querySelector("#at-cset"), ssave: setmask.querySelector("#at-ssave") };
+      cset: setmask.querySelector("#at-cset"), ssave: setmask.querySelector("#at-ssave"),
+      clear: setmask.querySelector("#at-clear") };
 
     bind();
     renderChips();
@@ -196,12 +238,21 @@
   function bind() {
     el.fab.addEventListener("click", function () { togglePanel(true); });
     el.ov.addEventListener("click", function () { togglePanel(false); });
-    el.send.addEventListener("click", send);
+    el.send.addEventListener("click", function () {
+      if (req) { stopReq(); addMsg("a", "已停止这一次回答。"); return; }
+      send();
+    });
     el.input.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
     });
     el.gear.addEventListener("click", openSettings);
     el.cset.addEventListener("click", function () { el.setmask.classList.remove("show"); });
+    el.clear.addEventListener("click", function () {
+      storeDel(CFG_KEY);
+      el.key.value = ""; el.curl.value = ""; el.cmodel.value = "";
+      el.setmask.classList.remove("show");
+      addMsg("a", "已清除本机保存的 API Key，回到离线导览模式。下次要用联网解答，重新填一次即可。");
+    });
     el.ssave.addEventListener("click", saveSettings);
     el.prov.addEventListener("change", function () {
       el.customBox.style.display = el.prov.value === "custom" ? "block" : "none";
@@ -279,7 +330,7 @@
   }
 
   /* ---------- LLM 调用 ---------- */
-  function callLLM(messages, onDone, onErr) {
+  function callLLM(messages, onDone, onErr, signal) {
     var cfg = loadCfg();
     var p = PROVIDERS[cfg.provider];
     if (!p) return onErr("未选择服务商");
@@ -289,17 +340,22 @@
     if (typeof fetch === "undefined") return onErr("当前环境不支持联网调用");
 
     var body = JSON.stringify({ model: model, messages: messages, temperature: 0.3, stream: false });
-    fetch(url, {
+    var opt = {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + cfg.key },
       body: body
-    }).then(function (r) {
+    };
+    if (signal) opt.signal = signal;
+    fetch(url, opt).then(function (r) {
       if (!r.ok) return r.text().then(function (t) { throw new Error("HTTP " + r.status + " " + t.slice(0, 120)); });
       return r.json();
     }).then(function (j) {
       var c = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
       onDone(c || "（模型返回为空）");
     }).catch(function (e) {
+      if (e && e.name === "AbortError") {
+        return onErr("已停止（或超过 60 秒未响应）。可以换个问法再试，或先用离线导览。");
+      }
       onErr("调用失败：" + (e && e.message ? e.message : e) +
         "。常见原因：Key 无效、服务商不允许浏览器跨域（CORS）、或网络不通。可改用本地预览服务打开本站，或先用离线导览。");
     });
@@ -314,12 +370,29 @@
 
   /* ---------- 发送 ---------- */
   var history = [];
+  var req = null;   // 当前进行中的联网请求 { controller, timer }
+
+  function clearReq() {
+    if (req && req.timer) { try { clearTimeout(req.timer); } catch (e) {} }
+    req = null;
+    el.send.textContent = "发送";
+    el.send.disabled = false;
+  }
+  function stopReq() {
+    if (!req) return;
+    try { if (req.controller) req.controller.abort(); } catch (e) {}
+    clearReq();
+  }
+
   function ask(text) {
     text = (text || "").trim();
     if (!text) return;
+    if (req) return;                 // 已有请求在跑，避免并发串味
     addMsg("u", escHtml(text));
     el.input.value = "";
     el.send.disabled = true;
+    /* 学情：记一笔「问了什么、用的哪种模式」（只存本机，匿名） */
+    try { if (window.LT) window.LT.track("ask", { mode: hasKey() ? "llm" : "offline", q: text.slice(0, 40) }); } catch (e) {}
     var thinking = addMsg("a", '<span class="at-dot"></span>思考中…');
 
     if (!hasKey()) {
@@ -337,15 +410,23 @@
     history.slice(-8).forEach(function (m) { msgs.push(m); });
     msgs.push({ role: "user", content: text });
 
+    var controller = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    req = {
+      controller: controller,
+      timer: setTimeout(function () { try { if (controller) controller.abort(); } catch (e) {} }, 60000)
+    };
+    el.send.textContent = "停止";    // 请求中按钮变「停止」，可随时中断
+    el.send.disabled = false;
+
     callLLM(msgs, function (ans) {
+      clearReq();
       thinking.innerHTML = escHtml(ans);
       history.push({ role: "user", content: text });
       history.push({ role: "assistant", content: ans });
-      el.send.disabled = false;
     }, function (err) {
+      clearReq();
       thinking.innerHTML = escHtml(err);
-      el.send.disabled = false;
-    });
+    }, controller ? controller.signal : null);
   }
   function send() { ask(el.input.value); }
 

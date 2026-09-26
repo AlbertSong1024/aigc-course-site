@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>班级学情汇总 · AIGC应用与实践</title>
+<style>
+  :root{--pri:#2563EB;--pri-l:#DBEAFE;--acc:#F59E0B;--ink:#0F172A;--mut:#64748B;--line:#E2E8F0;}
+  *{box-sizing:border-box}
+  body{margin:0;background:#F8FAFC;color:var(--ink);
+       font:14px/1.7 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1080px;margin:auto;padding:28px 20px 70px}
+  h1{font-size:22px;margin:0 0 6px}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:20px}
+  .drop{border:2px dashed #CBD5E1;border-radius:12px;background:#fff;padding:28px;text-align:center;
+        color:var(--mut);cursor:pointer;transition:.15s}
+  .drop:hover,.drop.on{border-color:var(--pri);background:var(--pri-l);color:var(--pri)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .kpi b{display:block;font-size:22px;color:var(--pri)}
+  .kpi span{font-size:12px;color:var(--mut)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  th{background:#F1F5F9;font-weight:600;white-space:nowrap}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .sec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+  .sec h2{font-size:15px;margin:0 0 12px}
+  .bar{height:9px;background:#E2E8F0;border-radius:5px;overflow:hidden;min-width:70px}
+  .bar i{display:block;height:100%;background:var(--pri)}
+  button{padding:9px 16px;border:none;border-radius:8px;background:var(--pri);color:#fff;cursor:pointer;font-size:13px}
+  button.ghost{background:#E2E8F0;color:#334155}
+  .hint{font-size:12px;color:var(--mut);margin-top:10px;line-height:1.7}
+  .empty{color:var(--mut);font-size:13px;padding:10px 0}
+  code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>班级学情汇总</h1>
+  <p class="sub">
+    把学生导出的「学情档案 JSON」拖进来（可多选），本页在<strong>你本机</strong>完成汇总，不上传任何服务器，断网也能用。
+  </p>
+
+  <div class="drop" id="drop">
+    点击选择，或把多个 <code>学情档案_*.json</code> 拖到这里
+    <input type="file" id="file" multiple accept=".json" style="display:none">
+  </div>
+
+  <div id="out"></div>
+
+  <div class="hint">
+    学生怎么拿到档案？打开教程站任意页面 → 右下角橙色「<strong>学情</strong>」按钮 → 填姓名/学号 →
+    「<strong>导出档案（交作业）</strong>」，把生成的 JSON 交上来即可。
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var students = [];   // { name, sid, summary, log }
+
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function fmtMs(ms) {
+    var s = Math.round((ms || 0) / 1000), m = Math.floor(s / 60);
+    if (m < 60) return m + "分" + (s % 60) + "秒";
+    return Math.floor(m / 60) + "小时" + (m % 60) + "分";
+  }
+
+  function readFiles(list) {
+    var left = list.length;
+    for (var i = 0; i < list.length; i++) {
+      (function (f) {
+        var r = new FileReader();
+        r.onload = function () {
+          try {
+            var d = JSON.parse(r.result);
+            var s = d.summary || {};
+            students.push({
+              file: f.name,
+              name: s.name || "",
+              sid: s.sid || "",
+              lessons: s.lessonsVisited || 0,
+              dwell: s.totalDwellMs || 0,
+              quizAvg: s.quizAvg,
+              quizTimes: s.quizTimes || 0,
+              asks: s.askCount || 0,
+              demos: s.demoRuns || 0,
+              hw: s.hwOpened || 0,
+              byLesson: s.byLesson || {},
+              log: Array.isArray(d.log) ? d.log : []
+            });
+          } catch (e) { /* 坏文件跳过 */ }
+          if (--left === 0) render();
+        };
+        r.readAsText(f);
+      })(list[i]);
+    }
+  }
+
+  function render() {
+    if (!students.length) { $("out").innerHTML = '<div class="empty">还没有读入任何档案。</div>'; return; }
+    var n = students.length;
+    var avg = function (f) { return Math.round(students.reduce(function (a, s) { return a + f(s); }, 0) / n * 10) / 10; };
+    var quizList = students.filter(function (s) { return s.quizAvg !== null; });
+    var quizAvg = quizList.length
+      ? Math.round(quizList.reduce(function (a, s) { return a + s.quizAvg; }, 0) / quizList.length * 10) / 10 : null;
+
+    /* 各课学习人数 */
+    var heat = {};
+    students.forEach(function (s) {
+      Object.keys(s.byLesson).forEach(function (k) {
+        var no = parseInt(k, 10);
+        if (no > 0) heat[no] = (heat[no] || 0) + 1;
+      });
+    });
+    var heatRows = Object.keys(heat).map(Number).sort(function (a, b) { return a - b; }).map(function (no) {
+      var c = heat[no], pct = Math.round(c / n * 100);
+      return "<tr><td>第 " + no + " 次课</td><td class='n'>" + c + " 人</td><td class='n'>" + pct + "%</td>" +
+        "<td><div class='bar'><i style='width:" + pct + "%'></i></div></td></tr>";
+    }).join("");
+
+    /* 高频提问 */
+    var qc = {};
+    students.forEach(function (s) {
+      s.log.forEach(function (e) {
+        if (e.type === "ask" && e.data && e.data.q) {
+          var q = String(e.data.q).trim();
+          if (q.length > 1) qc[q] = (qc[q] || 0) + 1;
+        }
+      });
+    });
+    var topQ = Object.keys(qc).sort(function (a, b) { return qc[b] - qc[a]; }).slice(0, 12)
+      .map(function (q) { return "<tr><td>" + esc(q) + "</td><td class='n'>" + qc[q] + "</td></tr>"; }).join("");
+
+    var rows = students.map(function (s) {
+      return "<tr><td>" + esc(s.name || "(未填)") + "</td>" +
+        "<td class='n'>" + s.lessons + "</td>" +
+        "<td class='n'>" + fmtMs(s.dwell) + "</td>" +
+        "<td class='n'>" + (s.quizAvg === null ? "—" : s.quizAvg + "/6") + "</td>" +
+        "<td class='n'>" + s.asks + "</td>" +
+        "<td class='n'>" + s.demos + "</td>" +
+        "<td class='n'>" + s.hw + "</td></tr>";
+    }).join("");
+
+    $("out").innerHTML =
+      '<div class="kpis">' +
+        '<div class="kpi"><b>' + n + '</b><span>提交人数</span></div>' +
+        '<div class="kpi"><b>' + avg(function (s) { return s.lessons; }) + '</b><span>人均已学课时</span></div>' +
+        '<div class="kpi"><b>' + fmtMs(avg(function (s) { return s.dwell; })) + '</b><span>人均停留</span></div>' +
+        '<div class="kpi"><b>' + (quizAvg === null ? "—" : quizAvg + "/6") + '</b><span>自测平均（' + quizList.length + '人填）</span></div>' +
+        '<div class="kpi"><b>' + avg(function (s) { return s.asks; }) + '</b><span>人均提问 AI</span></div>' +
+      "</div>" +
+
+      '<div class="sec"><h2>学生明细</h2>' +
+        '<div style="overflow-x:auto"><table><thead><tr>' +
+        "<th>姓名/学号</th><th>已学课时</th><th>停留</th><th>自测</th><th>问AI</th><th>演示</th><th>作业</th>" +
+        "</tr></thead><tbody>" + rows + "</tbody></table></div></div>" +
+
+      '<div class="sec"><h2>各课学习人数（哪些课学生真去看了）</h2>' +
+        (heatRows ? '<div style="overflow-x:auto"><table><thead><tr><th>课次</th><th>人数</th><th>占比</th><th></th></tr></thead><tbody>' + heatRows + "</tbody></table></div>"
+                  : '<div class="empty">暂无课时访问数据。</div>') +
+      "</div>" +
+
+      '<div class="sec"><h2>高频提问（学生卡在哪，看这里）</h2>' +
+        (topQ ? '<div style="overflow-x:auto"><table><thead><tr><th>问题</th><th>次数</th></tr></thead><tbody>' + topQ + "</tbody></table></div>"
+              : '<div class="empty">暂无提问记录。</div>') +
+      "</div>" +
+
+      '<button class="ghost" id="csv">导出班级 CSV</button> ' +
+      '<button class="ghost" id="clr">清空重来</button>';
+
+    $("csv").addEventListener("click", function () {
+      var head = ["姓名/学号", "已学课时", "停留秒", "自测平均", "问AI", "演示", "作业"];
+      var lines = [head.join(",")];
+      students.forEach(function (s) {
+        lines.push([s.name || "(未填)", s.lessons, Math.round(s.dwell / 1000),
+          s.quizAvg === null ? "" : s.quizAvg, s.asks, s.demos, s.hw].join(","));
+      });
+      var blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "班级学情_" + new Date().toISOString().slice(0, 10) + ".csv";
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    $("clr").addEventListener("click", function () { students = []; $("file").value = ""; render(); });
+  }
+
+  var drop = $("drop"), file = $("file");
+  drop.addEventListener("click", function () { file.click(); });
+  file.addEventListener("change", function () { if (file.files.length) readFiles(file.files); });
+  ["dragenter", "dragover"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("on"); });
+  });
+  ["dragleave", "drop"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("on"); });
+  });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files.length) readFiles(e.dataTransfer.files);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
