@@ -619,4 +619,13 @@
       })();
     },
   };
+
+  // 注入课程 AI 助教浮窗（独立文件，自动加载，无需改各课时页）
+  try {
+    var atScript = document.createElement("script");
+    atScript.src = ROOT + "assets/js/ai-tutor.js";
+    atScript.async = true;
+    document.head.appendChild(atScript);
+  } catch (e) {}
+
 })();
