@@ -620,6 +620,14 @@
     },
   };
 
+  // 注入学情采集（独立文件，本地为底座；未配置上报端点时完全不联网）
+  try {
+    var ltScript = document.createElement("script");
+    ltScript.src = ROOT + "assets/js/learning-tracker.js";
+    ltScript.async = true;
+    document.head.appendChild(ltScript);
+  } catch (e) {}
+
   // 注入课程 AI 助教浮窗（独立文件，自动加载，无需改各课时页）
   try {
     var atScript = document.createElement("script");

@@ -391,6 +391,8 @@
     addMsg("u", escHtml(text));
     el.input.value = "";
     el.send.disabled = true;
+    /* 学情：记一笔「问了什么、用的哪种模式」（只存本机，匿名） */
+    try { if (window.LT) window.LT.track("ask", { mode: hasKey() ? "llm" : "offline", q: text.slice(0, 40) }); } catch (e) {}
     var thinking = addMsg("a", '<span class="at-dot"></span>思考中…');
 
     if (!hasKey()) {
