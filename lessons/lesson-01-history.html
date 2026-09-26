@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第1次课 AI 发展史与运行原理初探｜AIGC应用与实践</title>
+<meta name="description" content="文字接龙、Token 与温度：大模型怎么说话">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="1" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <!-- ============================================================
+         内容区开始（第 1 次课 · AI 发展史与运行原理初探）
+         六小节：s-guide / s-goal / s-history / s-chain / s-trio /
+                 s-first / s-quiz / s-recap / s-hw
+         ============================================================ -->
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块一开局</span></h2>
+      <p class="lead">
+        你天天用豆包、DeepSeek，问它什么都能答。但<strong>「会用它」和「知道它怎么说话」是两回事</strong>——
+        不知道它怎么说话，你就只能碰运气地提问；知道了，你才能让它稳定地给你想要的东西。这门课就从这个「知道」开始。
+      </p>
+      <p>先看几个你大概率遇到过的事：</p>
+      <ul>
+        <li>同一个问题发给豆包两遍，<strong>两遍答案居然不一样</strong>——它是不是不稳定？</li>
+        <li>让它写一张请假条，它没翻任何「题库」，字是一个一个往外蹦的；</li>
+        <li>用通义万相画「一只猫」，有人画出来直接能用，有人画出来纯粹靠缘分。</li>
+      </ul>
+      <p>这三件事背后是同一个答案。本课结束时，你应该能自己把它说出来。</p>
+      <div class="callout callout--warn">
+        <span class="callout__t">本课用的工具，提前说清楚</span>
+        对话用<strong>豆包</strong>（网页版免注册，直接用；下面的指令在千问、DeepSeek 里同样能发）；
+        文生图用<strong>通义万相</strong>。需要一台能联网的电脑或手机。
+        工具界面随版本更新，以你实际打开的为准；<strong>本站核对日期 2026-09-26</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>按时间顺序说出 AI 发展的 <strong>7 个阶段</strong>，并为其中 3 个阶段各举 1 个标志性事件；</li>
+          <li>用自己的话向同桌说清大模型「文字接龙」的工作方式，说清 <strong>Token、概率采样、温度</strong> 三个要点；</li>
+          <li>用豆包把同一个问题按不同口吻连问三遍，指出至少 2 条差异，并说出 1 条原因；</li>
+          <li>按「下外卖订单」四要素改写 1 条模糊提示词，让文生图结果更贴合预期；</li>
+          <li>说出 AI 作品标注的两条规范，以及哪三类信息<strong>不该</strong>发给任何 AI。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-history"><b>01</b>AI 的 70 年 <em>＋实操①</em></a>
+        <a href="#s-chain"><b>02</b>它不是在查库，是在猜下一个字 <em>＋实操②</em></a>
+        <a href="#s-trio"><b>03</b>大模型三件套：积木、骰子、旋钮 <em>＋实操③</em></a>
+        <a href="#s-first"><b>04</b>第一次正式用 AI <em>＋实操④</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：无——这是本课程第一次课。你只需要一台能联网的电脑。<br>
+        <strong>后续</strong>：本课建立的「它在猜字」直觉，为 <a class="xref" data-lesson="2"></a> 打底；
+        「下外卖订单」提示词法会在 <a class="xref" data-lesson="3"></a> 继续加深。
+      </div>
+    </section>
+
+    <!-- ── 正文一：AI 发展史 ─────────────────────────────── -->
+
+    <section class="sec" id="s-history">
+      <h2>一、AI 的 70 年：从背规则到全民普及<span class="sec__tag">本课核心 1/2</span></h2>
+      <p class="lead">
+        AI 不是这两年才冒出来的。这个词 1956 年就有了——比你的爷爷奶奶还年轻不了几岁。
+        这 70 年的故事，可以用「一个人的成长」来讲：先死记硬背，再偏科，再会刷题，最后全民普及。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>年份</th><th>阶段</th><th>一个比喻</th><th>当时发生了什么</th></tr></thead>
+          <tbody>
+            <tr><td>1956</td><td><strong>规则系统</strong></td><td>背交规的学徒</td><td>达特茅斯会议召开，「人工智能」正式定名；靠人一条条写规则</td></tr>
+            <tr><td>1980s</td><td><strong>专家系统</strong></td><td>偏科生</td><td>MYCIN 会诊断血液感染、XCON 会配置电脑——只在窄领域内行</td></tr>
+            <tr><td>1986–1997</td><td><strong>机器学习</strong></td><td>会总结套路的学生</td><td>反向传播算法推广应用；1997 年深蓝战胜国际象棋世界冠军</td></tr>
+            <tr><td>2012</td><td><strong>神经网络</strong></td><td>模仿大脑</td><td>AlexNet 在 ImageNet 图像识别大赛上大幅夺冠，深度学习翻身</td></tr>
+            <tr><td>2016</td><td><strong>深度学习</strong></td><td>刷题逆袭</td><td>AlphaGo 战胜围棋世界冠军李世石</td></tr>
+            <tr><td>2017</td><td><strong>Transformer</strong></td><td>开会讨论</td><td>论文《Attention Is All You Need》发表——今天所有大模型的底座</td></tr>
+            <tr><td>2022</td><td><strong>大模型</strong></td><td>全民普及</td><td>ChatGPT 上线，对话式 AI 走进普通人的日常</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">年份依据课程参考资料《AI 发展史事实清单》（备课阶段已逐条联网核实）；本站核对日期 2026-09-26。</p>
+
+      <h3>AI 是怎么学的：三种方式，一张表</h3>
+      <p>机器学习这 70 年里学东西的路子，一共三种。用你熟悉的场景就能分清：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>方式</th><th>生活比喻</th><th>一句话解释</th></tr></thead>
+          <tbody>
+            <tr><td><strong>监督学习</strong></td><td>带答案刷题</td><td>每道题都配标准答案，对完答案修正自己</td></tr>
+            <tr><td><strong>无监督学习</strong></td><td>整理错题找规律</td><td>没人给答案，自己从一堆材料里找结构和规律</td></tr>
+            <tr><td><strong>强化学习</strong></td><td>游戏通关拿奖励</td><td>做对了加分、做错了扣分，靠奖惩一步步摸索</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">一个能检验你听懂了没的问题</span>
+        AlphaGo 下棋赢人类，靠的是三种里的哪一种？——<strong>强化学习</strong>：
+        它自己跟自己下了千万盘棋，赢了加分、输了扣分，纯靠奖惩摸索出来的棋感。
+        这套「靠奖惩学」的思路，后面第 4 次课讲 <a class="xref" data-lesson="4"></a> 时还会再见到。
+      </div>
+
+      <h3>背规则的时代，卡在哪</h3>
+      <p>
+        1956 年那批「背交规的学徒」，靠的是工程师一条一条写规则：「如果下雨，那么带伞」。
+        听着合理，但你再多写两条试试——「如果风大，那么别带伞（会翻）」和「如果又下雨又风大」同时满足，
+        听谁的？<strong>规则越多越打架，世界的情况写不完。</strong>这是老 AI 走不下去的根本原因，
+        也是理解现代大模型的第一块垫脚石。下面动手验证一次。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·让 AI 用老办法写规则，再让它自己挑毛病 <em>约 6 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 AI 写的「带伞规则」，外加它自己找出的规则漏洞——
+          你会亲眼看到「写规则」这条路为什么走不通。</p>
+
+        <p><strong>第 1 步 · 打开豆包，新建一个对话</strong></p>
+        <ol class="steps">
+          <li><b>浏览器打开豆包网页版</b><span>免注册即可使用。之后的三个实操都在这个工具里做。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 把下面这条指令整句复制发过去</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操①指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请用「如果……那么……」的格式写 3 条规则，让一台老式计算机判断「今天该不该带伞」。
+写完之后请你自己当审查员：这 3 条规则有没有互相打架的情况？比如两条规则同时满足、但结论相反。
+把你找到的漏洞一条条列出来。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 看它的回答，重点看两处</strong></p>
+        <ol class="steps">
+          <li><b>先看 3 条规则本身</b><span>读一遍，确认每条都是「如果……那么……」的格式。</span></li>
+          <li><b>再看它挑出的漏洞</b><span>它应该能指出至少一处「规则冲突」或「没覆盖到的情况」。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 在同一个对话里，把这句追问发过去</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操①追问 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>如果要把现实里的天气情况全部覆盖，你觉得大概要写多少条规则？
+这种「人写规则」的方法，适合今天的对话式大模型吗？用两句话说明理由。</code></pre>
+        </div>
+
+        <p><strong>做到这两条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它列出了至少一处规则漏洞</b><span>「下雨带伞」和「风大别带伞」打架就是最典型的一处。<br>
+            <em>它没挑出漏洞</em>：把追问再发一次，明确说「请务必找出至少 2 条漏洞」。</span></li>
+          <li><b>你能说出「规则写不完」这个结论</b><span>对同桌讲：老 AI 卡在哪、为什么现在的 AI 不这么干。<br>
+            <em>讲不清楚</em>：把本节开头那段「背规则的时代，卡在哪」重读一遍再讲。</span></li>
+        </ol>
+      </div>
+
+      <p>
+        规则这条路走不通之后，AI 换了一个思路：<strong>不写规则了，改成猜</strong>。
+        接下来这段视频把新思路讲得非常直观——看之前带着一个问题：<strong>「AI 说出下一个字之前，脑子里在算什么？」</strong>
+        看完你要能回答：它不是翻题库，是在<strong>算每个候选字的概率</strong>。
+      </p>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV13z421U7cs&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】GPT 是什么（3Blue1Brown 官方中文版）</b>　需联网观看；看完回到正文。</figcaption>
+      </figure>
+    </section>
+
+    <!-- ── 正文二：文字接龙 ─────────────────────────────── -->
+
+    <section class="sec" id="s-chain">
+      <h2>二、它不是在查库，是在猜下一个字<span class="sec__tag">本课核心 2/2</span></h2>
+      <p class="lead">
+        很多人心里 AI 是这样工作的：我提问 → 它去一个巨大的题库里翻答案 → 返回给我。
+        <strong>这个模型是错的。</strong>证据你伸手就能拿到：同一个问题问两遍，答案不一样——题库不会变，除非它根本不在查库。
+      </p>
+
+      <h3>它真正在干的事：文字接龙</h3>
+      <p>
+        大模型生成每一句话，都是在玩接龙：看到前面已有的字，<strong>猜下一个最可能的字</strong>；
+        猜出来接上去，再猜下一个，一个字一个字往外蹦——你在豆包里盯着屏幕看，能看到这个过程。
+        你跟同桌玩接龙时脑子里那点「预感」，就是大模型全部工作的雏形。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>对比</th><th>查库（想象中的 AI）</th><th>接龙（真实的 AI）</th></tr></thead>
+          <tbody>
+            <tr><td>答案从哪来</td><td>从存好的库里翻出来</td><td>一个字一个字现猜出来</td></tr>
+            <tr><td>同样的问题问两次</td><td>答案一模一样</td><td>可能不一样——因为「猜」带概率</td></tr>
+            <tr><td>没见过的问题</td><td>翻不到，卡住</td><td>照样接得下去，接错了才叫幻觉</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课开头那三件事，现在能解释两件了</span>
+        它写字是一个一个蹦的——因为它本来就是接龙；两遍答案不一样——因为每一步「猜」都在掷骰子（下一节细讲）。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·跟 AI 玩一轮接龙，再让它交代自己怎么选字 <em>约 6 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一局你和 AI 的文字接龙记录，外加它对「我怎么选下一个字」的大白话自白。</p>
+
+        <p><strong>第 1 步 · 在豆包新建一个对话，把这条指令整句发过去</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操②指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>我们来玩文字接龙。规则：我给一个开头，你每次只接 3 个字，一共接 5 轮，尽量让句子通顺；
+我每轮也会接 3 个字，轮流进行。开头是：「今天天气很好，」。现在开始，先由你接第一轮。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 和它对完 5 轮</strong></p>
+        <ol class="steps">
+          <li><b>它接 3 个字，你回 3 个字</b><span>直接在输入框里打你接的 3 个字发过去即可，不用解释。</span></li>
+          <li><b>发之前盯着它回答的过程看一眼</b><span>注意它的字是不是<strong>一个一个往外蹦</strong>的——
+            这就是接龙的现场画面。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 接龙结束，把这条追问发过去</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操②追问 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>刚才每一轮，你是怎么决定接哪 3 个字的？
+请用大白话回答两个问题：① 你是不是在计算「下一个最可能是什么字」？
+② 如果同一个开头再玩一局，你接的字可能和这次不一样吗？为什么会不一样？</code></pre>
+        </div>
+
+        <p><strong>做到这两条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它的自白里出现了「概率」「可能」这类词</b><span>这就是接龙的本质：算概率，不是背答案。<br>
+            <em>它答得太空</em>：换 DeepSeek 新建对话，把同一条追问发过去，拿第二份答案对照。</span></li>
+          <li><b>你能对同桌复述「它每一步都在猜最可能的字」</b><span>用自己的话，不许背它的原句。<br>
+            <em>复述不出来</em>：把它自白里最核心的那一句抄在手边，照着讲一遍。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── 正文三：三件套 ───────────────────────────────── -->
+
+    <section class="sec" id="s-trio">
+      <h2>三、大模型三件套：积木、骰子、旋钮<span class="sec__tag">重点</span></h2>
+      <p class="lead">
+        「猜下一个字」六个字太笼统，拆开是三件事，每件配一个比喻：
+        <strong>Token 是积木，概率采样是骰子，温度是旋钮</strong>。这三个词后面每一课都会用到，今天一次讲透。
+      </p>
+
+      <h3>积木：Token，AI 的识字单位</h3>
+      <p>
+        AI 读句子，不是按「字」也不是按「词」整块读的，而是先<strong>切成小块</strong>，每块叫一个 Token。
+        就像乐高——成品句子是拼好的模型，AI 手里操作的是一块块积木。切法不固定，一个汉字可能是一块，
+        也可能两个常用词合成一块；英文则常常一个单词一块。
+      </p>
+      <p>点下面的按钮，看三个句子分别会被切成什么样（切块结果为教学示意，不同模型切法略有差异）：</p>
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 换个句子看 Token 切块：AI 眼里的句子是积木拼的</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="a" class="on">例句 A</button>
+              <button type="button" data-tab="b">例句 B</button>
+              <button type="button" data-tab="c">例句 C</button>
+            </div>
+          </div>
+          <div class="demo__stage" data-tabpanel="a">
+            <p><b>我爱人工智能</b></p>
+            <p>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">我</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">爱</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">人工</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">智能</span>
+            </p>
+          </div>
+          <div class="demo__stage" data-tabpanel="b" style="display:none">
+            <p><b>The cat sat on the mat</b></p>
+            <p>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">The</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF"> cat</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF"> sat</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF"> on</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF"> the</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF"> mat</span>
+            </p>
+          </div>
+          <div class="demo__stage" data-tabpanel="c" style="display:none">
+            <p><b>2026年秋季开学</b></p>
+            <p>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">2026</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">年</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">秋季</span>
+              <span style="display:inline-block;padding:6px 12px;margin:2px;border:1px solid #2563EB;border-radius:6px;background:#EFF6FF">开学</span>
+            </p>
+          </div>
+          <div class="demo__note">
+            切块方式随模型与分词器不同而不同，这里为<strong>教学示意，非实测数值</strong>；
+            要看真实切法，可把句子发给对话 AI，让它「展示这句话的 token 切分」。
+          </div>
+        </div>
+      </div>
+
+      <h3>骰子：概率采样，每次都在掷</h3>
+      <p>
+        轮到「猜下一个字」的时候，AI 心里有一张候选表：每个候选字一个概率。
+        比如句子「我放学后想___」，候选可能是「学 60%、玩 30%、睡 10%」。
+        它不是永远选最高的那个，而是<strong>按概率掷骰子</strong>——掷出谁，接谁。
+        这就是为什么同一个问题问两遍，答案会不一样：骰子不是每次都停在同一个点上。
+      </p>
+
+      <h3>旋钮：温度，控制骰子歪多少</h3>
+      <p>
+        掷骰子前，还有一个旋钮可以拧：<strong>温度（temperature）</strong>。
+        温度低，概率分布被压尖，几乎总选头名；温度高，分布被摊平，小概率的候选字也常被选中。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>温度</th><th>打比方</th><th>输出特点</th></tr></thead>
+          <tbody>
+            <tr><td>接近 0</td><td>严谨的老教授</td><td>几乎总选概率最高的字，稳定、可复现，但容易平淡</td></tr>
+            <tr><td>中等（约 0.7）</td><td>正常人</td><td>多数时候靠谱，偶有变化——多数产品默认档</td></tr>
+            <tr><td>1.5</td><td>喝了三杯咖啡的诗人</td><td>冷门候选也常被选中，有创意，但容易跑偏、说胡话</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>拖动下面的滑块，看温度怎么把同一张候选表「拧尖」或「拧平」（概率数据为教学示意）：</p>
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 拖动温度滑块：看「我放学后想___」的候选字概率怎么变</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="range">
+              <input type="range" id="d2-t" min="0" max="1.5" step="0.05" value="0.7">
+            </div>
+            <span>当前温度：<b id="d2-tv">0.70</b></span>
+          </div>
+          <div class="demo__stage">
+            <div style="display:flex;align-items:center;gap:8px;margin:6px 0">
+              <b style="width:56px;text-align:center">学</b>
+              <div style="flex:1;height:18px;background:#E5E7EB;border-radius:9px;overflow:hidden">
+                <i id="d2-b1" style="display:block;height:100%;background:#2563EB;width:60%"></i>
+              </div>
+              <span id="d2-p1" style="width:52px;text-align:right">60%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin:6px 0">
+              <b style="width:56px;text-align:center">玩</b>
+              <div style="flex:1;height:18px;background:#E5E7EB;border-radius:9px;overflow:hidden">
+                <i id="d2-b2" style="display:block;height:100%;background:#F59E0B;width:30%"></i>
+              </div>
+              <span id="d2-p2" style="width:52px;text-align:right">30%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin:6px 0">
+              <b style="width:56px;text-align:center">睡</b>
+              <div style="flex:1;height:18px;background:#E5E7EB;border-radius:9px;overflow:hidden">
+                <i id="d2-b3" style="display:block;height:100%;background:#9CA3AF;width:10%"></i>
+              </div>
+              <span id="d2-p3" style="width:52px;text-align:right">10%</span>
+            </div>
+            <p id="d2-out" style="margin-top:10px"></p>
+          </div>
+          <div class="demo__note">
+            基础概率（学 60% / 玩 30% / 睡 10%）与换算方法均为<strong>教学示意，非实测数值</strong>；
+            演示只表达规律：温度越低分布越尖、越高越平。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">那温度滑块在哪？多数对话产品根本不给你看</span>
+        豆包、千问、DeepSeek 的网页版一般<strong>不开放温度滑块</strong>。
+        但你可以用「口吻」把旋钮拧过去：要求它「更严谨」就是拧低，「更有创意」就是拧高——
+        下面的实操③就是这么做的。
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">全课链条，连起来说一遍</span>
+        AI 回答你 = <strong>接龙 → 切积木（Token）→ 掷骰子（概率采样）→ 旋钮（温度）</strong>，
+        另外它还揣着一本「便签本」记着你们前面聊过的内容，那叫上下文窗口，后面课细讲。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·同一个问题问三遍：亲手拧一次「温度旋钮」 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一个毕业准备问题的三版回答，外加你能指出至少 2 条差异、说出 1 条原因。</p>
+
+        <p><strong>第 1 步 · 在豆包新建一个对话，发第一问</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操③第一问 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>我是人工智能专业大三学生，还有一年毕业，请给我一份毕业前该做的准备清单。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 收到第一版后，在同一个对话里发第二问</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操③第二问 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请用最严谨、最保守的口吻重新回答刚才的问题：只给有把握、有公认依据的建议，
+每条建议注明「为什么可靠」；没有把握的内容直接不写。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 接着在同一对话里发第三问</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操③第三问 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>现在请用最有创意、天马行空的口吻再回答一次刚才的问题：
+可以给一些大胆、特别、别人想不到的建议，不用顾虑建议是否常规。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 三版并排对比</strong></p>
+        <ol class="steps">
+          <li><b>把三版回答放在一起读</b><span>重点比三个地方：建议的范围、措辞的确定程度（「必须」还是「也许」）、条数。</span></li>
+          <li><b>挑出至少 2 条差异</b><span>能指认到具体哪一版的哪一条，不许只说「感觉不一样」。</span></li>
+        </ol>
+
+        <p><strong>做到这两条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>你说得出第二问和第三问的差别在哪</b><span>比如：严谨版每条都带理由、条数少；创意版出了「给开源项目提 PR」这类非常规建议。<br>
+            <em>两版看着差不多</em>：把第二问里的「只给有把握的建议」再加重一次，重新发。</span></li>
+          <li><b>你能说出原因</b><span>一句话：口吻要求改变了它掷骰子的倾向——「温度」被拧动，选字概率分布跟着变了。<br>
+            <em>说不出来</em>：回到本节的「旋钮」小节，对着表格再读一遍。</span></li>
+        </ol>
+        <p class="note">
+          顺便留意一件事：三问都在<strong>同一个对话</strong>里，它记得你前面问过什么——
+          这就是刚才链条里那本「便签本」（上下文窗口）在起作用。
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 正文四：第一次正式用 AI ──────────────────────── -->
+
+    <section class="sec" id="s-first">
+      <h2>四、第一次正式用 AI：把话说清楚，把署名写规范<span class="sec__tag">实战</span></h2>
+      <p class="lead">
+        前三节讲「它怎么说话」，这一节讲「你怎么指挥」。
+        同样让它画猫，结果天差地别，差的不是 AI，是你那段话——提示词。
+        今天学一个够用四年的心法：<strong>像下外卖订单一样写提示词</strong>。
+      </p>
+
+      <h3>「一只猫」为什么画不好</h3>
+      <p>
+        「一只猫」只交代了一件事：主体。剩下全是 AI 自己掷骰子自由发挥——
+        所以结果是随机的。你在外卖软件上从来不会只写「米饭」，你会选主菜、选口味、备注少冰去葱。
+        提示词同理，四样说全：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>外卖里对应什么</th><th>画猫的例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>主体</strong></td><td>你要点的主菜</td><td>一只穿学士服的橘猫</td></tr>
+            <tr><td><strong>风格</strong></td><td>选哪家餐厅、什么菜系</td><td>皮克斯 3D 卡通风格</td></tr>
+            <tr><td><strong>细节</strong></td><td>备注：少冰、去葱</td><td>坐在图书馆窗边，捧着一本《深度学习》，午后阳光</td></tr>
+            <tr><td><strong>用途</strong></td><td>送到哪、给谁吃</td><td>用作毕业季公众号封面，画面下方留白放标题</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="compare">
+        <div class="compare__col">
+          <p><b>✗ 模糊提示词</b></p>
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="只交代主体 · 结果看缘分">
+            <div class="codeblock__bar"></div>
+<pre><code>一只猫</code></pre>
+          </div>
+        </div>
+        <div class="compare__col b">
+          <p><b>✓ 下外卖订单版</b></p>
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="四要素齐全 · 结果可预期">
+            <div class="codeblock__bar"></div>
+<pre><code>一只穿学士服的橘猫，皮克斯 3D 卡通风格，
+坐在图书馆窗边捧着一本《深度学习》，午后阳光，
+用作毕业季公众号封面，画面下方留白</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">具体提示词没有唯一标准答案——换掉风格或细节，同一只猫就是另一张图。要素全，结果才稳。</p>
+
+      <h3>两条必须守的规范</h3>
+      <div class="callout callout--danger">
+        <span class="callout__t">红线，从第一课就立好</span>
+        <strong>① 作品必须标注「AI 生成」并注明工具名</strong>——例如「图：AI 生成（通义万相）」。
+        AI 输出不等于你的原创，标清楚既是诚信也是保护自己。<br>
+        <strong>② 不把个人敏感信息发给任何 AI</strong>——身份证号、家庭住址、银行卡号，一律不发。
+        你发出去的内容不掌握在你手里。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·用通义万相画两次猫，再生成你的《AI初体验观察表》 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一只猫的两张对比图，外加一份填好的《AI初体验观察表》——
+          这份表是今天三项体验的交付物。</p>
+
+        <p><strong>第 1 步 · 打开通义万相，用模糊提示词出第一张</strong></p>
+        <ol class="steps">
+          <li><b>打开通义万相</b><span>网页版或 App 都可以，进「文生图」（或叫「图像生成」）功能。</span></li>
+          <li><b>在提示词框里只发这四个字</b><span>就是下面这行——先感受一次「看缘分」：</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第一张提示词 · 原样输入">
+          <div class="codeblock__bar"></div>
+<pre><code>一只猫</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 等第一张出来后，用四要素版出第二张</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第二张提示词 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>一只穿学士服的橘猫，皮克斯 3D 卡通风格，坐在图书馆窗边捧着一本《深度学习》，午后阳光，用作毕业季公众号封面，画面下方留白</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 两张图并排对比</strong></p>
+        <ol class="steps">
+          <li><b>把两张图保存到同一个文件夹</b><span>文件名带上工具名，例如 <code>猫-通义万相-v1.png</code>、<code>猫-通义万相-v2.png</code>。</span></li>
+          <li><b>对照第 2 步的提示词找出变化</b><span>提示词里改了哪个词，图上哪里跟着变了——能一一对上就说明你懂了。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 回到豆包，让它帮你把今天三项体验整理成观察表</strong>（点右上角复制）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实操④观察表指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请把我今天的三项 AI 体验整理成一份《AI初体验观察表》，用表格输出，共 4 列：
+体验项目、我用了什么工具、我观察到的 1 条现象、我还想问的 1 个问题。
+三项体验分别是：① 对话问答（豆包）；② 同一问题换口吻对比（豆包）；③ 文生图两次对比（通义万相）。
+「我观察到的 1 条现象」先每项填【待补】，我口述后你再替换进去；
+表格最后单独加一行「作品标注」，内容格式为：AI 生成 + 工具名。</code></pre>
+        </div>
+
+        <p><strong>第 5 步 · 逐条口述你的观察，让它把【待补】补全</strong></p>
+        <ol class="steps">
+          <li><b>把三句观察打字发过去</b><span>比如：「① 它回答我是逐字蹦出来的」「② 严谨版每条都带理由」「③ 第二张猫穿上了学士服」——按你真实的观察说。</span></li>
+          <li><b>让它输出完整版表格</b><span>收到后点右上角复制，存进你的笔记（记事本、文档均可），这就是今天的课堂交付物。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>手上有两张对比图</b><span>第二张的主体、风格、细节能和提示词一一对上。<br>
+            <em>第二张没变化</em>：检查提示词是不是整句发出去了——只发出去半句效果会打折。</span></li>
+          <li><b>观察表 3 行现象补全、1 个想问的问题、有「作品标注」行</b><span>缺哪项就让它补哪项。<br>
+            <em>表格没生成</em>：把第 4 步的指令原样重发一次，别手动改写指令。</span></li>
+          <li><b>两张图都标了「AI 生成（通义万相）」</b><span>重命名文件或建一个说明文件都行，署名规范从今天第一张图开始。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── 收尾三节：自测 → 回顾 → 作业 ── -->
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题不计分，是给你自己查漏用的。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>下面哪一组才是 AI 发展 7 个阶段的正确时间顺序？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 规则系统 → 专家系统 → 机器学习 → 神经网络 → 深度学习 → Transformer → 大模型</li>
+            <li>B. 专家系统 → 规则系统 → 深度学习 → 机器学习 → 神经网络 → 大模型 → Transformer</li>
+            <li>C. 机器学习 → 规则系统 → 神经网络 → 专家系统 → Transformer → 深度学习 → 大模型</li>
+            <li>D. 神经网络 → 机器学习 → 规则系统 → 专家系统 → 深度学习 → Transformer → 大模型</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A。</b>记住三个锚点就不会乱：<strong>1956 达特茅斯</strong>（规则系统起点）、
+            <strong>2012 AlexNet</strong>（神经网络翻身）、<strong>2017 Transformer</strong>（大模型底座）。
+            B 把专家系统放到了规则系统前面，C、D 则把机器学习排在了起点。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>大模型生成一句话时，它真正在做的事情是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 从题库里检索出最匹配的那条答案</li>
+            <li>B. 逐个预测「下一个最可能的字」，一个字一个字接出来</li>
+            <li>C. 把训练资料里现成的句子复制出来</li>
+            <li>D. 先想好整段话的意思，再一次性输出</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>它每一轮只做一件事：看着前面已有的内容，算出每个候选字的概率，掷骰子接一个。
+            A 是最常见的误解——如果真是查库，同一个问题不可能问出两个不同答案；C 和 D 都不符合「逐字生成」这个可以直接观察到的现象。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>判断：Token 是大模型处理文字的基本单位，一个句子会先被切成小块再处理。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A（正确）。</b>Token 就是 AI 的「积木块」：句子先切块、再逐块参与计算，
+            切法随模型不同而不同。它既不严格等于汉字，也不严格等于单词。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>把温度调高，大模型的输出通常会怎样？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 更准确，错误更少</li>
+            <li>B. 更有创意，但也更不稳定、更容易跑偏</li>
+            <li>C. 速度更快</li>
+            <li>D. 完全不变，温度只是个摆设</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>温度升高会把候选字的概率分布「摊平」，小概率候选也常被选中——所以有创意、也容易说胡话。
+            A 说反了：要稳定、要准确恰恰应该把温度调低。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：AI 生成的图片效果很好，可以直接当成自己原创的作品发布，不用标注。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确，工具是我操作的就算我的</li>
+            <li>B. 错误，必须标注「AI 生成」并注明所用工具</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>AI 输出不等于个人原创，规范做法是标注「AI 生成（工具名）」，
+            例如「AI 生成（通义万相）」。这不只是诚信问题：不标注的 AI 作品一旦流入正式场合，责任在你头上。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>AI 70 年一条线：<strong>1956 达特茅斯定名 → 1980s 专家系统 → 1986 机器学习 → 2012 AlexNet → 2016 AlphaGo → 2017 Transformer → 2022 ChatGPT</strong>；</li>
+          <li>它不是在查库，是<strong>文字接龙</strong>——每一步都在猜「下一个最可能的字」；</li>
+          <li>三件套：<strong>Token 是积木，概率采样是骰子，温度是旋钮</strong>——骰子解释了「两次答案不一样」，旋钮决定「稳还是野」；</li>
+          <li>网页版没有温度滑块，就用<strong>口吻词</strong>拧：「更严谨」拧低，「更有创意」拧高；</li>
+          <li>提示词像<strong>下外卖订单</strong>：主体＋风格＋细节＋用途；AI 作品必须标注<strong>「AI 生成＋工具名」</strong>，敏感信息（身份证号、住址、银行卡号）一律不发。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天你知道了它「在猜字」，
+        <a class="xref" data-lesson="2"></a> 就拆开看它<strong>用什么结构去猜</strong>——那台「开会讨论」的机器，Transformer。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）「人工智能」作为一门学科被正式定名，源于哪一年的哪件事？
+A. 1997 年深蓝战胜国际象棋世界冠军
+B. 1956 年达特茅斯会议
+C. 2012 年 AlexNet 夺得 ImageNet 冠军
+D. 2022 年 ChatGPT 上线
+【答案】B
+【解析】1956 年达特茅斯会议首次提出「人工智能」这个名称，学科由此诞生。A 是机器学习阶段的标志性事件，C 让神经网络翻身，D 是大模型走进日常的节点——都是后来某一阶段的里程碑，不是学科起点。
+
+2.（单选）2012 年让神经网络研究彻底翻身的事件是？
+A. AlphaGo 战胜围棋世界冠军
+B. Transformer 论文发表
+C. AlexNet 在 ImageNet 图像识别大赛上大幅夺冠
+D. 深蓝战胜国际象棋世界冠军
+【答案】C
+【解析】2012 年 AlexNet 以明显优势拿下 ImageNet 冠军，证明深层神经网络的有效性，深度学习由此爆发。A 发生在 2016 年，B 发生在 2017 年，D 发生在 1997 年，年份和事件都要对应上。
+
+3.（多选）本课讲的「大模型三件套」包括下面哪些？
+A. Token（积木）
+B. 概率采样（骰子）
+C. 温度（旋钮）
+D. 规则库（题库）
+【答案】ABC
+【解析】三件套是 Token、概率采样、温度：切块、掷骰子、拧旋钮。D 是老式 AI 的思路——大模型恰恰不是靠检索题库工作的，本课第一节就是为了破掉这个误解。
+
+4.（多选）按「下外卖订单」法写文生图提示词，下面哪些属于该交代的要素？
+A. 主体：画什么
+B. 风格：什么画风
+C. 细节：动作、场景、光线
+D. 用途：图用在哪、要不要留白
+【答案】ABCD
+【解析】四要素是主体＋风格＋细节＋用途，缺哪样，AI 就往哪样上掷骰子自由发挥。只写「一只猫」这类单一主体的提示词，结果基本看缘分。
+
+5.（判断）同一个问题发给 AI 两遍，答案不一样，说明这个 AI 出了故障。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】生成每一步都在按概率掷骰子，两次采样落点不同，答案自然可能不同——这是机制本身，不是故障。想让输出更稳定，可以把要求说得更严格（相当于拧低温度）。
+
+6.（判断）为了让 AI 帮忙填表格，把身份证号发给它没问题，反正是自己用的。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】身份证号、家庭住址、银行卡号属于个人敏感信息，一律不发给任何 AI 工具——你发出去的内容不掌握在你手里。需要 AI 帮忙填表，可以把敏感字段留空，拿到模板后自己离线补上。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- 本课专属演示逻辑（演示 ②：温度与概率分布） -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  var BASE = { b1: 0.6, b2: 0.3, b3: 0.1 };
+  var NAME = { b1: "学", b2: "玩", b3: "睡" };
+  var KEYS = ["b1", "b2", "b3"];
+
+  function d2Calc() {
+    var t = parseFloat($("d2-t").value);
+    $("d2-tv").textContent = t.toFixed(2);
+    var q = {}, s = 0, k, i;
+    if (t < 0.025) {
+      q.b1 = 1; q.b2 = 0; q.b3 = 0;
+    } else {
+      for (i = 0; i < 3; i++) { k = KEYS[i]; q[k] = Math.pow(BASE[k], 1 / t); s += q[k]; }
+      for (i = 0; i < 3; i++) { k = KEYS[i]; q[k] = q[k] / s; }
+    }
+    for (i = 0; i < 3; i++) {
+      k = KEYS[i];
+      var pct = Math.round(q[k] * 100);
+      $("d2-" + k).style.width = Math.max(pct, 1) + "%";
+      $("d2-p" + (i + 1)).textContent = pct + "%";
+    }
+    if (t < 0.025) {
+      $("d2-out").innerHTML = "温度 ≈ 0：<span class='ok'>几乎总是选「" + NAME.b1 + "」</span>——严谨的老教授，稳定但保守。";
+    } else if (t >= 1.2) {
+      $("d2-out").innerHTML = "温度很高：<span class='hl'>「" + NAME.b2 + "」「" + NAME.b3 + "」也常被选中</span>——喝了三杯咖啡的诗人，有创意但容易跑偏。";
+    } else {
+      $("d2-out").innerHTML = "温度中等：多数时候选「" + NAME.b1 + "」，<span class='dim'>偶尔换个花样</span>——正常人档。";
+    }
+  }
+
+  $("d2-t").addEventListener("input", d2Calc);
+  $("d2-t").addEventListener("change", d2Calc);
+  d2Calc();
+
+  // 延伸视频懒加载：滚到视口附近才真正加载 B 站播放器
+  var frames = document.querySelectorAll("iframe[data-src]");
+  if (frames.length && typeof IntersectionObserver !== "undefined") {
+    var io = new IntersectionObserver(function (entries) {
+      for (var j = 0; j < entries.length; j++) {
+        if (entries[j].isIntersecting) {
+          entries[j].target.src = entries[j].target.getAttribute("data-src");
+          io.unobserve(entries[j].target);
+        }
+      }
+    }, { rootMargin: "300px" });
+    for (var j = 0; j < frames.length; j++) io.observe(frames[j]);
+  }
+})();
+</script>
+</body>
+</html>
