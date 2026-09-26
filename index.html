@@ -50,6 +50,28 @@
     </section>
 
     <section class="sec">
+      <h2 id="s-tutor">AI 助教使用说明</h2>
+      <p class="lead">每个页面右下角都有一个蓝色「AI」浮窗，是本课程的 AI 助教。它有两种用法，<strong>默认就能用，不依赖任何账号</strong>。</p>
+      <div class="callout callout--tip">
+        <span class="callout__t">模式一 · 离线导览（默认，无需任何 Key）</span>
+        打开任意课时页，点右下角「AI」即可提问。没填 Key 时，它会用<strong>关键词匹配</strong>帮你定位到相关章节，并给出直达链接——<strong>断网也能用</strong>。适合问「这个概念在第几课哪一节」「我想跳去某处复习」这类问题。
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">模式二 · 联网解答（填你自己的 Key）</span>
+        点浮窗里的 <strong>⚙ 设置</strong>，选服务商（DeepSeek / 通义千问 / 自定义 OpenAI 兼容），粘贴<strong>你自己的 API Key</strong>。保存后，助教会基于<strong>当前课时正文</strong>回答你的问题；卡在实操时，把那一步或报错贴给它，它会帮你定位步骤、给排查思路。
+      </div>
+      <ul>
+        <li><strong>Key 只存你本机浏览器</strong>（localStorage），对话只发往你选的服务商，不经任何中间服务器。</li>
+        <li>没填 Key 时完全不发任何网络请求；填了 Key 的对话也只连你选的官方接口。</li>
+        <li>AI 可能出错——<strong>以课程资料和老师为准</strong>。它是辅助自学工具，不是标准答案来源。</li>
+      </ul>
+      <div class="callout callout--warn">
+        <span class="callout__t">提示</span>
+        个别服务商不允许浏览器直接跨域调用（CORS）。若联网解答报错，用本机预览服务（<code>python tools/serve.py</code>）打开本站，或先用离线导览模式。
+      </div>
+    </section>
+
+    <section class="sec">
       <h2 id="s-map">课程地图</h2>
       <p class="lead">本站收录第 6 次课至第 32 次课，共 27 课、54 课时。模块划分沿用课程三大模块口径。</p>
       <div id="home-mods"></div>
