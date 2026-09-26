@@ -135,6 +135,11 @@
           <li><b>有独立的缺口小节</b><span>写清缺哪些字段、下一步去哪补。<br><em>没有缺口说明</em>：让 AI 补一节，它是后续调研的起点。</span></li>
         </ol>
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV17sAte3Exh&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】AI做高质量PPT从写到讲的全流程拆解，一期给你讲透！【旁门左道PPT】</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：AI 是怎么从一个主题自动生成大纲、再排成能讲能看的 PPT 的？</figcaption>
+      </figure>
     </section>
 
     <section class="sec" id="s-pages">
@@ -630,5 +635,22 @@ B. 错误
   $("d2-bad").addEventListener("click", function () { d2Show(false); });
 })();
 </script>
+  <script>
+  (function () {
+    "use strict";
+    document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+      var src = frame.getAttribute("data-src");
+      if (!src) return;
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+          });
+        });
+        io.observe(frame);
+      } else { frame.src = src; }
+    });
+  })();
+  </script>
 </body>
 </html>

@@ -988,6 +988,10 @@ D. 实际只参加过一次需求讨论，却在简历里写"主导方案设计"
       </div>
     </section>
 
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1iy4y1B7wE&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】告别模板，求职简历制作攻略</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里说的「去模板化」，怎么用到你用 AI 生成的简历上？</figcaption>
+      </figure>
     <div class="pager" id="site-pager"></div>
   </main>
 
@@ -1149,6 +1153,23 @@ D. 实际只参加过一次需求讨论，却在简历里写"主导方案设计"
     $("d3-k2").textContent = "—";
     $("d3-k3").textContent = "—";
     $("d3-out").innerHTML = "";
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
   });
 })();
 </script>

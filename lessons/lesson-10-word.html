@@ -20,6 +20,10 @@
 
     <section class="sec" id="s-guide">
       <h2>本课导读<span class="sec__tag">模块二 · 办公实战</span></h2>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1eu7NzYExx&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】用 DeepSeek 直接生成带格式的 Word 文档</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：让 AI 直接产出 Word，和不经处理地复制粘贴相比，省掉了哪些最容易出错的环节？</figcaption>
+      </figure>
       <p class="lead">
         前面几课你学会了指挥 AI。从这一课开始，进入<strong>真实的办公场景</strong>。
         第一站是 Word——通知、总结、方案、申请，这些文体的共同点是：
@@ -603,5 +607,22 @@ D. 改重要文档前建议先「另存为新文件」
 <script src="../assets/js/search-index.js"></script>
 <script src="../assets/js/site.js"></script>
 
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
 </body>
 </html>

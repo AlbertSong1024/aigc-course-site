@@ -20,6 +20,10 @@
 
     <section class="sec" id="s-guide">
       <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1cGigBQE6n&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】Agent Skill 从使用到原理，一次讲清</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：Skill（技能）到底给 AI 装上了什么？一份好用的 SKILL.md 最关键的是哪几块内容？</figcaption>
+      </figure>
       <p class="lead">
         上一课你学会了给 WorkBuddy 下任务。但同一件事说第二遍、第三遍，就是在浪费时间。
         这一课学<strong>技能（Skill）</strong>——把一套做法写成文件，以后一句话就能调用。
@@ -880,6 +884,23 @@ D. 关闭只是不再自动调用，随时可以重新开启
   }
   ["d1-a", "d1-b", "d1-c"].forEach(function (id) {
     $(id).addEventListener("click", function () { d1Run(id); });
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
   });
 })();
 </script>

@@ -944,6 +944,10 @@ D. 允许它适当提示我该怎么答，以便我答得更好
       </p>
     </section>
 
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV15b4y1f7tf&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】大学生职场模拟面试情景剧</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：情景剧里哪个回答最打动你？换作你会怎么答？</figcaption>
+      </figure>
     <div class="pager" id="site-pager"></div>
   </main>
 
@@ -1131,6 +1135,23 @@ D. 允许它适当提示我该怎么答，以便我答得更好
   }
   ["d3-a", "d3-b", "d3-c"].forEach(function (id) {
     $(id).addEventListener("click", function () { d3Run(id); });
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
   });
 })();
 </script>

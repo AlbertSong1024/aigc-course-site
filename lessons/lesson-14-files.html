@@ -636,6 +636,11 @@ DSC00128.jpg
         但「删没删错」「猜没猜」「数字对不对」，这三条它自己判不了。
         你在这门课上要练的，恰恰是后面这半句。
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1MU411S7Ef&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】分享一个特别狠的做会议纪要的神仙AI工具「通义听悟」</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：这类 AI 会议纪要工具是怎么把一段会议录音自动整理成纪要和待办的？</figcaption>
+      </figure>
     </section>
 
     <section class="sec" id="s-quiz">
@@ -910,5 +915,22 @@ D. 抽查首、中、末各一个文件，看内容与文件名对不对得上
   }
 })();
 </script>
+  <script>
+  (function () {
+    "use strict";
+    document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+      var src = frame.getAttribute("data-src");
+      if (!src) return;
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+          });
+        });
+        io.observe(frame);
+      } else { frame.src = src; }
+    });
+  })();
+  </script>
 </body>
 </html>

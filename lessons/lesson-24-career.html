@@ -1039,6 +1039,10 @@ D. 期限写"尽快""下学期""有时间就"也算合格
       </p>
     </section>
 
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1xP4y1T7Gc&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】大学生职业规划思路</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：对照视频里的规划框架，你目前最缺的是「方向」还是「行动」？</figcaption>
+      </figure>
     <div class="pager" id="site-pager"></div>
   </main>
 
@@ -1326,6 +1330,23 @@ D. 期限写"尽快""下学期""有时间就"也算合格
   }
   ["d4-v1", "d4-v2", "d4-v3"].forEach(function (id) {
     $(id).addEventListener("click", function () { d4Run(id); });
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
   });
 })();
 </script>
