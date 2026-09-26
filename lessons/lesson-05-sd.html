@@ -145,7 +145,7 @@
         看完回到上面的两阶段表，看能不能自己把两问答出来、和表格对上。
       </p>
       <figure class="figure video-embed">
-        <iframe src="https://player.bilibili.com/player.html?bvid=BV1tz4y1h7q1&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <iframe id="sd-video" data-src="https://player.bilibili.com/player.html?bvid=BV1tz4y1h7q1&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
         <figcaption><b>【延伸视频】Stable Diffusion 大白话原理（UP：大白话AI）</b>　需联网观看；看完回到正文做对照实验。</figcaption>
       </figure>
 
@@ -758,6 +758,22 @@ D. 模型自动改用更好的提示词
     });
   }
   d1Render(0);
+
+  /* B 站视频懒加载：滚动到可视区才注入 src，避免页面打开即加载播放器 */
+  var vframe = document.getElementById("sd-video");
+  if (vframe) {
+    var vsrc = vframe.getAttribute("data-src");
+    if ("IntersectionObserver" in window) {
+      var vio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { vframe.src = vsrc; vio.disconnect(); }
+        });
+      });
+      vio.observe(vframe);
+    } else {
+      vframe.src = vsrc;
+    }
+  }
 })();
 </script>
 </body>
