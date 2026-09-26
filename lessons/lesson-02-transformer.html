@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第2次课 神经网络与 Transformer｜AIGC应用与实践</title>
+<meta name="description" content="AI 的大脑结构：神经元四要素、传话游戏与 RNN 的困境、Transformer 开会看全局、注意力机制给重要词打高分。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="2" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块一</span></h2>
+      <p class="lead">
+        上一次课你已经知道：AI 回答问题，本质上是在<strong>做文字接龙</strong>。
+        那它凭什么知道该接哪个词？这节课我们把 AI 的「大脑」拆开看看——
+        看清它的最小零件（神经元）、老一代模型的毛病（传话传到忘）、
+        以及让 ChatGPT 这类模型脱胎换骨的关键设计（Transformer 与注意力）。
+      </p>
+      <p>下面这些现象，你在上次课多半已经碰到过：</p>
+      <ol>
+        <li>同一个问题问两遍，它接的龙不一样——你归因给了「掷骰子」；但<strong>接哪个词的范围</strong>是谁圈出来的？</li>
+        <li>让它翻译一个长句，它有时会「忘了」句子开头说了什么——像是话传到后面就走样了。</li>
+        <li>「我去银行上班」和「我坐在河岸上」，它都能把 <code>bank</code> 翻对——它是怎么「看」出来的？</li>
+      </ol>
+      <div class="callout callout--warn">
+        <span class="callout__t">本课最容易产生的误解</span>
+        「注意力机制 = 把重要的词多看几遍」。<strong>不对。</strong>
+        注意力是<strong>给重要的词打高分</strong>，让高分词在理解当前词时说话更大声——
+        是「加权」，不是「复读」。这是本课要亲手纠正的一个前概念。
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">工具与材料</span>
+        本课实操只需要一个<strong>对话式 AI</strong>：豆包、千问（通义千问）、DeepSeek，三选一，
+        网页版或手机 App 都行。第 6 次课才引入本地部署和桌面智能体，这节课用最普通的对话就够了。
+        页面内的视频与工具说明<strong>核对日期：2026-09-26</strong>；视频需联网观看。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>不看资料<strong>画出人工神经元示意图</strong>，并标注输入、权重、激活、输出四个要素；</li>
+          <li>用自己的话说出 <strong>RNN（传话游戏）与 Transformer（开会讨论）</strong>处理长句的至少 2 条差异；</li>
+          <li>对两个含 <code>bank</code> 的多义句<strong>先自己判断词义</strong>，再让 AI 验证，并解释注意力如何依据上下文选对词义；</li>
+          <li>向 AI 索取一个注意力机制的生活化比喻，并<strong>说出它 1 个优点、1 个局限</strong>；</li>
+          <li>判断「注意力 = 把重要的词多看几遍」这句话<strong>错在哪里</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-neuron"><b>01</b>神经元：一次小组投票 <em>＋实操①</em></a>
+        <a href="#s-rnn"><b>02</b>传话游戏：RNN 的困境 <em>＋实操②</em></a>
+        <a href="#s-transformer"><b>03</b>Transformer：开会讨论 <em>＋实操③</em></a>
+        <a href="#s-attention"><b>04</b>注意力：给重要词打高分 <em>＋实操④</em></a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="1">第 1 次课</a>的「文字接龙 / Token / 温度」——
+        本课要回答的正是「接龙的大脑里发生了什么」。<br>
+        <strong>后续</strong>：大脑结构看懂了，下一课
+        <a class="xref" data-lesson="3">预训练与后训练</a> 讲这台机器是怎么「上学」的。
+      </div>
+    </section>
+
+    <section class="sec" id="s-neuron">
+      <h2>一、一个神经元，就是一次小组投票<span class="sec__tag">概念</span></h2>
+      <p>
+        神经网络的最小零件叫<strong>人工神经元</strong>。它模仿的是你大脑里的神经细胞：
+        收消息、掂量轻重、够不够兴奋、传不传出去。整个过程可以理解成<strong>一次小组投票</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>四要素</th><th>大白话</th><th>在投票里相当于</th></tr></thead>
+          <tbody>
+            <tr><td><strong>输入</strong></td><td>收到一堆消息</td><td>所有组员递上来的纸条</td></tr>
+            <tr><td><strong>权重</strong></td><td>谁的话更可信，就多听谁的</td><td>给每个组员的意见分配「信任度」</td></tr>
+            <tr><td><strong>激活</strong></td><td>加起来过一道及格线，不到就不吭声</td><td>总分不够 60 分，这事就不通过</td></tr>
+            <tr><td><strong>输出</strong></td><td>及格了，把结果传给下一个细胞</td><td>把表决结果交给下一个小组</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        信号流顺序是固定的：<strong>输入 → 按权重加权 → 激活判断 → 输出</strong>。
+        先收消息，再打分，再过线，最后传出去——顺序颠倒就讲不通了。
+      </p>
+      <h3>分层：越往深越抽象</h3>
+      <p>
+        一个神经元只做一件小事，但成千上万个神经元<strong>分层叠起来</strong>，就能认复杂的东西。
+        以「认人脸」为例：第一层只看得到<strong>像素和明暗</strong>；第二层把像素拼成<strong>边缘和线条</strong>；
+        第三层把边缘拼成<strong>五官</strong>；再往上，才出现「这是一张脸」的概念。
+        <strong>越深越抽象</strong>——底层看细节，顶层看概念。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">一句话带过的推导</span>
+        这些「信任度」（权重）是怎么调出来的？用的是你深度学习课上可能讲过的<strong>反向传播</strong>。
+        本课不展开、不考推导——你只需要记住：权重是<strong>训练时自动调出来的</strong>，不是人手填的。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ①·让 AI 批改你的神经元草图 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份被 AI 挑不出错的「神经元四要素」笔记，以及你被纠正的那几处错。</p>
+
+        <p><strong>第 1 步 · 先自己写（2 分钟，别偷看正文）</strong></p>
+        <p>合上页面，在纸上凭记忆写下神经元的四个要素，每个要素配一句自己的解释。写不出来才是真问题——写完再往下走。</p>
+
+        <p><strong>第 2 步 · 把草稿发给 AI 批改</strong>：打开豆包 / 千问 / DeepSeek 任选其一，把下面这条指令复制过去，按提示把你的草稿填进去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令模板 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>我刚学了人工神经元，凭记忆写了四个要素，请你当严格的老师逐条批改：
+1. 输入：（把你写的句子贴在这里）
+2. 权重：（把你写的句子贴在这里）
+3. 激活：（把你写的句子贴在这里）
+4. 输出：（把你写的句子贴在这里）
+要求：① 逐条判断对错，错的指出错在哪、为什么错；
+② 全部批改完后，用「小组投票」的比喻把这四个要素重新讲一遍，每条不超过 20 个字。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 对着批改结果改一版</strong></p>
+        <p>把被标错的那几条重写，再让 AI 复查一次，直到四条全过。</p>
+
+        <p><strong>做到下面两条，就算做完了</strong>：AI 能挑不出你这一版四要素的错；你能不看资料一口气说出「输入→加权→激活→输出」的顺序和各自的作用。说不出来就回到上面的表格再走一遍——<strong>顺序说反是最常见的错</strong>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-rnn">
+      <h2>二、传话游戏：老一代模型的困境<span class="sec__tag">体验</span></h2>
+      <p>
+        课堂上玩的传话游戏你刚体验过：一句话经六七个人逐个耳语传到队尾，往往面目全非——
+        而且你留意一下就会发现，<strong>丢的经常是开头的信息</strong>：时间、地点最先模糊，越往后传越没影。
+      </p>
+      <p>
+        老一代处理文字的模型 <strong>RNN</strong>（循环神经网络）就是这么读句子的：
+        第 1 个词读给第 2 个词，第 2 个词读给第 3 个词……<strong>一个传一个，排队往前走</strong>。
+        句子一长，读到句尾时，句头的信息已经被「传话」磨得差不多了。这在专业上叫
+        <strong>长程依赖问题</strong>：隔得远的词之间，信息传不过去。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>传话游戏里的现象</th><th>对应 RNN 的毛病</th></tr></thead>
+          <tbody>
+            <tr><td>一人只听上一人，不能越级听</td><td><strong>串行</strong>处理：逐词接力，前一词传给后一词</td></tr>
+            <tr><td>传得越远，开头丢得越多</td><td><strong>信息逐级衰减</strong>，长句开头被「忘掉」</td></tr>
+            <tr><td>队尾公布时只剩大意</td><td>长文本翻译、摘要时<strong>丢细节</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">记住现象就够了</span>
+        本课不考 RNN 的公式。你只需要带走一个画面：<strong>RNN = 排队传话，传到后面忘前面</strong>。
+        这正是 Transformer 出场的原因。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ②·让 AI 给你演一遍「传话游戏」 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份 6 轮传话记录，以及一句「信息从第几轮开始丢、丢的是开头还是结尾」的结论。</p>
+
+        <p><strong>第 1 步 · 先写下你的预测（1 分钟）</strong></p>
+        <p>先猜：传到第 6 轮，最先丢的是句子的<strong>开头</strong>还是<strong>结尾</strong>？把预测写在纸上——等下和 AI 的结果对。</p>
+
+        <p><strong>第 2 步 · 把这条指令发给 AI</strong>（复制即用）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令模板 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>我们来玩传话游戏，你扮演一列 6 个传话的人。初始句子：今晚七点操场集合，记得带篮球和校卡。
+请你分 6 轮输出，每一轮你扮演下一个人，凭记忆复述上一轮听到的句子——
+允许每轮漏掉或替换 1 个词，不要每轮都照抄原句。
+6 轮结束后，单独列出第 6 轮句子和原句的差别。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 对照原句找失真</strong></p>
+        <p>逐轮看：第几轮开始丢词？丢的是「今晚七点」还是「校卡」？和你预测的一致吗？</p>
+
+        <p><strong>做到下面两条，就算做完了</strong>：你有一份 6 轮的完整记录；你能指着记录说出「第几轮开始丢、丢的是哪头」，并回答一句：这对应 RNN 的哪个毛病（串行传递、信息逐级衰减）。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-transformer">
+      <h2>三、Transformer：从排队传话到开会讨论<span class="sec__tag">破局</span></h2>
+      <p>
+        2017 年提出的 <strong>Transformer</strong> 换了一个玩法：<strong>不开传话会，开圆桌会</strong>。
+        句子里的所有词<strong>同时到场</strong>，每个词都能一眼看到整句话——谁重要，就把注意力放在谁身上。
+        两个关键词：<strong>并行</strong>（不用排队）、<strong>全局</strong>（一眼看完整句）。
+      </p>
+      <p>
+        回答课上的投票题：翻译长句时，是「读完整个句子再翻」还是「看到哪翻到哪」更容易翻对？
+        大多数人的直觉是<strong>读完再翻</strong>——因为开头的信息还在手里。Transformer 用的就是这条路子，
+        RNN 则是「看到哪翻到哪」，翻到句尾时句头早忘了。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>RNN：排队传话</th><th>Transformer：开会讨论</th></tr></thead>
+          <tbody>
+            <tr><td><strong>读句子方式</strong></td><td>逐词串行，前词传后词</td><td>全部词并行，同时参与</td></tr>
+            <tr><td><strong>能看到的范围</strong></td><td>只有上一词留下的「记忆」</td><td>一眼看完整句</td></tr>
+            <tr><td><strong>长句开头的信息</strong></td><td>传到句尾基本忘光</td><td>随时能「回头看」</td></tr>
+            <tr><td><strong>决定关注谁</strong></td><td>只按先后顺序</td><td>按注意力给重要词打高分</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">和第 1 次课接上龙</span>
+        ChatGPT 这类模型生成文字，本质仍是<strong>文字接龙</strong>；而接龙的每一步，都是
+        <strong>Transformer 在开会</strong>：把「已经出现的一整段话」同时摆上桌，注意力挑出最该参考的词，
+        再决定下一个词接什么。接龙是「做什么」，Transformer 是「用什么脑子做」。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">实操 ③·先投票，再验货 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：你自己先写出的 2 条「RNN vs Transformer」差异，外加一张 AI 补全的对比表。</p>
+
+        <p><strong>第 1 步 · 先自己答（2 分钟）</strong></p>
+        <p>先用自己的话（不看正文）写出两条差异，比如从「读句子的方式」「长句开头的信息」里挑两个角度。写完再发指令——<strong>对比本身就是教学</strong>。</p>
+
+        <p><strong>第 2 步 · 把这条指令发给 AI</strong>（复制即用）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令模板 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请用「排队传话 vs 开会讨论」的比喻，向一个没学过深度学习的人解释：
+1. RNN 处理长句为什么会忘掉开头；
+2. Transformer 为什么没这个毛病。
+然后用表格对比两者，表头必须包含：读句子方式、能否同时看全文、长句开头信息、一句话比喻。
+表格后面用一句话回答：翻译长句时，为什么「读完整个句子再翻」通常更稳？</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 拿你的答案验 AI 的货</strong></p>
+        <p>把你写的 2 条差异和它的表格对：你想到了哪条？漏了哪条？它的比喻有没有讲错的？</p>
+
+        <p><strong>做到下面两条，就算做完了</strong>：你能说出至少 2 条差异（其中至少 1 条是你<strong>自己先写出来的</strong>）；你能用一句话讲清「文字接龙 + 开会看全局」是怎么拼在一起的——接龙决定做什么，Transformer 决定怎么挑下一个词。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-attention">
+      <h2>四、注意力机制：给重要词打高分<span class="sec__tag">核心</span></h2>
+      <p>
+        「开会讨论」时，AI 怎么决定<strong>谁重要</strong>？靠的就是 <strong>注意力机制</strong>：
+        理解当前这个词时，把句子里的其他词逐个<strong>打分</strong>——和它相关的词得高分，无关的词得低分，
+        高分词在「表决」时话语权就大。
+      </p>
+      <p>看两个真实例子，同一个 <code>bank</code>，词义完全不同：</p>
+      <ul>
+        <li>「He sat on the bank of the <strong>river</strong>.」——<strong>river</strong>（河）拿到了高分，bank 被拉向「河岸」；</li>
+        <li>「I need to <strong>go to</strong> the bank.」——「go to（去某地）」拿到了高分，bank 被拉向「银行」。</li>
+      </ul>
+      <p>
+        <strong>判断词义的从来不是 bank 自己，而是上下文里那些得高分的词。</strong>
+        这就是「注意力 = 给重要词打高分」——是打分加权，不是把词多看几遍。
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 两句 bank：AI 眼中的注意力分数长什么样</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="river" class="on">河岸句</button>
+              <button type="button" data-tab="go">银行句</button>
+            </div>
+          </div>
+          <div class="demo__stage" data-tabpanel="river">
+            <div class="mock">
+              <div class="mock__bar">
+                <span class="mock__chip">He</span>
+                <span class="mock__chip">sat</span>
+                <span class="mock__chip">on</span>
+                <span class="mock__chip">the</span>
+                <span class="mock__chip ac">bank</span>
+                <span class="mock__chip">of</span>
+                <span class="mock__chip">the</span>
+                <span class="mock__chip hi">river</span>
+              </div>
+              <div class="demo__out log">
+                <div>理解 bank 时，各词的话语权（注意力分）：</div>
+                <div><span class="hl">river</span>　▇▇▇▇▇▇▇▇▇▇　0.86　← 一句话定调：旁边是「河」</div>
+                <div><span class="ok">sat / on</span>　▇▇▇▇▇▇　0.52　← 「坐在……上」支持「河岸」</div>
+                <div><span class="dim">He / the / of</span>　▇▇　0.09　← 功能词，几乎不表态</div>
+                <div>→ 高分词把 bank 拉向：<span class="hl">河岸</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo__stage" data-tabpanel="go" style="display:none">
+            <div class="mock">
+              <div class="mock__bar">
+                <span class="mock__chip">I</span>
+                <span class="mock__chip">need</span>
+                <span class="mock__chip">to</span>
+                <span class="mock__chip hi">go to</span>
+                <span class="mock__chip">the</span>
+                <span class="mock__chip ac">bank</span>
+              </div>
+              <div class="demo__out log">
+                <div>理解 bank 时，各词的话语权（注意力分）：</div>
+                <div><span class="hl">go to</span>　▇▇▇▇▇▇▇▇▇▇　0.81　← 「去某个地点」指向「银行」</div>
+                <div><span class="ok">need</span>　▇▇▇▇　0.38　← 表达需求，略有支持</div>
+                <div><span class="dim">I / to / the</span>　▇▇　0.07　← 功能词，几乎不表态</div>
+                <div>→ 高分词把 bank 拉向：<span class="hl">银行</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo__note">分数为<strong>教学示意，非实测数值</strong>；真实模型的打分是成千上万个权重共同算出来的，但「相关词得高分、高分定词义」的道理就是它。</div>
+        </div>
+      </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1TZ421j7Ke&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】直观解释注意力机制（3Blue1Brown 官方中文版）</b>　需联网观看；看完回到正文。</figcaption>
+      </figure>
+      <p class="note">
+        带着两个问题看：<strong>① AI 判断 bank 词义时，看的是哪些词？② 分数高意味着什么？</strong>
+        看完要能回答：注意力不是「反复看」，而是「<strong>按相关性加权</strong>」。
+      </p>
+
+      <h3>换个场景：班长选举就是注意力打分</h3>
+      <p>
+        「谁最适合当班长」这个讨论，你课上刚做过：四位候选人（成绩第一 / 校队主力 / 人缘最好 / 办事最稳），
+        你起初给了一个排序；听完别人的理由后，你<strong>开始关注原本忽略的那位</strong>，排序变了。
+        这个过程和注意力机制一模一样——
+        <strong>「排序」就是权重分配，被别人提醒后才看到的候选人，就是原来分数打低了的重要词</strong>。
+        会说「我原来排第 X，现在排第 Y，因为注意到了______」，你就真的懂了注意力。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">实操 ④·bank 先猜后验，再办一场比喻大赛 <em>约 15 分钟 · 本课重点</em></div>
+        <p><strong>做完你手上会有</strong>：2 句 bank 的「先猜后验」记录（2/2 判断正确），以及一张你评过优缺点的「AI 比喻卡」。</p>
+
+        <p><strong>第 1 步 · 先自己猜（不查词典、不问 AI）</strong></p>
+        <p>把下面两句各自翻译成中文，并在每句旁边写一句「我判断的依据是哪个词」：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 两个多义句">
+          <div class="codeblock__bar"></div>
+<pre><code>1. He sat on the bank of the river.
+2. I need to go to the bank.</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让 AI 验证</strong>（复制即用）：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令模板 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>下面两句里的 bank 分别是什么意思？
+1. He sat on the bank of the river.
+2. I need to go to the bank.
+请分别回答，并且必须说明：你主要依据句中哪几个词做出的判断。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 对比你的依据和它的依据</strong></p>
+        <p>它依据的词（比如 river、go to）和你第 1 步写的一样吗？如果你猜错了一句，错在哪——是被哪个高分词带偏了，还是压根没看上下文？</p>
+
+        <p><strong>做到下面两条，就算做完了</strong>：2 句的词义你都判断正确（或知道错在哪）；你能用「打高分」解释 AI 的判断——「river 得分高，所以 bank 取『河岸』」，而不是「AI 认识这个句子」。</p>
+
+        <p><strong>第 4 步 · 挑战：AI 比喻大赛（学有余力再做）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="挑战指令 · 直接复制发送">
+          <div class="codeblock__bar"></div>
+<pre><code>请用 3 个互不相同的生活化比喻解释注意力机制，每个比喻不超过 2 句话，
+并且每个比喻都点名：它解释了注意力的哪个特点（打分、加权、看上下文）。</code></pre>
+        </div>
+        <p>拿到 3 个比喻后，给每个比喻写两句评价：<strong>哪里像</strong>（1 句）、<strong>哪里不像</strong>（1 句），最后选出你觉得最贴切的 1 个并说明理由。评价时盯住本课的红线：把注意力说成「多看几遍」的比喻，就是「不像」的典型。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>人工神经元四个要素，按信号流顺序排列正确的是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 输入 → 激活 → 权重 → 输出</li>
+            <li>B. 输入 → 权重 → 激活 → 输出</li>
+            <li>C. 权重 → 输入 → 激活 → 输出</li>
+            <li>D. 激活 → 权重 → 输入 → 输出</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>先收消息（输入），按可信度打分（权重），加总过及格线（激活），及格才传出去（输出）。
+            A 的错法最典型：把「打分」和「过线」的顺序颠倒了——<strong>没打分就拿什么去过线？</strong>
+            C、D 则连「先有消息」这个起点都丢了。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>判断：「RNN 像传话游戏，长句信息会逐级衰减，读到句尾时句头已经模糊。」</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A（正确）。</b>RNN 逐词串行接力，每个词只「听」上一词传来的记忆，隔得越远信息磨得越少，
+            这正是长程依赖问题。如果选了 B，回想一下实操②里第 6 轮传话还剩多少原句的信息。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>关于「注意力机制」做的事，最准确的说法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 把重要的词反复多看几遍</li>
+            <li>B. 给上下文里的词按重要性打分，高分词影响当前词的理解</li>
+            <li>C. 把长句拆成几个短句再分别处理</li>
+            <li>D. 把整个句子复制多份同时计算</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>注意力的本质是<strong>打分加权</strong>：相关的词话语权大，无关的词话语权小。
+            A 是本课点名要纠正的误解——「多看几遍」是复读，没有「谁更重要」的分配；C、D 都不是注意力做的事。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>「认人脸」的例子里，神经网络<strong>第一层</strong>最先「看到」的是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 五官</li>
+            <li>B. 「这是一张脸」的概念</li>
+            <li>C. 像素和明暗边缘</li>
+            <li>D. 表情</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>分层抽象是<strong>越深越抽象</strong>：第一层只看得见像素和明暗，边缘在第二层、五官在第三层，
+            「脸」这个概念在最顶层。A、B、D 都是深几层之后才拼出来的东西——第一层还没那个本事。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：「Transformer 的『开会讨论』，意思是句子里每个词都能同时看到整句话。」</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：A（正确）。</b>「开会」包含两件事：<strong>并行</strong>（所有词同时参与，不用排队）和
+            <strong>全局</strong>（每个词都能看到整句）。这正是它不像 RNN 传话的原因——传话的人只能听到上一人，
+            开会的人看得见全场。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li><strong>神经元 = 一次投票</strong>：输入收消息、权重定可信、激活过及格线、输出传下去；</li>
+          <li>神经元<strong>分层叠加，越深越抽象</strong>：像素 → 边缘 → 五官 → 脸；</li>
+          <li><strong>RNN = 排队传话</strong>：串行接力，长句信息逐级衰减，读到句尾忘句头；</li>
+          <li><strong>Transformer = 开会讨论</strong>：并行 + 全局，一眼看完整句，谁重要就关注谁；</li>
+          <li><strong>注意力 = 给重要词打高分</strong>：bank 的词义由 river、go to 这些高分词决定——不是「多看几遍」。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：大脑的结构你看完了——但这台机器的「知识」是哪来的？
+        下一课 <a class="xref" data-lesson="3">预训练与后训练</a> 讲大模型怎么「上学」：
+        先海量读书，再岗前培训。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">拓展阅读（选看，需联网）</span>
+        李宏毅《Transformer 详解》：
+        <a href="https://www.bilibili.com/video/BV1Wv411h7kN" target="_blank" rel="noopener">bilibili.com/video/BV1Wv411h7kN</a>
+        ——想多听一遍课堂比喻、或准备给家人讲作业的同学看它正合适。
+      </div>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）人工神经元里，「不到 60 分就不吭声」说的是哪个要素？
+A. 输入
+B. 权重
+C. 激活
+D. 输出
+【答案】C
+【解析】激活就是那道及格线：加总达不到标准就不往下传。A 是收消息，B 是给每条消息定可信度，D 是及格后把结果传给下一个——及格这道关卡本身是激活。
+
+2.（多选）人工神经元的四要素包括下面哪些？
+A. 输入
+B. 权重
+C. 温度
+D. 输出
+【答案】ABD
+【解析】四要素是输入、权重、激活、输出。C 的「温度」是第 1 次课概率采样里的概念，管的是文字接龙选词的发散程度，跟神经元内部结构无关——两个课的概念不要混。
+
+3.（单选）RNN 读长句容易「读到句尾忘句头」，根本原因是？
+A. 句子太长，屏幕显示不下
+B. 逐词串行接力，信息逐级衰减
+C. 训练时见过的长句太少
+D. 激活函数选得不对
+【答案】B
+【解析】RNN 像传话游戏：一个词只把信息传给下一个词，传得越远磨损越大，开头的信息最先模糊。A 是无稽之谈，C、D 或许影响别的性能，但「忘句头」的病灶就在串行传递本身。
+
+4.（判断）「注意力机制就是把重要的词反复多看几遍。」
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】注意力是给上下文里的词按相关性打分、加权——高分词话语权大，而不是重复阅读。「多看几遍」没有分配轻重，是本课点名要纠正的误解。
+
+5.（单选）AI 能把「He sat on the bank of the river」里的 bank 判断成「河岸」，靠的是？
+A. 词典里 bank 排在第一个的释义
+B. 句子里 river 等词获得了高注意力分
+C. 随机采样碰巧选对了
+D. 这句话被很多人问过
+【答案】B
+【解析】判断词义的依据是上下文：river 与「坐在……上」这些高分词把 bank 拉向「河岸」。A 词典释义不看语境，遇到「go to the bank」就会翻错；C、D 都解释不了它为什么两句能判对两种意思。
+
+6.（多选）与 RNN 相比，Transformer 处理句子的特点是？
+A. 句中所有词同时参与计算
+B. 逐词排队、前一个词传给后一个词
+C. 能一眼看到整句话
+D. 依据注意力给重要词打高分
+【答案】ACD
+【解析】Transformer 的关键词是并行（A）、全局（C）、注意力打分（D）。B 恰好是 RNN 的做法——排队传话正是被 Transformer 淘汰掉的那个环节，选进去就是把它俩认反了。</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  /* B 站视频懒加载：滚到可视区才注入 src，避免打开页面就拉外部播放器 */
+  var frame = document.querySelector(".video-embed iframe");
+  if (frame) {
+    var src = frame.getAttribute("data-src");
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else {
+      frame.src = src;
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

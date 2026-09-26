@@ -21,7 +21,17 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
-const { JSDOM, VirtualConsole } = require("jsdom");
+const { JSDOM, VirtualConsole, requestInterceptor } = require("jsdom");
+
+/* 冒烟环境只放行本地（file:）资源。页面允许放「需联网」的外部嵌入（如 B 站视频 iframe），
+   但冒烟测试不访问外网：http(s) 子资源一律返回空内容，
+   避免把外部站点的脚本错误（如播放器 JS 在 jsdom 里崩掉）算到本页面头上。（2026-09-26） */
+const BLOCK_EXTERNAL = requestInterceptor((request) => {
+  if (/^https?:/i.test(request.url)) {
+    return new Response("", { status: 200, headers: { "Content-Type": "text/plain" } });
+  }
+  // file: 等本地请求照常放行
+});
 
 const ROOT = path.resolve(__dirname, "..");
 const QUIET = process.argv.includes("--quiet");
@@ -189,7 +199,7 @@ async function smokeCheck(file, opts) {
 
   const dom = await JSDOM.fromFile(file, {
     runScripts: "dangerously",
-    resources: "usable",
+    resources: { interceptors: [BLOCK_EXTERNAL] },
     pretendToBeVisual: true,
     virtualConsole: vc,
     beforeParse(w) {
@@ -293,13 +303,13 @@ async function smokeCheck(file, opts) {
   const { CM, FLAT, SECTIONS } = loadData();
 
   head("【A】course-map 数据完整性");
-  if (FLAT.length !== 27) fail(`课时数 ${FLAT.length}，应为 27（第 6–32 次课）`);
-  else ok("课时数 27");
+  if (FLAT.length !== 32) fail(`课时数 ${FLAT.length}，应为 32（第 1–32 次课）`);
+  else ok("课时数 32");
   const nos = FLAT.map((l) => l.no);
   if (new Set(nos).size !== nos.length) fail("存在重复课次号");
   else ok("课次号无重复");
   const hours = FLAT.reduce((s, l) => s + l.theory + l.practice, 0);
-  if (hours !== 54) warn(`学时合计 ${hours}，第 6–32 次课应为 54`);
+  if (hours !== 64) warn(`学时合计 ${hours}，全 32 课应为 64`);
   else ok("学时合计 54");
 
   const targets = FLAT.filter((l) => l.status === "ready" && (!ONLY || l.no === ONLY));

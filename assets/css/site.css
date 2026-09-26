@@ -812,3 +812,13 @@ input[type=range]::-moz-range-thumb{
   .codeblock__lang{color:#1D4ED8;}
   a{color:#111;text-decoration:none;}
 }
+
+
+/* ---------- B 站视频嵌入（需联网观看） ---------- */
+.video-embed { margin: var(--sp-5, 24px) 0; }
+.video-embed iframe {
+  display: block; width: 100%; aspect-ratio: 16 / 9;
+  border: 0; border-radius: 10px;
+  background: #0F172A;
+}
+.video-embed figcaption { margin-top: 8px; }

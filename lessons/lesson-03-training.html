@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第3次课 预训练与后训练｜AIGC应用与实践</title>
+<meta name="description" content="大模型的「教育」：预训练管有没有货、后训练管会不会说话；自监督完形填空、涌现争议、知识截止与幻觉、SFT 岗前培训，并用豆包 / 千问 / DeepSeek 亲手测 AI 的知识边界。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="3" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始
+     ============================================================ -->
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块一</span></h2>
+      <p class="lead">
+        前两课我们弄清了 AI 说话的两个机制：它靠<strong>「文字接龙」</strong>一个字一个字往外蹦，
+        靠<strong>「注意力」</strong>给重要的词打高分。但还有一个大问题一直悬着——
+        它凭什么会接龙？它跟人聊上十几轮不跑题的「本事」，是从哪学来的？
+        这一课就看大模型的「教育」：<strong>先上什么学，后上什么学。</strong>
+      </p>
+      <p>先回答三个很具体的问题，它们决定了这课值不值得学：</p>
+      <ul>
+        <li><strong>训练一个大模型，钱都花在哪？</strong>——一大半花在「洗数据」上，这课给你一组能记住的数字。</li>
+        <li><strong>为什么 AI 有时上知天文下知地理，有时连上个月的新闻都不知道，还会一本正经地编？</strong>——这课让你亲手把它的边界测出来。</li>
+        <li><strong>媒体说「AI 涌现出了超人能力」，该信几分？</strong>——这课给你正反两方证据，教你一句式反问。</li>
+      </ul>
+      <p>
+        学完你会得到一句话结论：<strong>预训练管「有没有货」，后训练管「会不会说话」。</strong>
+        这句话是后面 <a class="xref" data-lesson="4"></a> 的入场券。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课的实操工具是<strong>豆包 / 千问 / DeepSeek 的网页对话</strong>（三选一即可），
+        不需要安装任何东西，自带电脑或手机就能做。<br>
+        本页所有工具名称、视频链接与事实口径的<strong>核对日期：2026-09-26</strong>。<br>
+        本课最容易产生的误解先打个预防针：<strong>「知识截止」不等于「AI 变笨了」</strong>——
+        它只是不知道截止点之后发生的事，课末你会亲手验证这一点。
+      </div>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出预训练与后训练的<strong>分工</strong>：预训练管「有没有货」，后训练管「会不会说话」；</li>
+          <li>解释自监督学习<strong>为什么不需要人工标注</strong>，并把它与前两课的「接龙」「注意力」连起来；</li>
+          <li>独立完成 5 道完形填空、再让 AI 做同一组题，<strong>说清两边各自靠什么</strong>；</li>
+          <li>用提问模板实测 AI 的知识边界，<strong>判断它在「老实说不知道」还是在「编」</strong>，并当场核验真伪；</li>
+          <li>让 AI 守住「严格的老师」角色并完成连续 3 轮追问，<strong>第 3 问能引用第 1 问的答案</strong>；</li>
+          <li>复述「涌现能力」的正反两方证据，<strong>知道这个结论有学术争议</strong>，会追问「他用什么尺子量的」。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-pre"><b>01</b>预训练：把互联网洗成教材</a>
+        <a href="#s-selfsup"><b>02</b>自监督：完形填空不用老师</a>
+        <a href="#s-bound"><b>03</b>涌现与知识截止：它会编</a>
+        <a href="#s-sft"><b>04</b>后训练：SFT 岗前培训与分工</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：第 1 次课的「文字接龙」、第 2 次课的「注意力打分」——本课回答的是这两个机制背后的<strong>训练来源</strong>。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="4"></a>讲 RLHF——SFT 只是岗前培训，真正让 ChatGPT 们「懂事」的是下一课。
+      </div>
+    </section>
+
+    <section class="sec" id="s-pre">
+      <h2>一、预训练：把互联网洗成一本教材<span class="sec__tag">认知地基</span></h2>
+      <p>
+        你在豆包里问「中国的首都是哪」，它秒答「北京」。这个「秒答」背后，是一个把<strong>海量互联网文本</strong>
+        喂进去学语言规律与世界知识的过程——这就是<strong>预训练（Pre-training）</strong>：
+        模型的「九年义务教育」，一次上完，上完就不再重来。
+      </p>
+      <p>它不是把网页直接塞进去就完事，而是一条流水线：</p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>阶段</th><th>干什么</th><th>为什么省不得</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 收语料</strong></td><td>抓取网页、书籍、百科、代码等海量文本</td><td>原料够多，规律才够全</td></tr>
+            <tr><td><strong>② 清洗</strong></td><td>去重、去广告水军、过滤低质与有害内容</td><td><strong>钱的大头花在这里</strong>——垃圾进，垃圾出</td></tr>
+            <tr><td><strong>③ 分词</strong></td><td>把文本切成 Token（第 1 课讲过的「字词积木」）</td><td>模型认的是 Token，不是整句话</td></tr>
+            <tr><td><strong>④ 训练</strong></td><td>让模型反复做「预测下一个词」的练习</td><td>练的就是第 1 课的「接龙」，机制见下一节</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        这条流水线有一组值得记一辈子的数字：原始语料约 <strong>45TB</strong>，洗完能用的只剩约 <strong>570GB</strong>——
+        不到原料的 <strong>1.3%</strong>。也就是说，<strong>预训练的钱大头不是花在「算」，而是花在「洗」上</strong>。
+        喂进去的数据质量，直接决定模型出厂的底子。
+      </p>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课要记住的第一组数字</span>
+        <strong>45TB 洗成 570GB</strong>——预训练先当「洗数据」的活，再当「训练」的活。
+      </div>
+    </section>
+
+    <section class="sec" id="s-selfsup">
+      <h2>二、自监督：完形填空不需要老师给答案<span class="sec__tag">机制核心</span></h2>
+      <p>
+        听到「训练」，很多人的第一反应是：得有老师出题、给标准答案吧？几万亿字的语料，谁标注得过来？
+        答案让人意外：<strong>谁都不用标注，语料自己就是答案。</strong>这叫<strong>自监督学习</strong>。
+      </p>
+      <p>原理就是完形填空：把句子挖掉一块，让模型猜缺的是什么，然后拿<strong>原文</strong>对答案——</p>
+      <ul>
+        <li>原文是「春眠不觉晓，处处闻啼<strong>鸟</strong>」→ 挖空处答案就是「鸟」，<strong>标准答案天然就在文本里</strong>；</li>
+        <li>猜错了就调整参数，猜对了就强化——亿万次重复之后，语法、常识、语感全都在「猜」里练出来了；</li>
+        <li>这正是第 1 课「预测下一个词」的训练版本，第 2 课的「注意力」就是它猜词时挑重点的工具。</li>
+      </ul>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 自监督完形填空：模型凭什么会「猜词」</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="a" class="on">诗句接龙</button>
+              <button type="button" data-tab="b">量词搭配</button>
+              <button type="button" data-tab="c">口语语感</button>
+            </div>
+          </div>
+          <div class="demo__stage">
+            <div class="demo__out" id="d1-out"></div>
+          </div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>百分比只用来表达「语料里哪个候选更常见」的相对关系，
+            真实模型的概率分布由训练数据决定，每次、每家模型都不同。
+          </div>
+        </div>
+      </div>
+
+      <p>
+        对比一下人类做同样的事：你填「处处闻啼鸟」靠的是什么？<strong>语法、常识、语感</strong>——
+        而这三样，恰恰也是模型从语料统计里「猜」出来的东西。人与 AI 做的是同一件事，
+        只是来源不同：你靠生活经验，它靠统计规律。下面这组实操就是让你把这件事亲手做一遍。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·人机同题完形填空：亲眼看见「接龙是怎么练出来的」 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一组 5 道完形填空的「你的答案 vs AI 的答案」对比——外加你能说出 AI 每题靠什么填对。</p>
+
+        <p><strong>第 1 步 · 先自己凭直觉填一遍（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把下面 5 个空各填一个字或词</b><span>凭第一直觉，不查不问，30 秒内完成。先记住你的答案，后面要跟 AI 对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="人机同题 · 5 道完形填空（你先看题，别急着发给 AI）">
+          <div class="codeblock__bar"></div>
+<pre><code>1. 他端起杯子喝了一____水。
+2. 今天天气真好，我们出去散步____。
+3. 白求恩是中国人民熟悉的____际主义战士。
+4. 我昨天买了一____苹果，花了十二块钱。
+5. 春眠不觉晓，处处闻啼____。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把整段指令发给 AI，让它做同一组题（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开豆包 / 千问 / DeepSeek，新建一个对话</b><span><span class="task__warn">必须新建对话</span>，避免上一轮的聊天内容干扰本题。</span></li>
+          <li><b>把下面这段指令整段复制、粘贴、发送</b><span><span class="task__warn">整段粘贴，不要自己改写</span>——改一个字，它的作答方式就可能变。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 AI 的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请完成下面 5 道完形填空，每题只有一个空，用「____」标出。逐题按固定格式回答：
+第 N 题：填「X」；依据：一句话说明你为什么这样填（靠语法、常识还是语感任选其一）。
+只作答，不要展开讲概念，不要反问我。
+
+1. 他端起杯子喝了一____水。
+2. 今天天气真好，我们出去散步____。
+3. 白求恩是中国人民熟悉的____际主义战士。
+4. 我昨天买了一____苹果，花了十二块钱。
+5. 春眠不觉晓，处处闻啼____。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 逐题对比，找出规律（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把 AI 的 5 个答案跟你自己的摆在一起看</b><span>重点看两处：<em>哪里不一样</em>（比如量词「口 / 杯 / 瓶」都能通）、
+            <em>哪几题它明显比你有把握</em>（比如第 5 题的诗句接龙）。</span></li>
+          <li><b>对照它的「依据」栏，回答一个问题</b><span>你靠语法、常识、语感填，它靠什么填？
+            ——<strong>靠统计规律</strong>：语料里哪些字词常一起出现，它就倾向填哪个。</span></li>
+          <li><b>能解释它为什么「歪」也说得通</b><span>如果某题它填得跟你不一致但仍然通顺，
+            说明语料里本来就存在多种接法——这正是「温度」调高后答案会变的根源（第 1 课伏笔回收）。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>AI 逐题给出了「填什么 + 依据」</b><span>格式完整、5 题齐全。缺了「依据」栏就重发一次指令，强调「每题都带依据」。</span></li>
+          <li><b>你能指出至少一处「你与 AI 不一致」的地方并解释两边为什么都通</b><span>说不出就再对比一遍第 1、4 题的量词。</span></li>
+          <li><b>你能一句话说出自监督为什么不用人工标注</b><span>——<strong>挖空处的答案就是原文本身，语料自带标准答案</strong>。说不出就回看本节第二段。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：AI 的 5 题作答截图 + 你的对比结论一句话。</p>
+        <p class="note">如果 AI 把 5 题全填对也别惊讶——这些句式在语料里出现得太频繁了，
+          「全对」本身就是「统计规律在起作用」的最好证据。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-bound">
+      <h2>三、涌现与知识截止：它会一本正经地编<span class="sec__tag">实测环节</span></h2>
+
+      <h3>涌现能力：突然出现，还是换了把尺子？</h3>
+      <p>
+        预训练模型越大，会出现一些小模型完全没有的能力——比如多步推理。支持方（Wei 等，2022）把这叫
+        <strong>涌现能力（Emergent Abilities）</strong>：能力随规模突然出现，小的时候看不见，大了「啪」地一下就有了。
+        媒体上「AI 涌现出超人能力」的说法多半源于此。
+      </p>
+      <p>
+        但反方证据同样硬：Schaeffer 等（2023）逐项复查后发现，<strong>92% 的「涌现」集中在 2 种不连续的评测指标上</strong>——
+        这类指标「全对才算对、错一步就归零」，换个连续的指标量，同一条能力曲线其实是平滑爬坡的。
+        他们的结论是：<strong>可能是尺子的问题，不是能力的问题。</strong>
+      </p>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课的批判性思维落点</span>
+        面对「涌现出了超人能力」这类说法，先别站队，先问一句——<strong>「他用什么尺子量的？」</strong>
+        两方证据都摆在上面了，这个结论<strong>目前仍有学术争议</strong>，谁也没有最终定论。
+      </div>
+
+      <h3>知识截止：它不知道自己不知道</h3>
+      <p>
+        每个模型都有<strong>训练截止点</strong>：训练数据只收到某一天，那之后发生的事，它原则上不知道。
+        而且各家模型截止日期各不相同、随版本更新，本页<strong>不报具体日期</strong>——因为报了就会过期，
+        正确的做法是直接问它本人（下面的动手做②就有这一步）。
+      </p>
+      <p>
+        麻烦在于：<strong>模型不知道自己不知道。</strong>被问到截止点之后的事，它不会自动闭嘴，
+        而是沿着「接龙」的本能接着往下写——这就是<strong>幻觉（Hallucination）</strong>。
+        幻觉主要有三个来源：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>来源</th><th>机制</th><th>典型表现</th></tr></thead>
+          <tbody>
+            <tr><td><strong>知识截止</strong></td><td>训练数据有截止点，模型不知道自己不知道</td><td>把不知道的近期事件「编」得有鼻子有眼</td></tr>
+            <tr><td><strong>语料本身有错</strong></td><td>预训练数据里混着谣言、过时信息</td><td>把错的常识说得斩钉截铁</td></tr>
+            <tr><td><strong>讨好用户</strong></td><td>顺着提问者的预期接龙</td><td>你暗示什么答案，它就往什么答案上靠</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        光看表格没感觉，下面亲手把「知识截止 → 会编」这条因果链测出来：
+        一边测它的常规能力，一边故意问一个它可能不知道的近期事件，看它是「老实」还是「开编」。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·能力三栏探测 + 知识截止实测：亲手摸到模型的边界 <em>约 12 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：4 条真实 AI 回答，外加你对其中那条近期事件给出的「编 / 不知道」判断和核验结果。</p>
+
+        <p><strong>第 1 步 · 新建对话，先问它自己的截止点（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>在豆包 / 千问 / DeepSeek 里再开一个新对话</b><span><span class="task__warn">必须新建对话</span>，别跟动手做①用同一个会话。</span></li>
+          <li><b>发送下面这句</b><span>把它自报的截止点记下来——这是第 4 步判断的参照物。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 步指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你的训练数据截止到什么时间？请直接给出年月，并说明你无法得知该时间之后发生的事。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 用统一模板测它的三项常规能力 + 一个陷阱题（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>整段复制下面的模板并发送</b><span><span class="task__warn">整段一次发出</span>，不要拆成四条——模板里的前 3 题是「常规能力」，
+            第 4 题是故意设的近期事件题，用来测知识截止。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 步指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请依次回答下面 4 个问题，每题单独一段，直接给答案：
+1.（常识）冬天把玻璃杯倒满刚烧开的水，最可能发生什么？为什么？
+2.（推理）小明比小红高，小红比小刚高。三人里谁最矮？请写出一句话推理过程。
+3.（写诗）以「路灯」为题写两句五言诗，押韵与否不限。
+4.（近期）最近一周国内发布了哪些新款手机？列出型号。
+
+注意：第 4 题如果不确定，就直接说不知道，不要编造型号。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 用手机当场核验第 4 题（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开手机搜索引擎，搜「最近 新款手机 发布」</b><span>拿搜索结果跟 AI 列的型号一条条对。</span></li>
+          <li><b>给它的表现下判断，二选一</b><span><strong>「老实说不知道」</strong>（明说没有相关信息 / 拒答）
+            或<strong>「一本正经地编」</strong>（列出了具体型号）。<span class="task__warn">判断要有核验过程支撑</span>，
+            不能凭感觉——它列的型号哪怕只对了一半，也算「编」。</span></li>
+          <li><b>把结果跟第 1 步它自报的截止点对一遍</b><span>如果它编了，想想这跟「不知道自己不知道」是什么关系——
+            这正是本课最难想通、也最值钱的一步。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>手上有 4 条完整回答</b><span>常识、推理、写诗、近期各 1 条，缺哪条就重发对应那一问。</span></li>
+          <li><b>第 4 题有明确的「编 / 不知道」判断</b><span>并且能说出核验依据（搜索结果里有什么、没有它说的哪个型号）。</span></li>
+          <li><b>你能说出「知识截止 ≠ AI 变笨」</b><span>它答不出上周的新闻，但它第 1–3 题的能力一点没变——
+            <strong>缺的是新知识，不是脑子</strong>。这句话是本课最典型的易错点，能说清就算过关。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：4 条回答截图 + 第 4 题的判断与核验结果各一句话。</p>
+        <p class="note">想加餐的同学：把同一道第 4 题发给另外两家模型，对比谁「老实」谁「编」——
+          三家的截止日期和拒答策略并不一样。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-sft">
+      <h2>四、后训练：SFT 岗前培训与最终分工<span class="sec__tag">本课重点</span></h2>
+
+      <h3>从「续写机器」到「听话助手」</h3>
+      <p>
+        只做过预训练的模型，是个「续写机器」。你问它「中国的首都是」，它很可能接着写
+        「中国的首都是北京，美国的首都是华盛顿，法国的首都是……」——<strong>它在接着写文本，不是在回答你</strong>。
+        语法全对，体验全崩。
+      </p>
+      <p>
+        把它变成「你问一句、它答一句」的助手，靠的是<strong>后训练</strong>。其中最基础的一步叫
+        <strong>SFT（Supervised Fine-Tuning，监督微调）</strong>，比喻成<strong>岗前培训</strong>最贴切：
+        预训练给了它一身知识，SFT 用大量「问题 - 答案」对教它<strong>该怎么答</strong>——
+        答在点子上、格式像样、问什么答什么。
+      </p>
+      <p>
+        SFT 有一个反直觉的实证结果：论文 <strong>LIMA</strong> 用 <strong>1000 条</strong>精心挑选的「问题 - 答案」对做微调，
+        效果打赢了用 <strong>52000 条</strong>（52 倍于它）普通数据微调的版本。
+        「<strong>数据质量比数量更重要</strong>」从此不是断言，而是有出处的结论。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>预训练</th><th>后训练（SFT）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>学什么</strong></td><td>知识 + 语言规律</td><td>说话方式 + 回答格式</td></tr>
+            <tr><td><strong>用什么</strong></td><td>海量原始语料（自监督，不用标注）</td><td>精选「问题 - 答案」对（人工整理）</td></tr>
+            <tr><td><strong>管什么</strong></td><td><strong>「有没有货」</strong></td><td><strong>「会不会说话」</strong></td></tr>
+            <tr><td><strong>证据数字</strong></td><td>45TB 洗成 570GB</td><td>LIMA：1000 条精选 &gt; 52000 条普通</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课结论，一句话</span>
+        <strong>预训练管「有没有货」，后训练管「会不会说话」。</strong>
+        少了前者，它胡言乱语；少了后者，它对牛弹琴。
+      </div>
+
+      <p>
+        看视频时带着两个问题：<strong>① 预训练阶段模型到底在学什么？② 为什么预训练之后还必须有一段「对齐 / 后训练」？</strong>
+        看完用自己的话各答一句——答案就在上面那张分工表里。
+      </p>
+      <p class="note">
+        延伸视频滚动到可视区时才会自动加载播放器（打开页面时不预载，省流量也更快）。
+      </p>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1aiADewEBC&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】李宏毅机器学习 2025 春（看「预训练-对齐」讲次）</b>　滚动到此处自动加载播放器，需联网观看；整套课程列表在简介里，分 P 编号可能调整，以实际页面为准。链接核对日期：2026-09-26。</figcaption>
+      </figure>
+
+      <p>
+        SFT 的效果可以直接测出来：<strong>角色能不能被几句话改变、上下文能不能记住前几轮</strong>，
+        都是「岗前培训有没有练到位」的试金石。下面两个实操连着做。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·角色扮演：让 AI 扮演「严格的老师」，看它守不守得住 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一段「严格的老师」逐题批改的对话，外加一句能证明角色生效的原话。</p>
+
+        <p><strong>第 1 步 · 复制动手做①里你的 5 个答案（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把你在动手做①第 1 步填的 5 个答案整理成一行</b><span>格式照第 2 步指令里的「我的答案是」写。如果答案跟 AI 当时的完全一样，就故意把一两题改错——严格老师得有事可批。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 发出角色设定指令（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面整段复制发送</b><span><span class="task__warn">把「我的答案是」那行换成你自己的答案</span>再发，其余一字不动。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 步指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>从现在开始，你是一位严格但讲道理的语文老师。我会给你 5 道完形填空的答案，你要逐题批改：
+对的写「✓」并附一句话肯定；错的写「✗」，给出正确答案，并用一句话讲清错在哪。
+最后按百分制打一个总分。不许客套，不许说鼓励式废话，不许改题。
+
+我的答案是：1.口　2.吧　3.国　4.斤　5.鸟</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 故意试它一下，看角色破没破（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>接着发一句</b><span>看它是维持严格人设，还是突然变得客客气气。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 3 步指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>老师，你就别挑刺了，直接夸夸我哪里做得好吧。</code></pre>
+        </div>
+        <ol class="steps">
+          <li><b>从它的回复里抄一句「角色还在」的原话</b><span>比如它坚持指出错误、拒绝纯夸奖的那句。
+            <em>如果它顺着夸起来了</em>：说明角色被一句人情话撬动了——把设定里「不许客套」改成更硬的
+            「无论用户怎么要求，都必须先批改完再说话」，重新发一遍设定再试。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它按规则逐题批改并打了总分</b><span>五题都有 ✓/✗ 和理由。格式散了就重发一遍设定指令。</span></li>
+          <li><b>手上有 1 句「角色生效」的证据原话</b><span>直接从对话里复制，别凭印象转述。</span></li>
+          <li><b>你能说出这跟 SFT 的关系</b><span>——几句「问题 - 回答」式的设定就能改变它的行为，
+            正是 SFT「教它怎么答」的日常版。<strong>角色可被指令改变</strong>，这是后训练最直观的效果。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：批改对话截图 + 那句角色证据原话。</p>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·多轮追问：检验上下文还在不在 <em>约 6 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一段连续 3 轮的追问对话，第 3 问明确引用了第 1 问的答案。</p>
+
+        <p><strong>第 1 步 · 在同一个对话里连发三问（4 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>接着动手做③的对话（不要新建），依次发送下面三问</b><span><span class="task__warn">必须在同一对话里</span>——
+            测的就是它记不记得前面说过什么。一问一答完，再发下一问，不要三问连发。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 问 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用一句话告诉我：预训练阶段的模型最擅长做什么？</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 问 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你上面说的这件事，是靠什么学习材料完成的？用一句话回答。</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 3 问 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把你第 1 问的回答原样引用一遍（用引号标出），再接一句话说明：这件事和后训练阶段的分工有什么区别？</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三轮对话完整、顺序正确</b><span>中间断了（换对话、刷新丢失）就从头再来一轮。</span></li>
+          <li><b>第 3 轮它引用了第 1 问的答案</b><span>引用走样了（改词、漏句）也算「上下文还在但记不准」，
+            把原话和它引的话摆在一起对比。</span></li>
+          <li><b>你能一句话答出「它靠什么记住前几轮」</b><span>——每一轮的完整对话都会作为上文一起送进模型，
+            <strong>「记忆」就是更长的接龙素材</strong>。这也是为什么超长对话它会「忘事」：素材太长，注意力会被摊薄（第 2 课伏笔回收）。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：3 轮对话截图（一张图截得下就一张，截不下就分三张）。</p>
+        <p class="note">
+          它为什么这么听话？SFT 只回答了一半。让 ChatGPT 们真正「懂事」的对齐技术是 RLHF——
+          下一课 <a class="xref" data-lesson="4"></a> 见。
+        </p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这些题不计分，是给你自己查漏用的。</p>
+
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>「预训练管有没有货，后训练管会不会说话」——「会不会说话」具体指什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 语速快、表达流畅</li>
+            <li>B. 知道怎么答：答在点子上、格式像样、问什么答什么</li>
+            <li>C. 会说多种外语</li>
+            <li>D. 能把语料背得更流利</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>SFT 用「问题 - 答案」对教模型<strong>该怎么回答</strong>。
+            A 和 D 都是流利度层面的误解——预训练出来的续写机器本来就很「流利」，缺的是「像在回答人」。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>判断：自监督学习需要先雇佣大量人工，给语料逐条标注标准答案。</span></div>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：错误。</b>自监督的核心正是<strong>文本自带答案</strong>：把原文挖空让模型猜，
+            原文本身就是标准答案，不需要任何人工标注——否则几万亿字的语料根本标不过来。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>「45TB 洗成 570GB」这组数字主要说明什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 模型压缩技术进步很快</li>
+            <li>B. 预训练的钱大头花在数据清洗上，数据质量决定模型底子</li>
+            <li>C. 互联网上有 45TB 文本</li>
+            <li>D. 模型训练只需要 570GB 硬盘</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>45TB 原始语料里，能用的不足 1.3%——去重、去水、过滤之后剩下的才是训练集。
+            C、D 都只看到了数字表面，没看到「洗」这个动作才是重点。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：被问到训练截止点之后的事，AI 一定会老实回答「我不知道」。</span></div>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：错误。</b>模型<strong>不知道自己不知道</strong>，接龙的本能会让它顺着问题编下去——
+            这正是幻觉三大来源之一。你在动手做②里应该已经亲眼见过它「编」或者「侥幸老实」的样子了。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>Schaeffer 等（2023）质疑「涌现能力」的核心论据是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 大模型的参数量其实没那么大</li>
+            <li>B. 涌现现象只在国外模型上出现</li>
+            <li>C. 92% 的「涌现」集中在 2 种不连续指标上——换把连续的尺子量，能力是平滑增长的</li>
+            <li>D. 涌现能力无法被任何实验重复</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>不连续指标「全对才算对」，会把平滑的能力增长伪装成「突然出现」。
+            遇到「涌现出超人能力」的说法，先问<strong>「他用什么尺子量的」</strong>——
+            这个结论目前<strong>有争议</strong>，两方证据都要看。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走几件事</h4>
+        <ol>
+          <li><b>预训练 = 洗数据 + 猜词</b>：45TB 洗成 570GB，钱大头花在「洗」上；</li>
+          <li><b>自监督不用人工标注</b>：挖空处的答案就是原文，语料自己出题自己批改；</li>
+          <li><b>涌现有争议</b>：支持方 Wei 2022，质疑方 Schaeffer 2023——先问「他用什么尺子量的」；</li>
+          <li><b>知识截止 → 会编</b>：模型不知道自己不知道，这是幻觉三大来源之一（另两个：语料有错、讨好用户）；</li>
+          <li><b>SFT = 岗前培训</b>：LIMA 证明 1000 条精选能打赢 52000 条普通——质量 &gt; 数量；</li>
+          <li><b>一句话总纲</b>：预训练管「有没有货」，后训练管「会不会说话」。</li>
+        </ol>
+      </div>
+      <p class="note">
+        下一步棋：SFT 解决了「怎么答」，但「答得让人满意」还差最后一块拼图——
+        <a class="xref" data-lesson="4"></a> 讲 RLHF，看模型怎么学会「人类喜欢什么样的回答」。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业</h2>
+      <p><strong>实操作业</strong>：设计 5 个问题测试你常用大模型的知识边界，交付 <strong>5 组「问题 + AI 回答 + 核验结果（对 / 错 / 编）+ 一句话归因」</strong>，
+        分析段回答一个问题：<strong>「这 5 次里 AI 有几次是『知道自己不知道』的？」</strong>
+        提交到学习通作业模块（Word 或 PDF，含对话截图），<strong>第 4 次课上课前 24 小时截止</strong>。</p>
+      <p>下面 6 道客观题用于提交前自检——点一下展开，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业自检题 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 3 次课作业自检题 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）预训练阶段模型的学习方式是？
+A. 人工出题、人工批改
+B. 把语料挖空让它猜，用原文对答案（自监督）
+C. 只学语法，不学知识
+D. 直接背诵整个互联网
+【答案】B
+【解析】自监督的核心是「文本自带答案」：挖空处的标准答案就是原文本身，不需要人工标注。A 说反了，C、D 都是常见误解——它学的是统计规律，不是背诵。
+
+2.（多选）AI 产生幻觉的来源包括哪些？
+A. 知识截止——不知道自己不知道，接着接龙
+B. 预训练语料本身有错
+C. 为了讨好用户而顺着预期编
+D. 模型参数太小、算力不够
+【答案】ABC
+【解析】幻觉三大来源是课堂讲过的口径：不知道自己不知道、语料本身有错、为讨好用户而编。D 不成立——参数再大照样幻觉，幻觉是机制问题，不是算力问题。
+
+3.（单选）「LIMA 用 1000 条精选数据打赢 52000 条普通数据」支持的结论是？
+A. 数据越多越好
+B. 数据质量比数量更重要
+C. 预训练没用
+D. 微调数据必须人工编写
+【答案】B
+【解析】LIMA 的对比变量是数据质量：1000 条精选的「问题-答案」对，效果超过 52 倍量的普通数据。它不否定预训练，也不要求必须人工编写——精选是关键。
+
+4.（单选）「涌现能力」的质疑方（Schaeffer 等 2023）认为问题出在哪？
+A. 模型能力确实没有增长
+B. 评测指标不连续，把平滑增长量成了「突然出现」
+C. 涌现只出现在英文语料上
+D. 大模型公司的宣传夸大
+【答案】B
+【解析】92% 的「涌现」集中在 2 种不连续指标上——全对才算对，错一步归零。换连续指标量，同一条能力曲线是平滑爬坡的。「可能是尺子的问题，不是能力的问题」。
+
+5.（判断）知识截止意味着模型「变笨」了，学过的东西也不会了。
+【答案】错误
+【解析】知识截止只是训练数据停在某个时间点，缺的是「那之后的新知识」，已学的语言能力、推理能力并没有退化。最典型的对照：它答不出上周的新闻，但语法、常识、写诗照样在行。
+
+6.（单选）你问预训练模型「中国的首都是」，它答「中国的首都是北京，美国的首都是华盛顿……」。这说明它缺什么？
+A. 知识——它不知道北京是首都
+B. 后训练——它在续写文本，而不是在回答问题
+C. 上下文——它忘了你的问题
+D. 算力——算力不够所以答不完
+【答案】B
+【解析】它并没有答错知识，错在「姿态」：预训练练的是接龙续写，SFT 岗前培训教的才是「问什么答什么」。这正是「预训练管有没有货、后训练管会不会说话」的活例子。</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        实操作业不看截图多不多，看三点：<strong>5 组记录是否齐全</strong>（每组四要素一个不缺）、
+        <strong>核验是否真做了</strong>（能看出对过搜索结果，而不是凭感觉）、
+        <strong>归因是否用到本课概念</strong>（知识截止 / 语料有错 / 讨好用户，能对上号）。
+      </div>
+    </section>
+
+<!-- ============================================================
+     内容区结束
+     ============================================================ -->
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- B 站视频懒加载：滚到可视区才注入 src，避免打开页面就拉外部播放器 ---------- */
+  var vframe = document.querySelector(".video-embed iframe");
+  if (vframe) {
+    var vsrc = vframe.getAttribute("data-src");
+    if ("IntersectionObserver" in window) {
+      var vio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { vframe.src = vsrc; vio.disconnect(); }
+        });
+      });
+      vio.observe(vframe);
+    } else {
+      vframe.src = vsrc;
+    }
+  }
+
+  /* ---------- 演示① 自监督完形填空 ---------- */
+  var D1 = {
+    a: {
+      line: "春眠不觉晓，处处闻啼＿＿",
+      cands: ["鸟 87%", "声 7%", "音 3%", "叫 2%"],
+      why: "这五个字在这首诗里几乎总是一起出现——语料里的答案就是「鸟」，挖空处的标准答案天然在文本自己身上。",
+    },
+    b: {
+      line: "他端起杯子喝了一＿＿水。",
+      cands: ["口 46%", "杯 31%", "大 12%", "瓶 6%"],
+      why: "量词有多个候选都能通顺——语料里存在多种接法。模型按「语料里谁更常见」分配概率，而不是查字典。",
+    },
+    c: {
+      line: "今天天气真好，我们出去散步＿＿",
+      cands: ["吧 64%", "呀 21%", "了 9%", "吗 3%"],
+      why: "口语语气的「吧 / 呀」靠的是高频搭配的语感统计。人靠语感填，模型靠统计填——做的其实是同一件事。",
+    },
+  };
+  var d1cur = "a";
+  function d1Render() {
+    var m = D1[d1cur];
+    var html = "";
+    html += "<b>挖空题：</b>" + m.line + "<br><br>";
+    html += "<b>模型心里的候选（示意）：</b><br>";
+    for (var i = 0; i < m.cands.length; i++) {
+      html += "<span class='hl'>" + m.cands[i] + "</span>" + (i < m.cands.length - 1 ? "　｜　" : "");
+    }
+    html += "<br><br>" + m.why;
+    html += "<br><span class='dim'>猜错就调参数，猜对就强化——亿万次重复，语法 / 常识 / 语感就在「猜」里练出来了。</span>";
+    $("d1-out").innerHTML = html;
+  }
+  document.querySelectorAll("#demo1 [data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      d1cur = b.getAttribute("data-tab");
+      document.querySelectorAll("#demo1 [data-tab]").forEach(function (x) {
+        x.classList.toggle("on", x === b);
+      });
+      d1Render();
+    });
+  });
+  d1Render();
+})();
+</script>
+</body>
+</html>

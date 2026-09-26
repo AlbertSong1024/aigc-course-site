@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第5次课 AI 绘图原理｜AIGC应用与实践</title>
+<meta name="description" content="Stable Diffusion 深度解析：扩散模型加噪去噪、看不见的四个旋钮、提示词三件套与控制变量对照实验。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="5" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+<!-- ============================================================
+     内容区开始
+     ============================================================ -->
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块一</span></h2>
+      <p class="lead">
+        前四次课我们一直在研究「AI 怎么说话」。这一课换到画面：
+        <strong>同一句提示词发给文生图模型，两次生成的图可以完全不一样。</strong>
+        这不是抽卡玄学——背后有一套可以讲清、可以实验、可以归因的原理。
+      </p>
+      <p>先看三个你马上会撞上的问题：</p>
+      <ul>
+        <li><strong>AI 画一张图之前，脑子里是先有这张图，还是边画边想？</strong>——直觉答案是前者，真相会让你意外。</li>
+        <li><strong>千问的图像生成界面里一个滑块都没有，参数去哪了？</strong>——界面没有旋钮，不等于模型没有参数。</li>
+        <li><strong>网上抄来的「万能提示词」，为什么在你手里就失灵？</strong>——换了模型，提示词要重新试。</li>
+      </ul>
+      <p>
+        这一课不用笔：四组提示词对照实验<strong>只动手、只动嘴</strong>。
+        每组只改提示词里的一个地方，亲眼看画面变什么，再用一句话说清「改了什么、变了什么、归功给哪个词」。
+        <strong>能不能归因，是工程师和玩家的分界线。</strong>
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课两个最大的坑：① <strong>「界面没旋钮 = 模型没参数」是错的</strong>——步数、CFG、种子、负向提示词都真实存在，只是被产品藏成了默认值；
+        ② <strong>「万能提示词能照抄」是错的</strong>——不同模型训练路线不同，换一个模型，提示词就要重新试。
+      </div>
+      <p class="note">本课工具为通义千问（图像生成，背后是通义万相文生图模型）与豆包 / 千问 / DeepSeek（对话）。
+        界面与功能核对日期 2026-09-26，随版本更新以你实际看到的为准。</p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出扩散模型的<strong>两个阶段</strong>（训练时加噪、生成时去噪），并说清模型学的是「猜噪声、减噪声」，不是画图；</li>
+          <li>说出<strong>潜空间</strong>的作用：先把图压小再扩散，因此省算力；</li>
+          <li>说出<strong>四个看不见的旋钮</strong>各管什么（步数、CFG、种子、负向提示词），并解释它们为什么在千问界面里看不见；</li>
+          <li>独立完成 <strong>4 组「只改一个地方」的提示词对照实验</strong>，并口头说明每组「改了什么、画面变了什么」；</li>
+          <li>根据画面问题<strong>反推该改提示词的哪一处</strong>（跑题、风格、光线、想排除的东西各对应什么写法）；</li>
+          <li>判断「万能提示词能照抄」错在哪里，并说清<strong>「换了模型，提示词要重新试」</strong>的理由。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-diffuse"><b>01</b>扩散模型：猜噪声，不是画图</a>
+        <a href="#s-knobs"><b>02</b>看不见的旋钮与唯一的旋钮</a>
+        <a href="#s-experiment"><b>03</b>控制变量实验：只改一个地方</a>
+        <a href="#s-models"><b>04</b>换了模型，提示词要重新试</a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="3"></a>的「让模型猜、再告诉它猜得对不对」——本课的「猜噪声」是同一范式的图像版；
+        <a class="xref" data-lesson="4"></a>的「人类偏好可以变成一个信号」——本课 CFG 的「听话程度」直接用它。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="6"></a>把大模型装进你自己的电脑——本课末尾有课前准备清单，别忘了抄。
+      </div>
+    </section>
+
+    <section class="sec" id="s-diffuse">
+      <h2>一、扩散模型：AI 不是在画图，是在猜噪声<span class="sec__tag">原理</span></h2>
+      <p>
+        上课开头那两张图：同一句「一个穿汉服的少女站在樱花树下」，一次生成，两张完全不同。
+        如果 AI 是「先想好一张图再画出来」，同一句话应该画出差不多两张才对。
+        真相是——<strong>两次生成，起点根本不是同一团东西。</strong>
+      </p>
+
+      <h3>两个阶段：加噪与去噪</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>阶段</th><th>什么时候发生</th><th>做的事</th><th>结果</th></tr></thead>
+          <tbody>
+            <tr><td><strong>正向：加噪</strong></td><td>训练阶段</td><td>给一张清晰图<strong>一步步加噪声</strong>，加到变成纯粹的雪花噪点</td><td>得到「清晰图 ↔ 纯噪声」的完整过程，模型据此学会<strong>猜每一步加了什么噪声</strong></td></tr>
+            <tr><td><strong>反向：去噪</strong></td><td>生成阶段</td><td>从一团纯噪声出发，模型每步<strong>猜出这一步的噪声、减掉它</strong></td><td>噪声越来越少，画面一点点「长」出来，最后成图</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        所以模型学的不是「画图」，而是<strong>「猜噪声、减噪声」</strong>。
+        它从哪团噪声开始，最后长出来的图就是哪样——
+        <strong>两次生成起点噪声不同，图就完全不同。</strong>这就是开头那两张图的由来。
+      </p>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">米开朗基罗的比喻，加上一处关键区别</span>
+        「雕像本来就在石头里，我只是把不属于它的部分去掉。」——听起来和去噪一模一样。<br>
+        但注意：<strong>石头里的雕像是确定的</strong>，凿开之前就知道里面是谁；
+        <strong>噪声里的图是模型一步一步猜出来的</strong>——所以同一句话，能长出不同的图。
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 拖动滑块，看「去噪」的每一步在发生什么</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="range">
+              <span>去噪进度</span>
+              <input type="range" id="d1-step" min="0" max="20" step="1" value="0">
+              <span class="range__val" id="d1-val">第 0 步 / 共 20 步</span>
+            </div>
+            <button class="btn btn--main" type="button" id="d1-play">从头播放</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d1-noise">噪声 100%</b><span>剩余噪声</span></div>
+              <div class="kpi"><b class="acc" id="d1-state">纯噪声</b><span>当前画面</span></div>
+            </div>
+            <div id="d1-grid" style="display:grid;grid-template-columns:repeat(16,1fr);width:240px;height:240px;border:1px solid #d8dee9"></div>
+          </div>
+          <div class="demo__out" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非真实模型输出。</strong>这是程序按「噪声逐步减少」的规律画的 16×16 示意图，用来看清去噪的方向感；真实模型每一步都在上千维的潜空间里算。
+          </div>
+        </div>
+      </div>
+
+      <h3>看视频之前，带着两个问题</h3>
+      <p>
+        下面这个视频把正向扩散、反向扩散讲得最直白。<strong>带着两个问题看</strong>：
+        ① 正向扩散和反向扩散，哪个发生在训练、哪个发生在生成？
+        ② 模型每一步预测的到底是「图」还是「噪声」？
+        看完回到上面的两阶段表，看能不能自己把两问答出来、和表格对上。
+      </p>
+      <figure class="figure video-embed">
+        <iframe src="https://player.bilibili.com/player.html?bvid=BV1tz4y1h7q1&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】Stable Diffusion 大白话原理（UP：大白话AI）</b>　需联网观看；看完回到正文做对照实验。</figcaption>
+      </figure>
+
+      <h3>潜空间：先压小，再扩散</h3>
+      <p>
+        还有一个省钱的设计：模型并不直接在原图的像素上做扩散，而是<strong>先把图压小（大约压到边长的八分之一），在小图上算完再放大回来</strong>——这个「压小的空间」就叫<strong>潜空间（latent space）</strong>。
+        格子数少了两个数量级，省下来的是真金白银的算力。你几秒钟就能等到一张图，潜空间功不可没。
+      </p>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·跑通第一张基准图 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：你亲手生成的第一张 AI 图，和一句你复制保存下来的基准提示词。</p>
+
+        <p><strong>第 1 步 · 打开工具，找到图像生成入口（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>打开通义千问 App 或网页版（tongyi.aliyun.com），找到「图像生成」</b><span>
+            出图的背后是通义万相文生图模型。界面随版本更新，以你实际看到的为准（本站核对日期 2026-09-26）。</span></li>
+          <li><b>先看一眼界面：有没有步数、CFG、种子任何一个滑块？</b><span>
+            没有——什么参数都调不了。<strong>你输入一句话，它给你一张图，你唯一能控制的就是那句话。</strong>
+            记住这个画面，下一节讲「被藏起来的旋钮」时你会用上。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 把基准提示词整句复制，发出去（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>发下面这句（全班统一基准，别改字）</b><span>
+            <span class="task__warn">整句粘贴，不要自己改写</span>——后面所有对照实验都基于这一句，改了字实验就对不上了。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="基准提示词 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>一个穿汉服的少女站在樱花树下</code></pre>
+        </div>
+        <p class="note">想换题材也行，但必须保持「主体 + 场景」这个结构（比如「一只橘猫趴在窗台上」），并且之后每一组实验都基于<strong>你自己的这一句</strong>来改。</p>
+
+        <p><strong>第 3 步 · 等图出来，跟邻座核对一件事（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>和邻座各生成一次，对比两张图</b><span>同一句基准提示词，两张图<strong>几乎一定不一样</strong>——这就是本节讲的「起点噪声不同」。指得出至少一处不同，就算看懂了。</span></li>
+          <li><b>记住你自己这张图的样子</b><span>它是接下来四组实验的「基准」。抽问时要能说清你用的是哪句提示词。</span></li>
+        </ol>
+
+        <p><strong>第 4 步 · 做到这两条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>图出来了</b><span>排队慢就再等几秒或刷新重发。</span></li>
+          <li><b>能一句话说出「界面里没有任何参数滑块，唯一的旋钮是提示词」</b><span>
+            <em>打不开 / 一直转圈</em>：切到网页版试试；还不行就和邻座共用一台，图共用、后面的交流各说各的。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-knobs">
+      <h2>二、看不见的旋钮与唯一的旋钮<span class="sec__tag">参数认知</span></h2>
+      <p>
+        千问的界面里一个滑块都没有——那步数、CFG 这些参数是不是就不存在了？
+        <strong>不是。旋钮没有消失，只是被产品藏起来了，产品替你拧成了调好的默认值。</strong>
+        在专业界面（比如 Stable Diffusion WebUI）里，这四个旋钮都是明摆着的：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>旋钮</th><th>管什么</th><th>拧过头 / 不拧会怎样</th><th>在千问里</th></tr></thead>
+          <tbody>
+            <tr><td><strong>步数</strong></td><td>去噪走多少步</td><td>太少 → 画面糊、残缺；<strong>步数翻倍，时间翻倍，图不一定变好</strong>（够用即可）</td><td>藏成默认值，不可调</td></tr>
+            <tr><td><strong>CFG</strong></td><td><strong>听话程度</strong>：画面多严格地贴着提示词走</td><td>低 → 自说自话、跑题；高 → 过饱和、发糊，「用力过猛」</td><td>藏成默认值，不可调</td></tr>
+            <tr><td><strong>种子</strong></td><td>从哪一团噪声开始</td><td>种子相同 → 反复出图几乎一样；种子不同 → 同一句话两张图</td><td>不可指定——所以你没法「复刻」上一张</td></tr>
+            <tr><td><strong>负向提示词</strong></td><td>做减法：不想要什么</td><td>写「不要 XX」模型经常处理不好</td><td>没有负向词输入框，<strong>替代法：正面写</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 四个被藏起来的旋钮：拧到不同位置，画面怎么变</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo2">
+              <button type="button" data-tab="steps" class="on">步数</button>
+              <button type="button" data-tab="cfg">CFG</button>
+              <button type="button" data-tab="seed">种子</button>
+              <button type="button" data-tab="neg">负向提示词</button>
+            </div>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="steps">
+            <div class="kpis">
+              <div class="kpi"><b>10 步</b><span>画面糊、残缺</span></div>
+              <div class="kpi"><b class="acc">25 步</b><span>基本收敛，够用</span></div>
+              <div class="kpi"><b>50 步</b><span>时间翻倍，图不一定更好</span></div>
+            </div>
+            <p>步数太少，噪声没减完就停；够用之后再加步数，买到的只是等待时间。<strong>边际递减</strong>在这里体现得很典型。</p>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="cfg" style="display:none">
+            <div class="kpis">
+              <div class="kpi"><b>低（1–3）</b><span>自说自话、跑题</span></div>
+              <div class="kpi"><b class="acc">中（7–8）</b><span>贴合提示词</span></div>
+              <div class="kpi"><b>高（13+）</b><span>过饱和发糊、用力过猛</span></div>
+            </div>
+            <p>CFG 不是越高越好——「更听话」的代价是画面变得又艳又僵。<br>
+              快问一句：<strong>CFG 拧到 20，图会更好还是更糟？</strong>——更糟，而且在千问里你根本拧不了。</p>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="seed" style="display:none">
+            <div class="kpis">
+              <div class="kpi"><b>同句 + 不同种子</b><span>两张完全不同的图</span></div>
+              <div class="kpi"><b class="acc">同句 + 同种子</b><span>反复生成几乎一样</span></div>
+            </div>
+            <p>种子是「这批噪声的编号」——它决定<strong>从哪里开始</strong>，不决定图<strong>好不好看</strong>。
+              开头「同一句话两张图」的悬念，答案就是它。</p>
+          </div>
+
+          <div class="demo__stage" data-tabpanel="neg" style="display:none">
+            <div class="compare">
+              <div class="compare__col">
+                <h5>✗ 写不了的做法：负向词</h5>
+                <ul>
+                  <li>「不要背景杂物」——模型对「不要」经常处理不好，反而把杂物画进去</li>
+                  <li>千问里<strong>根本没有负向词输入框</strong></li>
+                </ul>
+              </div>
+              <div class="compare__col b">
+                <h5>✓ 千问里的替代法：正面写</h5>
+                <ul>
+                  <li>「背景干净、没有其他人物」——直接描述你<strong>想要</strong>的画面</li>
+                  <li>比写「不要 XX」可靠得多</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__note"><strong>教学示意，非实测数值。</strong>三档效果是教学归纳的定性结论；具体数值随模型不同而不同，下一节就会看到「同一个 CFG 数字，在两个模型里含义差一倍」。</div>
+        </div>
+      </div>
+
+      <h3>你手里唯一的旋钮：提示词三件套</h3>
+      <p>
+        参数全被藏起来之后，你能控制的只剩输入框里那句话。这句话怎么写？记住<strong>三件套</strong>：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>件套</th><th>管什么</th><th>例句（接着基准句写）</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 主体细节</strong></td><td>让「谁 / 什么」更具体：动作、手持物、姿态</td><td>手持团扇、回眸、裙摆飘动</td></tr>
+            <tr><td><strong>② 风格</strong></td><td>整张图长成什么画风</td><td>水彩画风格 / 写实摄影风格 / 国风水墨</td></tr>
+            <tr><td><strong>③ 光线构图</strong></td><td>光怎么打、镜头怎么取景</td><td>柔和自然光、电影感、特写</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">本课要钉死的一句话</span>
+        <strong>参数不是没有，是被藏了；你手里唯一的旋钮，是提示词。</strong>
+        下一节用四组对照实验，亲手验证这根旋钮的每一档。
+      </div>
+    </section>
+
+    <section class="sec" id="s-experiment">
+      <h2>三、控制变量实验：只改一个地方<span class="sec__tag">本课核心</span></h2>
+      <p>
+        先想一个问题：你加了一句「水彩画风格」，又加了一句「手持团扇」，画面变好看了——
+        <strong>这算谁的功劳？</strong>说不清。两处一起改，变化就没法归因。
+      </p>
+      <p>
+        所以对照实验只有一条铁律：<strong>每组只改一个地方，其他全部保持基准不动。</strong>
+        这就是「控制变量」——第 3 次课讲「让模型猜」时用过它，今天把它用到提示词上：
+        只改一个变量，前后两张图的差别，就<strong>只能</strong>是这一个变量造成的。
+        归因，从这一步才开始可能。
+      </p>
+      <div class="callout callout--warn">
+        <span class="callout__t">本课灵魂，只此一条</span>
+        <strong>只动手，不动笔。</strong>不填表、不记笔记——每组做完，跟邻座口头说清两件事：
+        「这组改了什么」「画面变了什么」。有人发现「加了细节词画面几乎没变」，也是好发现，<strong>如实观察比编漂亮结论重要</strong>。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·四组提示词对照实验 <em>约 18 分钟 · 本课核心</em></div>
+        <p><strong>做完你手上会有</strong>：4 张「只改一处」的对照图（第 1 组有余力再加 1 张），和一句你能说出口的归因。</p>
+
+        <p><strong>第 1 步 · 先默念一遍铁律（30 秒）</strong></p>
+        <ol class="steps">
+          <li><b>每组只改一个地方，其他全部保持基准不动</b><span>
+            <span class="task__warn">改了两处，归因就作废</span>——待会儿同伴互评，专查这一条。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 第 1 组：换风格词（3.5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>把句末加上风格词，各生成一次</b><span>两句分别发，看整张图的画风变没变。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 组 · 只改风格词 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>一个穿汉服的少女站在樱花树下，水彩画风格
+一个穿汉服的少女站在樱花树下，写实摄影风格</code></pre>
+        </div>
+        <p>口头交流：画风变了吗？哪句更接近你想要的？</p>
+
+        <p><strong>第 3 步 · 第 2 组：加主体细节（3.5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>只加主体细节，风格词这回不要带</b><span>看人物的<strong>动作细节</strong>变了没有。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 组 · 只改主体细节 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>一个穿汉服的少女站在樱花树下，手持团扇、回眸、裙摆飘动</code></pre>
+        </div>
+        <p>口头交流：团扇、回眸出来了吗？没全出来也照实说——<strong>模型不一定每次都听话，这也是观察</strong>。</p>
+
+        <p><strong>第 4 步 · 第 3 组：加光线构图（3.5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>只加光线和景别</b><span>看<strong>光线和取景</strong>变了没有。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 3 组 · 只改光线构图 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>一个穿汉服的少女站在樱花树下，柔和自然光、电影感、特写</code></pre>
+        </div>
+        <p>口头交流：光线和景别变了吗？「特写」起作用了吗？</p>
+
+        <p><strong>第 5 步 · 第 4 组：正面写排除（3.5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>只加一句正面描述的「排除」</b><span>注意是<strong>正面写</strong>「背景干净」，不是写「不要背景杂物」——原因见上一节的对照。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 4 组 · 只改排除写法 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>一个穿汉服的少女站在樱花树下，背景干净、没有其他人物</code></pre>
+        </div>
+        <p>口头交流：画面变干净了吗？跟基准图比，多余人或物少了吗？</p>
+
+        <p><strong>第 6 步 · 口头归因（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>回答一个问题：哪种写法对你这张图影响最大？为什么？</b><span>
+            <span class="task__warn">必须引用你亲眼做过的某一组实验</span>，说清「哪个词的功劳」——不许凭感觉空谈。</span></li>
+        </ol>
+
+        <p><strong>第 7 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>4 组都出过图，且每张和基准图的差别你都指得出来</b><span>指不出来，就把那组重发一遍，仔细跟基准图对比。</span></li>
+          <li><b>每组能说清「这组只改了哪一处」</b><span><em>说不清</em>：回到第 1 步，把你发的提示词和基准句逐字比一遍——多半是不小心改了两个地方，重做那组。</span></li>
+          <li><b>至少对 1 组说出了「哪个词功劳最大」</b><span>归因对 1 组就达标，对 3 组以上是优秀。</span></li>
+        </ol>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·换一种完全不同的风格，做一次跨风格对照 <em>约 8 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一主体的第二张风格图，和三个维度的口头对比结论。</p>
+
+        <p><strong>第 1 步 · 基准句只换风格，主体场景一个字不改（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>发下面这句</b><span><span class="task__warn">只换风格，别顺手改别的</span>——这次实验检验的是「风格词换档，主体保不保得住」。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="跨风格对照 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>一个穿汉服的少女站在樱花树下，国风水墨</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 等图出来，跟你的基准图按三个问题对比（5 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>主体和场景保住了吗</b><span>还是「人还在樱花树下」？换风格有没有把主体也带跑？</span></li>
+          <li><b>两张里哪张更接近你想要的、差在哪</b><span>差在风格、细节还是光线？要指到具体一处。</span></li>
+          <li><b>这两句话里哪个词的功劳最大</b><span>「国风水墨」这四个字改变了什么、没改变什么。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 验收</strong></p>
+        <ol class="steps">
+          <li><b>能说出至少 1 条具体的对比发现</b><span>这条没有标准答案——「水墨那张人物脸崩了」也是合格的发现，<strong>如实观察即可</strong>。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-models">
+      <h2>四、换了模型，提示词要重新试<span class="sec__tag">防错点</span></h2>
+      <p>
+        你今天用的文生图模型只是众多路线里的一条。同一个「Stable Diffusion 家族」内部，好几代模型就走的不是同一条路：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>模型 / 路线</th><th>技术路线</th><th>CFG 常用参考</th></tr></thead>
+          <tbody>
+            <tr><td>SD 1.5</td><td>U-Net</td><td>常用 7–9</td></tr>
+            <tr><td>SDXL</td><td>U-Net 的加强版</td><td>介于两者之间</td></tr>
+            <tr><td>SD 3.5</td><td>MMDiT</td><td>又不一样</td></tr>
+            <tr><td>FLUX</td><td>flow matching</td><td>约 3.5</td></tr>
+            <tr><td>通义万相（千问图像生成）</td><td>又一条独立路线</td><td>参数被产品藏成默认值</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        技术路线依据公开资料整理，CFG 数字为社区常用参考（教学示意，非官方承诺）；核对日期 2026-09-26。
+        重点看倒数两行：同一个 CFG 数字，在 SD 1.5 和 FLUX 里含义差了一倍——<strong>参数尚且如此，提示词更不是万能钥匙。</strong>
+      </p>
+
+      <p>
+        网上有人分享「万能提示词，什么模型都能出大片」，直接抄来用，对不对？
+        <strong>错。</strong>训练目标不一样、对语言的理解习惯不一样，同一句话在不同模型里的效果天差地别。
+        换了模型，<strong>提示词要重新试</strong>——用今天学的对照实验，重新试一遍就知道。
+      </p>
+      <div class="callout callout--quote">
+        <span class="callout__t">金句</span>
+        <strong>换了模型，提示词要重新试。「万能提示词」不存在。</strong>
+      </div>
+
+      <h3>顺手记住：AI 生成图的版权与合规</h3>
+      <div class="callout callout--danger">
+        <span class="callout__t">三条底线（核对日期 2026-09-26，以平台最新规则与法规为准）</span>
+        <ul>
+          <li><strong>标识别抹</strong>：平台生成的图通常自带「AI 生成」内容标识，按有关规定不得人为删除或伪造。</li>
+          <li><strong>版权别想当然</strong>：纯 AI 生成、缺少人类独创性投入的图片能否受著作权保护，国内尚无定论——商用要谨慎，<strong>你的提示词原文自己留档</strong>，它是你投入的痕迹。</li>
+          <li><strong>内容别越线</strong>：不生成他人肖像、明星脸、受版权保护的 IP 形象；违规内容平台会拒绝生成，情节严重的会封号。</li>
+        </ul>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·让对话 AI 当你的「实验评审」 <em>约 6 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份来自豆包 / 千问 / DeepSeek 的实验检查意见——以及你对它的判断：哪条对、哪条你不同意。</p>
+
+        <p><strong>第 1 步 · 打开任意一个对话 AI（豆包 / 千问 / DeepSeek 都行）（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>开一个新对话</b><span><span class="task__warn">必须新开对话</span>，别在旧话题里发，免得上下文串味。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 把下面这段整段复制发出去，再照格式补全（4 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实验评审指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我在用通义万相做文生图对照实验，基准提示词是：
+一个穿汉服的少女站在樱花树下
+
+第 1 组只加了「水彩画风格」，画面从____变成____；
+第 2 组只加了「手持团扇、回眸、裙摆飘动」，画面从____变成____；
+第 3 组只加了「柔和自然光、电影感、特写」，画面从____变成____；
+第 4 组只加了「背景干净、没有其他人物」，画面从____变成____。
+（横线处按你亲眼看到的填几个词就行）
+
+请帮我检查：
+1. 每组是否只改了一个地方；
+2. 我的归因有没有道理，哪条站不住；
+3. 指出哪一组最能说明「提示词是唯一旋钮」，说明理由。
+不要替我编造我没做过的实验结果。</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>横线处照你亲眼看到的填几个词就发</b><span>口头观察的几个词够了，不用成段写。指令最后一句是防它替你「编数据」——AI 编的实验结果不算数。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 验收：你核它的意见，不是它核你（1 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>它的检查结果里，至少指出你 1 处问题，或确认你 4 组都守住了铁律</b><span>一条都没提，多半是你横线填得太笼统，补充观察后让它重查。</span></li>
+          <li><b>对它的意见给出你自己的判断：哪条对、哪条你不同意</b><span>
+            <strong>它没看到你的图，说错了完全可以反驳</strong>——能把 AI 的意见拆出对错，这本身就是验收能力的体现。</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这些题不计分，是给你自己查漏用的。</p>
+
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 5 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>扩散模型的「生成」阶段，模型每一步实际在做的是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 参考一张真实照片，一笔一笔临摹</li>
+            <li>B. 猜出当前这一步里混入的噪声，然后减掉它</li>
+            <li>C. 把用户输入的提示词翻译成英文</li>
+            <li>D. 从素材库里挑一张最接近的图出来</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>模型学的不是画图，是<strong>「猜噪声、减噪声」</strong>。
+            选 A 的是「脑子里先有图」这个直觉；选 D 的是「素材拼接」的误解——都不对，图是从噪声里一步步「长」出来的。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>判断：同一句提示词生成两次，两张图完全不同，主要原因是两次的起点噪声（种子）不同。</span></div>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：正确。</b>生成从纯噪声出发，噪声里的图是模型<strong>猜</strong>出来的（不像石头里的雕像是确定的）。
+            种子不同 → 起点不同 → 长出来的图就不同。千问里你指定不了种子，所以也「复刻」不了上一张。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>千问的图像生成界面里没有任何参数滑块。最准确的理解是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 这个模型没有步数、CFG 这些参数</li>
+            <li>B. 参数存在，但被产品藏成了默认值；你唯一的旋钮是提示词</li>
+            <li>C. 参数被删掉了，只保留了提示词功能</li>
+            <li>D. 参数需要付费解锁后才会显示</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b><strong>界面没旋钮 ≠ 模型没参数</strong>——步数、CFG、种子、负向提示词都真实存在，产品替你拧成了默认值。
+            A 和 C 把「看不见」当成了「不存在」，这正是本课最大的坑。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>提示词「三件套」指的是下面哪三件？（多选）</span></div>
+          <ul class="quiz__opts">
+            <li>A. 主体细节（动作、手持物、姿态）</li>
+            <li>B. 风格（画风）</li>
+            <li>C. 光线构图（光怎么打、镜头怎么取）</li>
+            <li>D. 负向提示词（不要什么）</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>三件套 = <strong>主体细节 + 风格 + 光线构图</strong>，都是「正面描述你想要的」。
+            D 不是：千问里写不了负向提示词，想排除什么要用<strong>正面写</strong>（如「背景干净、没有其他人物」）。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：网上抄来的「万能提示词」换一个模型也能直接用，效果基本不变。</span></div>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：错误。</strong>SD 1.5 / SDXL / SD 3.5 / FLUX / 通义万相<strong>训练路线各不相同</strong>——
+            连 CFG 都差一倍（SD 1.5 常用 7–9，FLUX 约 3.5），提示词更不可能通用。
+            <strong>换了模型，提示词要重新试</strong>——用对照实验重新试。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走一条完整的链条</h4>
+        <ol>
+          <li><b>加噪 → 去噪</b>：训练时给图加噪，生成时从噪声去噪——模型学的是<strong>猜噪声</strong>，不是画图；</li>
+          <li><b>潜空间</b>：先压小再扩散，省的是真金白银的算力；</li>
+          <li><b>看不见的旋钮</b>：步数 / CFG / 种子 / 负向词都存在，只是被藏成默认值——<strong>界面没旋钮 ≠ 模型没参数</strong>；</li>
+          <li><b>唯一的旋钮是提示词</b>：三件套 = 主体细节 + 风格 + 光线构图，想排除的东西正面写；</li>
+          <li><b>控制变量</b>：每组只改一个地方，差别才有归因——这是工程师和玩家的分界线；</li>
+          <li><b>换了模型，提示词要重新试</b>：「万能提示词」不存在。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天所有图都是别人家的电脑算的。<a class="xref" data-lesson="6"></a>
+        把大模型装进你自己的电脑——课前先做两件事：<strong>安装 Ollama，并把模型目录改到非系统盘</strong>（不然模型会把 C 盘塞满），具体步骤下一课开头讲。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业</h2>
+      <p><strong>场景</strong>：学校樱花节要办展览，社团请你出 <strong>3 张宣传图</strong>。<strong>全部用通义千问（通义万相文生图）生成</strong>。</p>
+      <p><strong>交付四样</strong>：</p>
+      <ol>
+        <li><strong>3 张图</strong>：3 张之间至少有 2 处「只改一个地方」的刻意差异（比如 1 张换风格、1 张加光线构图）——这是课上四组实验的直接迁移；</li>
+        <li><strong>每张图的提示词原文</strong>（自己留档，也是版权投入的痕迹）；</li>
+        <li><strong>生成页面截图</strong>（带界面，证明是你自己生成的）；</li>
+        <li><strong>300 字以上的「提示词选择说明」</strong>：每张图改了什么、为什么改、依据的是课上哪一组实验的证据。</li>
+      </ol>
+      <p class="note">生成内容须合规：不涉及他人肖像与受版权保护的形象；图上的「AI 生成」标识不要抹。截止时间以任课教师公布为准。</p>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        不看图多好看，看三点：<strong>差异是否真的「只改了一个地方」</strong>（提示词原文能对出来）、
+        <strong>说明里有没有实验证据</strong>（引用了哪组对照、看到了什么变化）、
+        <strong>归因是否成立</strong>（变化确实能归到改的那个词上）。
+      </div>
+
+      <p>点一下展开下面的客观题，做完再点框内右上角「复制」可以把题目带答案整段拿走核对。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业客观题 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 5 次课作业客观题 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）同一句提示词，AI 两次生成出两张完全不同的图。最主要的原因是？
+A. 模型记性差，忘了上一次画了什么
+B. 两次的起点噪声（种子）不同，噪声里的图是猜出来的
+C. 网络不稳定导致画面随机失真
+D. 提示词太短，模型只好随便画
+【答案】B
+【解析】生成从纯噪声出发，模型一步步「猜噪声、减噪声」——起点不同，长出来的图就不同。这不是失真（C），更不是「随便画」（D）：画面始终贴着提示词的方向走。
+
+2.（判断）千问的图像生成界面上没有任何参数滑块，说明这个模型没有步数、CFG 这些参数。
+【答案】错误
+【解析】界面没旋钮 ≠ 模型没参数。参数真实存在，只是被产品藏起来、拧成了默认值。你手里唯一的旋钮是提示词——这正是「界面没旋钮 = 模型没参数」这个错误直觉的坑。
+
+3.（单选）想在千问里让画面「没有多余的背景杂物」，下面哪种写法最可靠？
+A. 在提示词里写「不要背景杂物」
+B. 在提示词里写「背景干净、没有其他人物」
+C. 把提示词全删了重画
+D. 多生成几次碰运气
+【答案】B
+【解析】千问写不了负向提示词，而且模型对「不要 XX」经常处理不好。替代法是正面写——直接描述你想要的画面（B）。A 正是负向写法的坑。
+
+4.（多选）提示词「三件套」包含下面哪些？
+A. 主体细节：手持团扇、回眸、裙摆飘动
+B. 风格：水彩画风格、写实摄影风格
+C. 光线构图：柔和自然光、电影感、特写
+D. 模型参数：步数、CFG、种子
+【答案】ABC
+【解析】三件套 = 主体细节 + 风格 + 光线构图，全是你能在提示词里写的话。D 不是——这些参数在千问里被藏成了默认值，你改不了，也就谈不上是「件套」。
+
+5.（判断）网上有人说他的提示词是「万能提示词」，换什么模型都能出大片，直接照抄就行。
+【答案】错误
+【解析】SD 1.5 / SDXL / SD 3.5 / FLUX / 通义万相训练路线各不相同，连 CFG 的常用值都差一倍（SD 1.5 约 7–9，FLUX 约 3.5）。换了模型，提示词要重新试——用课上学的对照实验重新试一遍就知道。
+
+6.（单选）把去噪步数从 25 步加到 50 步，多数情况下会？
+A. 画面质量翻倍提升
+B. 生成时间翻倍，画面质量不一定变好
+C. 画面变成纯噪声
+D. 模型自动改用更好的提示词
+【答案】B
+【解析】步数管「去噪走多少步」。太少会糊、残缺，但够用之后再加步数就是边际递减——买到的是等待时间，不是质量。参数被藏起来之后，这类取舍由产品替你定，你能控的仍是提示词。</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- ============================================================
+     内容区结束
+     ============================================================ -->
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<!-- ============================================================
+     本课专属演示逻辑
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 去噪过程（16×16 示意网格，确定性伪随机） ---------- */
+  function rng(seed) {
+    var t = seed + 0x6D2B79F5;
+    return function () {
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function baseColor(x, y) {
+    var t = y / 15;
+    var r = Math.round(96 + 110 * t);
+    var g = Math.round(165 + 40 * t);
+    var b = Math.round(235 - 95 * t);
+    var dx = x - 12, dy = y - 3;
+    if (dx * dx + dy * dy <= 4.5) { r = 255; g = 214; b = 110; }     // 太阳
+    if (y >= 11) { r = 74; g = 128; b = 82; }                        // 地面
+    if (x === 4 && y >= 8 && y <= 10) { r = 106; g = 74; b = 46; }   // 树干
+    var fx = x - 4, fy = y - 6;
+    if (fx * fx + fy * fy <= 5) { r = 46; g = 106; b = 58; }         // 树冠
+    return [r, g, b];
+  }
+
+  var grid = $("d1-grid");
+  var cells = [];
+  if (grid) {
+    for (var i = 0; i < 256; i++) {
+      var c = document.createElement("div");
+      grid.appendChild(c);
+      cells.push(c);
+    }
+  }
+
+  var d1timer = null;
+  function d1Render(step) {
+    if (!grid) return;
+    var noise = 1 - step / 20;
+    for (var i = 0; i < cells.length; i++) {
+      var x = i % 16, y = Math.floor(i / 16);
+      var base = baseColor(x, y);
+      var r1 = rng(i * 17 + 3)();
+      var gray = 40 + r1 * 150;
+      var r = Math.round(base[0] * (1 - noise) + gray * noise);
+      var g = Math.round(base[1] * (1 - noise) + gray * noise);
+      var b = Math.round(base[2] * (1 - noise) + gray * noise);
+      cells[i].style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+    }
+    $("d1-val").textContent = "第 " + step + " 步 / 共 20 步";
+    $("d1-noise").textContent = "噪声 " + Math.round(noise * 100) + "%";
+    $("d1-state").textContent = step === 0 ? "纯噪声" : (step >= 20 ? "成图" : "去噪中");
+    var out = $("d1-out");
+    if (step === 0) {
+      out.innerHTML = "起点是一团纯噪声——<strong>图还不存在</strong>，只有随机噪点。";
+    } else if (step >= 20) {
+      out.innerHTML = "<span class='ok'>✓ 噪声减完了，图「长」出来了</span>——每一步都是「猜噪声、减噪声」（16×16 示意）";
+    } else {
+      out.innerHTML = "第 " + step + " 步：模型猜掉一层噪声，画面清楚了一点。同一句提示词、不同的起点噪声，长出的图就不同。";
+    }
+  }
+  var slider = $("d1-step");
+  if (slider) {
+    slider.addEventListener("input", function () {
+      if (d1timer) { clearInterval(d1timer); d1timer = null; }
+      d1Render(parseInt(slider.value, 10));
+    });
+  }
+  var play = $("d1-play");
+  if (play) {
+    play.addEventListener("click", function () {
+      if (d1timer) clearInterval(d1timer);
+      var step = 0;
+      if (slider) slider.value = "0";
+      d1Render(0);
+      d1timer = setInterval(function () {
+        step += 1;
+        if (slider) slider.value = String(step);
+        d1Render(step);
+        if (step >= 20) { clearInterval(d1timer); d1timer = null; }
+      }, 150);
+    });
+  }
+  d1Render(0);
+})();
+</script>
+</body>
+</html>
