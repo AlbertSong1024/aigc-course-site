@@ -418,6 +418,11 @@
         </ol>
         <p><strong>要交的成果</strong>：<code>output/耗材透视.xlsx</code>（三张表齐全）+ 它给出的<strong>三条结论</strong>。</p>
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1vB4y1A7Yu&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】Excel数据透视表的基本操作</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：数据透视表是怎么把一长串明细一键变成「行/列/值」三维汇总表的？</figcaption>
+      </figure>
     </section>
 
     <section class="sec" id="s-chart">
@@ -937,5 +942,22 @@ D. 把异常写进单独的清单，每条注明行号、实际值和建议核�
   d2Render("cmp");
 })();
 </script>
+  <script>
+  (function () {
+    "use strict";
+    document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+      var src = frame.getAttribute("data-src");
+      if (!src) return;
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+          });
+        });
+        io.observe(frame);
+      } else { frame.src = src; }
+    });
+  })();
+  </script>
 </body>
 </html>

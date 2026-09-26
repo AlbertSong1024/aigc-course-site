@@ -20,6 +20,10 @@
 
     <section class="sec" id="s-guide">
       <h2>本课导读<span class="sec__tag">模块二</span></h2>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1VzAMzzEEb&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】多 Agent 协作实战：一个总控 + 多个角色怎么配合</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：当任务复杂到单个 AI 撑不住时，「专家团」是怎么拆需求、分角色、再把结果合在一起的？</figcaption>
+      </figure>
       <p class="lead">
         上一课你给 AI 装上了「手艺」。但同一个工具，站在不同人的角度用，结果差很远。
         这一课学<strong>专家</strong>——让 AI 带着一个明确的<strong>岗位和立场</strong>干活；
@@ -615,5 +619,22 @@ D. 官方未作说明
 <script src="../assets/js/search-index.js"></script>
 <script src="../assets/js/site.js"></script>
 
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
 </body>
 </html>

@@ -304,6 +304,11 @@
           报销单上一个被猜出来的金额，到了财务那里就是一笔对不上的账。
         </p>
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV15QULYPE8W&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】在线发票收集·自动识别归档</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：AI 是怎么从一堆发票图片里自动提取金额、日期并归档的？</figcaption>
+      </figure>
     </section>
 
     <section class="sec" id="s-clean">
@@ -1272,5 +1277,22 @@ D. 它生成的图表颜色好不好看
 })();
 </script>
 
+  <script>
+  (function () {
+    "use strict";
+    document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+      var src = frame.getAttribute("data-src");
+      if (!src) return;
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+          });
+        });
+        io.observe(frame);
+      } else { frame.src = src; }
+    });
+  })();
+  </script>
 </body>
 </html>

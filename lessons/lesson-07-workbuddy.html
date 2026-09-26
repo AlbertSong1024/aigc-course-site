@@ -20,6 +20,10 @@
 
     <section class="sec" id="s-guide">
       <h2>本课导读<span class="sec__tag">模块二开局</span></h2>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1kH6nBFEPq&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】桌面 AI 智能体实战：以 Clawdbot 为例看智能体怎么干活</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：桌面智能体（Agent）和「聊天机器人」最本质的区别是什么？它如何把一句话变成一连串实际操作？（注：本视频演示的是同类桌面智能体 Clawdbot，用于类比理解 WorkBuddy 的「任务式」用法。）</figcaption>
+      </figure>
       <p class="lead">
         前面六次课，你让 AI <strong>回答问题</strong>。这一次开始，你要让它<strong>动手干活</strong>——
         读你的文件、整理你的文件夹、生成你要的东西。
@@ -778,5 +782,22 @@ D. 换个模型重试
 <script src="../assets/js/search-index.js"></script>
 <script src="../assets/js/site.js"></script>
 
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
 </body>
 </html>

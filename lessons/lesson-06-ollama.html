@@ -24,6 +24,10 @@
 
     <section class="sec" id="s-guide">
       <h2>本课导读<span class="sec__tag">模块一收尾</span></h2>
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV13e1jY9EmZ&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】三分钟一键部署 Ollama：从安装到微调，五步跑通本地大模型</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：把大模型搬回自己电脑要经历哪几步？本地部署相比云端调用，换来了什么、又牺牲了什么？</figcaption>
+      </figure>
       <p class="lead">
         前面五次课，我们一直在用别人家的电脑算 AI：你提问题，它算完把答案送回来。
         这一课把这件事反过来——<strong>把模型下载到你自己的电脑上，用你自己的 CPU 算。</strong>
@@ -1215,6 +1219,23 @@ ollama run coursebot</code></pre>
     d4Render();
   });
   d4Render();
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
 })();
 </script>
 </body>

@@ -356,6 +356,11 @@
           知识库做的事，是把「你手动塞」换成「系统自动去检索」。原理一样，只是省了你的手。
         </p>
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1JLN2z4EZQ&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】RAG 工作机制详解——一个高质量知识库背后的技术全流程</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：RAG 是怎么把外部知识库检索进来、让大模型不再凭空编造的？</figcaption>
+      </figure>
     </section>
 
     <!-- 三、切片与向量化 -->
@@ -1006,5 +1011,22 @@ D. 请多查几遍资料再回答
   d3Render();
 })();
 </script>
+  <script>
+  (function () {
+    "use strict";
+    document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+      var src = frame.getAttribute("data-src");
+      if (!src) return;
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+          });
+        });
+        io.observe(frame);
+      } else { frame.src = src; }
+    });
+  })();
+  </script>
 </body>
 </html>

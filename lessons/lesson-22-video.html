@@ -688,6 +688,10 @@ B. 错误
       </p>
     </section>
 
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1Z28P6HEGa&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】0 基础，带你做出你人生第一个 AI 视频！</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：看完后你能用同样的流程，把今天的资讯主题做成一条 1 分钟短视频吗？</figcaption>
+      </figure>
     <div class="pager" id="site-pager"></div>
   </main>
 
@@ -777,6 +781,23 @@ B. 错误
 
   d1Chain();
   d2Show("ok");
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
 })();
 </script>
 </body>

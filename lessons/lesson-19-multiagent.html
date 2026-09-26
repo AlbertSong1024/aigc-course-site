@@ -192,6 +192,11 @@
         </ol>
         <p><strong>要交的成果</strong>：这份 <code>岗位卡.md</code>。后面三节都按它来配，先别改。</p>
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1jnAwztE1g&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】WorkBuddy 多角色设置实操：分工协作多 Agent</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：怎么给多个 AI 员工分配角色、定好边界，让他们分工协作而不打架？</figcaption>
+      </figure>
     </section>
 
     <section class="sec" id="s-kb">
@@ -814,6 +819,23 @@ D. 装尽可能多的技能，全部保持启用
   });
 
   d1Render();
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
 })();
 </script>
 </body>

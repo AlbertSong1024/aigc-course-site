@@ -162,6 +162,11 @@
         </ol>
         <p><strong>要交的成果</strong>：公众号成稿.md + 核对清单（已勾选版）。</p>
       </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1dV4y137b2&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】一学就会的公众号排版教程：21 步排出好看的文章</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：一篇公众号文章从草稿到成稿，关键的 21 步排版怎么走？</figcaption>
+      </figure>
     </section>
 
     <section class="sec" id="s-xhs">
@@ -474,6 +479,23 @@ D. 模板化之后必须试跑，确认效果不差于原指令
   var $ = function (id) { return document.getElementById(id); };
 
   // 本课无交互演示
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
 })();
 </script>
 </body>

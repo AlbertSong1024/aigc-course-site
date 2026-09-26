@@ -885,6 +885,10 @@ D. 把改价、上下架、退款一并交给自动化执行
       </p>
     </section>
 
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1p1K568EYG&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】从 0 搭建你的一人公司 AI 团队，自动化工作流</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里的 AI 团队分工，对应到你岗位工作流里的哪几个环节？</figcaption>
+      </figure>
     <div class="pager" id="site-pager"></div>
   </main>
 
@@ -1025,6 +1029,23 @@ D. 把改价、上下架、退款一并交给自动化执行
   $("d2-reset").addEventListener("click", function () {
     d2Step = 0;
     d2Render();
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
   });
 })();
 </script>
