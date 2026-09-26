@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第31次课 综合项目——AI 求职包制作｜AIGC应用与实践</title>
+<meta name="description" content="把岗位卡、一页简历、5 道问答和 5 页展示稿拼成一套互相作证的材料：完整性、实用性、真实性、表达四把尺，材料一致性核查，以及提交前的四项检查。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="31" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三 · 收尾</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="24">第 24 次课</a>定了目标岗位，<a class="xref" data-lesson="25">第 25 次课</a>把简历改到能过筛，
+        <a class="xref" data-lesson="26">第 26 次课</a>把面试答案练到扛得住追问。
+        三件事都做完了，可它们现在还是<strong>三堆各写各的文件</strong>——
+        简历上写「数据清洗」，面试里讲「模型部署」，岗位卡上却挂着「数据标注」。
+        单独看每份都没错，摆在一起就露馅：<strong>它们不像同一个人在投同一个岗位。</strong>
+      </p>
+      <p>
+        这一课只做一件事：<strong>把三堆文件拼成一套互相作证的材料</strong>——这就是求职包。
+        拼完之后你要能说出一句话：<strong>这几份材料是怎么互相证明的。</strong>
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>投了十家没回音，简历看着也不差</strong></td><td>材料散在各处，没有一个贯穿的目标岗位，HR 看完不知道你要干什么</td></tr>
+            <tr><td><strong>简历写 A，面试讲 B，两处对不上</strong></td><td>两份材料是不同时间、不同状态下写的，从来没放在一起对过</td></tr>
+            <tr><td><strong>版式做得很漂亮，一问细节就空</strong></td><td>把力气花在了排版上；华丽版式补不了内容缺失，反而更显眼</td></tr>
+            <tr><td><strong>材料里混进了同学的项目、别人的联系方式</strong></td><td>没意识到求职材料也有隐私边界——别人的信息你无权公开</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        <strong>一、本课不重造材料。</strong>所有内容都来自第 24–26 次课已经做过的成果，
+        你要做的是<strong>收齐、对齐、补展示</strong>，不是重新写一份简历。<br>
+        <strong>二、本课只有一条主线：所有材料指向同一个岗位。</strong>
+        后面五个实操全挂在它上面——一旦某份材料偏离了目标岗位，不是改说法，是<strong>回到真实材料改</strong>。<br>
+        <strong>三、隐私是红线。</strong>求职包里不出现同学、同事的真实姓名与联系方式，
+        也不出现身份证号、家庭住址这类敏感信息。<br>
+        <span class="note">本课沿用前几课那位模拟学生：林小满，大三，人工智能技术应用专业，2027 届，目标岗位「人工智能训练师 / AI 应用开发助理」，意向城市广州。</span>
+      </div>
+      <p class="note">
+        课内的学生经历、项目数字、岗位信息全部为<strong>教学示意（模拟素材）</strong>，用于讲清方法，不要照抄成自己的材料。
+        求职与招聘的做法因行业、公司而异，本课讲的是<strong>通用做法，非官方数据</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出求职包由<strong>哪五份材料</strong>组成，以及每一份分别回答面试官的哪一个问题；</li>
+          <li>用<strong>完整性 / 实用性 / 真实性 / 表达</strong>四把尺，给自己的求职包逐项打分并指出缺什么；</li>
+          <li>独立完成一次<strong>材料一致性核查</strong>，找出岗位关键词、能力证据、简历经历、面试回答之间对不上的地方；</li>
+          <li>让 AI 基于已有材料生成一份<strong>5 页展示大纲</strong>和<strong>5 道真实问答</strong>，并逐条核它有没有新增你没做过的事；</li>
+          <li>按<strong>真实性 / 隐私 / 格式 / 岗位一致</strong>四项检查收口，交出一个<strong>最小可展示求职包</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-pack"><b>01</b>求职包装什么：五份材料与四把尺 <em>＋实操①</em></a>
+        <a href="#s-consist"><b>02</b>材料一致性：四份材料要互相作证 <em>＋实操②</em></a>
+        <a href="#s-show"><b>03</b>5 页展示大纲与 3 分钟答辩结构 <em>＋实操③</em></a>
+        <a href="#s-qa"><b>04</b>5 道真实问答：每题都能被材料证明 <em>＋实操④</em></a>
+        <a href="#s-check"><b>05</b>提交前四项检查 <em>＋实操⑤</em></a>
+        <a href="#s-quiz"><b>06</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="24">第 24 次课</a>的目标岗位与调研、
+        <a class="xref" data-lesson="25">第 25 次课</a>的一页简历与事实底稿、
+        <a class="xref" data-lesson="26">第 26 次课</a>的面试答案——本课这三样是原料，一样都不能少。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="32">第 32 次课</a>要做结课答辩，
+        本课这套求职包就是你要展示的<strong>综合项目成果</strong>，
+        「材料之间怎样相互证明」这句话会直接变成答辩里的那句关键说明。
+      </div>
+    </section>
+
+    <section class="sec" id="s-pack">
+      <h2>一、求职包装什么：五份材料与四把尺<span class="sec__tag">本课核心</span></h2>
+      <p>
+        大多数人理解的「求职材料」就是一份简历。
+        可你只要站在面试官那边想一分钟就会发现：<strong>一份简历回答不了他的问题</strong>——
+        他想确认的是四件事：你要什么、你会什么、你做过什么、你接下来要往哪走。
+        四件事对应四类材料，缺一类，他就得自己猜，而猜的结论通常对你不利。
+      </p>
+      <p>
+        <strong>求职包</strong>就是把这四类材料加上目标岗位，放进同一个文件夹、指向同一个岗位的一套东西。
+        它的价值不在「多」，而在<strong>凑齐之后能互相作证</strong>。
+      </p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>材料</th><th>回答面试官的哪个问题</th><th>本课程出处</th><th>最常见的缺失</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>岗位卡</strong></td>
+              <td>你到底要投什么岗、这个岗要什么</td>
+              <td><a class="xref" data-lesson="24">第 24 次课</a></td>
+              <td>只写一个岗位名，没有 JD 关键词，后面所有材料失去基准</td>
+            </tr>
+            <tr>
+              <td><strong>一页简历</strong></td>
+              <td>你做过什么、做到了什么程度</td>
+              <td><a class="xref" data-lesson="25">第 25 次课</a></td>
+              <td>经历写了，但没数字；或者数字经不起追问</td>
+            </tr>
+            <tr>
+              <td><strong>面试问答</strong></td>
+              <td>这些事是不是你亲手做的</td>
+              <td><a class="xref" data-lesson="26">第 26 次课</a></td>
+              <td>背了标准答案，一追问就露馅；或者答案与简历对不上</td>
+            </tr>
+            <tr>
+              <td><strong>能力证据</strong></td>
+              <td>你说你会，凭什么</td>
+              <td>第 24 次课的能力地图 + 第 25 次课的事实底稿</td>
+              <td>只有形容词（「熟练掌握」），找不到能打开的文件</td>
+            </tr>
+            <tr>
+              <td><strong>行动计划</strong></td>
+              <td>你接下来往哪走、能不能待得住</td>
+              <td><a class="xref" data-lesson="24">第 24 次课</a></td>
+              <td>写了「继续学习」这种对任何岗位都成立的话</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        材料凑齐了，还得有尺子量。四把尺，一把管一件事：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>尺</th><th>量什么</th><th>不合格的典型样子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>完整性</strong></td><td>五份材料齐不齐、每份里有没有空着的栏</td><td>只有简历，其他四份拿不出来</td></tr>
+            <tr><td><strong>实用性</strong></td><td>能不能直接拿去用（投出去、照着念、打开给人看）</td><td>材料在脑子里、在聊天记录里，没有成型文件</td></tr>
+            <tr><td><strong>真实性</strong></td><td>每一条说法背后有没有能指回去的证据</td><td>「参与某平台开发」——但事实底稿里你只做了数据整理</td></tr>
+            <tr><td><strong>表达</strong></td><td>别人能不能一眼看懂你要投什么、会什么</td><td>三页纸全是形容词，扫完不知道你的定位</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一份求职包，四种做法在四把尺上分别得几分</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-a">缺材料的</button>
+            <button class="btn btn--ghost" type="button" id="d1-b">华丽但空的</button>
+            <button class="btn btn--main" type="button" id="d1-c">合格的</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>完整性</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>实用性</span></div>
+            <div class="kpi"><b id="d1-k3">—</b><span>真实性</span></div>
+            <div class="kpi"><b class="acc" id="d1-k4">—</b><span>表达</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三份求职包的描述取自本课模拟素材，
+            四把尺的打分是为了演示「版式补不了内容缺失」，不是任何机构的评分标准。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">先凑齐，再谈好看</span>
+        四把尺里<strong>表达排最后</strong>是有原因的：内容是 1，版式是后面的 0。
+        材料缺失的时候把版式做精致，等于<strong>给空盒子包了层好看的纸</strong>——
+        面试官打开一看是空的，印象比朴素但齐全的那份更差。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·把三次课的成果收进一个求职包文件夹，让它生成材料清单</div>
+        <p><strong>做完你手上会有</strong>：一个 <code>求职包/</code> 文件夹（里面是第 24–26 次课的成品），
+          外加一份 <code>00-材料清单.md</code>——五份材料逐条列出「有没有 / 文件名 / 缺什么」。</p>
+
+        <p><strong>第 1 步 · 建文件夹，把已有成果复制进去</strong></p>
+        <p>
+          下面这张清单是你要收的东西。<span class="task__warn">只复制，不重写</span>——
+          少一份就写「缺」，不要用 AI 现编一份补上，补的那份没有证据。
+        </p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 求职包应收清单（对应第 24–26 次课产出）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>求职包/ 需要收齐的五份材料（文件名沿用前三次课的产出）
+
+1. 岗位卡      来自第24次课：01-SWOT.md、02-行业调研简报.md、03-JD关键词拆解.md
+2. 一页简历    来自第25次课：05-简历终稿.md（附 00-事实底稿.md 当证据底本）
+3. 能力证据    来自第24次课：04-能力地图.md、05-行动计划.md
+4. 面试问答    来自第26次课：01-自我介绍-60秒.md、02-高频题演练.md、
+               03-STAR-项目经历.md、04-压力面试复盘.md
+5. 真实性备查  来自第25次课：04-真实性审查表.md
+
+复制规则：
+- 复制，不要重写；缺哪份就在清单里写"缺"，不要临时编一份；
+- 事实底稿与真实性审查表不投出去，只作为自己核查时的证据底本；
+- 文件夹命名：求职包</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按文件夹里的实际内容生成材料清单</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务，工作目录选这个 <code>求职包</code> 文件夹</b><span>
+            <span class="task__warn">工作目录必须选对</span>——选错了它看不到文件，会凭空编一份清单。</span></li>
+          <li><b>把下面这段指令贴进去发送</b><span>让它读真实文件，而不是靠你描述。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="生成材料清单的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请读一遍当前工作目录（求职包）里的全部文件，产出一份 00-材料清单.md。
+
+清单按「岗位卡 / 一页简历 / 能力证据 / 面试问答 / 行动计划」五类分节，
+每一类写三行：
+- 有没有：有 / 缺
+- 文件名：实际文件名，一个不落
+- 缺什么：如果缺，写清缺的是哪一类信息
+
+硬约束：
+1. 只根据目录里真实存在的文件判断，我不在场时不要假设我有某份文件；
+2. 不许替我补写任何一份缺失的材料，缺就写"缺"；
+3. 每类后面加一行【这一份回答什么问题】，一句话写清它在求职包里的作用；
+4. 末尾加一段【四把尺初判】：按"完整性 / 实用性 / 真实性 / 表达"四把尺
+   各给一句判断，只说我目前看起来缺什么，不许打分数字，不许夸我。
+
+不知道的就写"待确认"，不要猜。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>00-材料清单.md</code> 里五类齐全，且「缺什么」栏有实际内容</b><span>
+            五类全写「有」、缺什么栏全空，说明它没真去看目录。<br>
+            <em>它全写了「有」</em>：补一句「逐文件核对，目录里没有的一律写缺，不许假设」。</span></li>
+          <li><b>清单里的文件名和你文件夹里的一致</b><span>
+            重点看它有没有把 <code>05-简历终稿.md</code> 写成别的名字。<br>
+            <em>文件名对不上</em>：让它重读目录并把实际文件名原样抄进清单。</span></li>
+          <li><b>它没有替你补写任何一份缺失的材料</b><span>
+            清单里只应有「有没有 / 文件名 / 缺什么」，不该出现新写的简历或岗位卡。<br>
+            <em>它补写了</em>：删掉那部分，补一句「这一步只许列清单，不许生成材料正文」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>00-材料清单.md</code>。下一节的一致性核查要拿它当底账。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-consist">
+      <h2>二、材料一致性：四份材料要互相作证<span class="sec__tag">关键</span></h2>
+      <p>
+        求职包最难的不是做出来，是<strong>做出来之后自己看一遍</strong>。
+        前面三次课你是在三种不同的状态下写的材料：调研时想着岗位，改简历时想着 HR，
+        练面试时想着怎么答——三种心态写出的三份东西，<strong>天然会对不上</strong>。
+      </p>
+      <p>
+        <strong>材料一致性</strong>要求四个位置互相支持：<strong>岗位关键词 → 能力证据 → 简历经历 → 面试回答</strong>。
+        这四个位置是一条链，链上任意一环断了，面试官顺着往下问一句就到断点了。
+      </p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>位置</th><th>要对齐什么</th><th>对不上的典型样子</th><th>顺藤摸瓜的那一问</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>岗位关键词</strong></td>
+              <td>岗位卡上的词，简历里必须能找到落点</td>
+              <td>岗位卡写「数据标注」，简历里一个标注的活都没有</td>
+              <td>「你说会标注，标注过多少条？」</td>
+            </tr>
+            <tr>
+              <td><strong>能力证据</strong></td>
+              <td>能力地图上标「会」的，要能拿出打开的文件</td>
+              <td>标了「熟练 Python」，但拿不出任何一个 .py</td>
+              <td>「发我看看你写的那段代码？」</td>
+            </tr>
+            <tr>
+              <td><strong>简历经历</strong></td>
+              <td>数字与事实底稿一致，边界不越界</td>
+              <td>写「主导开发平台」，底稿里你只做了数据整理</td>
+              <td>「开发部分具体是你写的哪几行？」</td>
+            </tr>
+            <tr>
+              <td><strong>面试回答</strong></td>
+              <td>答案里的数字与简历、底稿对得上</td>
+              <td>面试说「1000 多条」，简历写 859 条</td>
+              <td>「这两个数哪个是准的？」</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 一致性扫描：四个位置顺着扫一遍，断点在哪一层</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">扫下一个位置</button>
+            <button class="btn btn--accent" type="button" id="d2-fix">看怎么改</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>关键词</b><br><span class="dim">岗位要什么</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>证据</b><br><span class="dim">凭什么说会</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>经历</b><br><span class="dim">做过什么</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>回答</b><br><span class="dim">怎么讲</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>示例取自本课模拟学生林小满的求职包底稿，
+            用来演示四个位置的扫描顺序与「回真实材料改」的走向，不是任何真实求职材料。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：发现矛盾，改的是材料，不是说法</span>
+        最省事的做法是<strong>把两份材料改成同一个更好看的数字</strong>——千万别这么干。
+        正确做法只有一条：<strong>回到事实底稿，用真实的那一个数把两份都改对。</strong><br>
+        如果两个数字你都拿不准，就都写成<strong>一个保守的、有据可查的数</strong>，
+        或直接在材料里标<strong>【此项无量化数据】</strong>。
+        求职包里最贵的不是少一个数字，是<strong>一个被拆穿的数字</strong>。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让 AI 扫一遍一致性，你核它有没有把三处矛盾全找出来</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-一致性核查.md</code>——
+          四个位置逐条核查结果、标出的矛盾处（含「改哪一份 / 改成什么」）、末尾「还有哪些没证据」。</p>
+
+        <p><strong>第 1 步 · 把这份一致性底稿发过去</strong></p>
+        <p>
+          下面这份底稿是本次练习的原料，里面<strong>故意留了 3 处矛盾</strong>。
+          <span class="task__warn">整段粘贴，不要自己改</span>——改了就练不到「找矛盾」。
+        </p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 一致性核查底稿（教学示意，内含 3 处矛盾）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【一致性核查底稿 · 教学示意，非真实个人数据】
+
+目标岗位：人工智能训练师 / AI 应用开发助理（广州）
+岗位关键词（来自第24次课 JD 拆解）：数据清洗、数据标注、提示词工程、工具落地
+
+能力地图（第24次课）：
+- 会：Excel 数据处理、Python 基础、提示词编写、本地模型部署
+- 半会：数据标注规范
+- 不会：模型训练、向量数据库
+
+事实底稿（第25次课）：
+经历一 Ollama 本地问答小工具（2026年3月—5月）
+- 做了什么：本机部署 qwen3:1.7b，写命令行问答工具，课程 PDF 切段检索，回答附出处页码
+- 数字：灌入 6 门课 PDF 共 320 余页；同楼层 12 名同学在用（按装机登记记）
+- 不是我做的：模型不是我训的，量化版本为官方提供；检索只做了切段匹配，没做向量库
+
+经历二 校园旧书交换活动数据整理（2026年4月）
+- 做了什么：收来 859 条图书登记数据，定合并规则后清洗，整理成可检索书目清单
+- 数字：原始 859 条 → 清洗后 812 条（合并 47 条）；耗时 3 天；当天交换 200 余册
+- 不是我做的：报名、现场摆摊由其他干事负责；排版由宣传部负责；未参与统计交换成功率
+
+简历终稿（第25次课）摘句：
+- "主导开发校园旧书交换平台，完成数据量 800+ 条"
+- "熟悉数据标注流程，参与多轮标注质检"
+
+面试答案（第26次课）摘句：
+- 自我介绍："我整理了 1000 多条图书数据，三天洗成可检索清单"
+- STAR 项目经历："我定了一套合并规则，859 条洗成 812 条，当天交换 200 余册"</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它逐位置扫，你只负责核它找得对不对</strong></p>
+        <ol class="steps">
+          <li><b>新建一个对话，把上面那整段底稿贴进去</b><span>
+            <span class="task__warn">必须新建对话</span>——旧对话里它可能还在「改稿」状态，会顺手帮你把矛盾抹平。</span></li>
+          <li><b>空一行，把下面这段指令贴进去，一起发送</b><span>素材在前、指令在后。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="一致性核查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你是求职材料核查员。请按四个位置逐条核查上面这份底稿的一致性，
+产出 01-一致性核查.md。
+
+四个位置，一个都不能跳过：
+1. 岗位关键词 vs 简历经历：JD 上的每个关键词，简历里有没有落点；
+2. 能力地图 vs 能拿出的证据：标"会"的每一项，底稿里有没有对应的文件或数字；
+3. 简历经历 vs 事实底稿：简历里的每句表述，与底稿是否一致，边界有没有越界；
+4. 面试答案 vs 简历与底稿：答案里的每个数字，与简历、底稿是否一致。
+
+每条矛盾的写法（四段，缺一段就不算数）：
+- 位置：上面四个位置中的哪一个
+- 原话：引用材料里的原句，两份材料各引一句
+- 断点：面试官顺着会问出哪一句话
+- 改法：改哪一份、改成什么，改法必须回到事实底稿里的真实内容
+
+硬约束：
+1. 只许使用底稿里已有的事实与数字，不许引入底稿之外的任何经历或数字；
+2. 不许为了让两份材料"看起来一致"而改数字，改法必须回到事实底稿；
+3. 底稿里没有证据的关键词，标【无证据，需补真实经历】，不要替我编；
+4. 末尾加一段【还有哪些没证据】：逐条列出目前拿不出证据的说法。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 拿它标出的矛盾去改真实材料</strong></p>
+        <ol class="steps">
+          <li><b>按它给的「改法」，把 <code>05-简历终稿.md</code> 和面试答案里对应的句子改掉</b><span>
+            改的时候回到 <code>00-事实底稿.md</code>，用底稿里的原话与数字。</span></li>
+          <li><b>把下面这段指令发出去，让它把改动记进核查表</b><span>记录交给它写，你只核对有没有记错改了哪一句。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="记录改动的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 01-一致性核查.md 末尾追加"【改动记录】"：
+逐条列出我实际改了哪一份材料的哪一句、改成什么、依据的是事实底稿里的哪一条。
+没有改的矛盾也要列出，并标明"未改，原因是底稿里没有可依据的真实内容"。
+不许把改动写成"已优化表述"这类空话，必须写出改前与改后的原句。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它至少找出 3 处矛盾：关键词无证据、数字对不上、边界越界</b><span>
+            底稿里埋了三处，找不全说明它是笼统扫的，不是逐位置扫的。<br>
+            <em>找少了</em>：点名补一句「按四个位置逐条过一遍，每个位置至少报一条」。</span></li>
+          <li><b>每条矛盾都写了「改哪一份 / 改成什么」，且改法回到事实底稿</b><span>
+            「建议统一口径」不算改法；把 859 改成 1000 更是错的。<br>
+            <em>它想抹平数字</em>：把事实底稿再贴一次，明确「数字以事实底稿为唯一依据」。</span></li>
+          <li><b>「还有哪些没证据」一栏有实际内容</b><span>
+            比如「数据标注」「参与多轮标注质检」应该被点出来。<br>
+            <em>这一栏是空的</em>：补一句「逐条列出目前拿不出证据的说法，没有也要写明『未发现』」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-一致性核查.md</code>。改完的简历与面试答案，是下一节生成展示大纲的输入。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-show">
+      <h2>三、5 页展示大纲与 3 分钟答辩结构<span class="sec__tag">本课核心</span></h2>
+      <p>
+        求职包做好之后还有一步：<strong>你得能当着人把它讲出来</strong>。
+        招聘会、面试现场、结课答辩，场景不一样，要求是一样的——
+        <strong>3 分钟，讲清你这个人值不值得往下聊。</strong>
+      </p>
+      <p>
+        3 分钟答辩按四块组织：<strong>目标岗位 → 核心能力 → 成果证据 → 改进计划</strong>。
+        四块的顺序不能变：先让人知道你要什么，他才知道后面的证据该往哪放。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>页</th><th>讲什么</th><th>要点上限</th><th>最容易写坏的地方</th></tr></thead>
+          <tbody>
+            <tr><td><strong>第 1 页 目标岗位</strong></td><td>要投什么岗、为什么是这个岗</td><td>3 点</td><td>讲成「行业前景很好」，对任何岗位都成立</td></tr>
+            <tr><td><strong>第 2 页 核心能力</strong></td><td>岗位要的三项能力，你分别到什么程度</td><td>3 点</td><td>写「熟练掌握」，不写程度和证据</td></tr>
+            <tr><td><strong>第 3 页 成果证据</strong></td><td>一件最有说服力的事，带数字</td><td>3 点</td><td>只放截图不放数字；或者放了三件事，一件也没讲透</td></tr>
+            <tr><td><strong>第 4 页 改进计划</strong></td><td>还差什么、接下来怎么补</td><td>3 点</td><td>写「继续努力学习」——等于没计划</td></tr>
+            <tr><td><strong>第 5 页 材料互证</strong></td><td>一句话说清这几份材料怎么互相证明</td><td>1 句话</td><td>这页最常被漏掉，而它恰恰是求职包区别于散装材料的地方</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">每页只保留支持结论的少量要点</span>
+        一页塞七八个要点，讲的是<strong>你做了多少事</strong>；
+        一页留三个要点，讲的是<strong>你做成了什么</strong>。
+        另外要准备好那句「材料之间怎样相互证明」——
+        例如「岗位要求数据清洗，我的简历第 2 条是这件事，面试里我用 STAR 讲的就是同一件，证据是那份书目清单」。
+        <strong>说得出这句话，才叫一套材料；说不出，就还是三堆文件。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·让它基于已有材料生成 5 页展示大纲，你核有没有新增经历</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-展示大纲.md</code>——
+          5 页、每页不超过 3 个要点、每页后面一行「这一页的证据在哪一份材料里」。</p>
+
+        <p><strong>第 1 步 · 把上一节改好的材料喂给它</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把 <code>00-材料清单.md</code> 与 <code>01-一致性核查.md</code> 的内容依次贴进去</b><span>
+            它要基于<strong>改过之后</strong>的材料写大纲，用旧版会把矛盾又带回来。<span class="task__warn">必须新建对话</span>。</span></li>
+          <li><b>再把下面这段指令贴在后面，一起发送</b><span>「不新增经历」这句必须留着。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="生成 5 页大纲的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请根据上面两份材料，生成一份 5 页求职包展示大纲，存成 02-展示大纲.md。
+
+五页固定结构，顺序不能变：
+第1页 目标岗位：要投什么岗、为什么是这个岗；
+第2页 核心能力：岗位要的三项能力，我分别到什么程度；
+第3页 成果证据：一件最有说服力的事，必须带数字；
+第4页 改善计划：还差什么、接下来怎么补；
+第5页 材料互证：一句话说清这几份材料是怎么互相证明的。
+
+硬约束：
+1. 每页不超过 3 个要点，第 5 页只能有一句话；
+2. 不新增任何经历——上面材料里没有的事、没有的数字，一个都不许加；
+3. 材料里标了【无证据】的关键词，一律不许写进大纲；
+4. 每页后面附一行【证据出处】：这一页的说法能在哪一份材料里找到（写文件名）；
+5. 第 5 页那句话的句式固定为："岗位要求【某能力】，我的简历第【N】条是这件事，
+   面试里我用 STAR 讲的就是同一件，证据是【文件名】。"
+
+缺信息就写【待补】，不要替我猜。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它自查一遍有没有越界</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>这一步的产出是你敢不敢拿去讲的分界线。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="越界自查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 02-展示大纲.md 末尾追加"【越界自查】"，逐页回答两个问题：
+1. 这一页里有没有出现材料之外的经历、数字或能力？有就逐条点出并标【新增，需删除】；
+2. 每一页的【证据出处】是不是真的指向了一份存在的文件？找不到出处的页，
+   写出"这一页目前无证据支撑"，并给出补证据的具体办法（补真实经历，不许编）。
+
+最后给一句结论：这份大纲现在能不能拿去讲 3 分钟。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>5 页齐全，每页要点不超过 3 个，第 5 页只有一句话</b><span>
+            第 5 页被写成一整页要点，说明它没理解「互证」这一页是干什么的。<br>
+            <em>第5页写长了</em>：补一句「第 5 页只写一句话，句式按指令里的固定句式」。</span></li>
+          <li><b>【越界自查】里没有出现材料之外的新经历、新数字</b><span>
+            重点查第 3 页有没有冒出「用户增长」「模型评测」这类材料里没有的词。<br>
+            <em>它加戏了</em>：把材料清单再贴一次，明确「大纲里的每个事实都必须能在材料里找到出处」。</span></li>
+          <li><b>每页的【证据出处】都指向了真实存在的文件名</b><span>
+            写「见简历」这种不算，要写到具体文件名。<br>
+            <em>出处含糊</em>：补一句「证据出处必须写具体文件名，找不到就写这一页目前无证据支撑」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-展示大纲.md</code>。下一节的 5 道问答，就从这 5 页里出。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-qa">
+      <h2>四、5 道真实问答：每题都要能被材料证明<span class="sec__tag">方法</span></h2>
+      <p>
+        求职包的最后一块拼图是问答。<a class="xref" data-lesson="26">第 26 次课</a>你已经练过 STAR 和压力面试，
+        那一课练的是<strong>扛不扛得住追问</strong>；这一课的 5 道题要求不一样：
+        <strong>每一题的答案，都必须能在你的材料里找到出处。</strong>
+      </p>
+      <p>
+        为什么是这五道？因为它们对应面试官一定会确认的五件事，
+        而<strong>这五件事正好被五份材料各管一件</strong>——
+        问到哪一题，你就该拿出哪一页。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>题</th><th>他在确认什么</th><th>答案该从哪一份材料来</th><th>答坏的典型样子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>自我介绍</strong></td><td>你 60 秒能不能说清自己</td><td>展示大纲第 1 页 + 一页简历</td><td>从籍贯爱好讲起，讲完没讲到会干什么</td></tr>
+            <tr><td><strong>岗位理解</strong></td><td>你是不是随便投的</td><td>岗位卡 + 行业调研简报</td><td>「贵司平台好，我想学习」</td></tr>
+            <tr><td><strong>优势</strong></td><td>你会什么、到什么程度</td><td>能力地图 + 事实底稿</td><td>「学习能力强、有团队精神」——零信息</td></tr>
+            <tr><td><strong>挑战</strong></td><td>你遇到难事怎么处理</td><td>STAR 项目经历 + 压力面试复盘</td><td>讲一个你没真正遇到过的困难</td></tr>
+            <tr><td><strong>未来计划</strong></td><td>能不能待得住</td><td>行动计划 + 展示大纲第 4 页</td><td>「先学习再说」，看不出和岗位的关系</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">「能不能被材料证明」是硬标准</span>
+        判断一道答案能不能用，只有一个问题：<strong>面试官追问「凭什么」，你能不能指回一份材料？</strong>
+        能指回去的，是真答案；只能在嘴上再解释一遍的，是说法。
+        说法在压力下会变，材料不会。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·让它按五类各出 1 题并写答案，你逐条核证据出处</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-问答5题.md</code>——
+          5 道题各附答案、每条答案一行【证据出处】、末尾「哪几题我还答不圆」。</p>
+
+        <p><strong>第 1 步 · 让它出题并写答案</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段指令贴进去发送</b><span>
+            <span class="task__warn">必须新建对话</span>——上一轮它在写大纲，这轮要换成「出题 + 写答案」。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="生成 5 道问答的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请根据工作目录里的 00-材料清单.md、01-一致性核查.md、02-展示大纲.md，
+生成 5 道面试问答，存成 03-问答5题.md。
+
+五类各一题，顺序固定：
+1. 自我介绍  2. 岗位理解  3. 优势  4. 挑战  5. 未来计划
+
+每题写四块：
+- 题目：一句话，口语化，像面试官真会问的那种
+- 答案：不超过 120 字，只使用材料里已有的事实与数字
+- 证据出处：这个答案能在哪一份材料里找到，写具体文件名
+- 会被追问：写出面试官听完最可能追问的那一句，以及我该怎么答
+
+硬约束：
+1. 五类各 1 题，不多不少；
+2. 答案里不许出现材料之外的任何经历或数字，没有就写【此项我还没有真实经历】；
+3. 「挑战」那一题必须来自我真实遇到过的一件难事，不许编造困难；
+4. 材料里标了【无证据】的关键词不许出现在任何一道答案里；
+5. 不许给通用答案——五题里出现"我想学习""贵司平台好"这类话就算不合格。
+
+最后加一段【哪几题我还答不圆】：逐题说明我目前的答案是"有证据"还是"缺证据"。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 逐条核证据出处，把答不圆的补上或标出来</strong></p>
+        <ol class="steps">
+          <li><b>按它写的【证据出处】，逐个打开对应文件核对</b><span>
+            文件里找不到那句话的，就是它在替你发挥。</span></li>
+          <li><b>把发现的问题发回去，让它改</b><span>用下面这段文字，把「第 N 题」换成实际的题号。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="退回修改的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>第【N】题的答案里有一处在材料里找不到出处，具体是：【写出那一句】。
+请按下面两条改：
+1. 删掉没有出处的内容，不要换一个说法绕过去；
+2. 删掉后如果这道题撑不起来，就写【此项我还没有真实经历】，
+   并补一句"我需要补的真实经历是：……"，不许替我编。
+
+改完把这一题重新输出一遍，并更新【哪几题我还答不圆】。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>5 题分别覆盖自我介绍 / 岗位理解 / 优势 / 挑战 / 未来计划</b><span>
+            少一类或重复出一类，说明它没按分类出。<br>
+            <em>类没对齐</em>：把五类名单再发一次，明确「五类各 1 题，顺序固定」。</span></li>
+          <li><b>每题的【证据出处】都能在对应文件里真的找到</b><span>
+            抽查第 3 题（优势）——它最容易写成形容词堆砌。<br>
+            <em>出处找不到</em>：用上面的退回指令，让它删掉无出处内容。</span></li>
+          <li><b>「哪几题我还答不圆」里有区分：有证据 / 缺证据</b><span>
+            五题全写「有证据」多半是它没真去核。<br>
+            <em>全写有证据</em>：补一句「逐题核对，没有出处的必须标缺证据，不许一律通过」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-问答5题.md</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-check">
+      <h2>五、提交前四项检查：真实性 / 隐私 / 格式 / 岗位一致<span class="sec__tag">收口</span></h2>
+      <p>
+        五份材料齐了，最后一道工序是<strong>提交前自查</strong>。
+        这一步没人替你做，也不会有人提醒你做——
+        材料发出去之后才发现的问题，全都收不回来。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>检查项</th><th>逐条看什么</th><th>不过关的典型样子</th><th>补救</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>真实性</strong></td>
+              <td>每条说法能不能指回事实底稿；数字是不是底稿里那个</td>
+              <td>简历写「主导开发」，底稿里你只做了数据整理</td>
+              <td>改回底稿原话；拿不准的写【此项无量化数据】</td>
+            </tr>
+            <tr>
+              <td><strong>隐私</strong></td>
+              <td>有没有同学 / 同事的真实姓名与联系方式；有没有身份证号、住址</td>
+              <td>把项目组五个人的手机号列在「证明人」里</td>
+              <td>删掉他人信息；需要证明人时写「可提供证明人联系方式」</td>
+            </tr>
+            <tr>
+              <td><strong>格式</strong></td>
+              <td>文件名、页数、字体是否统一；能不能打开</td>
+              <td>五份材料三种字体；PPT 在别人电脑上打不开</td>
+              <td>统一命名与页边距；导出为通用格式后再打开验一遍</td>
+            </tr>
+            <tr>
+              <td><strong>岗位一致</strong></td>
+              <td>从头到尾是不是同一个岗位；关键词有没有落点</td>
+              <td>岗位卡写训练师，简历里却在强调视频剪辑</td>
+              <td>删掉与岗位无关的经历，或换一个与目标岗位对得上的讲法</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">四项的优先级</span>
+        <strong>真实性</strong>和<strong>隐私</strong>是一票否决项——这两项出问题，材料再漂亮也不该发出去。
+        <strong>岗位一致</strong>决定对方看不看得懂你要什么。
+        <strong>格式</strong>最不重要，但也是最容易在最后一分钟救回来的。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ⑤·让它按四项检查逐条过一遍，你核对后提交最小求职包</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>04-提交前检查.md</code>，
+          加上一个按 <code>第31次_综合项目：AI求职包制作_姓名</code> 命名的成品文件夹。</p>
+
+        <p><strong>第 1 步 · 让它按四项逐条检查</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段指令贴进去发送</b><span>
+            <span class="task__warn">必须新建对话</span>——四项检查要它重新读全部文件，沿用旧对话会漏文件。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="四项检查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请读一遍当前工作目录（求职包）里的全部文件，按四项做提交前检查，
+产出 04-提交前检查.md。
+
+四项，一项都不能跳过：
+1. 真实性：逐条列出材料里的关键说法，标出它能否在 00-事实底稿.md 里找到依据；
+   找不到的写【无依据，需删除或修改】；
+2. 隐私：检查是否出现他人真实姓名、手机号、微信号、身份证号、家庭住址，
+   有就逐条点出所在文件与位置，并说明为什么不该出现；
+3. 格式：检查文件命名是否统一、一页简历是否真的只有一页、
+   展示大纲是否 5 页每页不超过 3 点，列出不合规的地方；
+4. 岗位一致：检查全部材料是不是都在指向同一个目标岗位，
+   指出与目标岗位无关、建议删掉或改讲法的内容。
+
+硬约束：
+1. 不许替我修改任何文件，这一步只检查；
+2. 每项后面必须写【结论】：通过 / 不通过，不通过的写清最少要做哪一步才能通过；
+3. 不许写"整体不错"这类空话，每条都要指到具体文件与具体位置。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 按它的结论改，改完再验一遍</strong></p>
+        <ol class="steps">
+          <li><b>先改真实性和隐私两项</b><span>
+            这两项不通过就不要往下走——发出去之前，把他人信息全部删掉。</span></li>
+          <li><b>把下面这段指令发出去，让它复核改动</b><span>复核完才算收口。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我已经按上面的结论改了。请重新读一遍目录里的全部文件，
+在 04-提交前检查.md 末尾追加"【复核结果】"：
+1. 逐项说明四项现在是否通过，仍不通过的写清还差哪一步；
+2. 列出我这次实际改了哪几处（写文件名 + 改前改后的关键一句）；
+3. 给一句结论：这套材料现在能不能提交。</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>把整个文件夹按 <code>第31次_综合项目：AI求职包制作_姓名</code> 重命名并保存</b><span>
+            求职包里应包含：岗位卡、一页简历、5 道问答、5 页展示稿，
+            以及 <code>00-材料清单.md</code>、<code>01-一致性核查.md</code>、<code>04-提交前检查.md</code> 三份过程文件。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>四项检查都有明确【结论】：通过 / 不通过</b><span>
+            只要出现「基本符合」「总体可以」就是没检查。<br>
+            <em>结论含糊</em>：补一句「每项必须二选一写通过或不通过，不许写中间态」。</span></li>
+          <li><b>隐私一栏真的去查了他人信息</b><span>
+            哪怕结论是「未发现」也要写明，空着等于没查。<br>
+            <em>这一栏空白</em>：补一句「必须逐文件检查他人姓名、手机号、微信号、住址，未发现也要写明」。</span></li>
+          <li><b>它全程没有替你改文件</b><span>
+            这一步只许检查。<br>
+            <em>它动手改了</em>：把被改的文件恢复，补一句「这一步只检查不许修改，改法写进检查表由我自己执行」。</span></li>
+          <li><b>文件夹已按要求命名，四份核心材料都在里面</b><span>
+            打开文件夹数一遍：岗位卡、一页简历、5 道问答、5 页展示稿。<br>
+            <em>少一份</em>：回到 <code>00-材料清单.md</code> 看缺的是哪一类，补上再提交。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：按规范命名的求职包文件夹。
+        下一课 <a class="xref" data-lesson="32">第 32 次课</a>的结课答辩，展示的就是这一套。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>多选：评价一份求职包，课程里给的四把尺是哪四把？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 完整性</li>
+            <li>B. 实用性</li>
+            <li>C. 真实性</li>
+            <li>D. 表达</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABCD。</b>四把尺各管一件事：完整性看材料齐不齐，实用性看能不能直接拿去用，
+            真实性看每条说法有没有证据，表达看别人能不能一眼看懂。<br>
+            注意<strong>表达排最后</strong>——材料缺失时把版式做精致，等于给空盒子包了层好看的纸，
+            比朴素但齐全的那份更糟。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>一致性核查发现简历数字与面试答案对不上，正确的做法是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 把两份材料改成同一个更好看的数字</li>
+            <li>B. 回到事实底稿，用真实的那一个数把两份都改对</li>
+            <li>C. 删掉面试答案里那个数字，改说「大概很多条」</li>
+            <li>D. 保留现状，面试官一般不会注意到</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>发现矛盾时<strong>改的是材料，不是说法</strong>。
+            A 是最危险的选项——抹平后的数字没有出处，一被追问就露出两个都对不上；
+            C 把可核实的事实换成了含糊说法，等于自己降低了可信度；
+            D 更不可取，数字矛盾恰恰是面试官最爱抓的地方。
+            如果两个数字你都拿不准，就写【此项无量化数据】，<strong>也不要估一个填上</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>判断：求职包版式做得精致，可以在一定程度上弥补材料缺失。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>课程里的原话是「华丽版式不能弥补内容缺失」。
+            版式是内容后面的 0，内容是前面的 1——
+            而且材料空洞时版式越精致，<strong>反差越明显</strong>，印象反而更差。
+            正确顺序是先凑齐五份材料，再谈好不好看。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>求职包里那 5 道问答，硬性要求是下面哪一条？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 每题答案都用最出彩的措辞，尽量显得全面</li>
+            <li>B. 每题答案都必须能由个人材料证明，能指回具体文件</li>
+            <li>C. 每题答案都控制在 300 字以上，讲得越细越好</li>
+            <li>D. 五题可以都出成自我介绍类，把自己讲透就行</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>判断一道答案能不能用只有一个问题：
+            <strong>面试官追问「凭什么」，你能不能指回一份材料？</strong>
+            A 把标准放在措辞上，措辞改不出证据；C 与课程给的「不超过 120 字」相反，
+            越长越容易混进没有出处的内容；D 违反了五类各一题的分布要求——
+            自我介绍讲得再好，也回答不了「你会什么」「你遇到难事怎么办」。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>多选：提交求职包之前要做的四项检查包括？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 真实性</li>
+            <li>B. 隐私</li>
+            <li>C. 格式</li>
+            <li>D. 岗位一致</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABCD。</b>四项里<strong>真实性和隐私是一票否决项</strong>——
+            这两项出问题，材料再漂亮也不该发出去。
+            隐私这一项最常被忽略：把同学、同事的真实姓名和联系方式写进「证明人」里，
+            是<strong>你没有权力公开别人的信息</strong>，正确写法是「可提供证明人联系方式」。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>判断：为了让求职包更完整，可以把同学做过的项目写进自己的经历里，只要写得好、不被发现就行。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>这不是「写得好不好」的问题，而是<strong>真实性红线</strong>：
+            不是你做的事写进材料，面试时每一句都是追问的靶子。
+            而且这不是孤例——第 25、26 次课反复强调的同一条原则在这里同样成立：
+            <strong>AI 能帮你把话说圆，补不了你没有的事。</strong>
+            缺经历就写【此项我还没有真实经历】，并写清需要补什么，不要借别人的。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>主线只有一句：<strong>所有材料指向同一个岗位</strong>；本课不重造材料，只做<strong>收齐、对齐、补展示</strong>；</li>
+          <li>求职包五份材料：<strong>岗位卡 / 一页简历 / 面试问答 / 能力证据 / 行动计划</strong>，各回答面试官的一个问题；</li>
+          <li>四把尺：<strong>完整性 / 实用性 / 真实性 / 表达</strong>；表达排最后，<strong>华丽版式补不了内容缺失</strong>；</li>
+          <li>一致性四个位置：<strong>岗位关键词 → 能力证据 → 简历经历 → 面试回答</strong>；发现矛盾<strong>回真实材料改，不是改说法</strong>；</li>
+          <li>提交前四项检查：<strong>真实性 / 隐私 / 格式 / 岗位一致</strong>；前两项是一票否决项。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：这一课你把三堆文件拼成了一套<strong>互相作证</strong>的材料，
+        而「它们是怎么互相证明的」这句话，正是下一课答辩里最关键的一句。
+        <a class="xref" data-lesson="32">第 32 次课</a>是最后一课：你要从全课程 32 次课的成果里
+        挑出<strong>三件证据</strong>，用 3 分钟把它讲清楚，并回答提问。
+        到时候你会发现，今天练的「说得出证据出处」，和答辩时「拿得出作品」是同一件事。
+      </p>
+      <p class="note">
+        课内学生经历、项目数字、岗位信息为教学示意（模拟素材），不要照抄成自己的材料；
+        求职与招聘做法因行业、公司而异，本课讲的是通用做法，非官方数据。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 31 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）求职包四把尺中，"实用性"这把尺看的是什么？
+A. 材料排版是否精美
+B. 材料是否能直接拿去用（投出去、照着念、打开给人看）
+C. 材料里有没有使用 AI 生成的内容
+D. 材料的篇幅是否够长
+【答案】B
+【解析】实用性看的是"能不能用"，不是"好不好看"。A 属于"表达"那把尺，而且排在最末位；C 与评价无关，AI 参与生成不等于不真实；D 篇幅长反而可能稀释重点。判断标准很直接：这份材料现在能不能立刻投出去或照着讲一遍。
+
+2.（多选）材料一致性要求下面哪四个位置互相支持？
+A. 岗位关键词
+B. 能力证据
+C. 简历经历
+D. 面试回答
+【答案】ABCD
+【解析】这四个位置是一条链：岗位要什么 → 你凭什么说会 → 你做过什么 → 你怎么讲。链上任意一环断了，面试官顺着问一句就到断点。例如岗位卡写"数据标注"而简历里没有任何标注经历，追问就是"你标注过多少条"。
+
+3.（判断）发现简历里的数字与面试答案对不上时，可以把两份材料都改成同一个更好看的数字，让它们看起来一致。
+【答案】错误
+【解析】这是最危险的做法：抹平后的数字没有出处，一被追问，两份都对不上原始事实。正确做法是回到事实底稿，用真实的那一个数把两份都改对；如果两个数字都拿不准，就写【此项无量化数据】，不要估一个填上。
+
+4.（单选）3 分钟答辩建议按哪四块组织？
+A. 目标岗位、核心能力、成果证据、改进计划
+B. 个人爱好、家庭情况、学习成绩、获奖经历
+C. 行业前景、公司背景、岗位薪资、到岗时间
+D. 自我介绍、项目背景、技术细节、致谢
+【答案】A
+【解析】四块顺序不能变：先让人知道你要什么岗，他才知道后面的证据该往哪放。B 里的个人与家庭信息不回答"你能干什么"；C 是应该由对方告诉你的信息；D 是论文答辩的结构，不是求职答辩的结构。
+
+5.（多选）提交求职包之前的四项检查包括？
+A. 真实性
+B. 隐私
+C. 格式
+D. 岗位一致
+【答案】ABCD
+【解析】真实性与隐私是一票否决项：这两项出问题，材料再漂亮也不该发出去。隐私一项最常被忽略——把同学、同事的真实姓名与联系方式写进"证明人"里，属于你无权公开他人信息，正确写法是"可提供证明人联系方式"。岗位一致决定对方看不看得懂你要什么，格式最不重要但最容易在最后一分钟救回来。
+
+6.（判断）为了证明项目真实性，可以在求职包里附上同组同学的姓名与手机号，方便招聘方核实。
+【答案】错误
+【解析】他人姓名与联系方式属于他人个人信息，你无权在求职材料里公开。正确做法是不写具体信息，只写"可提供证明人联系方式"，对方真要核实时再由你本人去征得对方同意。</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能不能分清四把尺各管什么，尤其是否理解「表达排最后、版式补不了内容缺失」；
+        <strong>二是</strong>遇到材料矛盾时，第一反应是不是「回真实材料改」，而不是抹平数字或绕开说法；
+        <strong>三是</strong>是否把隐私当成一票否决项——不公开他人信息，也不拿别人的经历补自己的材料。
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1Yo4y1174C&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】如何打造面试作品集，作品集注意事项，分享我的作品集制作流程</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里强调的「注意事项」，有哪几条正好对应本课的真实性或隐私红线？</figcaption>
+      </figure>
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 四把尺：三种求职包各得几分 ---------- */
+  var D1 = {
+    "d1-a": {
+      k: ["缺 2 份", "能投", "有 1 处无据", "清楚"],
+      lines: [
+        "<span class='hl'>缺材料的：文件夹里只有一份简历</span>",
+        "  完整性　<span class='no'>✗ 缺岗位卡、缺问答、缺行动计划</span>",
+        "  实用性　勉强——简历能投出去，但被问「你接下来想做什么」答不上来",
+        "  真实性　简历里有一句「熟悉数据标注流程」找不到出处",
+        "  表达　　单页清楚，但看不出目标岗位是哪一类",
+        "",
+        "<span class='no'>✗ 结论：完整性这一把就没过。</span>",
+        "  面试官读完只知道「这个学生做过一些事」，不知道他要投什么。",
+        "<span class='dim'>四把尺是并列关系，不是平均分——缺一把，整套材料就缺一块。</span>"
+      ]
+    },
+    "d1-b": {
+      k: ["5 份都在", "能投", "多处无据", "很精致"],
+      lines: [
+        "<span class='hl'>华丽但空的：五份材料齐全，排版漂亮，内容对不上</span>",
+        "  完整性　<span class='ok'>✓ 五份都在</span>",
+        "  实用性　能投，但讲的时候每一页都要临场发挥",
+        "  真实性　<span class='no'>✗ 岗位卡写「数据标注」，简历里没有任何标注经历</span>",
+        "  真实性　<span class='no'>✗ 面试答案说 1000 多条，简历写 859 条</span>",
+        "  表达　　版式精致，扫一眼很亮眼",
+        "",
+        "<span class='no'>✗ 结论：华丽版式补不了内容缺失。</span>",
+        "  材料空洞时版式越精致，反差越明显——打开一看是空的，",
+        "  印象比朴素但齐全的那份更差。",
+        "<span class='dim'>这正是四把尺里「表达」排最后的原因：内容是 1，版式是后面的 0。</span>"
+      ]
+    },
+    "d1-c": {
+      k: ["5 份都在", "可直接用", "全部有据", "一眼看懂"],
+      lines: [
+        "<span class='hl'>合格的：五份齐全，四把尺全过，且能说出互证关系</span>",
+        "  完整性　<span class='ok'>✓ 岗位卡 / 一页简历 / 问答 / 能力证据 / 计划</span>",
+        "  实用性　<span class='ok'>✓ 每份都能直接投出去或照着讲</span>",
+        "  真实性　<span class='ok'>✓ 每条说法都能指回 00-事实底稿.md</span>",
+        "  表达　　朴素，但扫一眼就知道：人工智能训练师，会数据清洗",
+        "",
+        "<span class='ok'>✓ 关键差别在第 5 页那句话——</span>",
+        "  「岗位要求数据清洗，我的简历第 2 条是这件事，",
+        "　　面试里我用 STAR 讲的就是同一件，证据是那份书目清单。」",
+        "<span class='hl'>说得出这句，才叫一套材料；说不出，就还是三堆文件。</span>"
+      ]
+    }
+  };
+  function d1Reset() {
+    ["d1-k1", "d1-k2", "d1-k3", "d1-k4"].forEach(function (id) { $(id).textContent = "—"; });
+    $("d1-out").innerHTML = "";
+  }
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.k[0];
+    $("d1-k2").textContent = d.k[1];
+    $("d1-k3").textContent = d.k[2];
+    $("d1-k4").textContent = d.k[3];
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-a", "d1-b", "d1-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+  $("d1-reset").addEventListener("click", d1Reset);
+
+  /* ---------- 演示② 一致性扫描：四个位置逐条过 ---------- */
+  var D2_STEPS = [
+    [
+      "<span class='hl'>位置 1 · 岗位关键词 vs 简历经历</span>",
+      "  岗位关键词：数据清洗、数据标注、提示词工程、工具落地",
+      "  简历落点　：数据清洗 ✓（旧书交换）、提示词 ✓（本地问答工具）、工具落地 ✓",
+      "  　　　　　　数据标注　<span class='no'>✗ 简历里一个标注的活都没有</span>",
+      "  断点　　　：「你说会标注，标注过多少条？」",
+      "  改法　　　：从岗位卡与简历里删掉「数据标注」，或先补一段真实标注经历再写",
+      "<span class='dim'>关键词没有落点，比少写一项能力更糟——它承诺了一件你拿不出的事。</span>"
+    ],
+    [
+      "<span class='hl'>位置 2 · 能力地图 vs 能拿出的证据</span>",
+      "  能力地图标「会」：Excel 处理、Python 基础、提示词编写、本地模型部署",
+      "  能拿出的证据　　：书目清单 ✓、命令行工具 ✓、切段检索脚本 ✓",
+      "  　　　　　　　　<span class='no'>✗ 「本地模型部署」只有一句，没有可打开的文件</span>",
+      "  断点　　　：「发我看看你部署的那套东西？」",
+      "  改法　　　：把 ollama 的部署步骤写成一份一页说明存进文件夹，或降级为「半会」",
+      "<span class='dim'>标「会」的每一项，都要能拿出打开的文件；拿不出就降级，别硬撑。</span>"
+    ],
+    [
+      "<span class='hl'>位置 3 · 简历经历 vs 事实底稿</span>",
+      "  简历原句　：「主导开发校园旧书交换平台，完成数据量 800+ 条」",
+      "  事实底稿　：<span class='no'>✗ 只负责数据整理；报名、现场摆摊由其他干事负责</span>",
+      "  断点　　　：「开发部分具体是你写的哪几行？」",
+      "  改法　　　：改回底稿原话——「负责 859 条图书登记数据的清洗与整理」",
+      "<span class='no'>✗ 边界越界是三处矛盾里最严重的一处。</span>",
+      "<span class='dim'>不是你做的部分一律不能占为己有，面试官恰恰最爱追问分工边界。</span>"
+    ],
+    [
+      "<span class='hl'>位置 4 · 面试答案 vs 简历与底稿</span>",
+      "  面试原句　：自我介绍「我整理了 1000 多条图书数据」",
+      "  简历 / 底稿：<span class='no'>✗ 原始 859 条 → 清洗后 812 条</span>",
+      "  断点　　　：「这两个数哪个是准的？」",
+      "  改法　　　：以事实底稿为唯一依据，两句都改成 859 / 812",
+      "",
+      "<span class='ok'>✓ 四个位置扫完，三处矛盾：关键词无证据 / 边界越界 / 数字对不上。</span>",
+      "<span class='hl'>三处的改法都指向同一个动作：回到事实底稿用真实内容改，不是改说法。</span>"
+    ]
+  ];
+  var D2_FIX = [
+    "<span class='hl'>发现矛盾之后，改的是材料，不是说法</span>",
+    "  <span class='no'>✗ 最省事的做法：</span>把两份材料改成同一个更好看的数字",
+    "  <span class='ok'>✓ 正确做法：</span>回到 00-事实底稿.md，用真实的那一个数把两份都改对",
+    "",
+    "  改前　简历：「主导开发校园旧书交换平台，完成数据量 800+ 条」",
+    "  改后　简历：「负责 859 条图书登记数据的清洗与整理，三天洗成 812 条可检索书目」",
+    "  依据　事实底稿·经历二·数字一栏",
+    "",
+    "  改前　面试：「我整理了 1000 多条图书数据」",
+    "  改后　面试：「我整理了 859 条图书登记数据，三天洗成 812 条」",
+    "  依据　事实底稿·经历二·数字一栏",
+    "",
+    "<span class='dim'>两个数字都拿不准时，写【此项无量化数据】——最贵的不是少一个数字，是一个被拆穿的数字。</span>"
+  ];
+  var d2Step = 0;
+  function d2Render() {
+    for (var i = 1; i <= 4; i++) {
+      var n = $("d2-n" + i);
+      n.className = "flow__node" + (i === d2Step ? " on" : " dim");
+      if (i < 4) {
+        var dot = $("d2-d" + i);
+        dot.className = "flow__dot" + (i < d2Step ? " run" : "");
+      }
+    }
+    if (d2Step > 0) window.Site.type($("d2-out"), D2_STEPS[d2Step - 1], null);
+    else $("d2-out").innerHTML = "";
+  }
+  $("d2-next").addEventListener("click", function () {
+    d2Step = d2Step >= 4 ? 1 : d2Step + 1;
+    d2Render();
+  });
+  $("d2-fix").addEventListener("click", function () {
+    d2Step = 4;
+    d2Render();
+    window.Site.type($("d2-out"), D2_FIX, null);
+  });
+  $("d2-reset").addEventListener("click", function () {
+    d2Step = 0;
+    d2Render();
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
+</body>
+</html>

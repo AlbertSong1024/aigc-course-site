@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第27次课 Codex 入门｜AIGC应用与实践</title>
+<meta name="description" content="Codex 是什么、CLI 与桌面端怎么分工、先看仓库结构再提任务、一条可验收的改动指令怎么写、跑测试与人工复核——在安全副本里完整走一遍「理解—修改—测试—复核」。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="27" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三</span></h2>
+      <p class="lead">
+        <a class="xref" data-lesson="26">第 26 次课</a>练的是「把一件事说具体、说得可验收」。
+        这一课把同一套本事用在代码上：<strong>让 AI 真的打开你的项目、改掉一个文件、再交给你验收</strong>。
+        用的工具是 Codex——OpenAI 面向软件开发任务的编程智能体（官方术语表口径，本站核对日期 2026-09-26）。
+      </p>
+      <p>
+        它和普通聊天的区别只有一句：<strong>聊天给你一段代码，Codex 直接动你的文件。</strong>
+        它能读你的项目、提出修改、运行检查——方便是真的方便，但你得先在心里划一条线：
+        <strong>它能碰哪些文件、这次只改哪一处、改完你拿什么验收。</strong>
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>它给的代码很漂亮，复制过去跑不起来</strong></td><td>它没看过你的项目——不知道你有什么文件、用的什么写法</td></tr>
+            <tr><td><strong>它说「已完成」，页面上却什么都没变</strong></td><td>没有人真的打开页面去看；「它说做完了」和「它做对了」是两件事</td></tr>
+            <tr><td><strong>改了标题，顺手把样式也换了一遍</strong></td><td>指令里没写「不要改其他文字和样式」，它就按自己的审美发挥了</td></tr>
+            <tr><td><strong>不敢用，怕它动坏别的文件夹</strong></td><td>没给它划范围。先在<strong>副本</strong>里练一次，比在心里担心一百次有用</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课只有一个任务，全程只在一处动手：<strong>用 Codex 打开课堂安全副本
+        <code>lesson27-demo</code>，把首页标题「我的课程作品」改成「我的AIGC课程作品」。</strong><br>
+        三条红线先立住：<strong>不装依赖、不删文件、不联网发布</strong>；
+        四类东西不提交：<strong>密钥、Cookie、个人路径、未经核验的代码</strong>。<br>
+        两个实操前后相接：① 拿到一份「只碰 index.html 一处」的修改计划，
+        ② 按计划执行、保存、打开页面验收。走完你手上会有<strong>改动前后两张截图 + 一句验收结论</strong>。
+      </div>
+      <p class="note">
+        本课涉及的产品口径取自 OpenAI 官方 Codex 文档与术语表，核对日期 <strong>2026-09-26</strong>；
+        界面、命令与参数随版本更新，以你实际使用的版本为准。<br>
+        课内的练习网页、目录结构与截图示例全部为<strong>教学示意</strong>，用于讲清方法，不是任何真实项目。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 Codex 的 <strong>CLI 与桌面端</strong>各自长什么样，并说出两者共同的四个动作：<strong>读项目、提修改、跑检查、交给你复核</strong>；</li>
+          <li>按「<strong>先报结构、再定目标文件</strong>」的顺序，让它在动手前先把仓库结构说清楚；</li>
+          <li>按<strong>四要素</strong>（改哪个文件 / 改哪一处的什么 / 不许碰什么 / 怎么验收）写出一条小任务指令；</li>
+          <li>看懂它给出的修改计划，判断这份计划是不是<strong>只碰了你要改的那一处</strong>，不对就立刻叫停；</li>
+          <li>在安全副本里走完「<strong>提出 → 看计划 → 执行 → 打开页面验收</strong>」四步，交出截图与一句验收结论；</li>
+          <li>说出三条红线和四类不能提交的东西，并说清<strong>为什么测试通过了还要自己打开页面看一眼</strong>。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-forms"><b>01</b>同一个搭档的两张脸：CLI 与桌面端</a>
+        <a href="#s-repo"><b>02</b>仓库—结构—小任务：先看清再开口</a>
+        <a href="#s-ask"><b>03</b>一条能验收的指令怎么写 <em>＋实操①</em></a>
+        <a href="#s-check"><b>04</b>跑测试与复核：它说做完了不算 <em>＋实操②</em></a>
+        <a href="#s-risk"><b>05</b>三条红线与数据边界</a>
+        <a href="#s-quiz"><b>06</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="26">第 26 次课</a>的「说细节、说量化、不编内容」——
+        给 AI 下任务和给面试官讲故事是同一套本事：<strong>说清输入、说清步骤、说清做到什么算完</strong>。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="28">第 28 次课</a>看的是另一种「把活交给 AI」——
+        一个会记住你、会自己攒技能的个人助手。今天练的<strong>划范围、看计划、人工验收</strong>，
+        在那儿会变成<strong>划隐私边界</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-forms">
+      <h2>一、同一个搭档的两张脸：CLI 与桌面端<span class="sec__tag">开局</span></h2>
+      <p>
+        第一次搜 Codex 教程，你会看到两种画风：一种是<strong>全黑的窗口</strong>，一行行敲命令；
+        另一种<strong>有窗口、有点按钮的界面</strong>，左边项目、中间对话、右边结果。
+        很多人以为这是两个软件，其实只是<strong>同一个编程智能体的两种外壳</strong>。
+      </p>
+      <p>
+        按 OpenAI 官方口径，Codex 有 CLI（终端）、桌面应用、云端、IDE 扩展四种形态；
+        本课只用前两种。<strong>CLI 靠文字命令工作，桌面端提供可视界面</strong>——
+        换的是「你怎么说」，不是「它能干什么」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>维度</th><th>CLI（终端）</th><th>桌面端</th></tr></thead>
+          <tbody>
+            <tr><td><strong>怎么进入</strong></td><td>在项目目录里敲 <code>codex</code>，一个黑窗口就是全部界面</td><td>打开应用，选中一个项目文件夹再开始对话</td></tr>
+            <tr><td><strong>你怎么说</strong></td><td>一行命令或一段粘贴进去的文字</td><td>在输入框里打字，和聊天类似</td></tr>
+            <tr><td><strong>它怎么回</strong></td><td>逐行往下滚：读到哪些文件、打算怎么改、要不要你确认</td><td>同样分栏显示：计划、改动的文件、变更清单</td></tr>
+            <tr><td><strong>新手感觉</strong></td><td>吓人，但<strong>每一步都写在屏幕上</strong>，反而更容易回看</td><td>亲切，但按钮多了容易一路点下去，忘了看计划</td></tr>
+            <tr><td><strong>共同点</strong></td><td colspan="2">都能让 AI <strong>读取项目、提出修改、运行检查</strong>；都要你确认之后才真的改文件</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>装上、登录、进到项目目录</h3>
+      <p>
+        CLI 需要先装 Node.js，再用 npm 全局安装；第一次运行会让你登录，
+        常见是<strong>ChatGPT 账号登录</strong>或 <strong>API 密钥登录</strong>两种（新手优先用账号登录）。
+      </p>
+      <div class="codeblock" data-lang="bash" data-name="终端 · PowerShell / macOS 终端通用">
+        <div class="codeblock__bar"></div>
+<pre><code>> node -v
+v22.14.0
+> npm install -g @openai/codex
+added 2 packages in 41s
+> codex --version
+codex-cli 0.145.0
+> cd D:\课堂练习\lesson27-demo
+> codex
+</code></pre>
+      </div>
+      <p class="note">
+        上面是「预期输出」示意：前两行看到版本号即安装成功，<code>codex</code> 之后进入交互界面并提示登录。
+        命令名、版本号与安装方式随版本更新，以官方文档为准。
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一条指令：CLI 与桌面端各走一轮</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <div class="btngroup" data-tabs="demo1">
+              <button type="button" data-tab="cli" class="on">CLI 终端</button>
+              <button type="button" data-tab="desk">桌面端</button>
+            </div>
+            <button class="btn btn--main" type="button" id="d1-run">发送这条指令</button>
+            <button class="btn btn--ghost" type="button" id="d1-reset">重置</button>
+          </div>
+          <div class="demo__stage" data-tabpanel="cli">
+            <div class="mock">
+              <div class="mock__bar">
+                <span class="mock__chip hi">D:\课堂练习\lesson27-demo</span>
+                <span class="mock__chip">&gt; codex</span>
+                <span class="mock__chip ac">改文件前需你确认</span>
+              </div>
+              <div class="mock__col"><b>① 你敲的</b><ul><li>cd 到副本目录</li><li>codex</li><li>粘贴指令回车</li></ul><span class="mock__sub-hint">一切从这一行开始</span></div>
+              <div class="mock__col"><b>② 它回的</b><ul><li>读了 2 个文件</li><li>计划：改 1 处</li><li>等你 y / n</li></ul><span class="mock__sub-hint">计划写在屏幕上，可回看</span></div>
+              <div class="mock__col"><b>③ 你确认</b><ul><li>看改了几处</li><li>看有没有删东西</li><li>同意才落地</li></ul><span class="mock__sub-hint">不同意的成本 = 零</span></div>
+            </div>
+          </div>
+          <div class="demo__stage" data-tabpanel="desk" style="display:none">
+            <div class="mock">
+              <div class="mock__bar">
+                <span class="mock__chip hi">项目：lesson27-demo</span>
+                <span class="mock__chip">已选工作目录</span>
+                <span class="mock__chip ac">改文件前需你确认</span>
+              </div>
+              <div class="mock__col"><b>① 项目区</b><ul><li>index.html</li><li>styles.css</li></ul><span class="mock__sub-hint">它只能碰这里面的东西</span></div>
+              <div class="mock__col"><b>② 对话区</b><ul><li>输入指令</li><li>它给出计划</li></ul><span class="mock__sub-hint">按钮多，别一路点下去</span></div>
+              <div class="mock__col"><b>③ 结果区</b><ul><li>变更清单</li><li>改了哪几行</li></ul><span class="mock__sub-hint">验收就盯这一栏</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>界面分区、文件条数与命令输出均为讲课用示意，
+            用来说明「外壳不同、四步相同」，不是任何真实项目的记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">界面是壳，四步不变</span>
+        <strong>读项目 → 提修改 → 跑检查 → 交给你复核</strong>，CLI 和桌面端都是这四步，
+        区别只在第一步是敲 <code>codex</code> 还是点「打开项目」。<br>
+        本课后面的实操<strong>统一按 CLI 演示</strong>；你若用的是桌面端，把「敲命令」换成「点按钮」，
+        指令内容一个字都不用改。
+      </div>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1YoouBsENS&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】codex cli 安装和使用（Windows 版）</b>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里从「进入项目目录」到「它给出改动」一共几步？哪一步是在等人工确认？</figcaption>
+      </figure>
+    </section>
+
+    <section class="sec" id="s-repo">
+      <h2>二、仓库—结构—小任务：先看清再开口<span class="sec__tag">方法</span></h2>
+      <p>
+        最常见的翻车方式是这个：你把一段代码贴给它，问「这段怎么改」。
+        它给出了非常专业的答案——<strong>但改的文件你项目里根本没有</strong>，
+        因为从头到尾没人告诉它你的项目长什么样。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>词</th><th>是什么</th><th>你要先确认什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>仓库</strong></td><td>一个项目的文件集合——就是那个文件夹</td><td>它打开的<strong>是不是这一个文件夹</strong>（CLI 里看命令行路径，桌面端看左下角）</td></tr>
+            <tr><td><strong>目录结构</strong></td><td>这个文件夹里有什么、在哪个子目录</td><td>让它<strong>先报一遍结构</strong>，别让它猜</td></tr>
+            <tr><td><strong>目标文件</strong></td><td>这次要动的那个文件</td><td>说清<strong>文件名</strong>，不要说「首页」这类它得猜的词</td></tr>
+            <tr><td><strong>小任务</strong></td><td>只改一个明确位置的任务</td><td>你能一句话说清<strong>改了哪个文件的哪一处</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        所以动手前的第一句话不该是「帮我改一下」，而是<strong>「先说说这个目录里有什么，先别改」</strong>。
+      </p>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="先让它报结构 · 点右上角复制">
+        <div class="codeblock__bar"></div>
+<pre><code>请先只列出当前目录的文件与目录结构，不要修改任何文件，也不要运行命令。
+列完告诉我：如果要改首页的大标题，应该改哪个文件、哪一行的什么内容。</code></pre>
+      </div>
+      <p>它回的结构大致是这样（教学示意）：</p>
+      <div class="codeblock" data-lang="text" data-name="lesson27-demo 目录结构（示意）">
+        <div class="codeblock__bar"></div>
+<pre><code>lesson27-demo/
+├── index.html      ← 首页，标题写在 h1 里
+└── styles.css      ← 样式，标题的颜色和字号在这里
+</code></pre>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">小任务的判据只有一句</span>
+        问自己：<strong>我能不能一句话说清「改了哪个文件的哪一处、为什么要改、可能影响什么」？</strong>
+        能说清，就是小任务，可以放手让它做；说不清，说明范围还没定，先缩小再说。<br>
+        小任务的好处不是快，是<strong>好回滚</strong>——只改一处，改坏了退回去也是一秒钟的事。
+      </div>
+    </section>
+
+    <section class="sec" id="s-ask">
+      <h2>三、一条能验收的指令怎么写<span class="sec__tag">本课核心</span></h2>
+      <p>
+        核心案例的问题就一句：<strong>让 AI 改代码之前，最该提供什么信息？</strong>
+        下面三句话要的是同一件事，你猜它会给出三种什么计划。
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 同一件事的三种说法，计划质量差多少</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d2-a">模糊版</button>
+            <button class="btn btn--ghost" type="button" id="d2-b">一般版</button>
+            <button class="btn btn--main" type="button" id="d2-c">可验收版</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d2-k1">—</b><span>计划里要改几处</span></div>
+            <div class="kpi"><b id="d2-k2">—</b><span>要不要你回头补救</span></div>
+            <div class="kpi"><b class="acc" id="d2-k3">—</b><span>能不能一句话回滚</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三版指令与三份计划均为讲课用示意，
+            用来演示四要素写全前后的差别，不是某个真实项目的执行记录。
+          </div>
+        </div>
+      </div>
+
+      <h3>四要素：写全了就不用猜</h3>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>要素</th><th>写什么</th><th>本课这一条</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 改哪个文件</strong></td><td>文件名，必要时带上路径</td><td><code>index.html</code></td></tr>
+            <tr><td><strong>② 改哪一处的什么</strong></td><td>原来的文字 → 改成什么</td><td>首页标题「我的课程作品」→「我的AIGC课程作品」</td></tr>
+            <tr><td><strong>③ 不许碰什么</strong></td><td>红线写死，别让它发挥</td><td>不要改其他文字和样式，不要动 <code>styles.css</code></td></tr>
+            <tr><td><strong>④ 怎么验收</strong></td><td>做完看什么、什么算对</td><td>双击打开 <code>index.html</code>，标题变了且样式正常</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·在安全副本里提一处改动，拿到一份「只碰一处」的修改计划 <em>本课主体</em></div>
+        <p><strong>做完你手上会有</strong>：一份 <code>lesson27-demo</code> 副本（改动前的样子）、
+          Codex 报出的目录结构、以及一份<strong>只涉及 index.html 一处标题</strong>的修改计划
+          （外加你自己的一句核对结论）。</p>
+
+        <p><strong>第 1 步 · 建好课堂安全副本（照下面两份素材建）</strong></p>
+        <p>
+          在 <code>D:\课堂练习\</code> 下新建文件夹 <code>lesson27-demo</code>，
+          把下面两个文件原样存进去。<span class="task__warn">文件名必须一模一样</span>——
+          指令里点名的是 <code>index.html</code>，名字不对它就得自己找。
+        </p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材① · 改动前的 index.html（教学示意）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>index.html —— 整段复制，原样存成文件
+（注意：标题「我的课程作品」在文件里只出现一次，就在 h1 里）
+------------------------------------------------------------
+&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;课程作品集&lt;/title&gt;
+&lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header class="site-head"&gt;
+    &lt;h1&gt;我的课程作品&lt;/h1&gt;
+    &lt;p&gt;AIGC 应用与实践 · 课程作品集&lt;/p&gt;
+  &lt;/header&gt;
+  &lt;main class="wrap"&gt;
+    &lt;section class="card"&gt;
+      &lt;h2&gt;作品一：AI 简历助手&lt;/h2&gt;
+      &lt;p&gt;用一套提示词，把一段经历改写成贴着岗位要求的描述。&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="card"&gt;
+      &lt;h2&gt;作品二：会议纪要整理&lt;/h2&gt;
+      &lt;p&gt;把一段杂乱的会议记录，整理成结论、待办、负责人三栏。&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材② · styles.css（教学示意）· 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>styles.css —— 整段复制，原样存成文件
+------------------------------------------------------------
+body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7fb; color: #1f2937; }
+.site-head { background: #2563EB; color: #fff; padding: 28px 24px; }
+.site-head h1 { margin: 0; font-size: 26px; }
+.site-head p { margin: 6px 0 0; font-size: 14px; opacity: .85; }
+.wrap { max-width: 860px; margin: 24px auto; padding: 0 16px; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+.card h2 { margin: 0 0 8px; font-size: 18px; color: #2563EB; }
+.card p { margin: 0; font-size: 14px; line-height: 1.7; }
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 用 Codex 打开这个目录</strong></p>
+        <ol class="steps">
+          <li><b>在终端里进到副本目录，启动 Codex</b><span>
+            <span class="task__warn">目录一定要进对</span>——进去之后先看一眼命令行前面显示的路径是不是
+            <code>lesson27-demo</code>，进错了它改的就是别的文件夹。</span></li>
+        </ol>
+        <div class="codeblock" data-lang="bash" data-name="终端 · 进目录并启动">
+          <div class="codeblock__bar"></div>
+<pre><code>&gt; cd D:\课堂练习\lesson27-demo
+&gt; codex
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 先让它报结构，别急着提改动</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段原样发进去</b><span>
+            这一步是在确认「它看到的项目和你看到的<strong>是同一个</strong>」。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="报结构的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请先只列出当前目录的文件与目录结构，不要修改任何文件，也不要运行命令。
+列完告诉我：如果要改首页的大标题，应该改哪个文件、哪一行的什么内容。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 提出这一处小改动</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令整段发进去</b><span>
+            <span class="task__warn">整段粘贴，不要自己改写</span>——四要素是一套的，
+            删掉「不要改其他文字和样式」，它就会顺手改样式。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="本次改动指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请先说明要修改哪个文件，再把首页标题"我的课程作品"改为"我的AIGC课程作品"；不要改其他文字和样式。</code></pre>
+        </div>
+
+        <p><strong>第 5 步 · 读它给的计划，只认「一处」</strong></p>
+        <p>计划出来后，对着这三条核一遍：</p>
+        <div class="tablewrap">
+          <table class="data tight">
+            <thead><tr><th>查什么</th><th>合格的样子</th></tr></thead>
+            <tbody>
+              <tr><td>改的是不是 <code>index.html</code></td><td>文件名是 index.html，不是别的</td></tr>
+              <tr><td>改了几处</td><td>只有标题那一处；多出一处就要问为什么</td></tr>
+              <tr><td>有没有越界动作</td><td>没有删除文件、没有安装依赖、没有联网发布</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它的计划里写清了「改 index.html」，并且只改了标题这一处</b><span>
+            改了三处说明它把「标题」理解成了所有出现这个词的地方。<br>
+            <em>它改多了</em>：补一句「只改 h1 里那一处，其他位置的相同文字一律不动」。</span></li>
+          <li><b>计划里没有删除、安装依赖、联网发布这三类动作</b><span>
+            出现任何一条，<strong>立刻停止</strong>，不要点同意。<br>
+            <em>它要装东西</em>：回一句「本次任务不许安装任何依赖、不许联网，只做这一处文字替换」。</span></li>
+          <li><b>你能指着计划说出「改了哪个文件的哪一处、为什么」</b><span>
+            说不出来，说明这份计划你没真看懂，先让它用大白话复述一遍。<br>
+            <em>看不懂计划</em>：补一句「用三句话说明你要改什么、怎么改、会影响什么，不要贴代码」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这份修改计划（截图即可）+ 改动前的页面截图。下一步就是让它真的动手。</p>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">「先说明要改哪个文件」不是客套</span>
+        这句是在给它一个<strong>定位锚</strong>：它先说文件名，就等于先承认了「我要动的是这个文件」。
+        后面它要是越界改了 <code>styles.css</code>，你就有据可依地叫停。<br>
+        少了这一句，它很可能顺手「优化一下样式」——你没要求，但它觉得更好。
+      </div>
+    </section>
+
+    <section class="sec" id="s-check">
+      <h2>四、跑测试与复核：它说做完了不算<span class="sec__tag">收口</span></h2>
+      <p>
+        「它说已完成」「测试全绿」，这两件事都不能代替最后一步：<strong>你自己打开页面看一眼。</strong>
+        测试只能证明「代码没写错」，证明不了「你要的效果实现了」——
+        标题改在了另一个文件里，测试一样会绿。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>手段</th><th>能发现什么</th><th>发现不了什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>运行测试</strong></td>
+              <td>语法错、引用错、跑不起来的地方</td>
+              <td>改错了文件、改多了地方、效果跟你要的不一样</td>
+            </tr>
+            <tr>
+              <td><strong>看变更清单</strong></td>
+              <td>它到底动了哪几个文件、改了哪几行</td>
+              <td>页面上看起来对不对（清单不会告诉你观感）</td>
+            </tr>
+            <tr>
+              <td><strong>人工复核</strong><br><span class="note">打开页面 / 看输出</span></td>
+              <td>目标是不是真的实现了、样式有没有被带偏</td>
+              <td>看不见的隐患（例如顺手改了某个公共函数）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 五步闭环：从读到改，最后一步永远是人</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d3-next">下一步</button>
+            <button class="btn btn--ghost" type="button" id="d3-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d3-n1"><b>1</b>读项目<br><span class="dim">先报结构</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d1"></span></div>
+            <div class="flow__node dim" id="d3-n2"><b>2</b>提任务<br><span class="dim">四要素</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d2"></span></div>
+            <div class="flow__node dim" id="d3-n3"><b>3</b>看计划<br><span class="dim">只认一处</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d3"></span></div>
+            <div class="flow__node dim" id="d3-n4"><b>4</b>执行+测试<br><span class="dim">它来跑</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d4"></span></div>
+            <div class="flow__node dim" id="d3-n5"><b>5</b>人工复核<br><span class="dim">你打开看</span></div>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>五步文案取自本课练习网页的改动任务，
+            用来演示闭环的顺序与每一步「谁负责」，不是真实执行日志。
+          </div>
+        </div>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让它执行这一处修改，保存，打开页面验收 <em>本课收口</em></div>
+        <p><strong>做完你手上会有</strong>：改好的 <code>index.html</code>、
+          改动后的页面截图，以及一句<strong>说清「改了哪个文件、页面上看到什么」</strong>的验收结论。</p>
+
+        <p><strong>第 1 步 · 同意执行，只让它做这一处</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段原样发进去</b><span>
+            <span class="task__warn">注意最后那句「不运行任何其他命令」</span>——
+            这是防止它为了「顺手检查一下」去装东西。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="执行指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按上面的计划执行：只改 index.html 里那一处标题，保存文件。
+不要运行任何其他命令，不要修改 styles.css 和其他文件，不要联网发布。
+改完后告诉我：改了哪个文件的哪一行、改动前后分别是什么。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 打开页面验收（这一步不能省）</strong></p>
+        <ol class="steps">
+          <li><b>双击副本里的 <code>index.html</code></b><span>
+            在浏览器里看两件事：<strong>大标题是不是变成了「我的AIGC课程作品」</strong>、
+            <strong>蓝色头部和卡片样式是不是还正常</strong>。</span></li>
+          <li><b>再回到 Codex，让它把改动前后摆出来给你核</b><span>
+            把下面这段发进去，它的回答就是你要核的三件事。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请列出本次的全部改动：文件名、改动位置、改动前的原文、改动后的新文。
+同时说明：有没有动过 styles.css，有没有运行过任何命令。
+不知道的写【待确认】，不许推测。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它写出那句验收结论，你来核</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段紧接着发出去</b><span>
+            结论由它起草、<strong>由你签字</strong>：它写的内容必须和你刚才在页面上看到的完全一致。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="验收结论指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>用一句话写验收结论，必须包含三样：改了哪个文件的哪一处、
+页面上看到的变化、样式有没有受影响。
+不要写"已完成""处理完毕"这类没有信息量的话。</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>浏览器里的大标题已经变成「我的AIGC课程作品」，且蓝色头部、卡片样式没变</b><span>
+            标题变了但样式乱了，说明它顺手动了 <code>styles.css</code>。<br>
+            <em>样式被改了</em>：发一句「把 styles.css 恢复到改动前，只保留 index.html 的标题改动」。</span></li>
+          <li><b>它列出的改动只有 index.html 一处，且明确说了没动 styles.css、没跑命令</b><span>
+            列出两处以上，就是计划阶段没卡住。<br>
+            <em>它含糊其辞</em>：补一句「逐条列出每个被修改的文件，没有也要写明『未修改 styles.css』」。</span></li>
+          <li><b>那句验收结论里，文件名、改动位置、页面变化三样都说到了</b><span>
+            只写「已完成」的，退回让它按三样重写。<br>
+            <em>它写得太虚</em>：把上面那段指令再发一次，并补一句「必须出现 index.html 这个文件名」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：改动前后两张截图 + 一句验收结论。</p>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：三件事一旦出现，立刻停止</span>
+        <strong>① 要删除文件</strong>——你让它改标题，它为什么要删东西？<br>
+        <strong>② 要安装依赖</strong>——一个文字替换不需要装任何东西；<br>
+        <strong>③ 要联网发布</strong>——练习副本不属于任何线上站点。<br>
+        这三类动作出现在计划里，<strong>不同意、不继续</strong>，重新交代约束后再来一次。
+      </div>
+    </section>
+
+    <section class="sec" id="s-risk">
+      <h2>五、三条红线与数据边界<span class="sec__tag">底线</span></h2>
+      <p>
+        Codex 和聊天机器人最大的不同，是它<strong>手上有权限</strong>：能读你的文件、能改你的文件、能跑命令。
+        权限是它好用的原因，也是它危险的原因。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>它能做</th><th>对应的风险</th><th>本课怎么限制</th></tr></thead>
+          <tbody>
+            <tr><td><strong>读取项目文件</strong></td><td>你把整个盘或整个桌面给它，它就能读到所有东西</td><td>只打开 <code>lesson27-demo</code> 这一个副本目录</td></tr>
+            <tr><td><strong>修改并保存文件</strong></td><td>改多了、改错了地方，原文件被覆盖</td><td>小任务：只改一处；改前看计划，改后看变更</td></tr>
+            <tr><td><strong>运行命令</strong></td><td>装依赖、删文件、联网发布，都可能在这一步发生</td><td>指令里写死「不运行任何其他命令」</td></tr>
+            <tr><td><strong>联网</strong></td><td>你的代码和文件内容可能被送到模型服务端</td><td>不提交密钥、Cookie、个人路径；练习副本不放真实资料</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="codeblock codeblock--plain" data-lang="text" data-name="四类东西，任何时候都不提交 · 点右上角复制">
+        <div class="codeblock__bar"></div>
+<pre><code>1. 密钥与令牌：API Key、Access Token、密码
+2. Cookie 与登录态：浏览器里的登录信息、会话串
+3. 个人路径与身份信息：含真实姓名/学号的绝对路径、身份证号、手机号
+4. 未经核验的代码：别人给的、来源不明的、看不懂在干什么的代码</code></pre>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">一句话记住本课</span>
+        操作原则是<strong>先确定目标和范围，再使用工具</strong>；
+        完成后检查三样：<strong>内容准不准、范围对不对、能不能保存交付</strong>。<br>
+        你不是不敢用，是<strong>先在副本里用一次，把边界摸清楚</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>Codex 的 CLI 和桌面端，最本质的关系是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 两个不同的产品，能力差别很大</li>
+            <li>B. 同一个编程智能体的两种外壳：一个敲命令、一个有可视界面</li>
+            <li>C. CLI 只能聊天，桌面端才能改文件</li>
+            <li>D. 桌面端不需要联网，所以更安全</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>两者共同的四个动作是<strong>读项目、提修改、跑检查、交给你复核</strong>，
+            换的只是你怎么下指令。C 说反了——CLI 一样能改文件；D 也不成立，
+            是否联网取决于产品形态与配置，不是「桌面端天然更安全」。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>多选：让 AI 改代码之前，最该先提供的信息是哪些？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 改哪个文件（文件名）</li>
+            <li>B. 改哪一处的什么内容</li>
+            <li>C. 不许碰哪些东西</li>
+            <li>D. 它今天心情好不好</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>这就是本课的四要素里的前三条，缺一条它就得猜。
+            <strong>「不许碰什么」最容易被漏掉</strong>——不写，它就会顺手改样式、顺手「优化」别处。
+            D 属于无关项，AI 没有心情这一说。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>它的修改计划里出现了「安装一个依赖包」，你应该怎么做？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 同意，反正装完就能跑</li>
+            <li>B. 立刻停止，重新交代「本次不安装任何依赖」</li>
+            <li>C. 让它装，装完再看效果</li>
+            <li>D. 换个模型重试一遍</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>改一处标题不需要任何新依赖——出现这条说明它<strong>自己扩大了任务范围</strong>。
+            A、C 都是在赌，装进去的东西你不知道它干了什么；D 没解决问题，
+            换模型它照样可能发挥。这类动作属于本课三条红线之一。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>判断：测试全部通过，就可以确认这次改动成功了。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>测试只能证明「代码没写错」，证明不了「你要的效果实现了」——
+            标题改在了另一个文件里，测试一样是绿的。
+            所以本课最后一环是<strong>人工复核：真的打开页面看一眼</strong>，
+            再让它列出改动清单对一遍。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>「小任务」最实用的好处是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 一定比大任务快</li>
+            <li>B. 只改一个明确位置，影响好判断、出错好回滚</li>
+            <li>C. 用掉的额度更少</li>
+            <li>D. 不需要人工验收</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>小任务的价值是<strong>可控</strong>：改了哪个文件的哪一处，你一句话说得清，
+            出问题退回去也是一秒钟的事。A 不成立，小任务也可能反复确认；
+            D 更错——<strong>再小的任务也要人工看一眼</strong>，这是本课的主线。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>多选：下面哪些东西不该出现在交给 Codex 的内容里？</span></div>
+          <ul class="quiz__opts">
+            <li>A. API Key 一类的密钥</li>
+            <li>B. 浏览器里的 Cookie 与登录态</li>
+            <li>C. 含真实姓名或学号的个人路径</li>
+            <li>D. 课堂安全副本里的练习网页</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>密钥、Cookie/登录态、个人路径与身份信息，这三类任何时候都不提交。
+            D 恰恰是<strong>推荐做法</strong>——练习副本正是为了让你能放心练手而存在的，
+            前提是副本里不放真实资料。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走六件事</h4>
+        <ol>
+          <li>Codex 是<strong>面向软件开发任务的编程智能体</strong>；CLI 敲命令、桌面端有界面，<strong>外壳不同、四步相同</strong>；</li>
+          <li>开口前先看结构：<strong>仓库 → 目录结构 → 目标文件 → 小任务</strong>，先让它报结构再提要求；</li>
+          <li>指令四要素：<strong>改哪个文件 / 改哪一处的什么 / 不许碰什么 / 怎么验收</strong>，后两条最容易漏；</li>
+          <li>计划阶段是<strong>唯一能在文件被改之前叫停</strong>的机会：只认一处，越界就停；</li>
+          <li>测试通过≠做对了。最后一环永远是<strong>人工复核：打开页面看 + 让它列出全部改动</strong>；</li>
+          <li>三条红线 <strong>不装依赖、不删文件、不联网发布</strong>；四类东西不提交：<strong>密钥、Cookie、个人路径、未核验代码</strong>。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天我们靠<strong>划范围</strong>来保证安全——只给它一个副本目录、只让它改一处。
+        下一课 <a class="xref" data-lesson="28">Hermes-Agent</a> 换个角度：
+        一个会<strong>记住你</strong>、会自己攒技能的助手，带来的是另一种便利和另一种风险。
+        今天练的「先定范围、再看计划、最后人工验收」，在那儿会变成一句更关键的话——
+        <strong>哪些事它可以记住，哪些事它绝对不能记住。</strong>
+      </p>
+      <p class="note">
+        本页产品口径取自 OpenAI 官方 Codex 文档与术语表，核对日期 <strong>2026-09-26</strong>；
+        课内练习网页、目录结构与命令输出为教学示意，界面与命令随版本更新，以实际版本为准。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题发在学习通上。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 27 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）关于 Codex 的 CLI 与桌面端，说法正确的是？
+A. 两个不同产品，能力差别很大
+B. CLI 只能聊天，改文件必须用桌面端
+C. 同一个编程智能体的两种外壳，共同点是都能读项目、提修改、跑检查
+D. 桌面端不需要联网，所以一定更安全
+【答案】C
+【解析】两者只是交互方式不同：CLI 靠文字命令，桌面端提供可视界面，底层都能读取项目、提出修改、运行检查并交给你复核。B 说反了；D 不成立，安全性取决于授权范围与配置，不是界面形态。
+
+2.（多选）一条"能验收"的改动指令，应当写全哪些要素？
+A. 改哪个文件
+B. 改哪一处的什么内容
+C. 不许碰什么
+D. 怎么验收（做完看什么）
+【答案】ABCD
+【解析】四要素缺一不可。实务中最容易漏的是 C 和 D：不写"不许碰什么"，它就会顺手改样式；不写"怎么验收"，事后你就没法判断它做没做对。
+
+3.（单选）它给出的修改计划里出现"安装一个依赖包"，正确的做法是？
+A. 同意执行，装完再看效果
+B. 立刻停止，重新交代"本次不安装任何依赖"
+C. 换个模型重试一遍
+D. 先让它装，装完再卸载
+【答案】B
+【解析】改一处文字不需要任何新依赖，出现这条说明它自己扩大了任务范围。计划阶段是唯一能在文件被改之前叫停的机会，属于本课三条红线之一。C 没解决问题，A、D 都是在赌。
+
+4.（判断）测试全部通过，就可以确认这次改动已经成功。
+A. 正确
+B. 错误
+【答案】B（错误）
+【解析】测试只能证明代码没写错，证明不了你要的效果实现了——改动落在另一个文件里，测试一样是绿的。最后一环必须是人工复核：打开页面看效果，并让它列出全部改动清单逐条对。
+
+5.（多选）下面哪些做法符合"小任务"的要求？
+A. 一次只改一个明确位置，说清改了哪个文件的哪一处
+B. 把整个桌面交给它，方便它自己找文件
+C. 先在副本目录里练，不碰真实项目
+D. 改完之后打开页面看一眼，再让它列出全部改动
+【答案】ACD
+【解析】B 违反"授权范围划得越小越好"——它既能读又能改，范围一大风险就不可控。ACD 分别对应小任务的定义、安全副本的做法和人工复核的要求。
+
+6.（多选）下列哪些内容不该出现在交给 Codex 的材料里？
+A. API Key 之类的密钥与令牌
+B. 浏览器里的 Cookie 与登录态
+C. 含真实姓名或学号的个人路径
+D. 课堂安全副本里的练习网页
+【答案】ABC
+【解析】密钥、登录态、个人路径与身份信息属于任何时候都不提交的四类内容。D 恰恰是推荐做法——练习副本就是为了让你放心练手，前提是副本里不放真实资料。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能否分清「外壳不同、四步相同」，不把 CLI 与桌面端当成两种能力；
+        <strong>二是</strong>提到指令时，是否意识到「不许碰什么」和「怎么验收」这两条最容易被漏；
+        <strong>三是</strong>验收环节，是否把<strong>人工打开页面看一眼</strong>当成必须动作，而不是相信「已完成」三个字。
+      </div>
+      <p class="note">
+        本课要提交的实操成果：<strong>改动前后两张截图 + 一句验收结论</strong>，
+        建议按「第27次_Codex入门_姓名」命名保存。<br>
+        课后延伸：用今天这套四步法完成一个小脚本（例如把一个文件夹里的图片按日期重命名），
+        写一段使用体验——重点写「计划阶段你卡住了它几次、为什么」。<br>
+        共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 同一条指令：CLI 与桌面端 ---------- */
+  var D1 = {
+    cli: [
+      "<span class='hl'>你把指令粘进终端，回车——</span>",
+      "  ① 读项目　读了 2 个文件：index.html、styles.css",
+      "  ② 提修改　计划：把 index.html 里的 h1 标题改掉，共 1 处",
+      "  ③ 跑检查　保存后提示可以打开页面确认",
+      "  ④ 交复核　<span class='ok'>✓ 等你确认</span>：y 同意 / n 放弃，改之前都还来得及",
+      "",
+      "<span class='dim'>CLI 的好处是每一步都留在屏幕上，往上翻就能回看。</span>"
+    ],
+    desk: [
+      "<span class='hl'>你在输入框里发了同一条指令——</span>",
+      "  ① 读项目　左栏显示 lesson27-demo，里面 2 个文件",
+      "  ② 提修改　中间给出计划：只改 h1 标题，共 1 处",
+      "  ③ 跑检查　右栏列出变更清单：index.html 第 8 行",
+      "  ④ 交复核　<span class='ok'>✓ 等你确认</span>：点「同意」才真的落盘",
+      "",
+      "<span class='dim'>桌面端按钮多，最容易犯的错是一路点下去，忘了看第 ② 步。</span>"
+    ]
+  };
+  var d1Tab = "cli";
+  document.querySelectorAll("#demo1 [data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () { d1Tab = b.getAttribute("data-tab"); });
+  });
+  $("d1-run").addEventListener("click", function () {
+    window.Site.type($("d1-out"), D1[d1Tab], null);
+  });
+  $("d1-reset").addEventListener("click", function () {
+    $("d1-out").innerHTML = "";
+  });
+
+  /* ---------- 演示② 三种说法，计划质量对比 ---------- */
+  var D2 = {
+    "d2-a": {
+      k1: "3 处", k2: "要返工 2 次", k3: "说不清",
+      lines: [
+        "<span class='hl'>模糊版：「帮我把这个网页改好看一点，标题也调一下。」</span>",
+        "  它回：计划改 3 处——标题文字、标题字号、卡片配色。",
+        "  <span class='no'>✗ 它自己定义了「好看」</span>，配色和字号你根本没要求。",
+        "  你还得多说两轮把它拉回来，返工 2 次。",
+        "",
+        "<span class='no'>✗ 回滚困难：三处混在一起，说不清哪处是你要的。</span>"
+      ]
+    },
+    "d2-b": {
+      k1: "2 处", k2: "要返工 1 次", k3: "要挑一下",
+      lines: [
+        "<span class='hl'>一般版：「把首页标题改成『我的AIGC课程作品』。」</span>",
+        "  它回：计划改 2 处——index.html 的 h1、以及浏览器标签的 title。",
+        "  <span class='no'>✗ 多出来的第二处不是你要的</span>，但这次说得清，退一步就行。",
+        "  返工 1 次：补一句「只改 h1，其他位置不动」。",
+        "",
+        "<span class='dim'>比模糊版好，但「不许碰什么」还没写死。</span>"
+      ]
+    },
+    "d2-c": {
+      k1: "1 处", k2: "不用返工", k3: "一句话回滚",
+      lines: [
+        "<span class='hl'>可验收版：先说明要改哪个文件 → 改哪一处的什么 → 不许碰什么 → 怎么验收</span>",
+        "  它回：计划改 1 处——index.html 第 8 行 h1，",
+        "        「我的课程作品」→「我的AIGC课程作品」。",
+        "  <span class='ok'>✓ 没有样式改动，没有删除，没有安装依赖。</span>",
+        "  验收：双击 index.html，标题变了且样式正常。",
+        "",
+        "<span class='hl'>四要素写全，计划就不用猜——这四条省下的是后面所有的返工。</span>"
+      ]
+    }
+  };
+  function d2Run(key) {
+    var d = D2[key];
+    $("d2-k1").textContent = d.k1;
+    $("d2-k2").textContent = d.k2;
+    $("d2-k3").textContent = d.k3;
+    window.Site.type($("d2-out"), d.lines, null);
+  }
+  ["d2-a", "d2-b", "d2-c"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d2Run(id); });
+  });
+
+  /* ---------- 演示③ 五步闭环 ---------- */
+  var D3_STEPS = [
+    [
+      "<span class='hl'>第 1 步 · 读项目（它先看清你有什么）</span>",
+      "  你：先只列出目录结构，不要改任何文件。",
+      "  它：lesson27-demo 下有 index.html、styles.css 两个文件。",
+      "<span class='dim'>这一步错了，后面全错——它连项目都没看过。</span>"
+    ],
+    [
+      "<span class='hl'>第 2 步 · 提任务（四要素一次说全）</span>",
+      "  你：说明要改哪个文件 → 改哪一处的什么 → 不许碰什么 → 怎么验收。",
+      "<span class='dim'>「不许碰什么」最容易被漏，漏了它就会发挥。</span>"
+    ],
+    [
+      "<span class='hl'>第 3 步 · 看计划（唯一能在改文件前叫停的机会）</span>",
+      "  它：计划改 index.html 第 8 行 h1，共 1 处。",
+      "  你：只认这一处。出现删除 / 装依赖 / 联网发布 → <span class='no'>✗ 立刻停止</span>。",
+      "<span class='dim'>同意的成本是一秒钟，不同意的成本是零。</span>"
+    ],
+    [
+      "<span class='hl'>第 4 步 · 执行并跑检查（它来做）</span>",
+      "  它：已保存 index.html；变更清单 1 条。",
+      "  <span class='ok'>✓ 测试没有报错</span>——但这只说明代码没写错。"
+    ],
+    [
+      "<span class='hl'>第 5 步 · 人工复核（最后一步永远是人）</span>",
+      "  你：双击 index.html → 大标题变了、蓝色头部和卡片样式没变。",
+      "  你：再让它列出全部改动，确认没动 styles.css、没跑命令。",
+      "",
+      "<span class='hl'>闭环合上：理解 → 修改 → 测试 → 复核。缺少第 5 步，前面四步都不算数。</span>"
+    ]
+  ];
+  var d3Step = 0;
+  function d3Render() {
+    for (var i = 1; i <= 5; i++) {
+      var n = $("d3-n" + i);
+      n.className = "flow__node" + (i === d3Step ? " on" : " dim");
+      if (i < 5) {
+        var dot = $("d3-d" + i);
+        dot.className = "flow__dot" + (i < d3Step ? " run" : "");
+      }
+    }
+    if (d3Step > 0) window.Site.type($("d3-out"), D3_STEPS[d3Step - 1], null);
+    else $("d3-out").innerHTML = "";
+  }
+  $("d3-next").addEventListener("click", function () {
+    d3Step = d3Step >= 5 ? 1 : d3Step + 1;
+    d3Render();
+  });
+  $("d3-reset").addEventListener("click", function () {
+    d3Step = 0;
+    d3Render();
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
+</body>
+</html>

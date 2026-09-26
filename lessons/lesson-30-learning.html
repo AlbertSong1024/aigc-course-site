@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第30次课 AI 学习助手与知识管理｜AIGC应用与实践</title>
+<meta name="description" content="把 AI 用在理解、练习和反思上：五类学习场景、四种讲法、费曼复述、出题自测与知识沉淀——学得快，也记得牢，还不依赖。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="30" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三</span></h2>
+      <p class="lead">
+        到这一课为止，AI 一直在替我们<strong>干活</strong>：写文档、做表格、改简历、跑任务。
+        这一课换个用法——让它<strong>教我们</strong>。
+        同样一个 AI，用法换一下，它从「代笔」变成「陪练」。
+      </p>
+      <p>
+        风险也正好在这里。问一句「帮我学一下 Python」，它会给你一大段讲得很好的解释，
+        你读完点点头，以为自己会了。<strong>它讲得清楚，不等于你学会了。</strong>
+        本课要解决的就是这件事：让 AI 讲明白之后，怎么把那些话<strong>变成你自己的</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>它讲得头头是道，你听完觉得懂了，第二天全忘</strong></td><td>看懂和会做是两件事；没有输出，输入就留不下来</td></tr>
+            <tr><td><strong>一有不会的就直接问 AI，答案抄进作业</strong></td><td>作业交了，能力没长；考试时它不在，你也不会</td></tr>
+            <tr><td><strong>问「帮我学一下 XX」，得到一大篇通识介绍</strong></td><td>没说清你要哪种帮助——答疑、讲解、练习、总结、备考，给的完全不是同一种东西</td></tr>
+            <tr><td><strong>学过的内容散在几十条对话里，要用时找不到</strong></td><td>只顾着一轮轮问，没把结论沉淀成自己的笔记</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        本课有一条主线，五个实操全挂在它上面：
+        <strong>它可以替你讲，但不能替你懂。</strong><br>
+        所以本课所有实操里，<strong>「讲」的那一步由 AI 做，「讲一遍给你听」的那一步必须你自己做</strong>——
+        那一步就是费曼学习法的全部价值所在，跳过它，这一课就白上了。<br>
+        五个实操<strong>前后相接、共用一个知识点</strong>：本课统一使用
+        <strong>「Excel 绝对引用」</strong>这一个难点。① 定场景 → ② 让它讲三种 → ③ 你讲回给它听 →
+        ④ 用它出的题检验 → ⑤ 沉淀成你自己的学习地图。
+      </div>
+      <p class="note">
+        本课的学习方法口径核对日期 <strong>2026-09-26</strong>。费曼学习法以物理学家理查德·费曼命名，
+        核心做法是「用简单语言讲给外行听，讲不清的地方就是理解缺口」；
+        网上流传的步骤版本很多（三步、四步、五步都有），<strong>核心不变</strong>，本课取其中一种便于操作的写法。<br>
+        Excel 绝对引用的规则属于软件通用功能，各版本一致；课内的学习笔记、练习与计划为<strong>教学示意</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 AI 辅助学习的<strong>五类场景</strong>（答疑、讲解、练习、总结、备考），并在提问前先判断自己要哪一种；</li>
+          <li>让 AI 用<strong>拆解、类比、举例、练习</strong>四种讲法解释同一个难点，并说出四种各自解决什么问题；</li>
+          <li>用不超过 60 字把一个知识点<strong>讲回给 AI 听</strong>，并让它指出其中讲不清楚的那一处；</li>
+          <li>让 AI 出<strong>5 道由易到难</strong>的题、先不给答案，自己做完再逐题核对并留下错题；</li>
+          <li>把一个知识点整理成<strong>五分支学习地图</strong>（定义、符号、例子、常见错误、检查方法）并保存下来；</li>
+          <li>判断一份 AI 给的学习成果<strong>能不能算你学会了</strong>——判据是：你能不能不看它、自己讲一遍。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-scene"><b>01</b>五类学习场景：先说清要哪种帮助 <em>＋实操①</em></a>
+        <a href="#s-explain"><b>02</b>四种讲法：拆解、类比、举例、练习 <em>＋实操②</em></a>
+        <a href="#s-feynman"><b>03</b>费曼学习法：它讲完，你讲回去 <em>＋实操③</em></a>
+        <a href="#s-drill"><b>04</b>出题自测：检验而不是炫耀 <em>＋实操④</em></a>
+        <a href="#s-manage"><b>05</b>避免依赖与知识管理：留下能复用的 <em>＋实操⑤</em></a>
+        <a href="#s-quiz"><b>06</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="26">第 26 次课</a>那句「AI 是陪练，不是答案库」——
+        本课是同一条线在学习场景里的延伸；<a class="xref" data-lesson="15">第 15 次课</a>的知识库思路，
+        则是最后一步「把笔记沉淀下来」的底子。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="31">第 31 次课</a>要做综合求职包，
+        那份材料里「你会什么」这一栏，靠的就是今天整理出来的学习地图，而不是 AI 替你写的漂亮话。
+      </div>
+    </section>
+
+    <section class="sec" id="s-scene">
+      <h2>一、五类学习场景：先说清你要哪种帮助<span class="sec__tag">开局</span></h2>
+      <p>
+        大多数人对 AI 说的第一句是「帮我学一下 XX」。这句话的问题是它<strong>什么都没说清</strong>——
+        你是卡在某个地方想不通？还是从头就不明白？是要它出题给你练？还是临考前要一份速记？
+        这四件事，AI 该给的东西完全不同。
+      </p>
+      <p>
+        先分清场景，再开口。五类场景各管一件事：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>场景</th><th>你处在什么状态</th><th>该让它做什么</th><th>最忌讳的问法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>答疑</strong></td>
+              <td>卡在一个<strong>具体的点</strong>上，别的都懂</td>
+              <td>只针对那一点解释，并说清它和前后知识的关系</td>
+              <td>把整章丢给它说「帮我看看」——它会给你一篇通识介绍</td>
+            </tr>
+            <tr>
+              <td><strong>讲解</strong></td>
+              <td>这个概念<strong>从头就不明白</strong></td>
+              <td>按你已有的基础，从零讲一遍，配例子</td>
+              <td>不问对象——它默认按「有一定基础的人」讲，你会越听越糊</td>
+            </tr>
+            <tr>
+              <td><strong>练习</strong></td>
+              <td><strong>听懂了，但不确定会不会做</strong></td>
+              <td>出题，先不给答案，做完再逐题核对</td>
+              <td>让它把答案一起给出来——你只会看，不会做</td>
+            </tr>
+            <tr>
+              <td><strong>总结</strong></td>
+              <td>学完一批内容，要<strong>收拢成能记住的</strong></td>
+              <td>压缩成要点、对照表、口诀，并标出易混点</td>
+              <td>让它「总结一下」而不说用途——它会给你一份没法复习的流水账</td>
+            </tr>
+            <tr>
+              <td><strong>备考</strong></td>
+              <td><strong>时间有限，要抓重点</strong></td>
+              <td>按考频排序、划出必会项、出模拟题</td>
+              <td>让它押题——押错了你没处说理，它也不会负责</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一句「帮我学一下」，说清场景之后差别有多大</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d1-qa">答疑</button>
+            <button class="btn btn--ghost" type="button" id="d1-ex">讲解</button>
+            <button class="btn btn--ghost" type="button" id="d1-pr">练习</button>
+            <button class="btn btn--ghost" type="button" id="d1-su">总结</button>
+            <button class="btn btn--ghost" type="button" id="d1-tm">备考</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>你要先给</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>它该交出</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>你怎么验收</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>五种问法与回答样式取自本课教学示例，
+            用来演示「说清场景」带来的差别，不是任何一次真实对话的记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">一句万能开头</span>
+        把「帮我学一下 XX」换成这三句，命中率立刻不一样：<br>
+        <strong>① 我卡在哪</strong>（具体到那一步）、<strong>② 我已经会什么</strong>（它的起点）、
+        <strong>③ 我要它交出什么</strong>（讲一遍 / 出五题 / 压成一张表）。<br>
+        这三句说清楚，AI 才不会用一篇通识介绍来敷衍你。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·给一个指定的难点判定学习场景，并让 AI 列出学习路径</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-学习场景卡.md</code>——
+          难点描述、判定的场景（唯一一类）、该类场景的三个特征、
+          AI 给的四步学习路径，末尾「我原来的问法差在哪」。</p>
+
+        <p><strong>第 1 步 · 把本课统一使用的难点交给它</strong></p>
+        <ol class="steps">
+          <li><b>打开 WorkBuddy，新建任务，工作目录选 <code>wb-试验</code></b><span>
+            本课五个实操都用<strong>同一个难点</strong>：Excel 绝对引用。指定同一个，
+            课上才好对照，你课后可以换成自己那门课的难点重跑一遍。</span></li>
+          <li><b>把下面这段素材整段贴进对话</b><span>
+            <span class="task__warn">整段粘贴，不要自己改写</span>——「已经会什么」那一栏决定它从哪讲起，删了它就会从零开始。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 本课指定难点（点右上角复制）">
+          <div class="codeblock__bar"></div>
+<pre><code>【本次要攻的难点（唯一一个，不要换）】
+难点：Excel 里的绝对引用（$A$1 这种写法）
+
+我已经会什么：
+- 会在单元格里写 =A1+B1 这种公式；
+- 会拖动填充柄把公式复制到下面几行；
+- 会做最基本的求和 =SUM(A1:A10)。
+
+我卡在哪：
+- 把公式往下拖的时候，结果经常不对，但我不知道为什么有时候对、有时候错；
+- 见过别人写 $A$1，不知道那个 $ 是干什么用的，也不知道什么时候该加。
+
+我的情况：高职二年级，第一次系统学 Excel，目标是能独立做班级成绩表。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>空一行，把下面这段指令贴在素材后面，一起发送</b><span>
+            让它<strong>只判定一类</strong>场景——判成「哪几类都有」等于没判。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="判定场景的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请先判断上面这个难点属于哪一类学习场景，再给学习路径，存成工作目录下的 01-学习场景卡.md。
+
+五类场景：答疑 / 讲解 / 练习 / 总结 / 备考。
+
+卡片三段：
+1. 判定结果：只写一类，不许写"兼具多种"。后面附三条判断依据，
+   每条写清"我描述里的哪一句话 → 对应这一类场景的哪个特征"；
+2. 这一类场景的三个特征：写清这类场景下，你该做什么、不该做什么；
+3. 四步学习路径：针对这个难点给出四步，每步写清"这一步做什么"和"做完怎么判断过了"，
+   四步里必须包含一次"我自己动手做"和一次"我自己讲一遍"。
+
+硬约束：
+- 对象按"高职二年级、第一次学 Excel"来写，不许按有经验的办公人员写；
+- 不许在这一步就把绝对引用的原理讲完——那一步留给后面；
+- 不知道的信息写【待补】，不许替我编我的基础。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它说说，你原来的问法差在哪</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            这一步是给你自己看的：<strong>看清模糊提问会换来什么</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="对比指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>追加一段"【我原来的问法差在哪】到 01-学习场景卡.md：
+
+1. 假设我原来的问法只有一句"帮我学一下 Excel 绝对引用"，
+   请写出你会给出的回答大概是什么样——用五到八行模拟那个回答的样子，不许美化；
+2. 逐条对比：那个回答和现在这份卡片比，少了哪三样东西；
+3. 一句结论：为什么"说清我要哪种帮助"比"把问题问长"更管用。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>判定结果只写了一类，且三条依据都引到了素材里的原话</b><span>
+            写「兼具讲解和练习」说明它在和稀泥。<br>
+            <em>它判了多类</em>：补一句「只许选一类，并说明为什么这一类优先于其他四类」。</span></li>
+          <li><b>四步学习路径里有一步是你动手做、一步是你自己讲</b><span>
+            全是「让它讲」的步骤，就不是学习路径，是听课计划。<br>
+            <em>没有动手环节</em>：补一句「四步里必须含一次动手操作和一次自己复述，各写清怎么判断通过」。</span></li>
+          <li><b>「我原来的问法差在哪」里点出了具体缺的三样东西</b><span>
+            写「更全面、更有针对性」这种不算。<br>
+            <em>对比太虚</em>：补一句「必须逐条写出旧问法少了哪三样，每样举一个具体例子」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-学习场景卡.md</code>。下一步就按这张卡的路径往下走。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-explain">
+      <h2>二、四种讲法：拆解、类比、举例、练习<span class="sec__tag">方法</span></h2>
+      <p>
+        同一个知识点，AI 能给你十种解释，但大多数人只要到第一种就停了——
+        「看懂了」。看懂是最容易骗自己的一种状态：它写得通顺，你读得流畅，
+        于是大脑把「读得顺」当成了「我会了」。
+      </p>
+      <p>
+        四种讲法各有各的用处，<strong>组合起来用比只看解释有效</strong>：
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>讲法</th><th>它在解决什么</th><th>你会得到什么</th><th>单独用的毛病</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>拆解</strong></td>
+              <td>太复杂，不知从哪下手</td>
+              <td>分成几步，一步一步来</td>
+              <td>只有步骤没有画面，照做完也不知道为什么</td>
+            </tr>
+            <tr>
+              <td><strong>类比</strong></td>
+              <td>太抽象，脑子里挂不住</td>
+              <td>一个生活里的东西跟它对应</td>
+              <td>类比都会失真，只记类比会记错细节</td>
+            </tr>
+            <tr>
+              <td><strong>举例</strong></td>
+              <td>不知道具体长什么样</td>
+              <td>一个能照着做的最小实例</td>
+              <td>只会做这一个例子，换个样子就不会了</td>
+            </tr>
+            <tr>
+              <td><strong>练习</strong></td>
+              <td>不知道自己到底会不会</td>
+              <td>几道题，做完才知道</td>
+              <td>没有人核对，错了自己也不知道</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="compare">
+        <div class="compare__col">
+          <h4>✗ 只看解释</h4>
+          <p>
+            「绝对引用就是在行号和列号前加 $，使公式复制时引用不变。」
+            读起来很顺，你也觉得懂了。但下次做成绩表，
+            你还是不知道该不该加那个 $——<strong>因为没人让你动手，也没有人给你判分。</strong>
+          </p>
+        </div>
+        <div class="compare__col b">
+          <h4>✓ 四种讲法组合</h4>
+          <p>
+            先<strong>类比</strong>挂住印象（门牌号 vs 跟着你走的影子），再<strong>举例</strong>看长什么样
+            （一个四行的小表格），再<strong>拆解</strong>成三步操作，最后用<strong>练习</strong>检验。
+            四步走完，你手上多的是「我做对过一次」的经验，不是「我读过一段话」。
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">类比会失真，这句话要一直记着</span>
+        类比的作用是<strong>让你先挂住</strong>，不是替你定义。
+        「绝对引用像门牌号」能帮你记住「它不跟着走」，
+        但它解释不了<strong>混合引用</strong>（<code>$A1</code> 锁列不锁行）这种情况。<br>
+        所以顺序永远是：<strong>类比入门 → 例子定型 → 拆解上手 → 练习验收。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让 AI 用生活比喻、最小例子和三步操作解释同一个难点</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-三种解释.md</code>——
+          一段生活比喻、一个能照着做的最小 Excel 例子、三步操作流程，
+          末尾「这个类比在哪里会失真」。</p>
+
+        <p><strong>第 1 步 · 让它一次给三种讲法</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段指令整段贴进去发送</b><span>
+            <span class="task__warn">必须新建对话</span>——上一轮它在判定场景，这一轮要换成「讲解」的身份，
+            混在一起它会忍不住接着讲原理而跳过例子。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="三种讲法的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请用三种方式解释"Excel 绝对引用（$A$1）"，存成工作目录下的 02-三种解释.md。
+对象：第一次学 Excel 的高职学生，目标是能独立做班级成绩表。
+
+三种讲法各一节，一节都不能少：
+
+第一节【生活比喻】
+用一个校园生活里的东西打比方（例如门牌号、座位号、储物柜），
+说清"相对引用"和"绝对引用"分别像什么。不许用专业术语打比方。
+
+第二节【最小 Excel 例子】
+给出一个不超过 5 行 4 列的小表格例子，用文字画出来，
+标出：哪个单元格放公式、公式长什么样、往下拖一格之后公式变成了什么、
+加 $ 之后又变成什么。例子必须小到我能照着在 Excel 里敲出来。
+
+第三节【三步操作】
+写清在 Excel 里实际操作的三个步骤（含按什么键、点哪里），
+每步一句，主语是"你"。写完补一句：做完之后看哪个单元格就能判断自己对了。
+
+写完追加"【这个类比在哪里会失真】：说清第一节那个比喻解释不了哪一种情况，
+并给出那种情况下的正确理解。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 照着它给的最小例子在 Excel 里做一遍，再让它判</strong></p>
+        <ol class="steps">
+          <li><b>打开 Excel，照第二节那个小表格敲进去，把公式往下拖一格</b><span>
+            这一步不能省——<strong>看懂和做对之间，差的就是这一次动手</strong>。</span></li>
+          <li><b>把下面这段指令发进去，让它出一道判断题来验收</b><span>
+            验收交给它，你只管做。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="验收指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>追加一段"【动手验收】到 02-三种解释.md：
+
+1. 出一道判断题：换一个与上面例子不同的场景（例如横向拖动、或者只锁列不锁行 $A1），
+   问我"这时候该不该加 $、加在哪"，只给题不给答案；
+2. 写清我自己检查对不对的方法：做完之后看哪两个单元格的值，对得上就算对；
+3. 等我把答案发给你之后，再告诉我判断结果与原因。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>把那道题的答案发给它，看它判得对不对</b><span>
+            它要是含糊地说「基本正确」，就追问「到底对不对、错在哪一格」。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三节齐全，第二节的例子小到能在 Excel 里照着敲（不超过 5 行 4 列）</b><span>
+            给一张几十行的表，那是案例不是最小例子。<br>
+            <em>例子太大</em>：补一句「例子压缩到 5 行 4 列以内，只保留能说明问题的格子」。</span></li>
+          <li><b>第三节的三步操作写清了按什么键、点哪里，且写清了看哪个单元格验收</b><span>
+            「设置绝对引用即可」这种不算操作。<br>
+            <em>步骤太粗</em>：补一句「每步必须含具体操作位置或按键，并写明看哪个单元格判断成功」。</span></li>
+          <li><b>「这个类比在哪里会失真」点出了具体一种情况（例如混合引用）</b><span>
+            写「比喻只是比喻」这种不算。<br>
+            <em>没点出来</em>：追问「这个比喻解释不了哪一种引用？举一个具体场景」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-三种解释.md</code>。下一节，轮到你讲给它听。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-feynman">
+      <h2>三、费曼学习法：它讲完，你讲回去<span class="sec__tag">本课核心</span></h2>
+      <p>
+        费曼学习法以物理学家理查德·费曼命名，做法说起来很朴素：
+        <strong>用最简单的语言把一件事讲给一个外行听，讲不下去的地方，就是你没懂的地方。</strong>
+        它不是记忆技巧，是<strong>检测工具</strong>——专门用来戳破「我以为我懂了」。
+      </p>
+      <p>
+        AI 在这里的角色非常合适：<strong>它是永远有空、不会不耐烦、也不怕你讲错的听众和追问者。</strong>
+        但有一条不能让出去：<strong>复述必须由你完成。</strong>
+        让它替你写那段 60 字，等于让它替你做体检还替你填体检报告。
+      </p>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 费曼闭环五步：卡住的那一句就是理解缺口</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
+            <button class="btn btn--accent" type="button" id="d2-all">走完一遍</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>①</b>它讲</div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>②</b>我讲</div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>③</b>它挑</div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>④</b>补缺</div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d4"></span></div>
+            <div class="flow__node dim" id="d2-n5"><b>⑤</b>再讲</div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>五步对话为本课编写的示例，
+            用来演示费曼闭环里「缺口是怎么被逼出来的」；示例中的学生说法是虚构的。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：不许让它替你写那段复述</span>
+        这一课最容易走捷径的地方就在这里——把「用自己的话讲一遍」也丢给 AI，
+        它会给你一段漂亮得挑不出毛病的复述，然后你自己依然讲不出来。<br>
+        判据只有一句：<strong>关掉这个页面、不看任何材料，你能不能把这件事讲清楚？</strong>
+        能，才是学会了；不能，刚才那几轮对话就只是看了一场演示。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·不看它的解释，把绝对引用讲回给 AI 听（不超过 60 字）</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-费曼复述.md</code>——
+          一段 60 字示范复述与它的自评、<strong>你自己写的那一段复述</strong>、
+          它指出的一处不清楚与改法、改后的终版复述。</p>
+
+        <p><strong>第 1 步 · 先让它示范一遍，顺便看清评判标准</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段指令整段贴进去发送</b><span>
+            先看它怎么讲、怎么挑，你才知道自己那一段会被按什么标准挑。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="示范复述的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我要用费曼学习法检验"Excel 绝对引用"这个知识点。先请你做一次示范，
+存成工作目录下的 03-费曼复述.md。
+
+请按下面三块输出：
+
+【示范复述】　用不超过 60 字解释"为什么复制公式时要锁定单元格"。
+要求：面向完全没学过 Excel 的人，不许出现"引用""相对"这类术语，
+不出现 $ 符号以外的任何标记。
+
+【自评：这一处讲不清】　就上面那段示范，指出一处讲得不清楚或会让人误解的地方，
+写清"哪一句 → 为什么不清楚 → 换成什么说法"。
+
+【评判标准】　列出你会用哪三条标准来评判一段复述好不好
+（提示：从"有没有讲清为什么""有没有用到术语""外行能不能照着做"里想）。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 轮到你讲：把你的 60 字发给它</strong></p>
+        <ol class="steps">
+          <li><b>先把上面它给的三种解释收起来不看，自己想一遍</b><span>
+            这一步是本课的核心动作，<span class="task__warn">不要回头翻、不要让它帮你写</span>——
+            你卡住的那句话，就是这次练习最值钱的收获。</span></li>
+          <li><b>用不超过 60 字写出「为什么复制公式时要锁定单元格」，直接发进对话</b><span>
+            写不出来就写你卡住的地方，例如「我知道要加 $，但说不清为什么有时候不加也对」，
+            这也算一次有效复述。</span></li>
+          <li><b>把下面这段指令跟着一起发出去</b><span>
+            只让它挑<strong>一处</strong>——挑太多你会不知道先改哪个。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="让它挑刺的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>上面那段就是我自己的复述。请按你在【评判标准】里定的三条来评判，
+追加进 03-费曼复述.md，标题为"【我的复述 · 评判】"：
+
+1. 只指出一处讲得最不清楚的地方，写清"哪一句 → 为什么不清楚 → 换成什么说法"；
+   （只挑一处，不要列一堆）
+2. 给出改后的终版复述，仍然不超过 60 字，仍然不许用术语；
+3. 一句话结论：我现在算不算真的懂了，说清判断依据。
+
+不许替我把整段重写成"标准答案"——改后版本必须保留我原来的说法和用词习惯。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它追一层：换个场景还讲得通吗</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            讲得通一次不算懂，<strong>换场景还能讲通才算</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="追问指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>追加一段"【换个场景还讲得通吗】到 03-费曼复述.md：
+
+1. 换一个场景问我：例如"把公式向右拖（横向复制）时，该锁行还是锁列？"
+   或者"只想让列不变、行跟着变，该怎么写？"——二选一，只给题不给答案；
+2. 等我把答案发给你后，判断它对不对，并说清这一题和上一题的关键差别在哪；
+3. 写一句结论：我的理解现在覆盖了哪几种情况，还有哪种情况没覆盖。
+</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>把这题的答案发给它，看它判得对不对、有没有说出关键差别</b><span>
+            它如果说「都对」，追问「那 $A1 和 A$1 的差别是什么」。</span></li>
+        </ol>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>文件里有你自己写的那段复述，且它的评判只挑了一处并给了改法</b><span>
+            文件里只有它的示范、没有你那一段，这一项就不算完成。<br>
+            <em>它挑了一堆</em>：补一句「只许挑一处最要命的，其余不许提」。</span></li>
+          <li><b>改后版本保留了你原来的用词，不是被它重写成了标准答案</b><span>
+            改完读起来像另一个人写的，说明它替你写了。<br>
+            <em>它重写了</em>：补一句「改后版本必须保留我原来的句式，只替换讲不清的那一处」。</span></li>
+          <li><b>「换个场景」那一问有明确结论，且点出了没覆盖的情况</b><span>
+            说「都掌握了」大概率是敷衍。<br>
+            <em>它说没问题</em>：追问「$A1 与 A$1 分别锁什么，我的理解里覆盖了哪一种」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-费曼复述.md</code>。下一节用它出的题做最终检验。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-drill">
+      <h2>四、出题自测：检验，不是炫耀<span class="sec__tag">方法</span></h2>
+      <p>
+        讲完一遍就以为会了，是最常见的错觉。真正能分出「听懂」和「会做」的，
+        只有<strong>做题</strong>——而且是<strong>不看答案先做完</strong>的题。
+      </p>
+      <p>
+        这里有个细节决定成败：<strong>必须让它先出题、先不给答案。</strong>
+        题目和答案一起看，你的大脑会自动把「看懂答案」记成「我会做」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>环节</th><th>谁来做</th><th>为什么要分开</th></tr></thead>
+          <tbody>
+            <tr><td><strong>出题</strong></td><td>AI，5 道由易到难</td><td>由易到难才能定位你到底卡在哪一层</td></tr>
+            <tr><td><strong>作答</strong></td><td><strong>你</strong>，不看答案</td><td>这一步是检验，看答案作答等于没检验</td></tr>
+            <tr><td><strong>核对</strong></td><td>AI，逐题判 + 说原因</td><td>只知道对错没用，要知道错在哪一格</td></tr>
+            <tr><td><strong>收错题</strong></td><td>一起，整理进笔记</td><td>错的那道题才是这次练习真正的产出</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">答不出来的时候，写「我卡在哪」</span>
+        比空着更有用的是<strong>写清你卡在哪一步</strong>——
+        「我知道要加 $，但不知道加在 A 前面还是 1 前面」。
+        这句话本身就是一次诊断，AI 能据此直接补你缺的那一块；
+        空着，它只能从头再讲一遍。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·让 AI 出 5 道由易到难的题，先不给答案，做完再逐题核</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>04-五道练习.md</code>——
+          5 道题（先无答案）、你的作答、逐题判定与原因、末尾「错题清单」（含错因归类）。</p>
+
+        <p><strong>第 1 步 · 出题：5 道由易到难，明确不给答案</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段指令整段贴进去发送</b><span>
+            <span class="task__warn">必须新建对话</span>——旧对话里有你刚才的复述，它会照着你的说法出题，
+            难度就失去意义了。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="出题指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请针对"Excel 绝对引用"出 5 道题，存成工作目录下的 04-五道练习.md。
+
+难度分布（必须严格由易到难）：
+第 1 题　认得出：$A$1 里的 $ 是什么意思；
+第 2 题　会判断：给一个场景，问该不该加 $；
+第 3 题　会写：写出某个具体公式（含 $ 的位置）；
+第 4 题　会区分：$A1 与 A$1 分别锁住什么；
+第 5 题　会应用：一道贴近"做班级成绩表"的实操题，需要综合判断。
+
+出题规则：
+1. 只给题目，绝对不要给答案，也不要给提示——答案等我做完再给；
+2. 每题后面附一行【这题在检验什么】，一句话写清；
+3. 场景尽量用成绩表、考勤表这类我熟悉的东西，不要用财务模型；
+4. 五题的编号与顺序不许调整。
+
+出题完成后，只输出一句：题目已就位，等你作答。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 你作答：五题的答案发进对话</strong></p>
+        <ol class="steps">
+          <li><b>按题号把五题的答案一次性发进去</b><span>
+            不会的题就写「我卡在哪：……」，<span class="task__warn">不要空着，也不要回头翻前面的解释</span>。</span></li>
+          <li><b>把下面这段指令跟着一起发出去，让它逐题判</b><span>
+            要求它给原因，不给原因的判定没有价值。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="判题指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>上面就是我的五题作答。请逐题判定，追加进 04-五道练习.md，标题为"【逐题判定】"：
+
+每题四行：
+- 判定：对 / 部分对 / 错 / 未作答
+- 我的答案里哪一句是错的（对的题就写"无误"）
+- 正确结果是什么
+- 为什么会错在这里（写清我缺的是哪一块理解，不许写"不够仔细"这种）
+
+然后追加"【错题清单】：把判定不是"对"的题号列出来，每题两行——
+第一行写错因归类（概念没懂 / $ 位置写错 / 场景判断错 / 完全没思路），
+第二行写下次遇到同类题该怎么想。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让它按错题再出 2 道同类题，确认真的补上了</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令发出去</b><span>
+            补没补上，要看<strong>换一道同类题还会不会错</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="补测指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按【错题清单】里的错因，再出 2 道同类但换了场景和数字的题，
+追加进 04-五道练习.md，标题为"【补测两题】"，同样先不给答案。
+
+我做完发给你之后，请判断：
+1. 这两题是否都答对；
+2. 如果仍有错，写清之前的补法为什么没生效，并给出另一种讲法；
+3. 一句总结：这个知识点我现在处在"认得 / 会做 / 会讲 / 会教"的哪一层。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>五题严格按由易到难排列，且出题时没有附带答案</b><span>
+            答案跟着题一起出来，这一轮就作废——重发一次，明确「先不给答案」。<br>
+            <em>它给了答案</em>：补一句「重出一次，题目区只许有题目，答案等我作答后再给」。</span></li>
+          <li><b>【逐题判定】里每题都写了「为什么会错在这里」，且指出了缺哪一块理解</b><span>
+            只写对错、不写原因，等于没判。<br>
+            <em>原因太笼统</em>：补一句「每题必须写清我缺的是哪一块理解，不许用『不仔细』『再看看』这类说法」。</span></li>
+          <li><b>【错题清单】里每道错题都归了类，并写了下次该怎么想</b><span>
+            只抄一遍正确答案不算错题整理。<br>
+            <em>只给了答案</em>：补一句「每道错题必须标明错因归类，并写一句下次遇到同类题的思考顺序」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>04-五道练习.md</code>。最后一节要把这些沉淀成你自己的东西。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-manage">
+      <h2>五、避免依赖与知识管理：留下能复用的<span class="sec__tag">收口</span></h2>
+      <p>
+        用 AI 学习最大的代价不是「它讲错了」，而是<strong>你慢慢不再自己想了</strong>：
+        遇到不会的直接问，答案原样交上去，作业完成了，能力没动。
+        这个过程很舒服，也很安静——直到某天它不在手边，你发现自己什么都不会。
+      </p>
+      <p>
+        破法不是「少用 AI」，而是<strong>守住一个闭环</strong>：
+        <strong>先自己想 → 再提问 → 核对 → 复述 → 练习。</strong>
+        五步里只有第二步需要 AI，其余四步都是你自己的事。
+      </p>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 三个依赖征兆：看起来完成了，实际漏了什么</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d3-copy">原样交答案</button>
+            <button class="btn btn--ghost" type="button" id="d3-nosay">不复述</button>
+            <button class="btn btn--ghost" type="button" id="d3-nodrill">不练习</button>
+            <button class="btn btn--main" type="button" id="d3-loop">完整闭环</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d3-k1">—</b><span>表面完成</span></div>
+            <div class="kpi"><b id="d3-k2">—</b><span>真实掌握</span></div>
+            <div class="kpi"><b class="acc" id="d3-k3">—</b><span>补救动作</span></div>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三条例行征兆为本课归纳的教学示例，
+            用于演示「表面完成」与「真实掌握」的落差，不是任何实测数据。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：AI 的答案不能原样当作学习成果</span>
+        判据只有一句：<strong>这东西是你写的，还是它写的？</strong>
+        笔记、摘要、作业里如果整段是它给的原文，那不是你的学习成果，只是一份复印件。<br>
+        真正能算数的，是<strong>你用自己的话重写过、并且做对过的那部分</strong>。
+      </div>
+
+      <h3>把这一轮沉淀成学习地图</h3>
+      <p>
+        对话一轮轮过去，学过的内容就散在聊天记录里了。
+        所以最后一步必须做：<strong>把一个知识点收成一张五分支的图</strong>，
+        存进你的笔记（Obsidian、WPS 或任何你顺手的地方），下次要用时找得到。
+      </p>
+      <div class="tablewrap">
+        <table class="data tight">
+          <thead><tr><th>分支</th><th>写什么</th><th>写多长</th></tr></thead>
+          <tbody>
+            <tr><td><strong>定义</strong></td><td>一句话说清它是什么</td><td>1 句</td></tr>
+            <tr><td><strong>符号 / 形式</strong></td><td>长什么样（这里是 <code>$A$1</code> 与 <code>$A1</code> / <code>A$1</code>）</td><td>2–3 行</td></tr>
+            <tr><td><strong>例子</strong></td><td>一个你亲手做对过的实例</td><td>1 个</td></tr>
+            <tr><td><strong>常见错误</strong></td><td>你真的犯过的错（从错题清单里来）</td><td>2–3 条</td></tr>
+            <tr><td><strong>检查方法</strong></td><td>做完看哪个单元格 / 哪一步能判断对没对</td><td>1–2 句</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ⑤·把这一轮收成五分支学习地图，并定一份一周学习计划</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>05-学习地图.md</code>——
+          五分支思维导图（文字版）、一段 150 字以内的知识摘要、从错题清单搬过来的错题与错因、
+          一份为期一周的 AI 学习计划（含「哪些事不许交给 AI」）。这是本课的收口件。</p>
+
+        <p><strong>第 1 步 · 让它把前面四份材料收成一张五分支图</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把 <code>04-五道练习.md</code> 里的「错题清单」那一段贴进去</b><span>
+            地图里的「常见错误」必须从你<strong>真错过的题</strong>里来，
+            编出来的错误没有提醒作用。</span></li>
+          <li><b>空一行，把下面这段指令贴在后面，一起发送</b><span>
+            让它写文件，你只核内容有没有对上前面的材料。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="生成学习地图的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请把"Excel 绝对引用"这一轮的学习收成一张学习地图，
+存成工作目录下的 05-学习地图.md。
+
+第一节【五分支思维导图】　用纯文字缩进表示层级，五个分支一个都不能少：
+定义 / 符号与形式 / 例子 / 常见错误 / 检查方法
+- 定义：一句话；
+- 符号与形式：写清 $A$1、$A1、A$1 三种写法分别锁住什么；
+- 例子：一个不超过 5 行 4 列的小表格例子；
+- 常见错误：只能使用我上面贴的错题清单里的错误，不许自己编，清单里没有就写【本轮无错题】；
+- 检查方法：写清做完之后看哪两个单元格就能判断对没对。
+
+第二节【知识摘要】　150 字以内，用我自己的话（按前面 03-费曼复述.md 里改后版本的风格），
+不许使用"引用""相对地址"这类术语。
+
+第三节【错题与错因】　把错题清单原样搬过来，每条补一句"现在的正确理解"。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按这张图定一份一周计划，并写清哪些事不许交给 AI</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            计划里最关键的是最后那一节：<strong>划出 AI 的边界</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="制定计划的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>追加"【一周学习计划】到 05-学习地图.md，按下面四节写：
+
+1. 本周目标：一句可判断的话（例如"能独立做出一张含绝对引用的班级成绩表"）；
+2. 七天安排：每天一条，每条写清"做什么"和"做完怎么判断过了"，
+   其中至少两天是不用 AI 的（自己动手 / 自己讲一遍）；
+3. 我要 AI 帮我做的三件事：具体到场景（例如"出 5 道题先不给答案"）；
+4. 我不交给 AI 的三件事：必须是这三件——
+   自己先想一遍、自己复述一遍、错题自己重做一遍，
+   每件写一句"为什么这件事让给它就等于没学"。
+
+计划里的每一天都要能照着做，不许写"加强练习""多看几遍"这种没法执行的条目。
+</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 保存下来，并让它自检一遍有没有 AI 腔</strong></p>
+        <ol class="steps">
+          <li><b>把 <code>05-学习地图.md</code> 存进你的笔记（Obsidian / WPS 均可），文件名加上日期</b><span>
+            存进笔记才算沉淀；留在对话里，下次要用时你找不到它。</span></li>
+          <li><b>把下面这段指令发出去，让它自己查一遍</b><span>
+            最后一道关：<strong>这份材料读起来像不像你自己写的</strong>。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="收口自检指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>通读 05-学习地图.md，追加"【收口自检】：
+
+1. 找出文件里最像 AI 口吻的两处（例如排比句、"值得注意的是"、过度工整的总结），
+   逐处给出改成像人写的说法；
+2. 检查【知识摘要】里有没有出现"引用""相对地址"这类术语，有就改掉；
+3. 逐节回答：定义、符号、例子、常见错误、检查方法，五节是否齐全，缺哪节；
+4. 一句结论：这份材料现在能不能当作"我学会了"的证据，说清理由。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>五个分支齐全，「常见错误」来自你自己的错题清单，没有编</b><span>
+            写「常见错误：忘记加 $」这种通用错误，说明它没用你的材料。<br>
+            <em>它自己编了错误</em>：把错题清单再贴一次，明确「只允许使用清单里的错误，没有就写【本轮无错题】」。</span></li>
+          <li><b>一周计划里至少两天不用 AI，且「不交给 AI 的三件事」写全了</b><span>
+            七天全用 AI，这份计划就成了依赖计划。<br>
+            <em>它排满了 AI</em>：补一句「七天里至少两天不安排 AI，写明那两天做什么」。</span></li>
+          <li><b>「收口自检」点出了两处 AI 腔并给了改法，摘要里没有术语</b><span>
+            说「写得很好，没有问题」，说明它没真读。<br>
+            <em>它说没问题</em>：补一句「必须找出两处最像 AI 口吻的句子并改写，找不出就挑两句最工整的改」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>05-学习地图.md</code>。加上 <code>01</code>–<code>04</code>，本课共五份产出。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">把五步串起来看</span>
+        定场景，是<strong>说清你要哪种帮助</strong>；三种讲法，是<strong>让它把话说进你脑子</strong>；
+        费曼复述，是<strong>把话从你嘴里讲出来</strong>；出题自测，是<strong>检验到底会不会做</strong>；
+        学习地图，是<strong>把这一轮变成下次能用的东西</strong>。<br>
+        五步走到最后，判断标准只有一句，也是本课唯一要记住的一句：
+        <strong>关掉 AI、不看任何材料，你能不能把这件事讲清楚、做出来。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>向 AI 提问「帮我学一下 XX」，最主要的问题是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 它给的答案不够准确</li>
+            <li>B. 没说清你要哪种帮助，它会给一篇通识介绍</li>
+            <li>C. 这样问它听不懂</li>
+            <li>D. 这样问会消耗更多积分</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>答疑、讲解、练习、总结、备考是五件不同的事，
+            不给场景，它只能按最保守的「通识介绍」来答。
+            A 不准确——这类回答通常没错，只是对你没用；
+            C 不成立，它听得懂，只是没信息可选；
+            D 与问题无关。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>多选：拆解、类比、举例、练习四种讲法里，哪些说法是对的？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 类比的作用是先挂住印象，但它会失真</li>
+            <li>B. 举例要给一个能照着做的最小例子，越大越好</li>
+            <li>C. 练习是四种里唯一能真正检验「会不会做」的</li>
+            <li>D. 只看解释也行，只要它讲得够清楚</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：AC。</b>A 对，类比入门但会失真（例如它解释不了混合引用 <code>$A1</code>）。
+            B 错在「越大越好」——例子要<strong>小到能照着敲</strong>，几十行的表那是案例。
+            D 是最常见的自我欺骗：<strong>读得顺不等于会做</strong>，
+            讲得再清楚，手不动一次就不知道自己会不会。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>费曼学习法在 AI 时代的正确分工是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 让 AI 讲一遍，再让它把复述也写好，效率最高</li>
+            <li>B. AI 负责讲、出题和挑刺，复述必须自己完成</li>
+            <li>C. 让 AI 替你讲给同学听</li>
+            <li>D. 费曼学习法已经过时了，有 AI 就不需要</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>让 AI 替你写那段复述（A），等于让它替你做体检还替你填报告——
+            报告很漂亮，你依然讲不出来。C 把「讲」这个动作也让出去了。
+            D 说反了：<strong>AI 越方便，越需要有一个动作来检测你是不是真懂</strong>，
+            费曼法就是那个动作。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>让 AI 出题自测时，为什么要求「先不给答案」？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 答案一起给会占更多篇幅</li>
+            <li>B. 看着答案做题，大脑会把「看懂答案」记成「我会做」</li>
+            <li>C. 它出题时容易把答案写错</li>
+            <li>D. 先给答案会让它出不出更难的题</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>题目和答案同时看，你会顺着答案往回推，
+            整个过程没有一次真正的独立判断，也就<strong>检验不出任何东西</strong>。
+            A 无关紧要；C 不成立；D 也不对——难度是出题时定的，与答案给不给无关。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：把 AI 给的笔记原样存进自己的知识库，就算完成了知识管理。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>判据是<strong>这东西是你写的还是它写的</strong>——
+            整段原文只是复印件，不是你的学习成果。
+            真正算数的是<strong>你用自己的话重写过、并且做对过的那部分</strong>；
+            而且知识管理还包括「下次要用时找得到」，所以要存进笔记并带上日期和错因。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>五个学习场景里，「讲解」和「练习」的核心区别是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 讲解给的更长，练习给的更短</li>
+            <li>B. 讲解解决「从头不明白」，练习解决「听懂了但不确定会不会做」</li>
+            <li>C. 讲解用不上 AI，练习必须用 AI</li>
+            <li>D. 两者没有区别，只是说法不同</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>区分五类场景看的是<strong>你处在什么状态</strong>，不是输出的长短。
+            A 只看形式；C 说反了，两类都能用 AI，只是让它交的东西不同；
+            D 更不对——「讲解」结束时你得到的是理解，「练习」结束时你得到的是
+            <strong>一份错题清单</strong>，那才是能拿去补的东西。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走六件事</h4>
+        <ol>
+          <li>主线只有一句：<strong>它可以替你讲，但不能替你懂</strong>——开放它讲、出题、挑刺，复述和动手必须留给自己；</li>
+          <li>五类场景：<strong>答疑 / 讲解 / 练习 / 总结 / 备考</strong>；开口前先说清「我卡在哪、我已经会什么、我要它交出什么」；</li>
+          <li>四种讲法：<strong>拆解、类比、举例、练习</strong>；类比入门但会失真，<strong>练习是唯一能检验会不会做的</strong>；</li>
+          <li>费曼学习法：<strong>用简单语言讲给外行听，讲不下去的地方就是理解缺口</strong>；AI 当听众和追问者，<strong>复述不许让它代写</strong>；</li>
+          <li>出题自测必须<strong>先不给答案</strong>；错题要归类和重做，<strong>错题清单才是这次练习真正的产出</strong>；</li>
+          <li>避免依赖守住闭环：<strong>先自己想 → 再提问 → 核对 → 复述 → 练习</strong>；学完收成五分支学习地图存进笔记。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：<a class="xref" data-lesson="29">第 29 次课</a>讲的是「给它划边界」，
+        这一课讲的是「给自己留动作」。下一课 <a class="xref" data-lesson="31">综合项目——AI 求职包制作</a>
+        要把这几课的成果串成一套材料，那时你会再次遇到今天这条判据：
+        <strong>关掉 AI，你能不能把这件事讲清楚、做出来。</strong>
+        讲得出来的，才写进求职包。
+      </p>
+      <p class="note">
+        本页学习方法口径核对日期 <strong>2026-09-26</strong>。费曼学习法以物理学家理查德·费曼命名，
+        网传步骤版本较多，核心不变；Excel 绝对引用规则为软件通用功能，各版本一致。
+        课内的学习笔记、练习与计划均为<strong>教学示意</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题可直接复制提交。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 30 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）向 AI 请教一个难点时，最能提高回答针对性的做法是？
+A. 把问题写长一点，多堆一些关键词
+B. 先说明自己卡在哪、已经会什么、要它交出什么
+C. 让它把相关内容全部讲一遍，自己再挑
+D. 多问几次，总有一次能问到点上
+【答案】B
+【解析】三句话说清场景（我卡在哪 / 我已经会什么 / 我要它交出什么），AI 才能按你的起点和目的来答。A 只是把问题变长，仍然没说清场景；C 会把"从头讲一遍"的任务交给它，得到的是通识介绍；D 是碰运气。
+
+2.（多选）关于"拆解、类比、举例、练习"四种讲法，说法正确的有？
+A. 类比的作用是先挂住印象，但它会失真，解释不了所有情况
+B. 举例应当给出小到能照着做的最小例子，而不是越大越好
+C. 四种里只有练习能真正检验"会不会做"
+D. 只要 AI 讲得足够清楚，只看解释就够了
+【答案】ABC
+【解析】D 是最常见的自我欺骗：读得顺不等于会做，讲得再清楚，手不动一次就不知道自己会不会。A 提醒类比的边界（例如它解释不了 $A1 这种混合引用），B 提醒例子要可操作，C 指出练习的不可替代性。
+
+3.（单选）费曼学习法在 AI 时代的正确分工是？
+A. 让 AI 讲一遍，再让它把复述也写好，效率最高
+B. AI 负责讲、出题和挑刺，复述必须自己完成
+C. 让 AI 替自己把知识点讲给同学听
+D. 有了 AI 之后，费曼学习法已经不需要了
+【答案】B
+【解析】A 等于让它替你做体检还替你填报告，报告漂亮但你依然讲不出来；C 把"讲"这个核心动作也让出去了；D 说反了，AI 越方便，越需要一个动作来检测你是否真懂。
+
+4.（判断）让 AI 出题自测时，把题目和答案一起显示出来，更方便对照学习，效率更高。
+【答案】错误
+【解析】看着答案做题，大脑会把"看懂答案"记成"我会做"，整轮没有一次独立判断，也就检验不出任何东西。正确做法是：先只给题目，自己做完之后再逐题核对，并写清错因。
+
+5.（多选）下列哪些做法有助于避免 AI 依赖？
+A. 遇到不会的先自己想一遍，再决定问什么
+B. 听完讲解后，不看材料自己复述一遍
+C. 错题隔一天自己重做，不先看解析
+D. 把 AI 给出的笔记原样保存进自己的知识库
+【答案】ABC
+【解析】D 是典型的依赖表现：整段原文只是复印件，不是学习成果。ABC 对应闭环里"先自己想、复述、练习"三件事——这三件让给 AI，就等于没学。
+
+6.（多选）把一个知识点整理成学习地图时，本课程要求的五个分支包括？
+A. 定义
+B. 符号与形式、例子
+C. 常见错误（来自自己真错过的题）
+D. 检查方法
+【答案】ABCD
+【解析】五个分支是定义 / 符号与形式 / 例子 / 常见错误 / 检查方法。其中"常见错误"必须来自自己的错题清单，编出来的通用错误没有提醒作用；"检查方法"要能直接照做（例如看哪两个单元格判断对没对）。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能不能分清五类场景，尤其是「讲解」与「练习」的差别，
+        以及提问前该说清哪三件事；
+        <strong>二是</strong>对费曼法的理解——是否意识到「复述必须自己做」这条红线，
+        以及类比会失真这件事；
+        <strong>三是</strong>对依赖的态度：是否把「先自己想、自己复述、自己重做错题」
+        当成不可让渡的三件事，而不是把 AI 的产出物原样当成自己的成果。
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1KL4y1s7jr&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】费曼学习法——看似最笨的办法常常是最有效的（附实例）</b>（BV1KL4y1s7jr，5 分 36 秒，播放约 196 万，UP 主：曼鱼的视觉笔记；数据经 B 站官方接口核验于 2026-09-26。该片讲费曼学习法本身，未涉及 AI；本课的用法是让 AI 来当那个听众和追问者）　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：片子里哪一步是你平时会跳过的？如果让 AI 当那个"外行听众"，你会怎么让它追问你？</figcaption>
+      </figure>
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 五类学习场景：说清场景前后的差别 ---------- */
+  var D1 = {
+    "d1-qa": {
+      k1: "卡住的那一步", k2: "针对一点的解释", k3: "能接上前后文",
+      lines: [
+        "<span class='hl'>场景：答疑</span>　你已经会大半，卡在一个具体的点上",
+        "  <span class='no'>✗ 模糊问法：</span>「帮我学一下 Excel 公式」",
+        "  <span class='ok'>✓ 说清后：</span>「我会在 A1 写 =B1*C1，往下拖之后第二行变成了 =B2*C2，",
+        "　　　　　　但我想要它一直乘 C1。是不是 C1 那里要加东西？」",
+        "",
+        "  它该给：只讲 $ 这一件事，并说清它跟拖动复制的关系",
+        "  <span class='dim'>验收：你能说出「加在谁的身上」——是 C 前面、1 前面，还是两个都加。</span>"
+      ]
+    },
+    "d1-ex": {
+      k1: "你的起点", k2: "从零讲一遍 + 例子", k3: "能复述出大意",
+      lines: [
+        "<span class='hl'>场景：讲解</span>　这个概念从头就不明白",
+        "  <span class='no'>✗ 模糊问法：</span>「什么是绝对引用？」",
+        "  <span class='ok'>✓ 说清后：</span>「我第一次学 Excel，只会 =A1+B1 和求和，",
+        "　　　　　　请从零讲清 $ 是什么，用班级成绩表举例」",
+        "",
+        "  它该给：按你的基础讲，配一个能照着做的小例子",
+        "  <span class='dim'>不问对象，它就默认按「有基础的人」讲——你会越听越糊。</span>"
+      ]
+    },
+    "d1-pr": {
+      k1: "你听过一遍", k2: "题目（先无答案）", k3: "做对 + 说清错因",
+      lines: [
+        "<span class='hl'>场景：练习</span>　听懂了，但不确定会不会做",
+        "  <span class='no'>✗ 模糊问法：</span>「出几道绝对引用的题」",
+        "  <span class='ok'>✓ 说清后：</span>「出 5 道由易到难，先不给答案；我做完你再逐题判，",
+        "　　　　　　每题写清我错在哪一格」",
+        "",
+        "  它该给：由易到难的题 + 做完后逐题的错因",
+        "  <span class='hl'>注意：答案跟着题一起出来，这一轮就白做了。</span>"
+      ]
+    },
+    "d1-su": {
+      k1: "学完一批内容", k2: "压成能记住的要点", k3: "能默写出来",
+      lines: [
+        "<span class='hl'>场景：总结</span>　学完一批，要收拢成能记住的",
+        "  <span class='no'>✗ 模糊问法：</span>「帮我总结一下 Excel」",
+        "  <span class='ok'>✓ 说清后：</span>「把绝对引用压成一张表：三种写法 / 各锁什么 /",
+        "　　　　　　什么时候用 / 最常见的错法，我要贴在工位上背」",
+        "",
+        "  它该给：对照表 + 易混点标注，压到一屏能看完",
+        "  <span class='dim'>不说用途，它会给你一份没法复习的流水账。</span>"
+      ]
+    },
+    "d1-tm": {
+      k1: "考试范围 + 剩余时间", k2: "按考频排序的重点", k3: "能做完一套模拟题",
+      lines: [
+        "<span class='hl'>场景：备考</span>　时间有限，要抓重点",
+        "  <span class='no'>✗ 模糊问法：</span>「帮我押几道 Excel 的题」",
+        "  <span class='ok'>✓ 说清后：</span>「考纲里只考单元格引用这一章，我还有两天，",
+        "　　　　　　按考频给我排前三必会项，并出一套 10 题的模拟」",
+        "",
+        "  它该给：排序过的必会清单 + 一套模拟题",
+        "  <span class='hl'>别让它押题：押错了你没处说理，它也不会负责。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.k1;
+    $("d1-k2").textContent = d.k2;
+    $("d1-k3").textContent = d.k3;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-qa", "d1-ex", "d1-pr", "d1-su", "d1-tm"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+
+  /* ---------- 演示② 费曼闭环五步 ---------- */
+  var D2_STEPS = [
+    [
+      "<span class='hl'>① 它讲：先把话说进你脑子</span>",
+      "  它给出三种讲法：比喻、最小例子、三步操作。",
+      "  你读完觉得——<span class='dim'>嗯，懂了。</span>",
+      "<span class='dim'>注意：这时的「懂了」还不算数，它只是读得顺。</span>"
+    ],
+    [
+      "<span class='hl'>② 我讲：不看材料，把它讲回去</span>",
+      "  你的第一版：「复制公式的时候，加 $ 就不会跟着变……",
+      "　　　　　　　大概就是把它定住吧。」",
+      "<span class='no'>✗ 卡住了：说清「谁不跟着变」了吗？没有。</span>",
+      "<span class='hl'>这一句卡壳，就是这次练习最值钱的收获。</span>"
+    ],
+    [
+      "<span class='hl'>③ 它挑：只挑一处最要命的</span>",
+      "  它：「『不会跟着变』讲清了结果，没讲清对象——",
+      "　　　到底是列不动、行不动，还是都不动？」",
+      "<span class='dim'>挑一处就够，挑一堆你会不知道先改哪个。</span>"
+    ],
+    [
+      "<span class='hl'>④ 补缺：补的正是缺的那一块</span>",
+      "  $A$1 行列都锁；$A1 只锁列、行跟着变；A$1 只锁行、列跟着变。",
+      "  补完再想一遍：<span class='ok'>你现在能说清「加在谁的身上」了。</span>"
+    ],
+    [
+      "<span class='hl'>⑤ 再讲：换个人、换个场景还讲得通</span>",
+      "  第二版：「往下拖时，被 $ 锁住的那一部分不动，没锁的会跟着走——",
+      "　　　　　锁列就是列号不动，锁行就是行号不动。」",
+      "",
+      "<span class='ok'>✓ 讲得清对象、也不用术语——这才算过。</span>",
+      "<span class='dim'>判据：关掉这个页面，你还能讲出这一段吗？</span>"
+    ]
+  ];
+  var d2Step = 0;
+  function d2Render() {
+    for (var i = 1; i <= 5; i++) {
+      var n = $("d2-n" + i);
+      n.className = "flow__node" + (i === d2Step ? " on" : (i < d2Step ? "" : " dim"));
+      if (i < 5) $("d2-d" + i).className = "flow__dot" + (i < d2Step ? " run" : "");
+    }
+    if (d2Step > 0) window.Site.type($("d2-out"), D2_STEPS[d2Step - 1], null);
+    else $("d2-out").innerHTML = "";
+  }
+  $("d2-next").addEventListener("click", function () {
+    d2Step = d2Step >= 5 ? 1 : d2Step + 1;
+    d2Render();
+  });
+  $("d2-all").addEventListener("click", function () {
+    d2Step = 5;
+    for (var i = 1; i <= 5; i++) $("d2-n" + i).className = "flow__node";
+    for (var j = 1; j <= 4; j++) $("d2-d" + j).className = "flow__dot run";
+    var all = [];
+    D2_STEPS.forEach(function (g, i) {
+      if (i) all.push("");
+      all = all.concat(g);
+    });
+    window.Site.type($("d2-out"), all, null);
+  });
+  $("d2-reset").addEventListener("click", function () {
+    d2Step = 0;
+    d2Render();
+  });
+
+  /* ---------- 演示③ 三个依赖征兆 ---------- */
+  var D3 = {
+    "d3-copy": {
+      k1: "作业交了", k2: "0", k3: "用自己的话重写",
+      lines: [
+        "<span class='hl'>征兆一：把 AI 的答案原样交上去</span>",
+        "  <span class='no'>✗ 看起来完成了：</span>作业有内容、语句通顺、还对；",
+        "  <span class='no'>✗ 实际漏了：</span>整段是它写的，你没有一次独立组织语言的动作；",
+        "  <span class='no'>✗ 后果：</span>考试时它不在，你也写不出这一段。",
+        "",
+        "  <span class='ok'>✓ 补救：</span>看完之后关掉，用自己的话重写一遍，",
+        "　　　　　　再让它对比两版——差别越大，说明你刚才漏得越多。"
+      ]
+    },
+    "d3-nosay": {
+      k1: "看得懂", k2: "讲不出", k3: "费曼复述一遍",
+      lines: [
+        "<span class='hl'>征兆二：听懂了，但从不复述</span>",
+        "  <span class='no'>✗ 看起来完成了：</span>它讲的每一句你都看得懂，点点头翻过去了；",
+        "  <span class='no'>✗ 实际漏了：</span>「看懂」是输入，「讲得出」才是输出，",
+        "　　　　　　　　　没有输出，这些话留不过今晚；",
+        "",
+        "  <span class='ok'>✓ 补救：</span>不看材料，用不超过 60 字讲一遍发回给它，",
+        "　　　　　　让它只挑一处不清楚的地方——<span class='hl'>卡住的那一句就是缺口。</span>"
+      ]
+    },
+    "d3-nodrill": {
+      k1: "题都看过", k2: "没独立做过", k3: "先做题后看答案",
+      lines: [
+        "<span class='hl'>征兆三：题目和答案一起看，从不独立做</span>",
+        "  <span class='no'>✗ 看起来完成了：</span>五道题都「会了」，因为答案是顺着看的；",
+        "  <span class='no'>✗ 实际漏了：</span>没有一次独立判断，检验不出任何东西；",
+        "",
+        "  <span class='ok'>✓ 补救：</span>让它先出题、不给答案，做完再逐题判，",
+        "　　　　　　并把错题归类和隔天重做——<span class='hl'>错题清单才是这轮的产出。</span>"
+      ]
+    },
+    "d3-loop": {
+      k1: "作业交了", k2: "讲得出 + 做对过", k3: "守住闭环",
+      lines: [
+        "<span class='hl'>完整闭环：先自己想 → 再提问 → 核对 → 复述 → 练习</span>",
+        "  ① 先自己想：卡在哪先写清楚，再决定问什么；",
+        "  ② 再提问：只把这一步交给 AI，说清场景；",
+        "  ③ 核对：它的说法跟教材、跟实际做的对不对，自己验；",
+        "  ④ 复述：不看材料讲一遍，让它挑一处；",
+        "  ⑤ 练习：先做题后看答案，错题归类重做。",
+        "",
+        "<span class='ok'>✓ 五步里只有第 ② 步需要 AI。</span>",
+        "<span class='hl'>判据：关掉 AI、不看任何材料，你能不能讲清楚、做出来。</span>"
+      ]
+    }
+  };
+  function d3Run(key) {
+    var d = D3[key];
+    $("d3-k1").textContent = d.k1;
+    $("d3-k2").textContent = d.k2;
+    $("d3-k3").textContent = d.k3;
+    window.Site.type($("d3-out"), d.lines, null);
+  }
+  ["d3-copy", "d3-nosay", "d3-nodrill", "d3-loop"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d3Run(id); });
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
+</body>
+</html>

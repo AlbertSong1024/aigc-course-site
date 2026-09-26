@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第29次课 DeepSeek-Harness｜AIGC应用与实践</title>
+<meta name="description" content="一切皆插件的 Agent 框架：插件化内核、三档权限、四种模式与轨迹回放——按任务给最小权限，跑完留一条能回放的记录。">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-lesson="29" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>本课导读<span class="sec__tag">模块三</span></h2>
+      <p class="lead">
+        前面几课一直在给 AI 加东西：<a class="xref" data-lesson="8">第 8 次课</a>加技能、
+        <a class="xref" data-lesson="18">第 18 次课</a>接连接器、
+        <a class="xref" data-lesson="28">第 28 次课</a>让它记住你。
+        加到现在，该换个方向问了：<strong>这些东西是谁拼起来的，各自拿了多少权力，干完之后怎么查。</strong>
+      </p>
+      <p>
+        DeepSeek-Harness 给出的答案是「<strong>一切皆插件</strong>」——
+        模型、工具、技能、会话、沙箱、存储、循环、调度、界面，全都是可以单独换掉的插件。
+        拆开看的好处是自由组合，代价是<strong>每一块你都得单独查一遍</strong>：它从哪来、要什么权限、出问题换掉它行不行。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
+          <tbody>
+            <tr><td><strong>装完一个插件，AI 突然能删文件了</strong></td><td>权限是插件带进来的，你没看过它要了什么；等发现时文件已经没了</td></tr>
+            <tr><td><strong>任务跑完结果不对，只会说「它错了」</strong></td><td>中间十几步没有任何记录，不知道错在第几步，也就没法只改那一步</td></tr>
+            <tr><td><strong>群里说「开 PTC 模式效果更好」，跟着开了也没变好</strong></td><td>模式是执行策略的组合，不是质量等级；换模式没换任务，等于没换</td></tr>
+            <tr><td><strong>为了不弹确认框，直接给最高权限</strong></td><td>弹窗是在替你把关；关掉它，第一次越界就发生在你看不见的地方</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--warn">
+        <span class="callout__t">提前说清楚</span>
+        <strong>本课不部署 DeepSeek-Harness。</strong>它是 2026 年 8 月才开放的开发者预览版，
+        要自备开发环境、模型 API Key，课堂不要求你装。我们用你已经装好的 WorkBuddy
+        的「<strong>专家·技能·连接器</strong>」来看同一套插件化思路——
+        看明白了结构，换任何一款 Agent 框架你都能自己上手。<br>
+        本课三条主线，五个实操全挂在上面：<strong>① 能力是拼出来的，每个插件单独查来源和权限；
+        ② 权限按任务给最低那一档，Full Access 不是默认项；③ 跑完必须留下一条能回放的记录。</strong>
+      </div>
+      <p class="note">
+        本课事实口径核对日期 <strong>2026-09-26</strong>：DeepSeek Harness（DSH）v0.1 开发者预览版于
+        <strong>2026-08-13</strong> 开放测试并以 <strong>MIT</strong> 协议公开源代码（据澎湃新闻当日报道）；
+        「一切皆插件」为官方对架构的概括表述。三档权限与四种模式的整理来自公开技术资料与券商技术评测，
+        各来源表述一致；其插件内核据公开技术资料为 TypeScript + Cordis 插件体系（非官方一手口径，仅供参考）。<br>
+        DeepSeek-Harness 迭代很快，<strong>命令、界面名称与功能以官方最新文档为准</strong>。
+      </p>
+    </section>
+
+    <section class="sec" id="s-goal">
+      <h2>学习目标</h2>
+      <div class="goal">
+        <h4>学完这一课，你应该能——</h4>
+        <ol>
+          <li>说出 Agent 框架里<strong>哪几类东西被做成了插件</strong>，并能在 WorkBuddy 的「专家·技能·连接器」里指出对应入口；</li>
+          <li>对照表格说出 <strong>Read Only / Workspace Write / Full Access</strong> 三档权限各能做什么、各适合什么任务；</li>
+          <li>给「读通知、改副本标题、发邮件、删文件、连接网盘」五件事<strong>各自指定唯一一档权限并写出理由</strong>；</li>
+          <li>说出<strong>标准 / PTC / 极简 / 创造</strong>四种模式各保留哪些能力，并为一个具体任务选定唯一一种组合；</li>
+          <li>回放一条事件流，<strong>指出越界、错误或失败发生在第几步</strong>，而不是只看最后一句结论；</li>
+          <li>判断「给它 Full Access 跑得更快」这类说法为什么是错的，并给出替代做法。</li>
+        </ol>
+      </div>
+      <h3>知识点导航</h3>
+      <div class="knav">
+        <a href="#s-plugin"><b>01</b>插件化内核：能力是拼出来的 <em>＋实操①</em></a>
+        <a href="#s-perm"><b>02</b>三档权限：按任务给最低那一档 <em>＋实操②③</em></a>
+        <a href="#s-mode"><b>03</b>四种模式：按任务换组合 <em>＋实操④</em></a>
+        <a href="#s-trace"><b>04</b>事件流与轨迹回放：查错不查功 <em>＋实操⑤</em></a>
+        <a href="#s-quiz"><b>05</b>随堂自测</a>
+      </div>
+      <div class="callout callout--quote">
+        <span class="callout__t">先修与衔接</span>
+        <strong>先修</strong>：<a class="xref" data-lesson="8">第 8 次课</a>的技能（Skill）、
+        <a class="xref" data-lesson="18">第 18 次课</a>的连接器（MCP）——本课要观察的正是这两类插件，
+        以及它们各自拿到了什么权限。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="30">第 30 次课</a>要把 AI 用在「学知识」上，
+        那时同样适用今天这条规矩：<strong>先划清它能碰什么，再让它动手</strong>。
+      </div>
+    </section>
+
+    <section class="sec" id="s-plugin">
+      <h2>一、插件化内核：能力是拼出来的<span class="sec__tag">开局</span></h2>
+      <p>
+        「Harness」这个词原本指马车的<strong>挽具</strong>——把马和车连起来的那套皮带。
+        用在 AI 上，指的是<strong>围绕大模型搭起来的那一整套运行系统</strong>：
+        模型负责「想」，Harness 负责让它<strong>看得见环境、拿得到工具、能一步步把事做完</strong>。
+      </p>
+      <p>
+        DeepSeek-Harness 的做法是把它<strong>彻底拆开</strong>：模型、工具、技能、会话、沙箱、存储、循环、调度、界面，
+        每一块都是插件，可自由替换、灵活重组。这就是「一切皆插件」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>插件</th><th>它负责什么</th><th>换掉它，会变的是什么</th><th>你要查什么</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>模型</strong></td>
+              <td>真正「想」的那一个</td>
+              <td>推理能力、速度、价格</td>
+              <td>哪家提供的、按什么计费、数据是否出网</td>
+            </tr>
+            <tr>
+              <td><strong>工具</strong></td>
+              <td>读文件、跑命令、搜网页这类具体动作</td>
+              <td>它能干的事的范围</td>
+              <td>每个工具能碰哪些目录、要不要联网</td>
+            </tr>
+            <tr>
+              <td><strong>技能</strong></td>
+              <td>某一类事的固定做法（含脚本与模板）</td>
+              <td>活干得规不规范</td>
+              <td>谁写的、上次更新是什么时候</td>
+            </tr>
+            <tr>
+              <td><strong>会话 / 存储</strong></td>
+              <td>记住聊过什么、材料放哪</td>
+              <td>跨任务能不能接得上</td>
+              <td>存在本地还是云端、多久清一次</td>
+            </tr>
+            <tr>
+              <td><strong>沙箱</strong></td>
+              <td>限定它能动的边界</td>
+              <td>越界时是被拦下还是直接执行</td>
+              <td>拦下之后是弹窗确认，还是直接拒绝</td>
+            </tr>
+            <tr>
+              <td><strong>循环 / 调度</strong></td>
+              <td>「想一步、做一步、看结果、再想」这个节奏</td>
+              <td>跑几轮停、能不能派子任务</td>
+              <td>有没有步数上限、会不会空转</td>
+            </tr>
+            <tr>
+              <td><strong>UI</strong></td>
+              <td>你看到的界面</td>
+              <td>操作和查看方不方便</td>
+              <td>轨迹、权限开关这类入口在不在界面上</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>在 WorkBuddy 里对照着看</h3>
+      <p>
+        课堂不部署 DeepSeek-Harness，但插件化这件事在 WorkBuddy 里<strong>看得见</strong>——
+        左侧边栏那个入口就叫「<strong>专家·技能·连接器</strong>」，三个词，三类可插拔的东西。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>DeepSeek-Harness 的插件</th><th>WorkBuddy 里对应的观察点</th><th>看什么</th></tr></thead>
+          <tbody>
+            <tr><td>模型</td><td>对话区的模型选择</td><td>当前这条任务用的是哪个模型</td></tr>
+            <tr><td>工具 / 连接器</td><td>「连接器」标签页</td><td>它连了哪些外部服务、各自能读能写什么</td></tr>
+            <tr><td>技能</td><td>「技能」标签页（含「我安装的」）</td><td>装了几个、来源是市场还是别人给的</td></tr>
+            <tr><td>角色预设</td><td>「专家」标签页</td><td>专家是「带着身份干活」的预设，换一个干法就变了</td></tr>
+            <tr><td>沙箱 / 范围</td><td>工作空间（工作目录）</td><td>它能写的范围就是这个目录</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        上表是<strong>课堂对照用的类比</strong>，用来帮你建立「框架是拼出来的」这个印象，
+        不是任何一方的官方架构说明；两边的实现并不相同。
+      </p>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">插件化是方便，不是免责</span>
+        能自由组合，意味着<strong>能力边界由你装的东西决定</strong>。
+        而插件不是说明书，是<strong>可执行代码</strong>——装上就能跑，跑起来就有权限。
+        所以规矩只有一条：<strong>每个插件单独查三件事——谁做的、多久没更新了、它要什么权限。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ①·让 AI 把手上的专家、技能、连接器列成一张插件清单</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>01-插件清单.md</code>——
+          三类各一张表（专家 / 技能 / 连接器），每行写清「名称 → 属于哪一类 → 它拿到什么权限 → 换掉会怎样 → 来源」，
+          末尾一段「最该复查的一个」。</p>
+
+        <p><strong>第 1 步 · 打开「专家·技能·连接器」，新建任务</strong></p>
+        <ol class="steps">
+          <li><b>在 WorkBuddy 左侧边栏点「专家·技能·连接器」，先自己翻一遍三个标签页</b><span>
+            只用眼睛看，先建立印象：专家是「带身份干活」，技能是「一类事的固定做法」，连接器是「连外部服务」。</span></li>
+          <li><b>新建一个任务，工作目录选 <code>wb-试验</code></b><span>沿用前几课那个目录即可。</span></li>
+          <li><b>把下面这段指令整段贴进对话发送</b><span>
+            <span class="task__warn">整段粘贴，不要自己改写</span>——五行属性是一套的，少一列这份清单就没法用来复查。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="生成插件清单的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我要盘点这台机器上现在装了哪些"插件"，请你列成清单，存成工作目录下的 01-插件清单.md。
+
+分三节，一节一类：
+第一节【专家】、第二节【技能】、第三节【连接器】。
+
+每节一张表，每行五列，一列都不能空：
+| 名称 | 属于哪一类（模型 / 工具 / 技能 / 角色预设 / 外部服务） | 它拿到什么权限 | 换掉会怎样 | 来源 |
+
+填表规则：
+1. "它拿到什么权限"必须写具体到动作，例如"只读工作目录""可写工作目录""可调用外部接口并写入"；
+   不许写"部分权限""较高权限"这种含糊说法；
+2. "换掉会怎样"写清对结果的影响，只写一种：结果会变 / 只是变慢 / 没影响，并给一句理由；
+3. "来源"只能填这四个之一：官方市场 / 他人分享 / 自己创建 / 系统内置；
+4. 某一类一个都没有，就写"当前未安装任何 XX"，不许空着、不许编。
+
+写完后在文件末尾加一段"【最该复查的一个】：在三节里挑出一个最需要复查来源与权限的，
+写清为什么是它（提示：优先挑来源不明确、或者权限明显超出它用途的那一个）。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 你只做一件事：逐格核这五列填得对不对</strong></p>
+        <ol class="steps">
+          <li><b>先看「来源」这一列：四项里有没有出现「系统内置」以外的、来源写不清的行</b><span>
+            写不清的就是下一步该复查的那个。</span></li>
+          <li><b>再看「它拿到什么权限」：有没有出现「可写」但你根本没让它写过的插件</b><span>
+            有，就说明权限是它自己带进来的，不是你给的。</span></li>
+          <li><b>把下面这段指令发进去，让它按你的核对结果补一遍</b><span>
+            补的是它漏掉的判断，不是让它重写一遍。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="核对与补漏的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>逐行复查 01-插件清单.md，只做这三件事，追加进文件，标题为"【人工核对】"：
+
+1. 找出"来源"一列里填得含糊或我存疑的行，逐行写清疑点是什么、该怎么查证；
+2. 找出"它拿到什么权限"里超出该项用途的行（例如一个只做格式转换的插件却可写整个工作目录），
+   逐行写清"它本该只需要什么"；
+3. 回答【最该复查的一个】：同意还是不同意它的选择，各给一句理由。
+
+不许改写已有的表格内容，只许在【人工核对】里追加意见；查不到就写【查不到，需要人工确认】，不许猜。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三节表都在，「来源」一列没有空白行，也没有写「未知」以外的含糊词</b><span>
+            空着说明它没真去查，只是套了个模板。<br>
+            <em>有空白</em>：补一句「来源一列不许空，查不到就写【查不到，需要人工确认】」。</span></li>
+          <li><b>「它拿到什么权限」写的是具体动作，不是「较高权限」这类词</b><span>
+            「只读工作目录」合格，「部分权限」不合格。<br>
+            <em>写得太虚</em>：补一句「权限必须写成可判断的动作：读 / 写 / 联网 / 调用接口，不许用程度词」。</span></li>
+          <li><b>【人工核对】里点出了至少一行「权限超出用途」或明确写了「未发现」</b><span>
+            一条都没点出来，说明它只是把表格又念了一遍。<br>
+            <em>它说都正常</em>：让它按「来源不明 / 权限超出用途 / 长期未更新」三类逐个过一遍，每类至少报一条或写明「无」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>01-插件清单.md</code>。下一节要拿它当底子，判断每一块该给多少权限。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-perm">
+      <h2>二、三档权限：按任务给最低那一档<span class="sec__tag">本课核心</span></h2>
+      <p>
+        装完新工具的人最容易做的一件事，是<strong>把确认框关掉</strong>——
+        每写一次文件弹一次窗，太烦了，索性给它最高权限，让它自己跑。
+        问题是，那个弹窗不是啰嗦，它是<strong>唯一一次让你在动作发生前看见它的机会</strong>。
+      </p>
+      <p>
+        DeepSeek-Harness 把权限分成三档，WorkBuddy 一类工具也是同样的思路：
+        <strong>不是「给不给」，而是「这件事需要多少」</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>档位</th><th>它能做什么</th><th>越界时发生什么</th><th>什么时候用它</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Read Only</strong><br><span class="note">只读</span></td>
+              <td>只能读文件、取信息，<strong>不能改任何东西、不能执行写操作</strong></td>
+              <td>根本不会走到那一步——写操作不在它的能力里</td>
+              <td>看代码、看资料、问问题、让它给方案；<strong>最安全，也最适合第一次跑</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Workspace Write</strong><br><span class="note">工作区写入</span></td>
+              <td>可以在<strong>指定工作目录内</strong>读写文件、跑受限命令</td>
+              <td>碰到工作区之外的地方，<strong>弹窗要你确认，或者直接被沙箱拒绝</strong></td>
+              <td>日常干活：<strong>写功能、改文件、整理材料——默认就用这一档</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Full Access</strong><br><span class="note">完全访问</span></td>
+              <td>可执行范围更广的操作，包括工作区之外的系统级动作</td>
+              <td><strong>没有边界可越</strong>——它做的事你只能在事后看记录</td>
+              <td>明确需要且<strong>环境可回滚</strong>时才用：可信环境下的自动化流水线</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 同一个任务，三档权限跑出来的结果差在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d1-ro">Read Only</button>
+            <button class="btn btn--main" type="button" id="d1-ww">Workspace Write</button>
+            <button class="btn btn--ghost" type="button" id="d1-fa">Full Access</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d1-k1">—</b><span>产出文件</span></div>
+            <div class="kpi"><b id="d1-k2">—</b><span>越界动作</span></div>
+            <div class="kpi"><b class="acc" id="d1-k3">—</b><span>事后可恢复</span></div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>任务与执行过程为本课虚构的课堂示例，
+            用来演示三档权限的行为差异；真实工具的具体弹窗行为随版本不同，以你实际使用的版本为准。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--danger">
+        <span class="callout__t">红线：权限按任务需要给，不按省事程度给</span>
+        判断顺序是<strong>先看这件事要不要写东西 → 再决定给哪一档</strong>，
+        不是「先给最高，出问题再说」。<br>
+        一句「用 Full Access 跑得更快」听起来有理，实际是把<strong>事前确认换成了事后挽回</strong>——
+        而文件删掉之后，事后是挽回不回来的。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ②·让 AI 生成一张三层权限卡，你核它有没有把危险动作放对层</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>02-三层权限卡.md</code>——
+          只读 / 可修改 / 需确认三层，每层一条「这一层允许的动作」清单，
+          末尾一段「本卡的四条判据」。</p>
+
+        <p><strong>第 1 步 · 把权限卡模板交给它，让它按模板填</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段模板整段贴进去</b><span>
+            <span class="task__warn">必须新建对话</span>——上一个对话里它还在「盘点插件」的状态，填卡会带着上一轮的口径。</span></li>
+          <li><b>空一行，把下面这段指令贴在模板后面，一起发送</b><span>素材在前、指令在后。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="权限卡模板 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【三层权限卡 · 待填模板】
+
+第一层　只读（Read Only）
+这一层允许的动作：
+- 查看课堂资料、读文件、读目录
+- 搜索、统计、生成分析报告（不落盘）
+- 
+- 
+
+第二层　可修改（Workspace Write）
+这一层允许的动作：
+- 在指定工作目录里新建、修改文件
+- 在工作目录里跑命令、做格式转换
+- 
+- 
+
+第三层　需确认（每次都要先问我）
+这一层允许的动作：
+- 发送（发邮件、发消息、提交表单）
+- 删除（删文件、删记录）
+- 覆盖（用新版本盖掉已有文件）
+- 授权（连接账号、授权外部服务、装新插件）
+</code></pre>
+        </div>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="填卡的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按上面这个模板，把每一层的空白行补满，存成工作目录下的 02-三层权限卡.md。
+
+补充规则：
+1. 每层至少补满 4 条动作，每条写一个具体动作，不许写"做一些修改"这种；
+2. 第三层的四类动作（发送 / 删除 / 覆盖 / 授权）一条都不许挪到前两层；
+3. 每条动作后面用括号写清风险等级：低 / 中 / 高；
+4. 有歧义的动作（例如"整理文件"可能包含删除）必须拆成两条，把带删除的那条放进第三层。
+
+写完在文件末尾加"【本卡的四条判据】：用四句话写清，一个动作该放哪一层，判断时依次问哪四个问题。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它自检一遍三类动作有没有放错层</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            这一步才是重点：<strong>它自己填的卡，也要它自己按规则重查一遍</strong>，你只核对它查得对不对。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="分层自检指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按下面三条逐条复查 02-三层权限卡.md，追加进文件，标题为"【分层自检】"：
+
+1. 发送、删除、覆盖、授权这四类动作，是不是全部都在第三层？逐类点名回答"在 / 不在"；
+2. 前两层里有没有藏着带删除或覆盖含义的动作？有就逐条点出来，并给出移进第三层后的写法；
+3. 有没有一条动作同时属于两层？有就按"就高不就低"处理，写清改后放在哪一层。
+
+复查结论用一句话开头：这张卡现在能不能直接用。不许改写前面已有的内容。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>三层各有至少 4 条动作，且每条都带风险等级</b><span>
+            只有两三条说明它在敷衍；没标风险等级说明它没真判断。<br>
+            <em>条数不够</em>：补一句「每层补全到 6 条，每条必须带（低/中/高）」。</span></li>
+          <li><b>【分层自检】里四类动作逐类点名，且结论是「全部在第三层」</b><span>
+            只写「已检查」不算数。<br>
+            <em>它跳过了某一类</em>：把四类动作名再发一遍，要求「逐类回答在或不在」。</span></li>
+          <li><b>「本卡的四条判据」是可执行的问句，不是口号</b><span>
+            「注意安全」不算判据；「这个动作改完之后能不能一键撤销」才算。<br>
+            <em>写成了口号</em>：补一句「每条判据必须是一个能回答是或否的问题」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>02-三层权限卡.md</code>。下一项拿它去给五件具体的事配对。</p>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ③·给五件具体的事各配一档权限，并圈出四个高风险动作</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>03-五项配对.md</code>——
+          五件事各配<strong>唯一一档</strong>权限并写理由，末尾「四个高风险动作」清单（各带一句执行前确认语）。</p>
+
+        <p><strong>第 1 步 · 让它给这五件事逐项配对</strong></p>
+        <ol class="steps">
+          <li><b>沿用上一个对话，把下面这段素材贴进去</b><span>
+            五件事是固定名单，<span class="task__warn">不要增减、不要换成别的</span>——
+            五件凑齐才覆盖「读 / 改 / 发 / 删 / 授权」五种动作类型。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="五项动作清单 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【待配对的五件事（固定名单，不要增减）】
+1. 读通知　　—— 打开课堂通知文件，把要点列出来给我
+2. 改副本标题 —— 把工作目录里那份课堂副本的标题改成"第29次课-权限练习"
+3. 发邮件　　—— 把整理好的清单发给任课老师
+4. 删文件　　—— 删掉工作目录里上一轮生成的临时文件
+5. 连接网盘　—— 连上我的网盘账号，把材料同步过去
+</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>空一行，把下面这段指令贴在清单后面，一起发送</b><span>
+            「唯一一档」是关键——不许写「也可以给更高一档」。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="配对指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>给上面五件事各配一档权限，存成工作目录下的 03-五项配对.md。
+
+用一张表输出，四列：| 序号 | 这件事 | 配给的档位 | 理由（不超过一句） |
+
+配对规则：
+1. 每件事只能配一档，从 Read Only / Workspace Write / 需确认（发前问我）里只写一个，不许写"两者皆可"；
+2. 理由必须写清"为什么这一档刚好够用"，不许写"为了安全"这种空话；
+3. 第 3、4、5 三件（发邮件 / 删文件 / 连接网盘）必须配"需确认（发前问我）"；
+4. 不许出现"也可以给 Full Access"这类留后门的说法。
+
+表格之后追加"【四个高风险动作】：发送、删除、覆盖、授权，每个写两句——
+第一句写这个动作的典型场景，第二句写执行前的确认语（确认语里必须包含两样东西：
+将修改的对象清单、可恢复方式）。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 你核对三件事，再让它补一处「如果只能收回一项权限」</strong></p>
+        <ol class="steps">
+          <li><b>核对配对表：第 3、4、5 行是不是都写着「需确认」</b><span>
+            只要有一行不是，这张表就不能用。</span></li>
+          <li><b>核对四条确认语：每条里有没有「修改对象清单」和「可恢复方式」这两样</b><span>
+            缺一样，执行前你就没法判断该不该放行。</span></li>
+          <li><b>把下面这段指令发进去收口</b><span>这一步逼它说出取舍，而不是把五件事都判成高风险。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="收口指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>追加一段"【如果只能收回一项权限】到 03-五项配对.md：
+1. 在五件事里挑出一项，说明如果只能收回一项权限，你会收回哪一项，写清判断依据
+   （提示：按"做错了能不能恢复 × 影响范围有多大"来排）；
+2. 说清收回之后这件事还能不能做、要改成什么流程才能做；
+3. 一句话总结：这五件事里，哪一件的风险最容易被低估。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>发邮件、删文件、连接网盘三行全部落在「需确认」</b><span>
+            这三件是课程定死的判断：发出去收不回、删掉找不回、授权等于把门打开。<br>
+            <em>它配成了可修改</em>：把三项再点名发一次，明确「这三项必须是需确认，理由是不可恢复」。</span></li>
+          <li><b>四条确认语每条都含「修改对象清单」和「可恢复方式」</b><span>
+            只写「请谨慎操作」不合格。<br>
+            <em>确认语太空</em>：补一句「确认语必须能直接复制去执行，含对象清单与回滚方式」。</span></li>
+          <li><b>「只能收回一项」里给出了排序依据，且不是五件都判高风险</b><span>
+            全都高风险等于没排序，说明它没比较。<br>
+            <em>它说都危险</em>：让它按「可恢复 / 不可恢复」把五件分成两组，再从不可恢复组里挑一项。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>03-五项配对.md</code>。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-mode">
+      <h2>三、四种模式：按任务换组合<span class="sec__tag">方法</span></h2>
+      <p>
+        技术群里最常看到的一句话是「开 XX 模式效果更好」。这句话的问题在于，
+        它把<strong>模式当成了质量等级</strong>——好像档位越高，活就干得越好。
+      </p>
+      <p>
+        实际不是。模式是<strong>执行策略的组合</strong>：这一趟给它哪些工具、允不允许它自己写程序串步骤、
+        要不要保留计划能力。任务没变，换模式只是换了干法。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>模式</th><th>保留哪些能力</th><th>代价 / 限制</th><th>什么时候换它</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>标准</strong></td>
+              <td>完整编码与通用智能体能力：编辑文件、跑命令、用技能、做计划、派子任务</td>
+              <td>工具多，步数也多，出错时要看的记录更长</td>
+              <td><strong>默认用它</strong>——日常任务先从这里起步</td>
+            </tr>
+            <tr>
+              <td><strong>PTC</strong></td>
+              <td>在标准基础上，允许模型<strong>写一段程序把多步操作串起来</strong>执行</td>
+              <td>那段程序本身也会出错；出了错，错的是代码不是步骤</td>
+              <td>多步操作要反复跑、流程需要固定下来的时候</td>
+            </tr>
+            <tr>
+              <td><strong>极简</strong></td>
+              <td><strong>只保留跑命令和改文件</strong>两个核心工具</td>
+              <td>没有计划、没有子任务，复杂任务它自己拆不动</td>
+              <td>问题最小化复现、做基准测试、只想让它干一件小事</td>
+            </tr>
+            <tr>
+              <td><strong>创造</strong></td>
+              <td>可自定义 Agent 预设、检查运行时、在内存里试插件</td>
+              <td>面向插件开发，日常干活用不上，也更容易改坏配置</td>
+              <td>你要写自己的插件、调预设的时候</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 同一个任务换四种模式：变的是干法，不是质量</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-st">标准</button>
+            <button class="btn btn--ghost" type="button" id="d2-ptc">PTC</button>
+            <button class="btn btn--ghost" type="button" id="d2-min">极简</button>
+            <button class="btn btn--ghost" type="button" id="d2-cre">创造</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d2-k1">—</b><span>可用工具</span></div>
+            <div class="kpi"><b id="d2-k2">—</b><span>执行步数</span></div>
+            <div class="kpi"><b class="acc" id="d2-k3">—</b><span>出错时看什么</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>工具数与步数是本课为讲清差别而设的示意值，
+            不同版本与不同任务差别很大；这里要记住的是「换模式=换工具组合」，不是数字本身。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--tip">
+        <span class="callout__t">选模式的顺序：先用标准跑通，再考虑要不要换</span>
+        跑不通，先看是<strong>任务说得不清</strong>还是<strong>工具不够</strong>——
+        十次里有八次是前者，换模式解决不了。<br>
+        真要换，记住两句话：<strong>步骤要反复跑 → 试 PTC；只想干一件小事 → 试极简。</strong>
+        创造模式是给写插件的人的，日常别碰。
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ④·给一件指定的事选定唯一一种模式，并说清为什么不选另外三种</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>04-模式选择卡.md</code>——
+          指定任务描述、<strong>唯一一种</strong>选定模式、该模式保留的工具清单、
+          另外三种各一句「为什么不选」，末尾「什么信号出现就该换模式」。</p>
+
+        <p><strong>第 1 步 · 让它给这件指定的事定模式</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把下面这段任务描述整段贴进去</b><span>
+            任务是<strong>指定好的那一件</strong>：把 <code>wb-试验</code> 目录里的文件按类型归类并生成一份清单。
+            <span class="task__warn">必须新建对话</span>——上一轮它是「填权限卡」的身份。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指定任务 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【本次要做的任务（唯一一件，不要换成别的）】
+把工作目录 wb-试验 里的文件按类型归类（文档 / 表格 / 图片 / 代码 / 其他），
+在工作目录下生成一份 04-文件清单.md，写清：文件名、类型、大小、最后修改日期。
+归类结果只写进这个新文件，不许移动或删除任何原文件。
+</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>空一行，把下面这段指令贴在任务后面，一起发送</b><span>
+            要求它<strong>只选一种</strong>，并逐个排除另外三种——四个都讲了，才是真判断。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="选模式的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>假设有四种运行模式可选：标准 / PTC / 极简 / 创造。
+请为上面这件任务选定【唯一一种】模式，存成工作目录下的 04-模式选择卡.md。
+
+卡片四段，一段都不能少：
+1. 选定模式：只写一个模式名，不许写"A 或 B 都行"；
+2. 该模式保留的工具：列出这个模式下它会用到的工具（例如读目录、读文件、写文件、跑命令），
+   并说明为什么这些工具刚好够用；
+3. 为什么不选另外三种：每种各一句，写清是"能力不够"还是"能力过剩"，不许写"也可以试试"；
+4. 换模式的信号：列出两个信号，出现其中任何一个就应该换模式，并写清换成哪一种。
+
+硬约束：这张卡里的判断必须针对上面那一件任务，
+不许写成"四种模式通用介绍"；不许推荐 Full Access 作为配套权限。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它按选定模式真的把这件事做出来</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去，让它执行</b><span>
+            选完就做——做完你才有东西可以回放（下一节要用）。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="执行指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>就用你选定的模式，把上面那件任务做出来：
+1. 先列出 wb-试验 目录里实际有哪些文件（按实际结果，不许编造文件名）；
+2. 按类型归类，生成 04-文件清单.md，四列：文件名 / 类型 / 大小 / 最后修改日期；
+3. 只写这个新文件，不许移动、改名或删除任何原文件；
+4. 目录里有你判断不了类型的文件，就归到"其他"，并在该行后加【待确认】。
+
+做完之后，用五到八行写一份"执行经过"追加进 04-模式选择卡.md，标题为"【本次执行经过】"，
+逐行写清：第几步做了什么、调用了什么、有没有遇到被拒绝或需要确认的地方。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>「选定模式」只写了一个名字，且另外三种各有一句排除理由</b><span>
+            写了两个候选，或者只讲了选中的那个，都不算判断。<br>
+            <em>它只介绍不选的</em>：补一句「四种模式逐个表态，每种写清是不够还是过剩」。</span></li>
+          <li><b>「该模式保留的工具」是这件任务真用得上的，不是把四种能力全列一遍</b><span>
+            「读目录、写文件、跑命令」合格；「做计划、派子任务、搜网页」对归类文件来说就是过剩。<br>
+            <em>列了一堆用不上的</em>：补一句「只列这件任务真正会调用的工具，每个写清用在哪一步」。</span></li>
+          <li><b>「本次执行经过」有五到八行，且写清了有没有被拒绝或需确认的地方</b><span>
+            一行都没提，说明它没真跑，只是在描述计划。<br>
+            <em>写成了计划</em>：补一句「按实际执行过程写，碰到什么写什么，没碰到的写『未发生』」。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>04-模式选择卡.md</code>（含本次执行经过）。下一节拿这段经过来回放。</p>
+      </div>
+    </section>
+
+    <section class="sec" id="s-trace">
+      <h2>四、事件流与轨迹回放：查错不查功<span class="sec__tag">收口</span></h2>
+      <p>
+        任务跑完，结果不对。大多数人的第一反应是「它不行」或者「再跑一遍」——
+        两种都没用，因为你<strong>不知道错在第几步</strong>。再跑一遍，只是再赌一次。
+      </p>
+      <p>
+        Agent 框架给你的那件东西叫<strong>事件流</strong>：它把每一步发生了什么按顺序记下来。
+        把这串记录从头放到尾看一遍，就是<strong>轨迹回放</strong>。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>记录里的角色</th><th>记的是什么</th><th>回放时你要看什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SYSTEM</strong></td><td>开场设定：允许它做什么、有哪些工具</td><td>权限范围是不是比你想的大</td></tr>
+            <tr><td><strong>USER</strong></td><td>你说的原话</td><td>有没有说清边界（只写新文件 / 不许删）</td></tr>
+            <tr><td><strong>CONTEXT</strong></td><td>它拿到的背景：工作区、可用工具清单</td><td>它看到的东西对不对</td></tr>
+            <tr><td><strong>ASSISTANT</strong></td><td>它的思考和打算</td><td>哪一回合开始跑偏</td></tr>
+            <tr><td><strong>TOOL</strong></td><td>实际调用的工具与参数</td><td><strong>有没有调用到你没让它用的东西</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        回放不是重看一遍热闹。<strong>它是带着三个问题去看的：有没有越界、错在哪一步、在哪一步失败后开始空转。</strong>
+      </p>
+
+      <div class="demo" id="demo3">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">③ 一条事件流从头放到尾：越界发生在第几步</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d3-next">下一步</button>
+            <button class="btn btn--accent" type="button" id="d3-all">一次放完</button>
+            <button class="btn btn--ghost" type="button" id="d3-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d3-n1"><b>①</b>收指令</div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d1"></span></div>
+            <div class="flow__node dim" id="d3-n2"><b>②</b>列目录</div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d2"></span></div>
+            <div class="flow__node dim" id="d3-n3"><b>③</b>写清单</div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d3"></span></div>
+            <div class="flow__node dim" id="d3-n4"><b>④</b>改标题</div>
+            <div class="flow__path"><span class="flow__dot" id="d3-d4"></span></div>
+            <div class="flow__node dim" id="d3-n5"><b>⑤</b>汇报</div>
+          </div>
+          <div class="demo__out log" id="d3-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>这条事件流为本课虚构，
+            用来演示「回放时该盯哪几类问题」；真实产品的记录字段与展示方式以官方为准。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">回放的价值是发现错误，不是证明正确</span>
+        一条记录从头放到尾、每一步都规规矩矩，也不能说明结果天然正确——
+        它只能说明<strong>过程里没查出问题</strong>。<br>
+        所以别把「我看了回放，没问题」当成验收结论。验收看的还是产出物：
+        <strong>文件对不对、有没有多删东西、原先的约束有没有被遵守。</strong>
+      </div>
+
+      <div class="task">
+        <div class="task__hd">动手做 ⑤·回放一次执行经过，找出一处问题，收口成权限安全卡</div>
+        <p><strong>做完你手上会有</strong>：一份 <code>05-权限安全卡.md</code>——
+          ① 一段规范化事件流；② 你指出的一处越界 / 错误 / 空转，含改法；
+          ③ 三层权限图（文字版）；④ 五项配对结论；⑤ 四个高风险动词与确认语。这是本课的收口件。</p>
+
+        <p><strong>第 1 步 · 让它把上一轮的执行经过改写成规范事件流</strong></p>
+        <ol class="steps">
+          <li><b>新建对话，把 <code>04-模式选择卡.md</code> 里「本次执行经过」那一段贴进去</b><span>
+            要回放的就是你上一轮真跑的那件事。<span class="task__warn">必须新建对话</span>——
+            这一步要它换身份当「记录员」，跟在上一轮对话里它会忍不住接着改文件。</span></li>
+          <li><b>空一行，把下面这段指令贴在后面，一起发送</b><span>
+            没有这一步，事件流就只是流水账，看不出问题。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="改写事件流的指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把上面这段执行经过，改写成一条规范事件流，存成工作目录下的 05-权限安全卡.md，
+标题为"【事件流】"。
+
+每行一条事件，五列用竖线分隔：
+| 步号 | 角色(SYSTEM/USER/CONTEXT/ASSISTANT/TOOL) | 做了什么 | 用到的工具 | 越界或异常 |
+
+规则：
+1. 按时间顺序，不许跳步；原经过里没写的步骤不许补，缺就写【原记录未写】；
+2. "越界或异常"一列只能填：无 / 越界 / 失败 / 空转 / 待确认，
+   填"无"也要写，不许留空；
+3. 每一步的"用到什么工具"要写到工具名，不许写"使用了相关工具"。
+</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 让它自己先挑问题，你核对它挑得对不对</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令紧接着发出去</b><span>
+            先让它自查，你再核——这一步是「<strong>操作交给 AI，验收留给人</strong>」。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="回放自查指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>按回放的三类问题逐条检查 05-权限安全卡.md 里的【事件流】，追加进文件，标题为"【回放发现】"：
+
+1. 越界：有没有做 USER 原话里没允许的动作（例如只让写新文件、它却改了已有文件）？
+   有就写清第几步、越了什么界；
+2. 错误：有没有哪一步的工具参数明显不对（路径写错、文件名写错、类型判断错）？
+   有就写清第几步、错在哪；
+3. 空转：有没有连续两步在做同一件事、或者失败后原地重试？有就写清从第几步开始。
+
+三类都要回答，没有就写"未发现"，不许跳过某一类，也不许为了凑数编一个问题。
+</code></pre>
+        </div>
+        <ol class="steps" start="3">
+          <li><b>你核对：它点出的那一处，是不是真在事件流里对得上步号</b><span>
+            它说「第 4 步越界」，你就去看第 4 步——对不上就是它编的，打回重查。</span></li>
+        </ol>
+
+        <p><strong>第 3 步 · 让它把本课三张卡收口成一张权限安全卡</strong></p>
+        <ol class="steps">
+          <li><b>把下面这段指令发出去</b><span>
+            收口件要能单独交上去，所以三层权限图、五项配对、四个风险词都得在里面。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="收口指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>把本课的三张卡收口进 05-权限安全卡.md，按下面四节追加（已有的【事件流】【回放发现】保留在最前面）：
+
+【三层权限图】　用纯文字画三层（只读 / 可修改 / 需确认），每层下列出 4—6 个动作，
+层与层之间用一行"── 越过这条线就要先问我 ──"隔开；
+
+【五项配对结论】　把 03-五项配对.md 的配对结果原样搬过来（五件事 + 档位 + 理由），
+并在末尾写一句：发邮件、删文件、连接网盘是否都在"需确认"；
+
+【四个高风险动词】　发送 / 删除 / 覆盖 / 授权，每个两句：
+第一句典型场景，第二句执行前确认语（确认语必须含"将修改的对象清单"和"可恢复方式"）；
+
+【我给自己定的规矩】　三句话，写清你以后用 Agent 时会坚持哪三条
+（提示：从"权限按任务给""高危动作先确认""跑完必看回放"里选，也可以写自己的）。
+
+不许把前面已有的内容删掉或改写。
+</code></pre>
+        </div>
+
+        <p><strong>做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>【事件流】每一步的「越界或异常」列都填了，没有空格</b><span>
+            空着就等于没判断。<br>
+            <em>有空列</em>：补一句「越界或异常一列不许留空，没问题的写『无』」。</span></li>
+          <li><b>【回放发现】三类都回答了，且点出的问题能对上步号</b><span>
+            只回答一类，或者写了「第 4 步」但事件流里根本没有第 4 步，都是不合格。<br>
+            <em>它对不上</em>：让它「只许引用事件流里真实存在的步号，重报一次」。</span></li>
+          <li><b>收口后的卡里，四项要素齐全：发邮件 / 删文件 / 连接网盘都在「需确认」</b><span>
+            这是本课的判断底线。<br>
+            <em>少了一项</em>：把三项动作名再发一次，要求逐项回答在或不在。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>05-权限安全卡.md</code>。加上 <code>01</code>–<code>04</code>，本课共五份产出。</p>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">把四步串起来看</span>
+        看插件化，是<strong>知道它由什么拼成</strong>；分三档权限，是<strong>决定它能碰什么</strong>；
+        选模式，是<strong>决定它怎么干</strong>；回放事件流，是<strong>事后查得清</strong>。<br>
+        四步走到最后，你要带走的不是「DeepSeek-Harness 怎么用」——这个框架半年后可能就变了——
+        而是这一句：<strong>能自由组合的能力，必须配上按任务给的最小权限和一条查得清的记录。</strong>
+      </div>
+    </section>
+
+    <section class="sec" id="s-quiz">
+      <h2>随堂自测<span class="sec__tag">不计分 · 课后自检</span></h2>
+      <p class="lead">先自己想，再点开答案。这套题是给你自己查漏用的，和要提交的作业不重复。</p>
+      <div class="quiz">
+        <div class="quiz__bar"><b>共 6 题</b><span>单选 / 多选 / 判断 · 点击按钮查看解析</span></div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>1</i><span>「一切皆插件」这个说法，指的是什么？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 所有功能都做成了浏览器插件，装在浏览器里就能用</li>
+            <li>B. 模型、工具、技能、会话、沙箱、存储、循环、调度、界面等都是可替换的插件</li>
+            <li>C. 它只能跑别人写好的插件，自己不能写</li>
+            <li>D. 插件越多，这个框架就越安全</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>官方的概括是「模型、工具、技能、会话、沙箱、存储、循环、调度、UI 等
+            Agent 能力均由插件组合而成，可自由替换、灵活重组」。
+            A 把「插件」理解成浏览器插件，跑偏了；C 说反了，插件恰恰是可以自己写的；
+            D 是常见误解——<strong>插件是多是少和安不安全没关系，每个插件的来源与权限要单独查</strong>，
+            装得越多要看的越多。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>2</i><span>一个只读类的分析任务，最合适的权限档位是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. Full Access，省得弹窗打断它</li>
+            <li>B. Workspace Write，反正它也不会真写</li>
+            <li>C. Read Only，按任务需要给最低那一档</li>
+            <li>D. 先给 Full Access，跑完再收回来</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>规矩是<strong>按任务需要给，而不是按省事程度给</strong>。
+            A 和 D 都把「事前确认」换成了「事后挽回」，而删除、发送这类动作事后是挽回不回来的；
+            B 也不对——「它不会真写」是你猜的，给多了权限，越界就发生在你看不见的地方。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>3</i><span>多选：下面哪些动作应当放进「每次都要先问我」这一层？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 把整理好的清单发给任课老师</li>
+            <li>B. 删掉工作目录里上一轮的临时文件</li>
+            <li>C. 连接我的网盘账号并同步材料</li>
+            <li>D. 在工作目录里新建一个清单文件</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：ABC。</b>三类动作的共同点是<strong>不可恢复或影响范围外扩</strong>：
+            发出去收不回、删掉找不回、授权等于把门打开。
+            D 是在指定工作目录里新建文件，属于 Workspace Write 的正常范围，
+            <strong>把它也放进需确认，会让每张卡都变成高风险，等于没排序</strong>。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>4</i><span>有人说「开 PTC 模式效果更好」，对这句话最恰当的判断是？</span></div>
+          <ul class="quiz__opts">
+            <li>A. 对，PTC 是最高档，档位越高活干得越好</li>
+            <li>B. 不对，模式是执行策略的组合，不是质量等级，要看任务对不对得上</li>
+            <li>C. 不对，因为 PTC 模式有安全风险，任何任务都不该用</li>
+            <li>D. 说不好，得看用的是哪家模型</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B。</b>模式决定的是「这一趟给它哪些工具、允不允许它写程序串步骤」，
+            换模式是换干法，不是提质量。任务跑不通，十次里有八次是任务本身没说清，换模式解决不了。
+            C 走到另一个极端——PTC 在「多步操作要反复跑」时正好合适，不是不能用；
+            D 答非所问，模型是另一个插件维度。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>5</i><span>判断：一条事件流从头放到尾、每一步都规规矩矩，就说明结果是对的。</span></div>
+          <ul class="quiz__opts">
+            <li>A. 正确</li>
+            <li>B. 错误</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：B（错误）。</b>回放的价值是<strong>发现越界、错误和失败位置，不是证明结果天然正确</strong>。
+            过程没查出问题，不等于产出物没问题——验收看的还是文件对不对、有没有多删东西、
+            原先的约束有没有被遵守。把「我看了回放，没问题」当验收结论，是把手段当成了目的。
+          </div>
+        </div>
+
+        <div class="quiz__item">
+          <div class="quiz__q"><i>6</i><span>回放时，下面哪一处最值得优先盯？</span></div>
+          <ul class="quiz__opts">
+            <li>A. USER 那一行，看自己原话写得好不好</li>
+            <li>B. ASSISTANT 的思考，看它文笔是否通顺</li>
+            <li>C. TOOL 那几行，看它有没有调用到你没允许的东西</li>
+            <li>D. 最后一行结论，看它有没有说「已完成」</li>
+          </ul>
+          <button class="quiz__reveal" type="button">查看答案</button>
+          <div class="quiz__ans">
+            <b>答案：C。</b>越界几乎都发生在工具调用上——说好只写新文件，它却改了已有文件，
+            这种事只看结论看不出来。
+            A 值得顺带看（边界写没写清），但不是回放的重点；B 没意义，通顺不等于做对了；
+            D 最不可靠，<strong>「已完成」是它自己说的，不是验收结论</strong>。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-recap">
+      <h2>本课要点回顾</h2>
+      <div class="recap">
+        <h4>这一课要带走五件事</h4>
+        <ol>
+          <li>主线只有一句：<strong>能力是拼出来的，权限按任务给，跑完要能查</strong>；本课不部署 DeepSeek-Harness，用它讲结构；</li>
+          <li>插件化内核：模型、工具、技能、会话、沙箱、存储、循环、调度、UI 都是可换的插件，<strong>每个插件单独查来源与权限</strong>；</li>
+          <li>三档权限：<strong>Read Only 只读 / Workspace Write 工作区内读写 / Full Access 完全访问</strong>；默认用中间那档，<strong>Full Access 不是默认项</strong>；</li>
+          <li>四种模式是<strong>执行策略的组合，不是质量等级</strong>：标准起步，步骤要反复跑试 PTC，小事用极简，创造模式留给写插件的人；</li>
+          <li>事件流与轨迹回放盯三类问题：<strong>越界 / 错误 / 空转</strong>；回放能发现错误，<strong>但不能证明正确</strong>——验收看的还是产出物。</li>
+        </ol>
+      </div>
+      <p>
+        <strong>下一步棋</strong>：今天你一直在给 AI 划边界——能碰什么、怎么干、干完怎么查。
+        下一课 <a class="xref" data-lesson="30">AI 学习助手与知识管理</a> 换一个场景：
+        把 AI 用在「学知识」上。那时同样适用今天这条规矩，只是边界换成了另一种——
+        <strong>它可以替你讲，但不能替你懂。</strong>
+      </p>
+      <p class="note">
+        本页事实口径核对日期 <strong>2026-09-26</strong>：DSH v0.1 于 2026-08-13 开放测试并以 MIT 协议开源
+        （据澎湃新闻报道）；三档权限与四种模式整理自公开技术资料与券商技术评测，各来源表述一致。
+        DeepSeek-Harness 迭代很快，命令与界面以官方最新文档为准；课内任务与事件流均为教学示例。
+      </p>
+    </section>
+
+    <section class="sec" id="s-hw">
+      <h2>课后作业<span class="sec__tag">单选 / 多选 / 判断</span></h2>
+      <p>下面这套题可直接复制提交。<strong>点一下展开</strong>，再点框内右上角「复制」就能整段拿走。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="第 29 次课作业 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>1.（单选）DeepSeek-Harness 采取"一切皆插件"的设计思路，这里的"插件"指的是？
+A. 装在浏览器里的扩展程序
+B. 模型、工具、技能、会话、沙箱、存储、循环、调度、界面等可替换的组成部分
+C. 只能由官方提供、用户不能自行编写的模块
+D. 用来提升模型推理能力的加速组件
+【答案】B
+【解析】官方概括为"Agent 能力均由插件组合而成，可自由替换、灵活重组"。A 把插件理解成浏览器扩展，跑偏；C 说反了，插件恰恰可以自己写；D 与插件无关，那是模型侧的事。
+
+2.（单选）一个只需要读取资料并给出分析结论的任务，最合适的权限档位是？
+A. Full Access，避免弹窗打断执行
+B. Workspace Write，多给一点更保险
+C. Read Only，按任务需要给最低那一档
+D. 先给 Full Access，任务结束后再收回
+【答案】C
+【解析】原则是"按任务需要给，而不是按省事程度给"。A、D 把事前确认换成了事后挽回，而删除、发送这类动作事后无法挽回；B 也不对，多给的权限会在你看不见的地方被用上。
+
+3.（多选）下列动作中，应当放进"每次都要先问我"这一层的有？
+A. 把整理好的清单发送给老师
+B. 删除工作目录里的临时文件
+C. 连接个人网盘账号并同步材料
+D. 在工作目录里新建一个清单文件
+【答案】ABC
+【解析】A、B、C 的共同点是不可恢复或影响范围外扩：发送收不回、删除找不回、授权等于把门打开。D 属于工作区内的正常写入，若也列入需确认，会把所有动作都判成高风险，等于没有排序。
+
+4.（多选）关于 PTC 模式，下面说法正确的有？
+A. 它是在标准模式基础上，允许模型编写程序把多步操作串起来执行
+B. 它适合多步操作需要反复执行、流程需要固定下来的场景
+C. 它是最高档模式，任何任务开它就一定效果更好
+D. 它写的那段程序本身也可能出错，出错时错的是代码而非步骤
+【答案】ABD
+【解析】C 是典型误解：模式是执行策略的组合，不是质量等级，任务对不上就只是换了个干法。ABD 都符合公开资料对 PTC 的描述，其中 D 提醒了它的代价——串步骤的程序本身也是出错点。
+
+5.（判断）一条事件流从头放到尾，每一步都规规矩矩、没有越界和失败，就足以证明这次任务的产出结果是正确的。
+【答案】错误
+【解析】回放的价值是发现越界、错误和失败位置，不是证明结果天然正确。过程没查出问题，不等于产出物没问题——验收仍要看文件对不对、有没有误删、原先的约束是否被遵守。
+
+6.（多选）回放一条事件流时，为了找出问题，应当重点检查哪些方面？
+A. TOOL 记录里有没有调用到 USER 原话未允许的动作
+B. 有没有哪一步的工具参数明显写错（路径、文件名、类型判断）
+C. 有没有连续两步在做同一件事，或失败后原地重试
+D. 最后一行是否写了"已完成"
+【答案】ABC
+【解析】三类问题对应越界、错误、空转，都是回放要盯的。D 最不可靠——"已完成"是 AI 自己下的结论，不是验收依据；只看这一行，等于让它自己给自己打分。
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout--tip">
+        <span class="callout__t">评分看什么</span>
+        本课作业按三处判断：<strong>一是</strong>能不能分清「按任务给权限」与「按省事给权限」，
+        尤其对发送、删除、授权三类不可恢复动作的态度；
+        <strong>二是</strong>提到模式时，是否把它理解为执行策略组合而非质量等级；
+        <strong>三是</strong>对轨迹回放的定位——是「用来发现越界、错误和空转」，还是误当成「结果正确的证明」。
+      </div>
+      <p class="note">
+        共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
+        <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
+      </p>
+    </section>
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV1VkgK6NEZS&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】DeepSeek Harness 首发实测 + 入门教程</b>（BV1VkgK6NEZS，16 分 33 秒，播放约 175 万，UP 主：程序员鱼皮，2026-08-14 发布；数据经 B 站官方接口核验于 2026-09-26）　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：视频里四种运行模式分别保留了哪些能力？换模式的时候，是任务变了还是干法变了？</figcaption>
+      </figure>
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- 演示① 同一个任务在三档权限下的差别 ---------- */
+  var D1 = {
+    "d1-ro": {
+      k1: "0 个", k2: "0 次", k3: "无需恢复",
+      lines: [
+        "<span class='hl'>任务：把课堂资料里的报名表按班级汇总</span>",
+        "<span class='hl'>权限：Read Only（只读）</span>",
+        "  第 1 步　读目录、读报名表　<span class='ok'>✓ 允许</span>",
+        "  第 2 步　算出各班人数　<span class='ok'>✓ 允许</span>",
+        "  第 3 步　写汇总表　<span class='no'>✗ 被拒：只读档没有写能力</span>",
+        "  第 4 步　它改在对话里把结果列出来，让你自己存",
+        "",
+        "<span class='ok'>✓ 零越界、零风险。</span>",
+        "<span class='dim'>代价：文件得你自己建；但这一次，你知道它什么都没动过。</span>"
+      ]
+    },
+    "d1-ww": {
+      k1: "1 个", k2: "1 次（被拦）", k3: "可恢复",
+      lines: [
+        "<span class='hl'>权限：Workspace Write（工作区写入）</span>",
+        "  第 1 步　读报名表　<span class='ok'>✓</span>",
+        "  第 2 步　在工作目录生成 汇总表.md　<span class='ok'>✓ 允许</span>",
+        "  第 3 步　它想去读桌面上的原件　<span class='no'>✗ 弹窗要你确认</span>",
+        "  你点了「拒绝」→ 它退回工作目录，用已读到的内容继续",
+        "",
+        "<span class='ok'>✓ 活干完了，边界也在。</span>",
+        "<span class='hl'>那一声弹窗不是啰嗦，是唯一一次事前看见它的机会。</span>"
+      ]
+    },
+    "d1-fa": {
+      k1: "1 个", k2: "2 次（无提示）", k3: "不可恢复",
+      lines: [
+        "<span class='hl'>权限：Full Access（完全访问）</span>",
+        "  第 1 步　读报名表　<span class='ok'>✓</span>",
+        "  第 2 步　改到了桌面上的原件　<span class='no'>✗ 无提示，直接执行</span>",
+        "  第 3 步　顺手删了两个它判断为「临时」的文件　<span class='no'>✗ 无提示</span>",
+        "  第 4 步　在工作目录生成汇总表，汇报「已完成」",
+        "",
+        "<span class='no'>✗ 报告写着「已完成」，你却不知道桌面原件被改过。</span>",
+        "<span class='hl'>省下的那几次确认，换成了事后找不回来的改动。</span>"
+      ]
+    }
+  };
+  function d1Run(key) {
+    var d = D1[key];
+    $("d1-k1").textContent = d.k1;
+    $("d1-k2").textContent = d.k2;
+    $("d1-k3").textContent = d.k3;
+    window.Site.type($("d1-out"), d.lines, null);
+  }
+  ["d1-ro", "d1-ww", "d1-fa"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d1Run(id); });
+  });
+
+  /* ---------- 演示② 四种模式：变的是干法，不是质量 ---------- */
+  var D2 = {
+    "d2-st": {
+      k1: "6 个", k2: "7 步", k3: "看工具调用",
+      lines: [
+        "<span class='hl'>标准模式：完整能力，默认起步</span>",
+        "  可用：读目录 / 读文件 / 写文件 / 跑命令 / 用技能 / 做计划",
+        "  它先列目录 → 判类型 → 逐文件读 → 写清单 → 自查 → 汇报",
+        "",
+        "<span class='ok'>✓ 够用，也看得清。</span>",
+        "<span class='dim'>工具多意味着记录长，出错时要在 7 步里定位。</span>"
+      ]
+    },
+    "d2-ptc": {
+      k1: "6 个 + 写程序", k2: "3 步", k3: "看那段程序",
+      lines: [
+        "<span class='hl'>PTC 模式：允许它写一段程序把多步串起来</span>",
+        "  它先写一段归类脚本 → 跑一遍 → 把结果写成清单",
+        "",
+        "<span class='ok'>✓ 步数从 7 降到 3，反复跑也稳定。</span>",
+        "<span class='no'>✗ 代价：出错时错的是那段程序，不是某一步骤。</span>",
+        "<span class='dim'>所以只在「这一步要反复跑」时才值得上 PTC。</span>"
+      ]
+    },
+    "d2-min": {
+      k1: "2 个", k2: "4 步", k3: "看命令回显",
+      lines: [
+        "<span class='hl'>极简模式：只保留跑命令 + 改文件</span>",
+        "  它列目录 → 写清单，没有计划、没有子任务、没有技能",
+        "",
+        "<span class='ok'>✓ 最轻，也最不容易跑偏。</span>",
+        "<span class='no'>✗ 任务一复杂，它自己拆不动。</span>",
+        "<span class='dim'>适合「只想让它干一件小事」或做最小化复现。</span>"
+      ]
+    },
+    "d2-cre": {
+      k1: "全部 + 运行时", k2: "9 步", k3: "看预设改动",
+      lines: [
+        "<span class='hl'>创造模式：面向插件开发</span>",
+        "  它能改 Agent 预设、检查运行时、在内存里试插件",
+        "",
+        "<span class='no'>✗ 日常干活用不上，还容易改坏配置。</span>",
+        "<span class='dim'>这是给「写插件的人」的模式——你要造轮子时才进来。</span>"
+      ]
+    }
+  };
+  function d2Run(key) {
+    var d = D2[key];
+    $("d2-k1").textContent = d.k1;
+    $("d2-k2").textContent = d.k2;
+    $("d2-k3").textContent = d.k3;
+    window.Site.type($("d2-out"), d.lines, null);
+  }
+  ["d2-st", "d2-ptc", "d2-min", "d2-cre"].forEach(function (id) {
+    $(id).addEventListener("click", function () { d2Run(id); });
+  });
+
+  /* ---------- 演示③ 事件流逐步回放 ---------- */
+  var D3_STEPS = [
+    "<span class='hl'>① 收指令</span>　USER：把 wb-试验 里的文件按类型归类，生成 04-文件清单.md，<span class='hl'>不许移动或删除任何原文件</span>",
+    "<span class='hl'>② 列目录</span>　TOOL：读目录（12 个文件）　<span class='dim'>越界或异常：无</span>",
+    "<span class='hl'>③ 写清单</span>　TOOL：写文件 04-文件清单.md　<span class='dim'>越界或异常：无</span>",
+    "<span class='no'>④ 改标题</span>　TOOL：改文件 课堂副本.md 的标题　<span class='no'>越界：原话只让写新文件，它改了已有文件</span>",
+    "<span class='hl'>⑤ 汇报</span>　ASSISTANT：已完成，共归类 12 个文件　<span class='dim'>越界或异常：无</span>"
+  ];
+  var D3_VERDICT = [
+    "<span class='hl'>回放结论：越界发生在第 4 步。</span>",
+    "  第 1 步写清了边界（只写新文件），第 4 步却改了已有文件——",
+    "  而最后一行照样写着「已完成」。",
+    "",
+    "<span class='ok'>✓ 这就是回放的价值：结论里看不出来的事，过程里写着。</span>",
+    "<span class='dim'>补救：把第 4 步回滚，并在指令里补一句「已有文件一律只读」。</span>"
+  ];
+  var d3Step = 0;
+  function d3Nodes() {
+    for (var i = 1; i <= 5; i++) {
+      $("d3-n" + i).className = "flow__node" + (i === d3Step ? " on" : (i < d3Step ? "" : " dim"));
+      if (i < 5) $("d3-d" + i).className = "flow__dot" + (i < d3Step ? " run" : "");
+    }
+  }
+  $("d3-next").addEventListener("click", function () {
+    d3Step = d3Step >= 5 ? 1 : d3Step + 1;
+    d3Nodes();
+    if (d3Step === 5) window.Site.type($("d3-out"), [D3_STEPS[4], ""].concat(D3_VERDICT), null);
+    else window.Site.type($("d3-out"), [D3_STEPS[d3Step - 1]], null);
+  });
+  $("d3-all").addEventListener("click", function () {
+    d3Step = 5;
+    d3Nodes();
+    window.Site.type($("d3-out"), D3_STEPS.concat([""]).concat(D3_VERDICT), null);
+  });
+  $("d3-reset").addEventListener("click", function () {
+    d3Step = 0;
+    d3Nodes();
+    $("d3-out").innerHTML = "";
+  });
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".video-embed iframe").forEach(function (frame) {
+    var src = frame.getAttribute("data-src");
+    if (!src) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { frame.src = src; io.disconnect(); }
+        });
+      });
+      io.observe(frame);
+    } else { frame.src = src; }
+  });
+})();
+</script>
+</body>
+</html>
