@@ -252,11 +252,21 @@ node tools/check_site.js 8
 
 **批量转化的分工铁律**：多人并行时，只让各自写 `lessons/*.html`；`course-map.js` 与 `search-index.js` **由一个人统一收口**，避免并发改同一文件互相覆盖。
 
-校验脚本依赖 `jsdom`：
+校验脚本依赖 `jsdom`。装在一个**独立目录**里，不要污染项目本身：
 
 ```bash
-cd "C:/Users/Albert/.workbuddy/binaries/node/workspace" && npm i jsdom
-NODE_PATH="C:/Users/Albert/.workbuddy/binaries/node/workspace/node_modules" node tools/check_site.js
+# 选一个项目外的目录存放 node 依赖（路径按你自己机器改）
+mkdir -p ~/site-tools && cd ~/site-tools && npm i jsdom
+
+# 用 NODE_PATH 指过去，再跑校验
+NODE_PATH="$HOME/site-tools/node_modules" node tools/check_site.js
+```
+
+Windows（PowerShell）等价写法：
+
+```powershell
+$env:NODE_PATH = "$env:USERPROFILE\site-tools\node_modules"
+node tools/check_site.js
 ```
 
 ---

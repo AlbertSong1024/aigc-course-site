@@ -9,10 +9,15 @@ echo ============================================================
 echo.
 
 rem ---- 找一个可用的 Python ----
+rem 依次尝试：py 启动器 → PATH 里的 python → 常见安装位置的 python
+rem 全部找不到时，可手动把 python.exe 的完整路径填到下面的 PY 变量。
 set "PY="
 where py >nul 2>nul && set "PY=py"
 if not defined PY where python >nul 2>nul && set "PY=python"
-if not defined PY if exist "C:\Users\Albert\.workbuddy-ai\binaries\python\versions\3.13.12\python.exe" set "PY=C:\Users\Albert\.workbuddy-ai\binaries\python\versions\3.13.12\python.exe"
+if not defined PY if exist "%LOCALAPPDATA%\Programs\Python\Python313\python.exe" set "PY=%LOCALAPPDATA%\Programs\Python\Python313\python.exe"
+if not defined PY if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" set "PY=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+if not defined PY if exist "C:\Python313\python.exe" set "PY=C:\Python313\python.exe"
+if not defined PY if exist "C:\Python312\python.exe" set "PY=C:\Python312\python.exe"
 
 if not defined PY (
   echo [错误] 没找到 Python。请安装 Python，或把 python.exe 路径填到本文件的 PY 变量。
