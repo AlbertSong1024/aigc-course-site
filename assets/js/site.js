@@ -317,15 +317,74 @@
 
   /* ======================================================================
      6. 页脚
+     ----------------------------------------------------------------------
+     · 上半：课程/学校/学期、版本、上线进度、资料版本
+     · 下半：版权声明 + 访问统计（本机口径）
+     访问人次来自 learning-tracker.js 的 localStorage，该脚本是异步注入的，
+     所以先用占位符渲染，再由 pollVisitStats() 到位后回填。
      ====================================================================== */
+  var BUILD_YEAR = 2026;
+
+  function fmtDateTime(ts) {
+    if (!ts) return "—";
+    try {
+      var d = new Date(ts);
+      var p = function (n) { return (n < 10 ? "0" : "") + n; };
+      return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) +
+        " " + p(d.getHours()) + ":" + p(d.getMinutes());
+    } catch (e) { return "—"; }
+  }
+
+  /* 渲染页脚。有 LT 时直接带真实数据，没有则先占位。 */
   function renderFoot() {
     var host = $("site-foot");
     if (!host) return;
     var ready = FLAT.filter(function (l) { return l.status === "ready"; }).length;
+    var meta = CM.meta || {};
+    var year = new Date().getFullYear();
+    var yearTxt = (year > BUILD_YEAR) ? (BUILD_YEAR + "–" + year) : String(BUILD_YEAR);
+
     host.innerHTML =
-      "<span>" + esc(CM.meta.course) + " · " + esc(CM.meta.school) + " · " + esc(CM.meta.term) +
-      "　|　课程教程站 v1.0　|　已上线 " + ready + " / " + FLAT.length + " 课</span>" +
-      "<span>资料版本 " + esc(CM.meta.updated) + "　·　" + esc(CM.meta.scopeNote) + "</span>";
+      '<div class="foot__row foot__row--top">' +
+        "<span>" + esc(meta.course) + " · " + esc(meta.school) + " · " + esc(meta.term) +
+        "　|　课程教程站 v1.0　|　已上线 " + ready + " / " + FLAT.length + " 课</span>" +
+        "<span>资料版本 " + esc(meta.updated) + "　·　" + esc(meta.scopeNote) + "</span>" +
+      "</div>" +
+      '<div class="foot__row foot__row--btm">' +
+        '<span class="foot__copy">© ' + yearTxt + " " + esc(meta.school) + " · " + esc(meta.course) + "课程组" +
+          "　|　本站为教学用途，仅供课程学习，非商业使用。" +
+          (meta.audience ? "　|　适用对象：" + esc(meta.audience) : "") +
+        "</span>" +
+        '<span class="foot__stat" id="foot-stat" title="本机浏览器统计，换设备/清缓存会重新计数">' +
+          '<span class="foot__stat-item">本机访问人次 <b id="fs-visits">—</b></span>' +
+          '<span class="foot__stat-item">来访次数 <b id="fs-sess">—</b></span>' +
+          '<span class="foot__stat-item">首次访问 <b id="fs-first">—</b></span>' +
+          '<span class="foot__stat-item">最近访问 <b id="fs-last">—</b></span>' +
+        "</span>" +
+      "</div>";
+
+    pollVisitStats();
+  }
+
+  /* 等 learning-tracker 注入完成后回填访问统计（最多等 ~10 秒）。 */
+  function pollVisitStats() {
+    var tries = 0, MAX = 40;                 // 40 × 250ms = 10s
+    (function tick() {
+      var lt = window.LT;
+      if (lt && typeof lt.summary === "function") {
+        var s;
+        try { s = lt.summary(); } catch (e) { s = null; }
+        if (s) {
+          var set = function (id, txt) { var el = $(id); if (el) el.textContent = txt; };
+          set("fs-visits", String(s.visits == null ? 0 : s.visits));
+          set("fs-sess", String(s.sessionCount == null ? 0 : s.sessionCount));
+          set("fs-first", fmtDateTime(s.firstVisitAt));
+          set("fs-last", fmtDateTime(s.lastVisitAt));
+          return;
+        }
+      }
+      if (++tries <= MAX) setTimeout(tick, 250);
+    })();
   }
 
   /* ======================================================================

@@ -719,8 +719,21 @@ input[type=range]::-moz-range-thumb{
 .foot{
   max-width:1480px;margin:0 auto;padding:24px 22px 40px;
   border-top:1px solid var(--c-line);margin-top:20px;
-  font-size:12.5px;color:var(--c-text-3);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--c-text-3);
 }
+.foot__row{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.foot__row--top{align-items:baseline;}
+.foot__row--btm{
+  align-items:baseline;margin-top:10px;padding-top:10px;
+  border-top:1px dashed var(--c-line);
+}
+.foot__copy{max-width:660px;line-height:1.75;}
+.foot__stat{
+  display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;
+  font-variant-numeric:tabular-nums;
+}
+.foot__stat-item{white-space:nowrap;}
+.foot__stat b{color:var(--c-primary-d);font-family:var(--mono);font-weight:700;} 
 
 /* ---------- 18. 首页 ---------- */
 .hero{
