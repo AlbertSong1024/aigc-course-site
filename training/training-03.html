@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实训三 文件整理与会议纪要｜AIGC应用与实践</title>
+<meta name="description" content="把杂乱文件夹归档，把会议录音转成纪要 + 待办">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-training="3" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>实训说明<span class="sec__tag">对应第 14 次课</span></h2>
+      <p class="lead">
+        这一课练两项最贴地的活：<strong>把一堆乱文件整理成规范目录</strong>，以及<strong>把一段会议录音变成能执行的纪要和待办清单</strong>。两项都强调同一件事：<strong>先出方案，确认后才动手</strong>——AI 不许自作主张。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">报告就填 5 项</span>
+        报告模板见 <a href="index.html#s-tpl">实训总览 → 实训报告模板</a>。一页纸，纯文字可交，别排版。
+      </div>
+    </section>
+
+    <section class="sec" id="s-task">
+      <h2>任务清单</h2>
+      <p>自己造一个乱文件夹（20 个左右文件即可），录音可以自己念一段 1–2 分钟的会议内容。</p>
+      <ol class="steps">
+        <li><b>第 1 步：造一个乱文件夹</b><span>建 20 个左右命名混乱的文件（如「新建文件夹」「最终版2」「aaa.docx」「会议 拷贝.docx」），混几个不同格式。</span></li>
+        <li><b>第 2 步：先定命名规则</b><span>写一套命名规范（日期_类型_主题_版本），并说明每个字段为什么这么定。规则要能让别人看懂。</span></li>
+        <li><b>第 3 步：出归档方案，先别动手</b><span>让 AI 给出「原文件名 → 新文件名 → 目标文件夹」的对照表，<strong>这一步只出方案，不动文件</strong>。你自己检查一遍。</span></li>
+        <li><b>第 4 步：确认后批量归档</b><span>确认方案没问题，再让它执行批量重命名与移动，输出 <code>归档对照表.xlsx</code>。</span></li>
+        <li><b>第 5 步：录音转纪要与待办</b><span>把 1–2 分钟录音转成纪要（议题、结论、责任人），再抽出待办清单。每条待办必须四要素齐全：<strong>做什么、谁做、什么时候前、做到什么程度</strong>。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-out">
+      <h2>交付物<span class="sec__tag">就这些</span></h2>
+      <p><code>归档对照表.xlsx</code> + <code>会议纪要.md</code>（含纪要 + 待办清单）。</p>
+      <p class="note">归档后的文件夹截图 1 张，和你那套命名规则一起贴在报告里。</p>
+    </section>
+
+    <section class="sec" id="s-rubric">
+      <h2>评分点</h2>
+      <ol class="steps">
+        <li><b>命名规则可不可用</b><span>规则本身清不清楚，别人能不能照着用。只写「按内容分类」这种话不算规则。</span></li>
+        <li><b>方案在前、执行在后</b><span>有没有先出对照表再动手。直接让 AI 改完再看的，本项不得分。</span></li>
+        <li><b>待办四要素齐不齐</b><span>每条待办是不是都有做什么 / 谁做 / 什么时候前 / 什么程度。缺一项扣分。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-submit">
+      <h2>提交到学习通<span class="sec__tag">一键复制</span></h2>
+      <p>下面这段可以直接复制到学习通的作业说明里。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看提交要求 · 一键复制到学习通</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="实训三 提交要求 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>一、做什么
+把 20 个左右的乱文件按规范命名归档；把 1–2 分钟会议录音转成纪要 + 待办清单。
+
+二、交什么
+1. 归档对照表.xlsx（原文件名 → 新文件名 → 目标文件夹）
+2. 会议纪要.md（含【纪要】+【待办清单】两部分）
+3. 归档后文件夹截图 1 张
+
+三、报告怎么写（5 项，一页纸，别排版）
+1. 实训名称、班级、姓名、学号
+2. 我做了什么（3–5 条，写清用了什么工具、什么指令）
+3. 关键截图 1–2 张（截你的操作过程或最终结果，不要只截 AI 说「完成了」）
+4. 遇到的问题 + 怎么解决的
+5. 学到了什么（1–2 句，写自己的收获）
+
+四、评分看什么
+· 命名规则可不可用（规则本身清不清楚，别人能不能照着用。只写「按内容分类」这种话不算规则。）
+· 方案在前、执行在后（有没有先出对照表再动手。直接让 AI 改完再看的，本项不得分。）
+· 待办四要素齐不齐（每条待办是不是都有做什么 / 谁做 / 什么时候前 / 什么程度。缺一项扣分。）
+
+五、注意
+· AI 不许自作主张改文件，必须先出方案、你确认后才执行
+· 报告只截「AI 说完成了」的，视为未完成
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">模板全文见 <a href="index.html#s-tpl">实训总览</a>。</p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

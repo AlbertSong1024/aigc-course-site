@@ -30,6 +30,15 @@
   var CUR_IDX = FLAT.findIndex(function (l) { return l.no === CUR_NO; });
   var CUR = CUR_IDX >= 0 ? FLAT[CUR_IDX] : null;
 
+  /* 实训页支持：<body data-training="1">（详情页）或 data-training="index"（总览页） */
+  var TR = CM.trainings || null;
+  var TR_LIST = TR ? TR.list : [];
+  var TR_RAW = BODY.getAttribute("data-training");
+  var CUR_TR_NO = TR_RAW && TR_RAW !== "index" ? parseInt(TR_RAW, 10) : 0;
+  var CUR_TR_IDX = TR_LIST.findIndex(function (t) { return t.no === CUR_TR_NO; });
+  var CUR_TR = CUR_TR_IDX >= 0 ? TR_LIST[CUR_TR_IDX] : null;
+  var TR_INDEX = TR_RAW === "index";
+
   function $(id) { return document.getElementById(id); }
   function link(file) { return ROOT + file; }
   function esc(s) {
@@ -75,6 +84,7 @@
         "</div>" +
         '<nav class="topbar__nav">' +
           '<a class="tlink" href="' + link("index.html") + '">课程地图</a>' +
+          (TR ? '<a class="tlink" href="' + link(TR.index) + '">实训</a>' : "") +
           '<select class="sel-lesson" id="site-lesson-select" title="跳转到指定课次">' + opts + "</select>" +
         "</nav>" +
       "</div>";
@@ -118,6 +128,27 @@
       });
       h += "</ul></div>";
     });
+
+    /* 实训分组：不占课次，单独列出 */
+    if (TR) {
+      var trOpen = TR_INDEX || CUR_TR_NO > 0;
+      h += '<div class="mod' + (trOpen ? "" : " closed") + '" data-mod="tr">';
+      h += '<button class="mod__hd" type="button">' +
+             '<span class="mod__no m3">实训</span>' +
+             "<span>" + esc("实训 · 8 次（不占课次）") + "</span>" +
+             '<span class="mod__cnt">' + TR_LIST.length + "/" + TR_LIST.length + '</span>' +
+             '<span class="mod__arrow"></span>' +
+           "</button>";
+      h += '<ul class="mod__list">';
+      h += '<li><a class="' + (TR_INDEX ? "on " : "") + '" href="' + link(TR.index) + '">' +
+             '<span class="lno">总览</span><span class="dot ok"></span><span>实训总览与报告模板</span></a></li>';
+      TR_LIST.forEach(function (t) {
+        var trCls = t.no === CUR_TR_NO ? "on " : "";
+        h += '<li><a class="' + trCls + '" href="' + link(t.file) + '" title="' + esc(t.out) + '">' +
+               '<span class="lno">' + t.no + '</span><span class="dot ok"></span><span>' + esc(t.title) + "</span></a></li>";
+      });
+      h += "</ul></div>";
+    }
     host.innerHTML = h;
 
     host.querySelectorAll(".mod__hd").forEach(function (b) {
@@ -137,6 +168,49 @@
   function renderHead() {
     var crumb = $("site-crumb");
     var head = $("site-head");
+
+    /* 实训页（总览 / 详情）单独处理 */
+    if (TR && (TR_INDEX || CUR_TR)) {
+      if (crumb) {
+        crumb.innerHTML =
+          '<a href="' + link("index.html") + '">首页</a>' +
+          '<span class="sep">/</span>' +
+          (TR_INDEX
+            ? "<span>实训总览</span>"
+            : '<a href="' + link(TR.index) + '">实训总览</a><span class="sep">/</span><span>实训' + CUR_TR_NO + "</span>");
+      }
+      if (head) {
+        var tchips = [];
+        if (TR_INDEX) {
+          tchips.push('<span class="k">实训 · 共 ' + TR_LIST.length + " 次</span>");
+          tchips.push("<span>各 " + TR.hoursEach + " 学时</span>");
+          tchips.push("<span>不占课次</span>");
+          tchips.push('<span class="a">学习通提交</span>');
+          head.className = "page-head";
+          head.innerHTML =
+            '<span class="page-head__no">实训 · 第 11 次课之后</span>' +
+            "<h1>8 次实训<span class=\"\">从实操课抽出来的 8 个任务</span></h1>" +
+            '<p style="color:#64748B;font-size:13.5px;margin:12px 0 0">' +
+            "实训不额外占课次；内容全部从现有实操课抽取，做完交一份一页纸的实训报告（学习通提交）。</p>" +
+            '<div class="meta">' + tchips.join("") + "</div>";
+          document.title = "实训总览｜" + CM.meta.course;
+        } else {
+          tchips.push('<span class="k">实训' + CUR_TR_NO + " · 共 " + TR_LIST.length + " 次</span>");
+          tchips.push("<span>对应" + esc(CUR_TR.from) + "</span>");
+          tchips.push("<span>" + TR.hoursEach + " 学时</span>");
+          tchips.push('<span class="a">' + esc(CUR_TR.module) + "</span>");
+          head.className = "page-head";
+          head.innerHTML =
+            '<span class="page-head__no">实训' + CUR_TR_NO + " · " + esc(CUR_TR.from) + "</span>" +
+            "<h1>" + esc(CUR_TR.title) + "<small>" + esc(CUR_TR.summary) + "</small></h1>" +
+            '<p style="color:#64748B;font-size:13.5px;margin:12px 0 0">交付物：' + esc(CUR_TR.out) + "</p>" +
+            '<div class="meta">' + tchips.join("") + "</div>";
+          document.title = "实训" + CUR_TR_NO + " " + CUR_TR.title + "｜" + CM.meta.course;
+        }
+      }
+      return;
+    }
+
     if (!CUR) {
       if (crumb) crumb.innerHTML = '<a href="' + link("index.html") + '">首页</a>';
       return;
@@ -304,6 +378,31 @@
   function renderPager() {
     var host = $("site-pager");
     if (!host) return;
+
+    /* 实训页：在实训序列里前后翻 */
+    if (TR && (TR_INDEX || CUR_TR)) {
+      function trSide(t, dir) {
+        var label = dir === "prev" ? "← 上一个实训" : "下一个实训 →";
+        if (!t) {
+          var fallback = dir === "prev"
+            ? '<a href="' + link(TR.index) + '"><span>' + label + "</span><b>实训总览</b></a>"
+            : '<a class="dis"><span>' + label + "</span><b>——</b></a>";
+          return fallback;
+        }
+        var cls = dir === "next" ? "nx" : "";
+        return '<a class="' + cls + '" href="' + link(t.file) + '">' +
+               "<span>" + label + "</span><b>实训" + t.no + " · " + esc(t.title) + "</b></a>";
+      }
+      if (TR_INDEX) {
+        host.innerHTML = '<a class="dis"><span>← 上一个实训</span><b>——</b></a>' +
+          trSide(TR_LIST[0], "next");
+      } else {
+        host.innerHTML = trSide(CUR_TR_IDX > 0 ? TR_LIST[CUR_TR_IDX - 1] : null, "prev") +
+          trSide(CUR_TR_IDX < TR_LIST.length - 1 ? TR_LIST[CUR_TR_IDX + 1] : null, "next");
+      }
+      return;
+    }
+
     function side(l, dir) {
       if (!l) return '<a class="dis"><span>' + (dir === "prev" ? "上一课" : "下一课") + "</span><b>——</b></a>";
       var cls = (dir === "next" ? "nx" : "") + (l.status === "ready" ? "" : " dis");
@@ -704,6 +803,24 @@
         idx.push({ no: l.no, title: t, sub: "关键词 · 第" + l.no + "次课 " + l.title, url: l.status === "ready" ? link(l.file) : "", kind: "关键词" });
       });
     });
+    /* 实训页：不占课次，no 用 "实训N" 标记，排在课时之后 */
+    if (TR) {
+      idx.push({
+        no: "实训", title: "实训总览 · 8 次实训", sub: "不占课次 · 一页纸报告 · 学习通提交",
+        url: link(TR.index), kind: "实训",
+      });
+      TR_LIST.forEach(function (t) {
+        idx.push({
+          no: "实训" + t.no, title: "实训" + t.no + " " + t.title,
+          sub: "对应" + t.from + " · 交付物：" + t.out, url: link(t.file), kind: "实训",
+        });
+        idx.push({
+          no: "实训" + t.no, title: t.title,
+          sub: "实训" + t.no + " · " + t.summary + " · 交付物：" + t.out,
+          url: link(t.file), kind: "实训",
+        });
+      });
+    }
     if (window.SITE_SECTION_INDEX && window.SITE_SECTION_INDEX.length) {
       window.SITE_SECTION_INDEX.forEach(function (s) {
         var l = FLAT.find(function (x) { return x.no === s.lesson; });

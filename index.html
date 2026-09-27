@@ -80,6 +80,7 @@
       <h2 id="s-map">课程地图</h2>
       <p class="lead">本站收录<strong>第 1 次课至第 32 次课，共 32 课、64 课时</strong>。模块划分沿用课程三大模块口径。</p>
       <div id="home-mods"></div>
+      <div id="home-training"></div>
     </section>
 
     <section class="sec">
@@ -183,6 +184,34 @@
       alert("第 " + a.getAttribute("data-todo") + " 次课还没有转化上线。");
     });
   });
+
+  /* 实训卡区：8 次实训，不占课次，从实操课抽取 */
+  var TR = CM.trainings;
+  var host = document.getElementById("home-training");
+  if (TR && host) {
+    var trCards = TR.list.map(function (t) {
+      return '<a class="lcard" href="' + t.file + '">' +
+        '<span class="lcard__no">实训' + t.no + " · " + esc(t.from) + "</span>" +
+        "<h3>" + esc(t.title) + "</h3>" +
+        "<p>" + esc(t.summary) + "</p>" +
+        '<div class="lcard__foot">' +
+          '<span class="badge badge--a">' + TR.hoursEach + " 学时</span>" +
+          '<span class="badge">' + esc(t.out) + "</span>" +
+          '<span class="badge badge--ok">学习通提交</span>' +
+        "</div></a>";
+    }).join("");
+    host.innerHTML =
+      '<div class="modblock">' +
+        '<div class="modblock__hd">' +
+          '<span class="mod__no m3">实训</span>' +
+          "<h2>8 次实训（不占课次）</h2>" +
+          '<span class="badge">各 ' + TR.hoursEach + " 学时　共 " + TR.list.length + " 次</span>" +
+        "</div>" +
+        '<p style="font-size:13px;color:#64748B;margin:-6px 0 13px">' + esc(TR.note) +
+          ' 每份报告只填 5 项、一页纸；<a href="' + TR.index + '">先看实训总览与报告模板 →</a></p>' +
+        '<div class="lesson-grid">' + trCards + "</div>" +
+      "</div>";
+  }
 
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 })();

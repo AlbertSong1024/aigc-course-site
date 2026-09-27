@@ -403,6 +403,91 @@ window.COURSE_MAP = {
     },
   ],
 
+  /* ── 实训（第 11 次课之后另设 8 次） ───────────────────────────────────
+     口径：实训不额外占课次，属于「课后实训作业」性质；
+     内容全部从现有实操课抽取，学生完整做一遍并交一份实训报告（学习通提交）。
+     每项 2 学时、一页纸报告、5 项固定栏目。 */
+  trainings: {
+    count: 8,
+    hoursEach: 2,
+    note: "第 11 次课之后另设 8 次实训，不占课次；内容从现有实操课抽取，学生交实训报告（学习通）。",
+    list: [
+      {
+        no: 1,
+        title: "票据清洗与报销汇总",
+        from: "第 11、12 次课",
+        module: "模块二 · 办公自动化",
+        out: "报销一条龙.xlsx",
+        file: "training/training-01.html",
+        summary: "把一堆脏票据整理成一份能交财务的报销一条龙表。",
+      },
+      {
+        no: 2,
+        title: "长文档生成与批量处理",
+        from: "第 10 次课",
+        module: "模块二 · 办公自动化",
+        out: "周报 3 份 + 套用说明.md",
+        file: "training/training-02.html",
+        summary: "用「模板 + 变量」批量生成 3 份周报。",
+      },
+      {
+        no: 3,
+        title: "文件整理与会议纪要",
+        from: "第 14 次课",
+        module: "模块二 · 办公自动化",
+        out: "归档对照表.xlsx + 纪要.md",
+        file: "training/training-03.html",
+        summary: "把杂乱文件夹归档，把会议录音转成纪要 + 待办。",
+      },
+      {
+        no: 4,
+        title: "知识库搭建与带引用问答",
+        from: "第 15、16、17 次课",
+        module: "模块二 · 办公自动化",
+        out: "知识库问答记录.md",
+        file: "training/training-04.html",
+        summary: "搭一个自己的知识库，问 5 个问题、每条都要有出处。",
+      },
+      {
+        no: 5,
+        title: "竞品分析 PPT 全链路",
+        from: "第 13 次课",
+        module: "模块三 · 职场赋能与前沿工具",
+        out: "竞品分析.pptx + 大纲.md",
+        file: "training/training-05.html",
+        summary: "从联网调研到生成一份能讲的竞品分析 PPT。",
+      },
+      {
+        no: 6,
+        title: "公众号内容生产",
+        from: "第 20 次课",
+        module: "模块三 · 职场赋能与前沿工具",
+        out: "推文.md + 3 条标题备选",
+        file: "training/training-06.html",
+        summary: "选一个主题，写一篇能发的公众号推文，配 3 条备选标题。",
+      },
+      {
+        no: 7,
+        title: "AI 求职包制作",
+        from: "第 24、25、26 次课",
+        module: "模块三 · 职场赋能与前沿工具",
+        out: "简历一页 + 面试问答 5 条",
+        file: "training/training-07.html",
+        summary: "做一页简历 + 5 条面试问答。",
+      },
+      {
+        no: 8,
+        title: "综合项目答辩包",
+        from: "第 31、32 次课",
+        module: "模块三 · 职场赋能与前沿工具",
+        out: "展示大纲 5 页 + 2 分钟讲稿",
+        file: "training/training-08.html",
+        summary: "把前面成果串成 5 页展示大纲 + 2 分钟讲稿。",
+      },
+    ],
+    index: "training/index.html",
+  },
+
   /* 首页/规范页用的口径说明，避免学生误读 */
   grading: {
     formative: "形成性评价 60%（出勤与课堂参与 10% + 模块一作业 15% + 模块二综合项目 35%）",

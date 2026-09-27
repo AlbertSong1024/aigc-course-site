@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实训一 票据清洗与报销汇总｜AIGC应用与实践</title>
+<meta name="description" content="把一堆脏票据整理成一份能交财务的报销一条龙表">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-training="1" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>实训说明<span class="sec__tag">对应第 11、12 次课</span></h2>
+      <p class="lead">
+        给你一份<strong>故意做脏的</strong>报销清单，你要把它整理成一份能直接交给财务的报销汇总表。这是办公场景里最典型、也最容易出事的一类活：<strong>数据不进你的眼，错误就进你的表</strong>。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">报告就填 5 项</span>
+        报告模板见 <a href="index.html#s-tpl">实训总览 → 实训报告模板</a>。一页纸，纯文字可交，别排版。
+      </div>
+    </section>
+
+    <section class="sec" id="s-task">
+      <h2>任务清单</h2>
+      <p>素材自己造一份就够（12–15 行即可），不用找真实发票。要造得像真的，脏得有道理。</p>
+      <ol class="steps">
+        <li><b>第 1 步：造一份脏数据</b><span>建 <code>报销清单.csv</code>，12–15 行。必须包含至少 5 种脏数据：重复票据号（同号同金额一条、同号不同金额一条）、空行、金额带 <code>¥</code> 和千分位、金额写成中文（如「一百二」）、日期三种写法（2026.9.1 / 2026/8/26 / 2026年9月18日）、消费类型一物多名（出租车/打车/市内交通）。</span></li>
+        <li><b>第 2 步：先定口径，再动手</b><span>写下一张「口径表」：待核票据怎么算、按什么维度汇总、金额保留几位小数、对不上怎么办。这张表必须在让 AI 处理<strong>之前</strong>就定好。</span></li>
+        <li><b>第 3 步：交给 AI 清洗</b><span>用「数据源 + 处理规则 + 输出形式」三要素写一条完整指令。要求：输出新文件 <code>报销清单-清洗后.csv</code>，<strong>不许覆盖原文件</strong>。</span></li>
+        <li><b>第 4 步：汇总 + 做一条龙</b><span>按部门、按月份各汇总一次，输出 <code>报销一条龙.xlsx</code>，含明细、清洗后清单、汇总表、图表。</span></li>
+        <li><b>第 5 步：过三道验收关</b><span>自己动手核三项：清洗后的笔数对不对得上、实际口径是不是你定的那条、各级合计加不加得起来。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-out">
+      <h2>交付物<span class="sec__tag">就这些</span></h2>
+      <p><code>报销一条龙.xlsx</code>（含 4 张表：原始明细 / 清洗后清单 / 汇总表 / 图表）。</p>
+      <p class="note">原文件 <code>报销清单.csv</code> 也一起交，方便老师对照你清洗了什么。两份文件都传学习通，不用打包。</p>
+    </section>
+
+    <section class="sec" id="s-rubric">
+      <h2>评分点</h2>
+      <ol class="steps">
+        <li><b>脏数据处理全不全</b><span>你造的 5 种脏数据，清洗后是不是都处理干净了、有没有漏。</span></li>
+        <li><b>口径定没定死</b><span>待核票据的处理方式有没有事先写下来。没写口径直接让 AI 算的，本项不得分。</span></li>
+        <li><b>验收有没有真做</b><span>三道关的核对结果有没有写进报告。只说「AI 做完了」不算。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-submit">
+      <h2>提交到学习通<span class="sec__tag">一键复制</span></h2>
+      <p>下面这段可以直接复制到学习通的作业说明里。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看提交要求 · 一键复制到学习通</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="实训一 提交要求 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>一、做什么
+自己造一份 12–15 行的报销清单（含至少 5 种脏数据），交一份能直接交财务的报销汇总表。
+
+二、交什么
+1. 报销一条龙.xlsx（含：原始明细 / 清洗后清单 / 汇总表 / 图表 共 4 张表）
+2. 报销清单.csv（原始脏数据，用于对照）
+
+三、报告怎么写（5 项，一页纸，别排版）
+1. 实训名称、班级、姓名、学号
+2. 我做了什么（3–5 条，写清用了什么工具、什么指令）
+3. 关键截图 1–2 张（截你的操作过程或最终结果，不要只截 AI 说「完成了」）
+4. 遇到的问题 + 怎么解决的
+5. 学到了什么（1–2 句，写自己的收获）
+
+四、评分看什么
+· 脏数据处理全不全（你造的 5 种脏数据，清洗后是不是都处理干净了、有没有漏。）
+· 口径定没定死（待核票据的处理方式有没有事先写下来。没写口径直接让 AI 算的，本项不得分。）
+· 验收有没有真做（三道关的核对结果有没有写进报告。只说「AI 做完了」不算。）
+
+五、注意
+· 清洗必须输出新文件，不许覆盖原文件
+· 报告只截「AI 说完成了」的，视为未完成
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">模板全文见 <a href="index.html#s-tpl">实训总览</a>。</p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

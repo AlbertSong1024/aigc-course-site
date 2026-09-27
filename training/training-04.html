@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实训四 知识库搭建与带引用问答｜AIGC应用与实践</title>
+<meta name="description" content="搭一个自己的知识库，问 5 个问题、每条都要有出处">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-training="4" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>实训说明<span class="sec__tag">对应第 15、16、17 次课</span></h2>
+      <p class="lead">
+        前面 AI 都是凭记忆回答，这次要让它<strong>查资料回答</strong>。你要搭一个小知识库（十几份资料），然后问它 5 个问题，<strong>每个答案都必须能指出出处</strong>；资料里没有的，它必须说「不知道」，不许编。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">报告就填 5 项</span>
+        报告模板见 <a href="index.html#s-tpl">实训总览 → 实训报告模板</a>。一页纸，纯文字可交，别排版。
+      </div>
+    </section>
+
+    <section class="sec" id="s-task">
+      <h2>任务清单</h2>
+      <p>资料自选：某个产品手册、某门课的讲义、某个规章制度都行，10–15 份即可。</p>
+      <ol class="steps">
+        <li><b>第 1 步：备料并传进去</b><span>收集 10–15 份资料（PDF / Word / 网页都行），传进知识库，等它入库完成。<strong>上传后立刻提问会答不出来</strong>，要等入库跑完。</span></li>
+        <li><b>第 2 步：观察切片</b><span>看其中 1–2 份被切成了几片。记下你为什么觉得某一份切得不好、怎么调。</span></li>
+        <li><b>第 3 步：问 5 个问题</b><span>设计 5 个问题：3 个资料里<strong>有</strong>答案的，2 个资料里<strong>没有</strong>的。记录每个答案。</span></li>
+        <li><b>第 4 步：三查每个答案</b><span>对每条答案做「三查」：① 有没有引用出处 ② 出处是不是真的支持这句结论 ③ 有没有超出资料的推断。</span></li>
+        <li><b>第 5 步：记下拒答表现</b><span>那 2 个没有答案的问题，它是老实说不知道，还是硬编了一个？如实记录。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-out">
+      <h2>交付物<span class="sec__tag">就这些</span></h2>
+      <p><code>知识库问答记录.md</code>（5 问 5 答 + 每条的三查结论 + 拒答表现）。</p>
+      <p class="note">挑 1 组最能说明问题的问答，配截图贴在报告里。</p>
+    </section>
+
+    <section class="sec" id="s-rubric">
+      <h2>评分点</h2>
+      <ol class="steps">
+        <li><b>出处对不对得上</b><span>答案引用的原文，是不是真的支持它这句话。张冠李戴的，本项扣分。</span></li>
+        <li><b>拒答表现如何</b><span>资料里没有的问题，它有没有承认不知道。硬编的，如实写清并说明危害。</span></li>
+        <li><b>三查有没有逐条做</b><span>5 条答案是不是都做了三查，还是只写在总结里。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-submit">
+      <h2>提交到学习通<span class="sec__tag">一键复制</span></h2>
+      <p>下面这段可以直接复制到学习通的作业说明里。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看提交要求 · 一键复制到学习通</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="实训四 提交要求 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>一、做什么
+搭一个 10–15 份资料的小知识库，问 5 个问题（3 个有答案 + 2 个没答案），逐条核查出处。
+
+二、交什么
+1. 知识库问答记录.md（5 问 5 答 + 每条的三查结论 + 拒答表现）
+2. 1 组问答截图（最能说明问题的那组）
+
+三、报告怎么写（5 项，一页纸，别排版）
+1. 实训名称、班级、姓名、学号
+2. 我做了什么（3–5 条，写清用了什么工具、什么指令）
+3. 关键截图 1–2 张（截你的操作过程或最终结果，不要只截 AI 说「完成了」）
+4. 遇到的问题 + 怎么解决的
+5. 学到了什么（1–2 句，写自己的收获）
+
+四、评分看什么
+· 出处对不对得上（答案引用的原文，是不是真的支持它这句话。张冠李戴的，本项扣分。）
+· 拒答表现如何（资料里没有的问题，它有没有承认不知道。硬编的，如实写清并说明危害。）
+· 三查有没有逐条做（5 条答案是不是都做了三查，还是只写在总结里。）
+
+五、注意
+· 上传后要等入库跑完再提问，否则会答不出来
+· 报告只截「AI 说完成了」的，视为未完成
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">模板全文见 <a href="index.html#s-tpl">实训总览</a>。</p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

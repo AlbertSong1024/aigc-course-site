@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实训二 长文档生成与批量处理｜AIGC应用与实践</title>
+<meta name="description" content="用「模板 + 变量」批量生成 3 份周报">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-training="2" data-root="../">
+
+<div id="site-topbar"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="site-sidebar"></aside>
+
+  <main class="main" id="main">
+    <div id="site-crumb"></div>
+    <div id="site-head"></div>
+
+    <section class="sec" id="s-guide">
+      <h2>实训说明<span class="sec__tag">对应第 10 次课</span></h2>
+      <p class="lead">
+        给你的是一份<strong>改一次就要重写一遍</strong>的活：每周都要出一份格式一样的周报。这次不手写，你要把周报做成「模板 + 变量」，让 AI 顺着变量把几份一次生成出来——这正是办公场景里最能省时间的一类自动化。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">报告就填 5 项</span>
+        报告模板见 <a href="index.html#s-tpl">实训总览 → 实训报告模板</a>。一页纸，纯文字可交，别排版。
+      </div>
+    </section>
+
+    <section class="sec" id="s-task">
+      <h2>任务清单</h2>
+      <p>主题任选（班级周报、社团月报、部门工作简报都行），但结构必须固定。</p>
+      <ol class="steps">
+        <li><b>第 1 步：先写大纲，再写正文</b><span>定下周报的固定骨架（标题、本周完成、下周计划、问题与求助），4 个小节即可。<strong>不要先写内容再归纳结构</strong>——顺序反了，后面批量套用会崩。</span></li>
+        <li><b>第 2 步：把会变的地方抽成变量</b><span>找出每期都会变的字段（周次、日期、本期数据、负责人），抽成变量，写进「模板 + 变量说明」。</span></li>
+        <li><b>第 3 步：写一份变量表</b><span>建 <code>周报变量表.csv</code>，3 行数据（对应 3 期），列名与变量一一对应。</span></li>
+        <li><b>第 4 步：批量生成</b><span>让 AI 按模板 + 变量表，一次生成 3 份周报，文件名按周次命名（如 <code>第3周周报.docx</code>）。</span></li>
+        <li><b>第 5 步：润色并去 AI 味</b><span>挑其中 1 份做润色：把 AI 味重的话改成自己的说法（少用「赋能、抓手、闭环」这类词）。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-out">
+      <h2>交付物<span class="sec__tag">就这些</span></h2>
+      <p><code>第N周周报.docx</code> ×3 + <code>周报模板.md</code>（含变量说明与指令原文）。</p>
+      <p class="note">变量表 <code>周报变量表.csv</code> 也一起交，老师要看你变量抽得对不对。</p>
+    </section>
+
+    <section class="sec" id="s-rubric">
+      <h2>评分点</h2>
+      <ol class="steps">
+        <li><b>结构定得住</b><span>3 份周报的小节结构是不是完全一致。结构一散，说明模板没做成。</span></li>
+        <li><b>变量抽得对不对</b><span>该变的字段有没有抽出来。把固定内容写进变量的，本项扣分。</span></li>
+        <li><b>有没有真去 AI 味</b><span>润色那句是不是真改了说法，还是原样照抄。</span></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s-submit">
+      <h2>提交到学习通<span class="sec__tag">一键复制</span></h2>
+      <p>下面这段可以直接复制到学习通的作业说明里。</p>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看提交要求 · 一键复制到学习通</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="实训二 提交要求 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>一、做什么
+把一份格式固定的周报做成「模板 + 变量」，批量生成 3 期。
+
+二、交什么
+1. 第N周周报.docx ×3（3 期，结构完全一致）
+2. 周报模板.md（含变量说明 + 你用的完整指令原文）
+3. 周报变量表.csv（3 行数据，列名与变量一一对应）
+
+三、报告怎么写（5 项，一页纸，别排版）
+1. 实训名称、班级、姓名、学号
+2. 我做了什么（3–5 条，写清用了什么工具、什么指令）
+3. 关键截图 1–2 张（截你的操作过程或最终结果，不要只截 AI 说「完成了」）
+4. 遇到的问题 + 怎么解决的
+5. 学到了什么（1–2 句，写自己的收获）
+
+四、评分看什么
+· 结构定得住（3 份周报的小节结构是不是完全一致。结构一散，说明模板没做成。）
+· 变量抽得对不对（该变的字段有没有抽出来。把固定内容写进变量的，本项扣分。）
+· 有没有真去 AI 味（润色那句是不是真改了说法，还是原样照抄。）
+
+五、注意
+· 先定大纲再写正文，顺序反了批量套用会崩
+· 报告只截「AI 说完成了」的，视为未完成
+</code></pre>
+          </div>
+        </div>
+      </div>
+      <p class="note">模板全文见 <a href="index.html#s-tpl">实训总览</a>。</p>
+    </section>
+
+    <div class="pager" id="site-pager"></div>
+  </main>
+
+  <aside class="toc" id="site-toc"></aside>
+</div>
+
+<footer class="foot" id="site-foot"></footer>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/search-index.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

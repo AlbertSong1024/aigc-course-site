@@ -1,9 +1,15 @@
 # 课程教程站 · 批量转化规范 v1.0
 
-> 适用范围：`tutorial-site/` 下第 6 次课至第 32 次课（共 27 课）的页面转化。
+> 适用范围：`tutorial-site/` 下第 6 次课至第 32 次课（共 27 课）的页面转化，以及 `training/` 下 8 次实训页。
 > 基准模板：`lessons/lesson-06-ollama.html`（基准模板 A）、`lessons/lesson-07-workbuddy.html`（基准模板 B）。
 > 新增一课之前，请先完整读一遍本文件；写完必须过 `node tools/check_site.js <课次号>`。
 > 制定日期：2026-09-15
+
+> **实训页（`training/*.html`）与课时页的差别**（2026-09-27 增补）：
+> 实训页**不占课次**，用 `<body data-training="N" data-root="../">`（总览页用 `data-training="index"`），
+> **没有 `s-quiz` 随堂自测**；正文固定五个小节 `s-guide / s-task / s-out / s-rubric / s-submit`；
+> **必须含一个 `.fold` 折叠区**，内放「学习通一键复制」的提交要求代码块（`check_site.js` 的 I 类会卡）。
+> 实训数据登记在 `course-map.js` 的 `trainings.list`，详情见 README「怎么改实训」。
 
 ---
 

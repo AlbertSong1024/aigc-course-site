@@ -284,6 +284,12 @@ async function smokeCheck(file, opts) {
   if (quiz < o.minQuiz) fail(`随堂自测只有 ${quiz} 题`);
   else ok(`随堂自测 ${quiz} 题`);
 
+  if (o.expectFold) {
+    const folds = d.querySelectorAll(".fold").length;
+    if (folds < o.expectFold) fail(`折叠区只有 ${folds} 个（至少需要 ${o.expectFold} 个，用于学习通一键复制）`);
+    else ok(`折叠区 ${folds} 个（含学习通一键复制块）`);
+  }
+
   // 遍历点击所有 button
   const btns = [...d.querySelectorAll("button")];
   let clicked = 0;
@@ -346,8 +352,26 @@ async function smokeCheck(file, opts) {
   if (hours !== 64) warn(`学时合计 ${hours}，全 32 课应为 64`);
   else ok("学时合计 64");
 
-  const targets = FLAT.filter((l) => l.status === "ready" && (!ONLY || l.no === ONLY));
-  if (!targets.length) { fail("没有 status=ready 的课时可校验"); return summary(); }
+  /* 实训数据完整性：8 次、编号连续、文件存在、来源课号在 32 课范围内 */
+  const TRD = CM.trainings;
+  if (!TRD || !Array.isArray(TRD.list)) {
+    fail("course-map.js 缺少 trainings 数据");
+  } else {
+    if (TRD.list.length !== 8) fail(`实训数 ${TRD.list.length}，应为 8`);
+    else ok("实训数 8");
+    const tnos = TRD.list.map((t) => t.no);
+    const continuous = tnos.every((n, i) => n === i + 1);
+    if (!continuous) fail(`实训编号不连续：${tnos.join(", ")}`);
+    else ok("实训编号 1–8 连续");
+    const missing = TRD.list.filter((t) => !fs.existsSync(path.join(ROOT, t.file)));
+    if (missing.length) fail(`实训文件缺失：${missing.map((t) => t.file).join(", ")}`);
+    else ok("8 个实训页文件均存在");
+    const badFrom = TRD.list.filter((t) => t.from && /第\s*3[3-9]|第\s*4\d/.test(t.from));
+    if (badFrom.length) fail(`实训来源课号超出 1–32：${badFrom.map((t) => t.from).join(", ")}`);
+    else ok("实训来源课号均在 1–32 内");
+  }
+
+  const targets = FLAT.filter((l) => l.status === "ready" && (!ONLY || l.no === ONLY));  if (!targets.length) { fail("没有 status=ready 的课时可校验"); return summary(); }
   log(`  待校验课时：${targets.map((l) => l.no).join(", ")}`);
 
   for (const l of targets) {
@@ -370,6 +394,28 @@ async function smokeCheck(file, opts) {
     const html = fs.readFileSync(fp, "utf8");
     syntaxCheck(html, f);
     await smokeCheck(fp, opts);
+  }
+
+  /* 【I】实训页：实训详情页没有随堂自测，minQuiz 置 0；都应有折叠的可复制提交要求。 */
+  head("【I】实训页（总览 + 8 次实训）");
+  const TR = CM.trainings;
+  if (!TR || !Array.isArray(TR.list) || !TR.list.length) {
+    fail("course-map.js 缺少 trainings 数据");
+  } else {
+    const trPages = [{ file: TR.index, no: 0 }].concat(TR.list.map((t) => ({ file: t.file, no: t.no })));
+    for (const t of trPages) {
+      const label = t.no ? `实训${t.no}` : "实训总览";
+      head(`  ${t.file}（${label}）`);
+      const fp = path.join(ROOT, t.file);
+      if (!fs.existsSync(fp)) { fail(`文件不存在：${t.file}`); continue; }
+      const html = fs.readFileSync(fp, "utf8");
+      syntaxCheck(html, t.file);
+      // 实训页必须挂对 data-training，否则 site.js 不会渲染标题区与翻页
+      const want = t.no ? `data-training="${t.no}"` : 'data-training="index"';
+      if (!html.includes(want)) fail(`${t.file} 缺少 ${want}`);
+      else ok(`挂载属性 ${want}`);
+      await smokeCheck(fp, { minQuiz: 0, minToc: 4, minLinks: 30, expectFold: 1 });
+    }
   }
 
   head("【B】未上线课时占位检查");
