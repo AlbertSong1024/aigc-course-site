@@ -32,6 +32,15 @@
   .hint{font-size:12px;color:var(--mut);margin-top:10px;line-height:1.7}
   .empty{color:var(--mut);font-size:13px;padding:10px 0}
   code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:12px}
+  td.done{background:#ECFDF5;color:#059669;font-weight:600;text-align:center}
+  .hist{display:flex;align-items:flex-end;gap:6px;height:130px;padding:8px 4px 0}
+  .hist .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .hist .col i{display:block;width:100%;background:var(--pri);border-radius:4px 4px 0 0;min-height:2px;transition:height .3s}
+  .hist .col.hi i{background:var(--acc)}
+  .hist .col b{font-size:11px;color:var(--ink);margin-bottom:3px;font-variant-numeric:tabular-nums}
+  .hist .col span{font-size:10.5px;color:var(--mut);margin-top:4px;text-align:center;line-height:1.2}
+  .legend{font-size:11.5px;color:var(--mut);margin-top:6px}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--pri);margin:0 4px 0 10px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -54,11 +63,15 @@
   </div>
 </div>
 
+<script src="../assets/js/course-map.js"></script>
 <script>
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
-  var students = [];   // { name, sid, summary, log }
+  var students = [];   // { name, sid, summary, pg, log }
+  var CM = window.COURSE_MAP || {};
+  var FLAT = (CM.flat ? CM.flat() : []);
+  var TOTAL = FLAT.length || (CM.meta && CM.meta.totalSessions) || 32;
 
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function fmtMs(ms) {
@@ -88,6 +101,9 @@
               demos: s.demoRuns || 0,
               hw: s.hwOpened || 0,
               byLesson: s.byLesson || {},
+              /* 学生端的「学习进度」（标记已学）随学情档案一并带出；
+                 没有 progress 字段的是老版档案，按「无进度数据」处理，不参与完成度统计。 */
+              pg: (d.progress && typeof d.progress === "object") ? d.progress : null,
               log: Array.isArray(d.log) ? d.log : []
             });
           } catch (e) { /* 坏文件跳过 */ }
@@ -134,14 +150,61 @@
       .map(function (q) { return "<tr><td>" + esc(q) + "</td><td class='n'>" + qc[q] + "</td></tr>"; }).join("");
 
     var rows = students.map(function (s) {
+      var pg = s.pg || {};
+      var doneCount = (pg.done && typeof pg.done === "object")
+        ? Object.keys(pg.done).filter(function (k) { return parseInt(k, 10) > 0; }).length : null;
+      var readCount = (pg.read && typeof pg.read === "object")
+        ? Object.keys(pg.read).reduce(function (a, k) { return a + (pg.read[k] || []).length; }, 0) : null;
       return "<tr><td>" + esc(s.name || "(未填)") + "</td>" +
         "<td class='n'>" + s.lessons + "</td>" +
+        "<td class='n'>" + (doneCount === null ? "—" : doneCount + "/" + TOTAL) + "</td>" +
+        "<td class='n'>" + (readCount === null ? "—" : readCount) + "</td>" +
         "<td class='n'>" + fmtMs(s.dwell) + "</td>" +
         "<td class='n'>" + (s.quizAvg === null ? "—" : s.quizAvg + "/6") + "</td>" +
         "<td class='n'>" + s.asks + "</td>" +
         "<td class='n'>" + s.demos + "</td>" +
         "<td class='n'>" + s.hw + "</td></tr>";
     }).join("");
+
+    /* ---- 完成度分布（只统计带 progress 的档案） ---- */
+    var pgStudents = students.filter(function (s) { return s.pg && s.pg.done; });
+    var buckets = [
+      { label: "0%", lo: 0, hi: 0 }, { label: "1–24%", lo: 1, hi: 24 },
+      { label: "25–49%", lo: 25, hi: 49 }, { label: "50–74%", lo: 50, hi: 74 },
+      { label: "75–99%", lo: 75, hi: 99 }, { label: "100%", lo: 100, hi: 100 }
+    ];
+    var pcts = pgStudents.map(function (s) {
+      var d = s.pg.done && typeof s.pg.done === "object" ? s.pg.done : {};
+      var c = Object.keys(d).filter(function (k) { return parseInt(k, 10) > 0; }).length;
+      return TOTAL ? Math.round(c / TOTAL * 100) : 0;
+    });
+    buckets.forEach(function (b) { b.c = pcts.filter(function (p) { return p >= b.lo && p <= b.hi; }).length; });
+    var maxB = Math.max.apply(null, buckets.map(function (b) { return b.c; }).concat([1]));
+    var histHTML = buckets.map(function (b) {
+      var h = Math.round(b.c / maxB * 100);
+      var hi = b.label === "100%" && b.c > 0;
+      return '<div class="col' + (hi ? " hi" : "") + '"><b>' + b.c + '</b>' +
+        '<i style="height:' + h + '%"></i><span>' + b.label + '</span></div>';
+    }).join("");
+    var avgPct = pcts.length ? Math.round(pcts.reduce(function (a, b) { return a + b; }, 0) / pcts.length) : null;
+    var completed = pcts.filter(function (p) { return p === 100; }).length;
+
+    /* ---- 逐课已学人数矩阵（老师看「哪几课大家没点已学」） ---- */
+    var doneHeat = {};
+    pgStudents.forEach(function (s) {
+      var d = s.pg.done && typeof s.pg.done === "object" ? s.pg.done : {};
+      Object.keys(d).forEach(function (k) {
+        var no = parseInt(k, 10); if (no > 0) doneHeat[no] = (doneHeat[no] || 0) + 1;
+      });
+    });
+    var base = pgStudents.length || 1;
+    var matrixRows = FLAT.length ? FLAT.map(function (l) {
+      var c = doneHeat[l.no] || 0, pct = Math.round(c / base * 100);
+      return "<tr><td>第 " + l.no + " 次课</td>" +
+        "<td class='titlecell' style='max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>" + esc(l.title) + "</td>" +
+        "<td class='n'>" + c + " 人</td><td class='n'>" + pct + "%</td>" +
+        "<td><div class='bar'><i style='width:" + pct + "%'></i></div></td></tr>";
+    }).join("") : "";
 
     $("out").innerHTML =
       '<div class="kpis">' +
@@ -150,12 +213,28 @@
         '<div class="kpi"><b>' + fmtMs(avg(function (s) { return s.dwell; })) + '</b><span>人均停留</span></div>' +
         '<div class="kpi"><b>' + (quizAvg === null ? "—" : quizAvg + "/6") + '</b><span>自测平均（' + quizList.length + '人填）</span></div>' +
         '<div class="kpi"><b>' + avg(function (s) { return s.asks; }) + '</b><span>人均提问 AI</span></div>' +
+        '<div class="kpi"><b>' + (avgPct === null ? "—" : avgPct + "%") + '</b><span>人均完成度（' + pgStudents.length + '人带进度）</span></div>' +
+      "</div>" +
+
+      '<div class="sec"><h2>完成度分布（学生自己标记「已学」的占比）</h2>' +
+        (pgStudents.length
+          ? '<div class="hist">' + histHTML + '</div>' +
+            '<div class="legend">共 ' + pgStudents.length + ' 人带进度数据，人均完成 <b>' + avgPct + '%</b>，' +
+            '其中 <b>' + completed + '</b> 人已 100% 学完。<i></i>橙色 = 已学完全部 ' + TOTAL + ' 课。</div>'
+          : '<div class="empty">还没有学生档案带学习进度。<br>' +
+            '<span style="font-size:12px">注意：完成度来自学生端右下角进度环的「标记已学」，' +
+            '需要学生在课时页点过标记、且导出档案时已勾选进度数据。老版档案（无 progress 字段）不计入。</span></div>') +
       "</div>" +
 
       '<div class="sec"><h2>学生明细</h2>' +
         '<div style="overflow-x:auto"><table><thead><tr>' +
-        "<th>姓名/学号</th><th>已学课时</th><th>停留</th><th>自测</th><th>问AI</th><th>演示</th><th>作业</th>" +
+        "<th>姓名/学号</th><th>访问课时</th><th>已标记完成</th><th>已读小节</th><th>停留</th><th>自测</th><th>问AI</th><th>演示</th><th>作业</th>" +
         "</tr></thead><tbody>" + rows + "</tbody></table></div></div>" +
+
+      '<div class="sec"><h2>逐课完成人数（哪几课学生没点「已学」）</h2>' +
+        (matrixRows ? '<div style="overflow-x:auto"><table><thead><tr><th>课次</th><th>标题</th><th>已学</th><th>占比</th><th></th></tr></thead><tbody>' + matrixRows + "</tbody></table></div>"
+                    : '<div class="empty">课程结构未加载。</div>') +
+      "</div>" +
 
       '<div class="sec"><h2>各课学习人数（哪些课学生真去看了）</h2>' +
         (heatRows ? '<div style="overflow-x:auto"><table><thead><tr><th>课次</th><th>人数</th><th>占比</th><th></th></tr></thead><tbody>' + heatRows + "</tbody></table></div>"
@@ -171,10 +250,16 @@
       '<button class="ghost" id="clr">清空重来</button>';
 
     $("csv").addEventListener("click", function () {
-      var head = ["姓名/学号", "已学课时", "停留秒", "自测平均", "问AI", "演示", "作业"];
+      var head = ["姓名/学号", "访问课时", "已标记完成", "完成度%", "已读小节", "停留秒", "自测平均", "问AI", "演示", "作业"];
       var lines = [head.join(",")];
       students.forEach(function (s) {
-        lines.push([s.name || "(未填)", s.lessons, Math.round(s.dwell / 1000),
+        var pg = s.pg || {};
+        var dc = (pg.done && typeof pg.done === "object")
+          ? Object.keys(pg.done).filter(function (k) { return parseInt(k, 10) > 0; }).length : "";
+        var rc = (pg.read && typeof pg.read === "object")
+          ? Object.keys(pg.read).reduce(function (a, k) { return a + (pg.read[k] || []).length; }, 0) : "";
+        var pct = (dc === "") ? "" : Math.round(dc / TOTAL * 100);
+        lines.push([s.name || "(未填)", s.lessons, dc, pct, rc, Math.round(s.dwell / 1000),
           s.quizAvg === null ? "" : s.quizAvg, s.asks, s.demos, s.hw].join(","));
       });
       var blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8" });

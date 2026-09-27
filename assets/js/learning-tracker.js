@@ -35,6 +35,11 @@
   }
   function curNo() { return parseInt((document.body && document.body.getAttribute("data-lesson")) || "0", 10); }
 
+  /* 全课程表（按课次排序），course-map 是唯一数据源 */
+  function flatMap() {
+    return (window.COURSE_MAP && window.COURSE_MAP.flat) ? window.COURSE_MAP.flat() : [];
+  }
+
   /* ---------- 访客识别与使用次数（全在本机，匿名） ----------
      纯静态站没有后端，统计不出「全网有多少人来过」；
      这里统计的是「这台设备的这位学生」自己：来过几次、第一次什么时候、共几次会话。 */
@@ -152,7 +157,15 @@
 
   /* ---------- 导出（交作业用） ---------- */
   function exportJSON() {
-    var data = { v: 2, course: "AIGC应用与实践", exportedAt: new Date().toISOString(), summary: summary(), log: log };
+    /* 顺带把「学习进度」（学生端标记的已学课次/已读小节）一并带出，
+       老师端 teacher-dashboard.html 才能看到完成度。
+       progress.js 未加载时（如纯档案页）该字段为空对象，不报错。 */
+    var progress = null;
+    try {
+      if (window.PG && window.PG.exportAll) progress = window.PG.exportAll();
+    } catch (e) { progress = null; }
+    var data = { v: 3, course: "AIGC应用与实践", exportedAt: new Date().toISOString(),
+                 summary: summary(), progress: progress, log: log };
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     var a = document.createElement("a");
     var nm = (sget(K_NAME) || sid()).replace(/[^\w\u4e00-\u9fa5-]/g, "");
@@ -308,7 +321,10 @@
     /* 用 input 而不是 change：学生填完姓名常常直接点别处或关面板，
        change 不触发会丢名字；input 边打边存，不会丢。 */
     nm.addEventListener("input", function () { sset(K_NAME, nm.value.trim()); });
-    p.querySelector("#lt-exp").addEventListener("click", exportJSON);
+    p.querySelector("#lt-exp").addEventListener("click", function () {
+      exportJSON();
+      try { if (window.AN) window.AN.events.exportArchive(); } catch (e) {}
+    });
     p.querySelector("#lt-rep").addEventListener("click", function () {
       if (!canReport()) { alert("老师还没有配置上报端点，当前是纯本地模式。\n请用「导出档案」把文件交给老师。"); return; }
       report(); alert("已上报（匿名，仅汇总指标）。");
@@ -330,6 +346,14 @@
 
     /* 进入课时：记一次「使用」，并累计本设备对该课的打开次数 */
     trackVisit();
+    /* 外部统计：全站真实 PV（带课次维度），未配置 Umami 则静默 */
+    try {
+      if (window.AN) {
+        var no = curNo(), ls = flatMap(), title = "";
+        for (var i = 0; i < ls.length; i++) if (ls[i].no === no) { title = ls[i].title || ""; break; }
+        window.AN.events.lessonView(no, title);
+      }
+    } catch (e) {}
 
     /* 停留时长：页面隐藏 / 关闭时结算 */
     function flushDwell() {
@@ -345,9 +369,18 @@
     document.addEventListener("click", function (ev) {
       var el = ev.target;
       if (!el || !el.closest) return;
-      if (el.closest(".demo")) track("demo", { id: (el.closest(".demo") || {}).id || "" });
-      else if (el.classList.contains("quiz__reveal")) track("quiz", { opened: true });
-      else if (el.classList.contains("fold__hd")) track("hw", {});
+      if (el.closest(".demo")) {
+        track("demo", { id: (el.closest(".demo") || {}).id || "" });
+        try { if (window.AN) window.AN.events.demoRun((el.closest(".demo") || {}).id || ""); } catch (e) {}
+      }
+      else if (el.classList.contains("quiz__reveal")) {
+        track("quiz", { opened: true });
+        try { if (window.AN) window.AN.events.quizReveal(curNo()); } catch (e) {}
+      }
+      else if (el.classList.contains("fold__hd")) {
+        track("hw", {});
+        try { if (window.AN) window.AN.events.hwOpen(curNo()); } catch (e) {}
+      }
     }, true);
 
     /* 视频进入视野（懒加载触发即算看过） */
@@ -355,7 +388,13 @@
       var fr = document.querySelector(".video-embed iframe");
       if (fr && "IntersectionObserver" in window) {
         var io = new IntersectionObserver(function (es) {
-          es.forEach(function (e) { if (e.isIntersecting) { track("video", {}); io.disconnect(); } });
+          es.forEach(function (e) {
+            if (e.isIntersecting) {
+              track("video", {});
+              try { if (window.AN) window.AN.events.videoPlay(curNo()); } catch (err) {}
+              io.disconnect();
+            }
+          });
         });
         io.observe(fr);
       }

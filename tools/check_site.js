@@ -45,14 +45,17 @@ const JS_FILES = [
   "assets/js/search-index.js",
   "assets/js/learning-tracker.js",
   "assets/js/ai-tutor.js",
-  "assets/js/visit-stats.js"
+  "assets/js/visit-stats.js",
+  "assets/js/analytics.js",
+  "assets/js/progress.js"
 ];
 /* 站点外壳页：首页、模板、工具页，同样过语法与冒烟 */
 const SHELL_PAGES = [
   { file: "index.html", opts: { minToc: 1, minLinks: 20 } },
   { file: "templates/lesson-template.html", opts: { minToc: 1, minLinks: 20 } },
   { file: "tools/visit-report.html", opts: { noShell: true, expectId: "drop" } },
-  { file: "tools/teacher-dashboard.html", opts: { noShell: true, expectId: "drop" } }
+  { file: "tools/teacher-dashboard.html", opts: { noShell: true, expectId: "drop" } },
+  { file: "tools/my-progress.html", opts: { noShell: true, expectId: "hero" } }
 ];
 
 let fails = 0, warns = 0, oks = 0;

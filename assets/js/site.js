@@ -501,12 +501,22 @@
     if (!input || !hit) return;
     var IDX = buildIndex();
 
+    var _lastQ = "", _lastT = 0;
     function run() {
       var q = input.value.trim().toLowerCase();
       if (!q) { hit.classList.remove("on"); hit.innerHTML = ""; return; }
       var res = IDX.filter(function (r) {
         return (r.title + " " + r.sub).toLowerCase().indexOf(q) >= 0;
       }).slice(0, 14);
+      /* 外部统计：只上报「稳定下来的输入」（防抖 800ms + 同一关键词不重复），
+         且仅在 analytics.js 的 Umami 配置非空时才会真正发请求。 */
+      try {
+        var now = Date.now();
+        if (q.length >= 2 && q !== _lastQ && now - _lastT > 800) {
+          _lastQ = q; _lastT = now;
+          if (window.AN && window.AN.events) window.AN.events.search(q, res.length);
+        }
+      } catch (e) {}
       if (!res.length) { hit.innerHTML = '<div class="sr__empty">没找到「' + esc(q) + "」</div>"; hit.classList.add("on"); return; }
       hit.innerHTML = res.map(function (r) {
         if (!r.url) {
@@ -623,12 +633,29 @@
     document.head.appendChild(ltScript);
   } catch (e) {}
 
+  // 注入学习进度（独立文件，学生端「标记已学」与完成度）
+  try {
+    var pgScript = document.createElement("script");
+    pgScript.src = ROOT + "assets/js/progress.js";
+    pgScript.async = true;
+    document.head.appendChild(pgScript);
+  } catch (e) {}
+
   // 注入课程 AI 助教浮窗（独立文件，自动加载，无需改各课时页）
   try {
     var atScript = document.createElement("script");
     atScript.src = ROOT + "assets/js/ai-tutor.js";
     atScript.async = true;
     document.head.appendChild(atScript);
+  } catch (e) {}
+
+  // 注入外部统计（Umami，**未填配置则完全不联网**；详见 analytics.js 顶部说明）。
+  // 放在最后加载：主课程功能不依赖它，网络慢也拖不慢页面。
+  try {
+    var anScript = document.createElement("script");
+    anScript.src = ROOT + "assets/js/analytics.js";
+    anScript.async = true;
+    document.head.appendChild(anScript);
   } catch (e) {}
 
 })();

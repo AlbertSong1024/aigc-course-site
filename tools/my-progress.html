@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学习中心 · AIGC应用与实践</title>
+<style>
+  :root{--pri:#2563EB;--pri-d:#1D4ED8;--pri-l:#DBEAFE;--acc:#F59E0B;--acc-l:#FFFBEB;
+        --ink:#0F172A;--mut:#64748B;--line:#E2E8F0;--ok:#059669;--ok-l:#ECFDF5;--bg:#F8FAFC;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.7 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1080px;margin:auto;padding:26px 20px 80px}
+  a{color:var(--pri);text-decoration:none}
+  a:hover{text-decoration:underline}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--mut);font-size:13px;margin:0 0 20px}
+
+  /* ---- 顶部总览 ---- */
+  .hero{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center;
+        background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:18px}
+  @media(max-width:720px){.hero{grid-template-columns:1fr}}
+  .bigring{width:160px;height:160px;border-radius:50%;margin:auto;position:relative;
+           background:conic-gradient(var(--pri) var(--pg,0%),#E2E8F0 0);display:flex;align-items:center;justify-content:center}
+  .bigring::after{content:"";position:absolute;inset:14px;background:#fff;border-radius:50%}
+  .bigring span{position:relative;z-index:1;text-align:center;line-height:1.25}
+  .bigring b{display:block;font-size:32px;color:var(--pri);font-variant-numeric:tabular-nums}
+  .bigring em{font-style:normal;font-size:12px;color:var(--mut)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+  .kpi{background:#F8FAFC;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .kpi b{display:block;font-size:21px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .kpi span{font-size:12px;color:var(--mut)}
+  .kpi.acc b{color:var(--acc)}
+
+  /* ---- 卡片 ---- */
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .card h2{font-size:15px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  .card h2 .num{background:var(--pri-l);color:var(--pri);border-radius:6px;padding:1px 7px;font-size:12px}
+
+  /* ---- 续学 ---- */
+  .resume{background:linear-gradient(135deg,#EFF6FF,#fff);border:1px solid #BFDBFE}
+  .resume .t{font-size:16px;font-weight:700;margin:0 0 4px}
+  .resume .d{color:var(--mut);font-size:13px;margin:0 0 12px}
+  .btn{display:inline-block;padding:9px 18px;border:none;border-radius:9px;background:var(--pri);color:#fff;
+       cursor:pointer;font-size:13.5px;font-weight:600;text-decoration:none}
+  .btn:hover{background:var(--pri-d);text-decoration:none}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:500}
+  .btn.ghost:hover{background:#F1F5F9}
+  .btn.sm{padding:6px 12px;font-size:12.5px}
+
+  /* ---- 课时列表 ---- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .ls{display:flex;gap:10px;align-items:flex-start;background:#F8FAFC;border:1px solid var(--line);
+      border-radius:10px;padding:11px 13px;transition:.12s;position:relative}
+  .ls:hover{border-color:var(--pri);background:#fff}
+  .ls.done{background:var(--ok-l);border-color:#A7F3D0}
+  .ls .no{flex:0 0 auto;width:30px;height:30px;border-radius:8px;background:#E2E8F0;color:var(--mut);
+          display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700}
+  .ls.done .no{background:var(--ok);color:#fff}
+  .ls .tx{min-width:0;flex:1}
+  .ls .tx b{display:block;font-size:13.5px;font-weight:600;line-height:1.45;
+            overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ls .tx small{display:block;color:var(--mut);font-size:11.5px;margin-top:2px;
+                overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ls .rd{font-size:11px;color:var(--ok);margin-top:3px;font-weight:600}
+  .ls .ck{position:absolute;right:9px;top:9px;width:19px;height:19px;border-radius:50%;
+          border:2px solid #CBD5E1;background:#fff;cursor:pointer;padding:0}
+  .ls .ck.on{background:var(--ok);border-color:var(--ok)}
+  .ls .ck.on::after{content:"✓";color:#fff;font-size:12px;line-height:15px;display:block}
+  .mod{margin-bottom:20px}
+  .modhd{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .modhd b{font-size:14px}
+  .modhd .rg{color:var(--mut);font-size:12px}
+  .mbar{flex:1;min-width:120px;height:8px;background:#E2E8F0;border-radius:5px;overflow:hidden}
+  .mbar i{display:block;height:100%;background:var(--pri);border-radius:5px;transition:width .3s}
+  .modhd .pc{font-size:12.5px;color:var(--mut);font-variant-numeric:tabular-nums;min-width:74px;text-align:right}
+
+  /* ---- 工具条 ---- */
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+  .hint{font-size:12px;color:var(--mut);line-height:1.8;margin-top:14px}
+  .hint code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:12px}
+  .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);
+         background:#0F172A;color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;
+         opacity:0;pointer-events:none;transition:.22s;z-index:99}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .empty{color:var(--mut);font-size:13px;padding:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>我的学习中心</h1>
+  <p class="sub" id="sub">AIGC应用与实践 · 32 次课学习进度（数据只存在你这台设备上，不上传）</p>
+
+  <div id="hero"></div>
+  <div id="resume"></div>
+  <div id="mods"></div>
+
+  <div class="card">
+    <h2>进度数据管理</h2>
+    <div class="toolbar">
+      <button class="btn ghost sm" id="exp" type="button">导出进度（换设备/备份用）</button>
+      <button class="btn ghost sm" id="imp" type="button">导入进度</button>
+      <input type="file" id="impf" accept=".json" style="display:none">
+      <button class="btn ghost sm" id="rst" type="button">清空本机进度</button>
+    </div>
+    <div class="hint">
+      进度存在浏览器 <code>localStorage</code> 里——<strong>换浏览器、清缓存、无痕模式都会丢</strong>。
+      想换设备接着学，先用「导出进度」存一份 JSON，再到新设备「导入进度」。<br>
+      学习档案（访客/停留时长，交给老师那份）在教程页右下角橙色「<strong>学情</strong>」按钮里导出，两者是不同的东西：
+      <strong>进度给你自己看，档案给老师看</strong>。
+    </div>
+  </div>
+
+  <div class="hint">
+    回到课程：<a href="../index.html" id="home">课程首页</a>　·　
+    老师端：<a href="teacher-dashboard.html">班级学情汇总</a>　·　
+    <a href="visit-report.html">访问统计看板</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/progress.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var CM = window.COURSE_MAP || {};
+  var MODS = CM.modules || [];
+  var FLAT = (CM.flat ? CM.flat() : []);
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function toast(msg) {
+    var t = $("toast");
+    t.textContent = msg; t.classList.add("on");
+    clearTimeout(t._tm);
+    t._tm = setTimeout(function () { t.classList.remove("on"); }, 2200);
+  }
+  function fileUrl(f) { return "../" + f; }
+
+  /* ---------- 统计 ---------- */
+  function computeAll() {
+    var done = {}, read = {}, last = null;
+    if (window.PG) { done = PG.getDone() || {}; read = PG.getRead() || {}; last = PG.getLast(); }
+    var total = FLAT.length || (CM.meta && CM.meta.totalSessions) || 32;
+    var doneCount = FLAT.filter(function (l) { return done[String(l.no)]; }).length;
+    var readCount = 0, readLessons = 0;
+    FLAT.forEach(function (l) {
+      var n = (read[String(l.no)] || []).length;
+      if (n > 0) readLessons++;
+      readCount += n;
+    });
+    return {
+      done: done, read: read, last: last, total: total,
+      doneCount: doneCount, readCount: readCount, readLessons: readLessons,
+      pct: total ? Math.round(doneCount / total * 100) : 0
+    };
+  }
+
+  /* ---------- 顶部总览 ---------- */
+  function renderHero(s) {
+    var hero = $("hero");
+    var lastNo = s.last && s.last.no ? s.last.no : 0;
+    var lastL = FLAT.filter(function (l) { return l.no === lastNo; })[0];
+    var lastTxt = lastNo ? ("第 " + lastNo + " 次课 · " + (lastL ? lastL.title : "")) : "还没开始";
+    var lastAt = s.last && s.last.at ? fmtDate(s.last.at) : "—";
+    hero.innerHTML =
+      '<div class="hero">' +
+        '<div class="bigring" style="--pg:' + s.pct + '%"><span><b>' + s.pct + '%</b><em>' + s.doneCount + ' / ' + s.total + ' 课</em></span></div>' +
+        '<div class="kpis">' +
+          '<div class="kpi"><b>' + s.doneCount + '</b><span>已学完课次</span></div>' +
+          '<div class="kpi"><b>' + (s.total - s.doneCount) + '</b><span>待学课次</span></div>' +
+          '<div class="kpi"><b>' + s.readCount + '</b><span>已读小节</span></div>' +
+          '<div class="kpi"><b>' + s.readLessons + '</b><span>读过正文的课</span></div>' +
+          '<div class="kpi acc"><b style="font-size:14px;line-height:1.5">' + esc(lastTxt) + '</b><span>上次学到（' + lastAt + '）</span></div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  /* ---------- 续学卡 ---------- */
+  function renderResume(s) {
+    var box = $("resume");
+    var lastNo = s.last && s.last.no ? s.last.no : 0;
+    var lastL = FLAT.filter(function (l) { return l.no === lastNo; })[0];
+    var nextL = null;
+    if (lastL) {
+      nextL = FLAT.filter(function (l) { return !s.done[String(l.no)] && l.no >= lastL.no; })[0];
+    }
+    if (!nextL) nextL = FLAT.filter(function (l) { return !s.done[String(l.no)]; })[0];
+
+    var parts = ['<div class="card resume">'];
+    if (lastL) {
+      var secTxt = s.last.sec ? ("（读到 <code>" + esc(s.last.sec) + "</code> 小节）") : "";
+      parts.push('<p class="t">继续上次：第 ' + lastL.no + ' 次课 · ' + esc(lastL.title) + '</p>');
+      parts.push('<p class="d">' + esc(lastL.subtitle || "") + ' ' + secTxt + '</p>');
+      parts.push('<div class="toolbar">');
+      parts.push('<a class="btn" href="' + fileUrl(lastL.file) + (s.last.sec ? ("#" + esc(s.last.sec)) : "") + '">接着看 →</a>');
+      if (nextL && nextL.no !== lastL.no) {
+        parts.push('<a class="btn ghost" href="' + fileUrl(nextL.file) + '">跳到我还没学的第 ' + nextL.no + ' 次课</a>');
+      }
+      parts.push("</div>");
+    } else if (nextL) {
+      parts.push('<p class="t">从第一课开始</p>');
+      parts.push('<p class="d">还没有学习记录，建议按顺序从第 1 次课开始。</p>');
+      parts.push('<a class="btn" href="' + fileUrl(nextL.file) + '">开始第 1 次课 →</a>');
+    } else {
+      parts.push('<p class="t">全部 32 次课都学完了 🎉</p>');
+      parts.push('<p class="d">可以回到某课复习，或去「班级学情汇总」看看自己的提问记录。</p>');
+    }
+    parts.push("</div>");
+    box.innerHTML = parts.join("");
+  }
+
+  /* ---------- 模块 + 课时列表 ---------- */
+  function renderMods(s) {
+    var host = $("mods");
+    if (!MODS.length) { host.innerHTML = '<div class="card"><div class="empty">未读到课程结构（course-map.js 未加载）。</div></div>'; return; }
+    var html = [];
+    MODS.forEach(function (m) {
+      var ls = (m.lessons || []).filter(function (l) { return l && l.no; });
+      if (!ls.length) return;
+      var d = ls.filter(function (l) { return s.done[String(l.no)]; }).length;
+      var pct = Math.round(d / ls.length * 100);
+      html.push('<div class="card">');
+      html.push('<div class="modhd"><b>' + esc(m.name || m.id) + '</b>' +
+        '<span class="rg">' + esc(m.range || "") + '</span>' +
+        '<span class="mbar"><i style="width:' + pct + '%"></i></span>' +
+        '<span class="pc">' + d + '/' + ls.length + ' · ' + pct + '%</span></div>');
+      html.push('<div class="grid">');
+      ls.forEach(function (l) {
+        var isDone = !!s.done[String(l.no)];
+        var rd = (s.read[String(l.no)] || []).length;
+        html.push('<div class="ls' + (isDone ? " done" : "") + '" data-no="' + l.no + '">' +
+          '<div class="no">' + l.no + '</div>' +
+          '<div class="tx">' +
+            '<b title="' + esc(l.title) + '">' + esc(l.title) + '</b>' +
+            '<small title="' + esc(l.subtitle || "") + '">' + esc(l.subtitle || "") + '</small>' +
+            (rd ? '<div class="rd">读过 ' + rd + ' 个小节</div>' : "") +
+          '</div>' +
+          '<button class="ck' + (isDone ? " on" : "") + '" type="button" aria-label="标记已学" title="' + (isDone ? "取消已学" : "标记已学") + '"></button>' +
+        '</div>');
+      });
+      html.push("</div></div>");
+    });
+    host.innerHTML = html.join("");
+
+    /* 点击卡片标题 → 打开课时；点击勾 → 切换完成状态 */
+    host.querySelectorAll(".ls").forEach(function (el) {
+      var no = parseInt(el.getAttribute("data-no"), 10);
+      var l = FLAT.filter(function (x) { return x.no === no; })[0];
+      var tx = el.querySelector(".tx"), ck = el.querySelector(".ck");
+      tx.style.cursor = "pointer";
+      tx.addEventListener("click", function () { if (l) location.href = fileUrl(l.file); });
+      ck.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (!window.PG) { toast("进度模块未加载"); return; }
+        var on = !PG.isDone(no);
+        PG.markDone(no, on);
+        toast(on ? ("第 " + no + " 次课已标记为「已学」") : ("第 " + no + " 次课已取消标记"));
+        var s2 = computeAll();
+        renderHero(s2); renderMods(s2);
+      });
+    });
+  }
+
+  /* ---------- 导入 / 导出 / 清空 ---------- */
+  function bindTools() {
+    $("exp").addEventListener("click", function () {
+      if (!window.PG) { toast("进度模块未加载"); return; }
+      var data = PG.exportAll();
+      var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      var a = document.createElement("a");
+      var d = new Date(), pad = function (n) { return (n < 10 ? "0" : "") + n; };
+      a.href = URL.createObjectURL(blob);
+      a.download = "学习进度_" + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + ".json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+      toast("已导出进度文件，请妥善保存");
+    });
+
+    $("imp").addEventListener("click", function () { $("impf").click(); });
+    $("impf").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        var obj = null;
+        try { obj = JSON.parse(r.result); } catch (err) { toast("文件不是合法 JSON，导入失败"); return; }
+        if (!window.PG) { toast("进度模块未加载"); return; }
+        var ok = PG.importAll({ done: obj.done, read: obj.read, last: obj.last });
+        if (!ok) { toast("导入失败：文件格式不对"); return; }
+        toast("导入成功");
+        var s = computeAll();
+        renderHero(s); renderResume(s); renderMods(s);
+      };
+      r.readAsText(f);
+      e.target.value = "";
+    });
+
+    $("rst").addEventListener("click", function () {
+      if (!window.PG) { toast("进度模块未加载"); return; }
+      if (!confirm("确定清空本机的学习进度吗？此操作不可撤销（建议先导出备份）。")) return;
+      PG.reset();
+      toast("已清空");
+      var s = computeAll();
+      renderHero(s); renderResume(s); renderMods(s);
+    });
+  }
+
+  /* ---------- 工具 ---------- */
+  function fmtDate(ts) {
+    try {
+      var d = new Date(ts), p = function (n) { return (n < 10 ? "0" : "") + n; };
+      return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+    } catch (e) { return "—"; }
+  }
+
+  function init() {
+    var m = CM.meta || {};
+    $("sub").textContent = (m.course || "AIGC应用与实践") + " · " + FLAT.length + " 次课学习进度（数据只存在你这台设备上，不上传）";
+    $("home").setAttribute("href", "../index.html");
+    var s = computeAll();
+    renderHero(s); renderResume(s); renderMods(s);
+    bindTools();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+</body>
+</html>

@@ -430,6 +430,8 @@
     el.send.disabled = true;
     /* 学情：记一笔「问了什么、用的哪种模式」（只存本机，匿名） */
     try { if (window.LT) window.LT.track("ask", { mode: hasKey() ? "llm" : "offline", q: text.slice(0, 40) }); } catch (e) {}
+    /* 外部统计：全站范围看「AI 助教被问了多少次、问什么」（匿名，可不启用） */
+    try { if (window.AN) window.AN.events.askTutor(hasKey() ? "llm" : "offline", text); } catch (e) {}
     var thinking = addMsg("a", '<span class="at-dot"></span>思考中…');
 
     if (!hasKey()) {
