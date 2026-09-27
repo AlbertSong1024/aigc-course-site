@@ -1009,17 +1009,19 @@ if bad:
         </div>
 
         <div class="quiz__item">
-          <div class="quiz__q"><i>5</i><span>判断：同一批票据，「待核票据全部计入」和「待核票据全部剔除」两个口径算出的报销总额，可能相差上千元。</span></div>
+          <div class="quiz__q"><i>5</i><span>本课为什么把「待核票据怎么办」列为口径表的第一条，必须在动手前定死？</span></div>
           <ul class="quiz__opts">
-            <li>A. 正确，两种口径差多少取决于待核票据有多少钱，差上千很常见</li>
-            <li>B. 错误，报销总额只有一种算法，不可能有差别</li>
+            <li>A. 因为待核票据一般金额最大，影响报销总额</li>
+            <li>B. 因为计不计入都说得通，但差出来的钱是实打实的，不定就没人知道该怎么报</li>
+            <li>C. 因为财务规定待核票据一律不能计入</li>
+            <li>D. 因为不定的话 AI 会拒绝处理这个文件</li>
           </ul>
           <button class="quiz__reveal" type="button">查看答案</button>
           <div class="quiz__ans">
-            <b>答案：A（正确）。</b>用本课的素材实际算过：全部计入是 <strong>10601.50 元</strong>，
-            全部剔除是 <strong>8861.50 元</strong>，差 <strong>1740.00 元</strong>。
-            两种算法<strong>都没有算错</strong>，错的是没提前定口径。
-            这就是本课把「待核票据怎么办」列进口径表第一条的原因。
+            <b>答案：B。</b>关键在这里：<strong>两种算法都没算错</strong>——「都计入」和「都剔除」各有各的道理，
+            但得出的总额能差出一大截。这个差别不是错误，是<strong>你没提前说清规矩</strong>。
+            所以它必须排在第一条：先定规矩，再让 AI 算；顺序反了，数算得再快也不能报给财务。
+            A 常见但不对——金额大小不是理由，问题是「说不清」；C 没有这条规定；D 纯属想多了，它照样会算，只是算出来不知道能不能用。
           </div>
         </div>
       </div>
@@ -1116,18 +1118,9 @@ D. 它生成的图表颜色好不好看
         共 6 题，加上上面的随堂自测 5 题，本课合计 11 题。
         <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
       </p>
-      <div class="callout callout--tip">
-        <span class="callout__t">本课还要交的东西</span>
-        四个实操的产出物：<strong>① 票据明细_初稿.csv + 它的待核实回报</strong>、
-        <strong>② 报销清单_清洗后.xlsx + 13 笔明细与总额</strong>、
-        <strong>③ 报销汇总.xlsx（三张分组表）+ 口径复述 + 对账脚本结果</strong>、
-        <strong>④ 报销一条龙.xlsx（两个工作表）+ 规则复述 + 三句话结论 + 人工核对清单</strong>。<br>
-        <strong>评分看三条</strong>：
-        一、<strong>行数对不对</strong>（② 清洗后 13 行、④ 明细 13 行，且 FP260922011 那两条都在）；
-        二、<strong>原文件有没有被动过</strong>（<code>input/报销清单.csv</code> 还在、内容没变）；
-        三、<strong>总额 10601.50 且三组分组都等于它</strong>，
-        口径复述和你指令里写的能逐条对上、<strong>对不上的地方是报出来而不是被调平</strong>。
-      </div>
+      <p class="note">
+        四个实操的产出物（票据明细、清洗后清单、汇总表、一条龙表）按正文实操要求提交，作业只需完成上面 6 题。
+      </p>
     </section>
 
     <div class="pager" id="site-pager"></div>

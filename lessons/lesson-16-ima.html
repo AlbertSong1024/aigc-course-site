@@ -783,19 +783,20 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         </div>
 
         <div class="quiz__item">
-          <div class="quiz__q"><i>2</i><span>在 WorkBuddy 里绑定 ima 知识库，官方给的入口是？</span></div>
+          <div class="quiz__q"><i>2</i><span>用「扫码授权」连上一个外部工具，相比手动填 API Key，好处主要在哪儿？</span></div>
           <ul class="quiz__opts">
-            <li>A. 左侧边栏「资料库」→「ima 知识库」</li>
-            <li>B. 左侧边栏「连接器」→ 搜索「腾讯 ima」</li>
-            <li>C. 设置 → 账号 → 第三方授权</li>
-            <li>D. 对话框里输入「@ima」</li>
+            <li>A. 扫码连的服务更多，API Key 能连的很少</li>
+            <li>B. 授权关系由系统管着，随时能解绑；不用自己保管一串容易被泄露的字符串</li>
+            <li>C. 扫码更快，省下的时间可以用来做别的事</li>
+            <li>D. 扫码是临时的，每次用完自动失效，所以最安全</li>
           </ul>
           <button class="quiz__reveal" type="button">查看答案</button>
           <div class="quiz__ans">
-            <b>答案：A。</b>官方文档《WorkBuddy × ima 功能指引》写的路径是
-            <strong>「在左侧边栏点击资料库，选择 ima 知识库」</strong>，再点「立即前往授权」。
-            「连接器」是 QQ 邮箱、腾讯文档、腾讯乐享、TAPD、腾讯网盘这些的入口，
-            ima 知识库<strong>不走那里</strong>——这是最容易记混的一处。
+            <b>答案：B。</b>本课打了个很形象的比方：<strong>扫码像领临时工牌</strong>——授权关系由系统记着，
+            不想用了点一下就能解绑；<strong>API Key 像配了把家门钥匙</strong>——那一长串字符谁拿到谁能用，
+            而且不会自己失效，所以才有那三条红线（不写进代码、不贴进对话、不交给第三方）。
+            差别不在「谁快」「谁能连得多」，而在<strong>这串凭证由谁替你管、泄露了会不会失控</strong>。
+            A、C 都只看到了表面；D 说反了——扫码恰恰是可控的正式授权，不是用完就失效的临时票。
           </div>
         </div>
 
@@ -885,13 +886,14 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         <div class="fold__bd">
           <div class="codeblock codeblock--plain" data-lang="text" data-name="第 16 次课作业 · 一键复制">
             <div class="codeblock__bar"></div>
-<pre><code>1.（单选）在 WorkBuddy 里绑定 ima 知识库，官方文档给出的入口路径是？
-A. 左侧边栏「连接器」→ 搜索「腾讯 ima」
-B. 左侧边栏「资料库」→「ima 知识库」
-C. 设置 → 账号 → 第三方授权
-D. 对话框输入「@ima」自动连接
+<pre><code>1.（单选）用 API Key 连外部工具时，下面哪种做法最危险？
+A. 把 Key 放在官方指定的本地配置文件里，让它自己去读
+B. 把整串 Key 直接贴在对话里，让它随手取用
+C. 用完不打算再用的连接器，及时去撤销授权
+D. 只给它完成任务必需的那几项权限
 【答案】B
-【解析】官方《WorkBuddy × ima 功能指引》写的是「在左侧边栏点击资料库，选择 ima 知识库」，再点「立即前往授权」用微信扫码。「连接器」页面是 QQ 邮箱、腾讯文档、腾讯乐享、TAPD、腾讯网盘这些连接器的入口，ima 知识库不走那里——这是最容易记混的一处。
+【解析】API Key 就像一串「家门钥匙」：谁拿到谁就能用你的账号，而且它不会自己失效。所以一旦贴进对话，它就可能被记录、被引用——等于把钥匙随手放在了公共场合。
+正确做法是：<strong>放在官方指定的配置位置，让它自己去读，而不是你复述给它</strong>。A、C、D 都是本课推荐的做法。
 
 2.（多选）关于 API Key 的安全做法，下面哪些是对的？
 A. 不把它硬编码进代码或脚本

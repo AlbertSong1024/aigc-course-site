@@ -690,18 +690,18 @@
         </div>
 
         <div class="quiz__item">
-          <div class="quiz__q"><i>2</i><span>透视里最能决定「得出什么结论」的要素是？</span></div>
+          <div class="quiz__q"><i>2</i><span>两张表：「3 个班谁总领用最多」用求和，「有多少个班领过」用计数。这里<strong>真正决定结论</strong>的是什么？</span></div>
           <ul class="quiz__opts">
-            <li>A. 行</li>
-            <li>B. 列</li>
-            <li>C. 值</li>
-            <li>D. 聚合方式（求和 / 计数 / 平均）</li>
+            <li>A. 拖到「行」里的字段</li>
+            <li>B. 拖到「列」里的字段</li>
+            <li>C. 拖到「值」里的字段</li>
+            <li>D. 「值」用的是求和还是计数</li>
           </ul>
           <button class="quiz__reveal" type="button">查看答案</button>
           <div class="quiz__ans">
-            <b>答案：D。</b>行、列、值只决定<strong>表长什么样</strong>；聚合方式决定<strong>回答什么问题</strong>：
-            求和是「一共多少」，计数是「有多少条」，平均会因为<strong>抹掉规模差异</strong>把结论翻过来
-            （见演示①）。汇报「谁最多」默认是求和。
+            <b>答案：D。</b>这是透视里最容易忽略的一处：<strong>行、列、值只决定表长什么样，怎么算才决定回答什么问题</strong>。
+            同一批数据，选求和得到「一共领了多少」，选计数得到「有多少个班领过」，选平均还可能把结论整个翻过来（因为平均会抹掉规模差异）。
+            所以汇报「谁最多」，默认要的是求和——这一步选错，表做得再整齐，结论也是错的。
           </div>
         </div>
 
@@ -790,16 +790,7 @@
         <li><b>一段 150 字以内的话</b><span>写清：耗材这块到底哪个班领得最多、钱花在哪类东西上、
           考勤那几条异常你判断是录入错还是业务特殊。<strong>结论必须能指回文件里的具体数字。</strong></span></li>
       </ol>
-      <div class="callout callout--tip">
-        <span class="callout__t">评分看什么</span>
-        <strong>一、数对不对</strong>——成绩总表 16 行、耗材总计 282 件、占比合计 100.0%，
-        三个数字错一个就是统计过程有漏洞。<br>
-        <strong>二、图能不能回答问题</strong>——柱形图比的是三个班的多少，饼图看的是类别占比，
-        类型和标题都得对得上。<br>
-        <strong>三、异常清单能不能被别人复核</strong>——每条有行号、有实际值、有「去查什么凭证」；
-        只写「XX 有问题」的，等于没做。<br>
-        <strong>四、有没有只标不改</strong>——原始文件被动过，本次作业最高只能算及格。
-      </div>
+      <p class="note">评分看四点：数对没对（16 行 / 282 件 / 100.0%）、图能不能回答问题、异常清单别人能不能照着复核、有没有做到「只标不改」。</p>
       <div class="fold">
         <button class="fold__hd" type="button">点开查看作业 · 单选 / 多选 / 判断 · 共 6 题</button>
         <div class="fold__bd">
