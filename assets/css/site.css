@@ -815,10 +815,26 @@ input[type=range]::-moz-range-thumb{
 
 
 /* ---------- B 站视频嵌入（需联网观看） ---------- */
-.video-embed { margin: var(--sp-5, 24px) 0; }
+.video-embed { margin: 24px 0; }
 .video-embed iframe {
   display: block; width: 100%; aspect-ratio: 16 / 9;
   border: 0; border-radius: 10px;
   background: #0F172A;
 }
 .video-embed figcaption { margin-top: 8px; }
+/* 字幕里的观看建议（时长 / 分段提示），弱化显示，不抢正文 */
+.video-embed .vnote {
+  display: inline-block; margin-left: 6px; padding: 1px 7px;
+  border-radius: 20px; font-size: 12px; white-space: nowrap;
+  background: var(--c-primary-l); color: var(--c-primary-d);
+  border: 1px solid var(--c-primary-b);
+}
+/* 偏长（30–60 分钟）：黄色，提示预留整块时间 */
+.video-embed .vnote--mid {
+  background: var(--c-accent-l); color: var(--c-accent-d);
+  border-color: var(--c-accent-b);
+}
+/* 超长（>60 分钟）：红色，提示必须挑着看 */
+.video-embed .vnote--long {
+  background: #FEF2F2; color: #B91C1C; border-color: #FECACA;
+}

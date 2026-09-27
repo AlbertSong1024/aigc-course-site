@@ -166,21 +166,16 @@
         });
       }
 
-      var tags = "";
-      if (CUR.tags && CUR.tags.length) {
-        tags = '<div class="knav" style="margin-top:16px">' +
-          CUR.tags.map(function (t, i) {
-            return '<a href="#s-' + cataSlug(t) + '"><b>关键词 ' + (i + 1) + "</b>" + esc(t) + "</a>";
-          }).join("") + "</div>";
-        tags = ""; // 关键词卡默认不渲染（避免与正文小节锚点不符），如需启用删掉本行
-      }
+      /* 关键词卡（course-map 的 tags）不在此渲染：tags 是「检索关键词」，
+         与小节锚点并非一一对应，硬拼成 #s-<关键词> 只会产生点不动的死锚点。
+         需要按关键词检索，请走顶部搜索（由 search-index.js 驱动）。 */
 
       head.className = "page-head";
       head.innerHTML =
         '<span class="page-head__no">第 ' + CUR.no + " 次课 · " + esc(CUR.moduleNo) + "</span>" +
         "<h1>" + esc(CUR.title) + "<small>" + esc(CUR.subtitle) + "</small></h1>" +
         '<p style="color:#64748B;font-size:13.5px;margin:12px 0 0">' + esc(CUR.summary) + "</p>" +
-        '<div class="meta">' + chips.join("") + "</div>" + tags;
+        '<div class="meta">' + chips.join("") + "</div>";
     }
     document.title = "第" + CUR.no + "次课 " + CUR.title + "｜" + CM.meta.course;
 

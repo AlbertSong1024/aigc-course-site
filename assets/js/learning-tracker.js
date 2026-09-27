@@ -8,14 +8,18 @@
      · **默认匿名**：只有随机 ID，不含姓名/学号。要实名由学生自己在档案里填
      · 全程 try/catch，任何异常都不影响正常浏览
    采集信号：
-     visit 进入课时 / dwell 停留时长 / demo 演示交互 / quiz 自测自评
+     session 访客会话（间隔 >30 分钟算新一次「来过」）
+     visit 进入课时（同时累计该课在本设备的打开次数 hits）
+     dwell 停留时长 / demo 演示交互 / quiz 自测自评
      ask   问了 AI 助教 / hw 展开作业 / video 视频进入视野
    ========================================================================== */
 (function () {
   "use strict";
 
   var K_LOG = "lt_log_v1", K_SID = "lt_sid_v1", K_NAME = "lt_name_v1", K_EP = "lt_endpoint_v1";
+  var K_FIRST = "lt_first_v1", K_SESS = "lt_sess_v1", K_LAST = "lt_last_v1";
   var MAX = 800;                       // 本地事件上限，超出丢最旧的
+  var SESS_GAP = 30 * 60 * 1000;       // 间隔超 30 分钟算新一次会话
 
   function sget(k) { try { return window.localStorage ? localStorage.getItem(k) : null; } catch (e) { return null; } }
   function sset(k, v) { try { if (window.localStorage) localStorage.setItem(k, v); } catch (e) {} }
@@ -31,6 +35,34 @@
   }
   function curNo() { return parseInt((document.body && document.body.getAttribute("data-lesson")) || "0", 10); }
 
+  /* ---------- 访客识别与使用次数（全在本机，匿名） ----------
+     纯静态站没有后端，统计不出「全网有多少人来过」；
+     这里统计的是「这台设备的这位学生」自己：来过几次、第一次什么时候、共几次会话。 */
+  function num(k, d) { var v = parseInt(sget(k) || "", 10); return isNaN(v) ? d : v; }
+
+  function touchVisitor() {
+    var now = Date.now();
+    if (!sget(K_FIRST)) sset(K_FIRST, String(now));      // 第一次来：定住，永不变
+
+    var last = num(K_LAST, 0);
+    /* 距上次活动超过 30 分钟 → 记一次新会话；否则沿用本次会话 */
+    if (!last || now - last > SESS_GAP) {
+      sset(K_SESS, String(num(K_SESS, 0) + 1));
+      track("session", { n: num(K_SESS, 1) });
+    }
+    sset(K_LAST, String(now));
+  }
+
+  /* 每次进入页面记一次「使用」，用于统计各课被打开过多少回 */
+  function trackVisit() {
+    var n = curNo();
+    var hits = jget("lt_hits_v1", {});
+    var key = n > 0 ? String(n) : "index";
+    hits[key] = (hits[key] || 0) + 1;
+    sset("lt_hits_v1", JSON.stringify(hits));
+    track("visit", { path: (location.pathname.split("/").pop() || "index.html"), n: n, hits: hits[key] });
+  }
+
   var log = jget(K_LOG, []);
 
   function track(type, data) {
@@ -44,18 +76,32 @@
   /* ---------- 汇总：把事件流算成学情指标 ---------- */
   function summary() {
     var byLesson = {}, totalDwell = 0, asks = 0, quizN = 0, quizSum = 0, demos = 0, hw = 0;
+    var videos = 0, sessions = 0;
     log.forEach(function (e) {
       var n = e.lesson || 0;
-      if (!byLesson[n]) byLesson[n] = { visit: 0, dwell: 0, demo: 0, quiz: null };
+      if (!byLesson[n]) byLesson[n] = { visit: 0, dwell: 0, demo: 0, quiz: null, video: 0, hw: 0, ask: 0 };
       var b = byLesson[n];
-      if (e.type === "visit") { b.visit++; if (n > 0) { } }
+      if (e.type === "visit") { b.visit++; }
       else if (e.type === "dwell") { b.dwell += (e.data && e.data.ms) || 0; totalDwell += (e.data && e.data.ms) || 0; }
       else if (e.type === "demo") { b.demo++; demos++; }
       else if (e.type === "quiz") { b.quiz = e.data; quizN++; quizSum += (e.data && e.data.correct) || 0; }
-      else if (e.type === "ask") { asks++; }
-      else if (e.type === "hw") { hw++; }
+      else if (e.type === "ask") { asks++; b.ask++; }
+      else if (e.type === "hw") { hw++; b.hw++; }
+      else if (e.type === "video") { videos++; b.video++; }
+      else if (e.type === "session") { sessions++; }
     });
     var lessonsDone = Object.keys(byLesson).filter(function (k) { return parseInt(k, 10) > 0; }).length;
+
+    /* 每课用时排行：本设备视角「哪次课看得最久」 */
+    var byLessonList = Object.keys(byLesson).map(function (k) {
+      var b = byLesson[k];
+      return { lesson: parseInt(k, 10), visit: b.visit, dwell: b.dwell, demo: b.demo, video: b.video, hw: b.hw, ask: b.ask,
+        avgDwell: b.visit ? Math.round(b.dwell / b.visit) : 0 };
+    }).filter(function (r) { return r.lesson > 0; });
+
+    var hits = jget("lt_hits_v1", {});          // 各课被打开过的次数（本设备）
+    var firstAt = num(K_FIRST, 0) || (log.length ? log[0].t : null);
+
     return {
       sid: sid(),
       name: sget(K_NAME) || "",
@@ -64,9 +110,17 @@
       demoRuns: demos,
       askCount: asks,
       hwOpened: hw,
+      videoViews: videos,
       quizTimes: quizN,
       quizAvg: quizN ? Math.round((quizSum / quizN) * 10) / 10 : null,
       byLesson: byLesson,
+      byLessonList: byLessonList,
+      /* ---- 访客与使用次数（本设备口径） ---- */
+      visits: Object.keys(hits).reduce(function (a, k) { return a + hits[k]; }, 0),  // 累计打开页面次数
+      sessionCount: sessions || num(K_SESS, 0),                                    // 来过几次（>=30 分钟算新一次）
+      pageHits: hits,                                                              // {"1":3,"2":1,...}
+      firstVisitAt: firstAt,
+      lastVisitAt: num(K_LAST, 0) || (log.length ? log[log.length - 1].t : null),
       events: log.length,
       firstAt: log.length ? log[0].t : null,
       lastAt: log.length ? log[log.length - 1].t : null
@@ -98,7 +152,7 @@
 
   /* ---------- 导出（交作业用） ---------- */
   function exportJSON() {
-    var data = { v: 1, course: "AIGC应用与实践", exportedAt: new Date().toISOString(), summary: summary(), log: log };
+    var data = { v: 2, course: "AIGC应用与实践", exportedAt: new Date().toISOString(), summary: summary(), log: log };
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     var a = document.createElement("a");
     var nm = (sget(K_NAME) || sid()).replace(/[^\w\u4e00-\u9fa5-]/g, "");
@@ -119,7 +173,11 @@
       "max-height:calc(100vh - 36px);overflow-y:auto;background:#fff;border-radius:14px;",
       "box-shadow:0 12px 40px rgba(15,23,42,.3);display:none;padding:16px;font-size:13.5px;color:#0f172a;}",
       ".lt-panel h3{margin:0 0 10px;font-size:15px;}",
-      ".lt-hd{background:linear-gradient(135deg,#F59E0B,#2563EB);color:#fff;margin:-16px -16px 12px;padding:12px 16px;border-radius:14px 14px 0 0;font-weight:700;}",
+      ".lt-hd{background:linear-gradient(135deg,#F59E0B,#2563EB);color:#fff;margin:-16px -16px 12px;padding:12px 16px;border-radius:14px 14px 0 0;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:10px;}",
+      ".lt-x{margin:-2px -4px -2px 0;width:28px;height:28px;flex:0 0 auto;border:none;border-radius:50%;",
+      "background:rgba(255,255,255,.18);color:#fff;font-size:18px;line-height:1;cursor:pointer;padding:0;}",
+      ".lt-x:hover{background:rgba(255,255,255,.34);}",
+      ".lt-x:focus-visible{outline:2px solid #fff;outline-offset:1px;}",
       ".lt-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}",
       ".lt-kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:8px 10px;}",
       ".lt-kpi b{display:block;font-size:18px;color:#2563EB;}",
@@ -152,8 +210,35 @@
       if (show) render();
     });
 
+    /* 关闭通道 1：Esc 键 */
+    document.addEventListener("keydown", function (ev) {
+      if ((ev.key === "Escape" || ev.keyCode === 27) && panel.style.display === "block") close();
+    });
+
+    /* 关闭通道 2：点击面板外部（面板内的关闭按钮走事件委托，见 buildUI） */
+    document.addEventListener("click", function (ev) {
+      if (panel.style.display !== "block") return;
+      if (panel.contains(ev.target) || fab.contains(ev.target)) return;
+      close();
+    });
+
+    /* 关闭通道 3：点面板里的 × —— 用事件委托，避免 render() 重写 innerHTML 后丢绑定 */
+    panel.addEventListener("click", function (ev) {
+      var el = ev.target;
+      if (el && el.closest && el.closest(".lt-x")) { ev.preventDefault(); close(); }
+    });
+
     document.body.appendChild(fab);
     document.body.appendChild(panel);
+  }
+
+  /* 统一关闭：隐藏面板并把焦点还给触发按钮，键盘用户不会掉焦点 */
+  function close() {
+    var p = document.getElementById("lt-panel");
+    if (!p) return;
+    p.style.display = "none";
+    var f = document.querySelector(".lt-fab");
+    if (f && f.focus) { try { f.focus(); } catch (e) {} }
   }
 
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -169,13 +254,25 @@
       var who = e.lesson > 0 ? ("第 " + e.lesson + " 次课") : "首页";
       var what = { visit: "打开页面", dwell: "停留 " + fmtMs((e.data && e.data.ms) || 0), demo: "跑了演示",
         quiz: "自测自评 " + ((e.data && e.data.correct) || 0) + "/" + ((e.data && e.data.total) || 0),
-        ask: "问了 AI 助教", hw: "查看作业", video: "看了视频" }[e.type] || e.type;
+        ask: "问了 AI 助教", hw: "查看作业", video: "看了视频", session: "新一次访问" }[e.type] || e.type;
       return "<div>" + d.toLocaleString("zh-CN", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) +
         "　" + who + "　" + esc(what) + "</div>";
     }).join("");
 
+    /* 本设备上「哪次课看得最久」——按累计停留倒序取前 3 */
+    var topDwell = s.byLessonList.slice().sort(function (a, b) { return b.dwell - a.dwell; })
+      .filter(function (r) { return r.dwell >= 1000; }).slice(0, 3)
+      .map(function (r) {
+        return "<div>第 " + r.lesson + " 次课　<b>" + fmtMs(r.dwell) + "</b>　打开 " + r.visit + " 次</div>";
+      }).join("");
+
+    var firstTxt = s.firstVisitAt
+      ? new Date(s.firstVisitAt).toLocaleString("zh-CN", { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })
+      : "—";
+
     p.innerHTML =
-      '<div class="lt-hd">我的学习档案</div>' +
+      '<div class="lt-hd"><span>我的学习档案</span>' +
+        '<button class="lt-x" id="lt-close" type="button" aria-label="关闭学习档案" title="关闭（Esc）">×</button></div>' +
       '<div class="lt-kpis">' +
         '<div class="lt-kpi"><b>' + s.lessonsVisited + " / " + TOTAL + "</b><span>已学课时</span></div>" +
         '<div class="lt-kpi"><b>' + fmtMs(s.totalDwellMs) + "</b><span>累计停留</span></div>" +
@@ -183,7 +280,18 @@
         '<div class="lt-kpi"><b>' + s.askCount + "</b><span>问过 AI 助教</span></div>" +
       "</div>" +
       '<div class="lt-bar"><i style="width:' + pct + '%"></i></div>' +
-      '<div class="lt-note">还跑了 <b>' + s.demoRuns + "</b> 次演示，展开作业 <b>" + s.hwOpened + "</b> 次。</div>" +
+      '<div class="lt-note">还跑了 <b>' + s.demoRuns + "</b> 次演示，展开作业 <b>" + s.hwOpened + "</b> 次，看视频 <b>" + s.videoViews + "</b> 次。</div>" +
+
+      /* ── 访客记录与使用次数（本机口径） ── */
+      '<div class="lt-kpis" style="margin-top:12px">' +
+        '<div class="lt-kpi"><b>' + s.sessionCount + "</b><span>来过几次（会话）</span></div>" +
+        '<div class="lt-kpi"><b>' + s.visits + "</b><span>累计打开页面（次）</span></div>" +
+      "</div>" +
+      '<div class="lt-note">第一次来：<b>' + esc(firstTxt) + "</b></div>" +
+      (topDwell
+        ? '<div class="lt-list" style="margin-top:10px"><b style="font-size:11.5px;color:#64748b">你哪次课看得最久</b>' + topDwell + "</div>"
+        : "") +
+
       '<div class="lt-note"><b>姓名/学号（可空）</b><br><input id="lt-name" type="text" value="' + esc(s.name) +
         '" placeholder="交给老师时才需要填" style="width:100%;padding:7px;border:1px solid #cbd5e1;border-radius:8px;margin-top:4px"></div>' +
       '<div class="lt-row">' +
@@ -197,15 +305,19 @@
       "</div>";
 
     var nm = p.querySelector("#lt-name");
-    nm.addEventListener("change", function () { sset(K_NAME, nm.value.trim()); });
+    /* 用 input 而不是 change：学生填完姓名常常直接点别处或关面板，
+       change 不触发会丢名字；input 边打边存，不会丢。 */
+    nm.addEventListener("input", function () { sset(K_NAME, nm.value.trim()); });
     p.querySelector("#lt-exp").addEventListener("click", exportJSON);
     p.querySelector("#lt-rep").addEventListener("click", function () {
       if (!canReport()) { alert("老师还没有配置上报端点，当前是纯本地模式。\n请用「导出档案」把文件交给老师。"); return; }
       report(); alert("已上报（匿名，仅汇总指标）。");
     });
     p.querySelector("#lt-clr").addEventListener("click", function () {
-      if (!confirm("确定清空本机学习记录？此操作不可恢复。")) return;
-      try { localStorage.removeItem(K_LOG); } catch (e) {}
+      if (!confirm("确定清空本机学习记录？此操作不可恢复。\n（含访问次数与停留时长，清空后「到访过几次」会从 0 重新计）")) return;
+      try {
+        [K_LOG, "lt_hits_v1", K_FIRST, K_SESS, K_LAST].forEach(function (k) { localStorage.removeItem(k); });
+      } catch (e) {}
       log = []; render();
     });
   }
@@ -213,8 +325,11 @@
   /* ---------- 自动采集（事件委托，不改动课时页） ---------- */
   var t0 = Date.now();
   function bindAuto() {
-    /* 进入课时 */
-    track("visit", { path: location.pathname.split("/").pop() });
+    /* 访客识别：第一次到访时间 / 来过几次（会话计数） */
+    touchVisitor();
+
+    /* 进入课时：记一次「使用」，并累计本设备对该课的打开次数 */
+    trackVisit();
 
     /* 停留时长：页面隐藏 / 关闭时结算 */
     function flushDwell() {
@@ -287,6 +402,6 @@
     init();
   }
 
-  /* 暴露给 AI 助教：学生提问时记一笔 */
-  window.LT = { track: track, summary: summary, sid: sid };
+  /* 暴露给 AI 助教与访问统计看板 */
+  window.LT = { track: track, summary: summary, sid: sid, log: function () { return log; } };
 })();

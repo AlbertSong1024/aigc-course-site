@@ -53,7 +53,7 @@
   }
   function lessonFile(no) {
     var f = flatMap();
-    for (var i = 0; i < f.length; i++) if (f[i].no === n) return f[i].file;
+    for (var i = 0; i < f.length; i++) if (f[i].no === no) return f[i].file;
     return null;
   }
 
@@ -92,40 +92,77 @@
   }
 
   /* ---------- 分词：中文按「整词 + 2-gram」切，英文数字按词切 ----------
-     旧实现把「怎么安装」当成一个整词，导致永远命中不了只写了「安装」的章节。
-     这里对中文长词额外切出 2-gram（如「怎么安装」→ 怎么/么安/安装），
-     并给整词更高权重，保证精确匹配优先于碎片匹配。            */
+     每个词带 gram 标记：gram=false 是用户输入的完整词（高优先级），
+     gram=true 是切出来的 2-gram 碎片（仅作整词全不命中时的兜底）。
+     例：「怎么安装」→ {怎么安装,gram:false} + {怎么,么安,安装,gram:true}。
+     停用词（什么/怎么/如何/请问…）一律丢弃：它们是提问的语气词，不是检索内容，
+     留着会让「QKV 是什么」命中一堆标题里带「是什么」的无关小节。 */
+  var STOP = {
+    "什么": 1, "怎么": 1, "怎样": 1, "如何": 1, "为何": 1, "为什么": 1, "哪些": 1,
+    "哪个": 1, "是不是": 1, "有没有": 1, "请问": 1, "一下": 1, "一个": 1,
+    "这个": 1, "那个": 1, "可以": 1, "应该": 1, "需要": 1, "帮我": 1, "告诉": 1,
+    "意思": 1, "区别": 1, "介绍": 1, "讲解": 1,
+    "是什么": 1, "有哪些": 1, "怎么做": 1, "怎么用": 1, "怎么弄": 1,
+    "干什么": 1, "有什么用": 1,
+  };
+  /* 疑问/语气字：一个 token 里含这些字越多，越可能是语气碎片。
+     规则：token 去掉语气字后若不足 2 个字，视为语气词丢弃。
+     例：「是什」（去掉「什」剩 1 字）丢弃；「注意力」（无语气字）保留。 */
+  var STOP_CH = /[什么怎幺如何哪吗呢吧哦啊咦]/;
+
+  function isStop(s) {
+    if (STOP[s]) return true;
+    var core = s.replace(STOP_CH, "");
+    return core.length < 2;
+  }
+
   function tokenize(q) {
     var raw = (String(q).replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, " ")
       .match(/[\u4e00-\u9fa5]+|[a-zA-Z0-9]+/g) || []);
     var seen = {}, out = [];
-    function push(s, w) {
+    function push(s, w, gram) {
       s = s.toLowerCase();
-      if (s.length < 2 || seen[s]) return;
-      seen[s] = 1; out.push({ s: s, w: w });
+      if (s.length < 2 || isStop(s)) return;
+      var k = (gram ? "g:" : "w:") + s;
+      if (seen[k]) return;
+      seen[k] = 1; out.push({ s: s, w: w, gram: gram });
     }
     raw.forEach(function (t) {
-      if (/^[a-zA-Z0-9]+$/.test(t)) { push(t, 1.5); return; }
-      if (t.length > 1) push(t, 2);            // 整词权重最高
-      for (var i = 0; i + 2 <= t.length; i++) push(t.slice(i, i + 2), 1); // 2-gram
+      if (/^[a-zA-Z0-9]+$/.test(t)) { push(t, 1.5, false); return; }
+      if (t.length > 1) push(t, 1, false);            // 完整词：最高优先级
+      for (var i = 0; i + 2 <= t.length; i++) push(t.slice(i, i + 2), 1, true); // 2-gram 兜底
     });
     return out;
   }
 
-  /* ---------- 离线关键词匹配（search-index.js） ---------- */
+  /* ---------- 离线关键词匹配（search-index.js） ----------
+     打分策略：整词命中权重远高于 2-gram 碎片，两类都参与打分（不互斥）——
+       整词（用户输入的完整词，如「一岗一库」）：标题 6 分 / hint 3 分；
+       碎片（2-gram，如「一岗」「一库」）      ：标题 1 分 / hint 1 分。
+     并对「随堂自测 / 课后作业 / 学习目标」这类通用小节降权：
+     它们几乎每课都有，hint 里难免带通用词，不加处理会把真正相关的小节挤出去。 */
+  var GENERIC_ID = { "s-quiz": 1, "s-hw": 1, "s-goal": 1, "s-guide": 1, "s-recap": 1 };
+
   function offlineSearch(q) {
     var idx = window.SITE_SECTION_INDEX || [];
     if (!idx.length) return [];
     var toks = tokenize(q);
     if (!toks.length) return [];
+
     var out = idx.map(function (e) {
       var title = (e.title || "").toLowerCase();
       var hint = (e.hint || "").toLowerCase();
       var s = 0;
       toks.forEach(function (t) {
-        if (title.indexOf(t.s) >= 0) s += 3 * t.w;
-        else if (hint.indexOf(t.s) >= 0) s += 1 * t.w;
+        if (t.gram) {
+          if (title.indexOf(t.s) >= 0) s += 1 * t.w;
+          else if (hint.indexOf(t.s) >= 0) s += 1 * t.w;
+        } else {
+          if (title.indexOf(t.s) >= 0) s += 6 * t.w;
+          else if (hint.indexOf(t.s) >= 0) s += 3 * t.w;
+        }
       });
+      if (s > 0 && GENERIC_ID[e.id]) s *= 0.25;   // 通用小节降权
       return { e: e, s: s };
     }).filter(function (x) { return x.s > 0; })
       .sort(function (a, b) { return b.s - a.s; })

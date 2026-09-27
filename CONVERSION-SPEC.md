@@ -37,6 +37,9 @@ tutorial-site/
 │   ├── js/course-map.js              ★ 全课程数据源（导航 / 首页 / 上下课全靠它）
 │   ├── js/search-index.js            ★ 章节级搜索索引（每课转化后必须追加）
 │   ├── js/site.js                    运行时引擎：导航、目录、搜索、代码高亮与复制
+│   ├── js/learning-tracker.js        学情采集 + 访客/访问次数（site.js 注入）
+│   ├── js/ai-tutor.js                课程 AI 助教浮窗（site.js 注入）
+│   ├── js/visit-stats.js             访问统计聚合（老师端看板用）
 │   └── img/                          图片（优先用内联 SVG，尽量不放位图）
 ├── lessons/
 │   ├── lesson-06-ollama.html         基准模板 A（实操课）
@@ -50,7 +53,9 @@ tutorial-site/
 └── tools/
     ├── check_site.js                 质量校验（结构 / 锚点 / 索引 / 语法 / 冒烟 / 版式）
     ├── new-lesson.js                 一键新建课时页脚手架
-    └── serve.py                      本地预览服务器（禁用缓存，别用 python -m http.server）
+    ├── serve.py                      本地预览服务器（禁用缓存，别用 python -m http.server）
+    ├── teacher-dashboard.html        老师端 · 班级学情汇总（拖入学生档案）
+    └── visit-report.html             老师端 · 访问统计（哪次课人最多 / 停留最久）
 ```
 
 ### 命名规范
@@ -494,6 +499,7 @@ node tools/check_site.js --quiet    # 只输出问题
 | E 语法 | 所有内联脚本与站点 JS | 语法全部通过 |
 | F 冒烟 | jsdom 真跑：侧栏/目录/复制按钮/高亮/搜索，遍历点击所有 button、拖动所有 range 到 min/中值/max | **零运行时错误** |
 | G 版式 | `data-lang` 齐全、表格包在 tablewrap 内、正文无行内样式 | 无 FAIL |
+| H 外壳 | `index.html`、`templates/lesson-template.html`、`tools/*.html` 过语法与冒烟（工具页用 `noShell:true`，不套课时页骨架指标） | **零运行时错误** |
 
 **判定**：`失败 0` 才算通过。警告需逐条判断，可接受的（如「未进搜索索引」）需在提交说明里写清理由。
 

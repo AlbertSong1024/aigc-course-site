@@ -14,6 +14,12 @@
     本脚本给所有响应加 no-store 头，刷新生效，从根上避免这种误判。
     只用标准库，无需 pip install。
 
+为什么用多线程（ThreadingMixIn）：
+    单线程 TCPServer 一次只能处理一个请求。页面加载时会并发拉
+    course-map.js / site.js / site.css 等资源，串行处理会让后到的请求
+    排队甚至被浏览器判定超时，典型症状是「课程数据源未加载」、点课程
+    侧栏没反应。改多线程后并发请求各自独立处理，不再互相阻塞。
+
 判断当前拿到的是不是最新数据，看页面**页脚**：
     「已上线 5 / 27 课 · 资料版本 2026-09-17」——数字对得上就是最新的。
 """
@@ -40,8 +46,14 @@ def main():
     os.chdir(root)
 
     socketserver.TCPServer.allow_reuse_address = True
+
+    class ThreadingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+        daemon_threads = True
+        allow_reuse_address = True
+        request_queue_size = 64
+
     try:
-        httpd = socketserver.TCPServer(("127.0.0.1", port), NoCacheHandler)
+        httpd = ThreadingServer(("127.0.0.1", port), NoCacheHandler)
     except OSError as e:
         print("端口 %d 启动失败：%s" % (port, e))
         print("可能已有服务在跑。换一个端口，例如：python tools/serve.py 8807")

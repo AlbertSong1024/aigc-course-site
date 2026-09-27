@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>访问统计 · AIGC应用与实践</title>
+<style>
+  :root{--pri:#2563EB;--pri-l:#DBEAFE;--acc:#F59E0B;--acc-l:#FFFBEB;--ink:#0F172A;--mut:#64748B;--line:#E2E8F0;--ok:#059669;--warn:#B45309;}
+  *{box-sizing:border-box}
+  body{margin:0;background:#F8FAFC;color:var(--ink);
+       font:14px/1.7 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1120px;margin:auto;padding:28px 20px 70px}
+  h1{font-size:22px;margin:0 0 6px}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:18px}
+  .drop{border:2px dashed #CBD5E1;border-radius:12px;background:#fff;padding:28px;text-align:center;
+        color:var(--mut);cursor:pointer;transition:.15s}
+  .drop:hover,.drop.on{border-color:var(--pri);background:var(--pri-l);color:var(--pri)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin:18px 0}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .kpi b{display:block;font-size:22px;color:var(--pri);font-variant-numeric:tabular-nums}
+  .kpi span{font-size:12px;color:var(--mut)}
+  .kpi.hl b{color:var(--acc)}
+  h2{font-size:15px;margin:0 0 6px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+  .card .q{font-size:12px;color:var(--mut);margin-bottom:12px}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  th{background:#F1F5F9;font-weight:600;white-space:nowrap}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  td.rk{width:38px;text-align:center;color:var(--mut)}
+  tr.top td{background:var(--acc-l)}
+  tr.top td.rk{color:var(--acc);font-weight:700}
+  .bar{height:9px;background:#E2E8F0;border-radius:5px;overflow:hidden;min-width:64px}
+  .bar i{display:block;height:100%;background:var(--pri)}
+  tr.top .bar i{background:var(--acc)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.two{grid-template-columns:1fr}}
+  button{padding:9px 16px;border:none;border-radius:8px;background:var(--pri);color:#fff;cursor:pointer;font-size:13px}
+  button.ghost{background:#E2E8F0;color:#334155}
+  .hint{font-size:12px;color:var(--mut);margin-top:10px;line-height:1.7}
+  .empty{color:var(--mut);font-size:13px;padding:10px 0}
+  code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:12px}
+  .notice{background:var(--acc-l);border:1px solid #FDE68A;border-radius:10px;padding:11px 14px;
+          font-size:12.5px;color:var(--warn);margin-bottom:16px;line-height:1.7}
+  .titlecell{max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>访问统计</h1>
+  <p class="sub">
+    把学生导出的「学情档案 JSON」拖进来（可多选），本页在<strong>你本机</strong>算出
+    「多少人访问、访问多少次、哪次课人最多、哪次课停留最久」，不上传任何服务器，断网也能用。
+  </p>
+
+  <div class="notice">
+    <strong>口径说明</strong>：本站是纯静态站，没有后端。<strong>这里统计的只是「交了档案的学生」</strong>——
+    一份档案 = 一位学生（按随机 ID 去重），不是全网站真实访客数。<br>
+    要看<strong>全站真实访客</strong>（含没交档案的人），请看 README「外部统计」一节配置的统计服务，两者口径不同，不要混算。
+  </div>
+
+  <div class="drop" id="drop">
+    点击选择，或把多个 <code>学情档案_*.json</code> 拖到这里
+    <input type="file" id="file" multiple accept=".json" style="display:none">
+  </div>
+
+  <div id="out"></div>
+
+  <div class="hint">
+    学生怎么拿到档案？打开教程站任意页面 → 右下角橙色「<strong>学情</strong>」按钮 → 填姓名/学号 →
+    「<strong>导出档案（交作业）</strong>」，把生成的 JSON 交上来即可。<br>
+    相关页面：<code>tools/teacher-dashboard.html</code>（班级学情汇总，含自测与提问）。
+  </div>
+</div>
+
+<script src="../assets/js/course-map.js"></script>
+<script src="../assets/js/visit-stats.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var docs = [];
+
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  function readFiles(list) {
+    var left = list.length;
+    if (!left) return;
+    for (var i = 0; i < list.length; i++) {
+      (function (f) {
+        var r = new FileReader();
+        r.onload = function () {
+          try {
+            var d = JSON.parse(r.result);
+            if (d && (d.summary || Array.isArray(d.log))) docs.push(d);
+          } catch (e) { /* 坏文件跳过 */ }
+          if (--left === 0) render();
+        };
+        r.readAsText(f);
+      })(list[i]);
+    }
+  }
+
+  function bar(pct) { return '<div class="bar"><i style="width:' + Math.max(2, pct) + '%"></i></div>'; }
+
+  /* 通用排行表：按某个字段降序 */
+  function rankTable(rows, opts) {
+    if (!rows.length) return '<div class="empty">暂无数据。</div>';
+    var max = Math.max.apply(null, rows.map(opts.value).concat([1]));
+    var body = rows.slice(0, opts.limit || 32).map(function (r, i) {
+      var v = opts.value(r), pct = Math.round(v / max * 100);
+      return '<tr class="' + (i === 0 ? "top" : "") + '">' +
+        '<td class="rk">' + (i + 1) + "</td>" +
+        "<td>第 " + r.lesson + " 次课</td>" +
+        '<td class="titlecell">' + esc(r.title || "") + "</td>" +
+        '<td class="n">' + opts.fmt(r) + "</td>" +
+        "<td>" + bar(pct) + "</td></tr>";
+    }).join("");
+    return '<div style="overflow-x:auto"><table><thead><tr>' +
+      "<th></th><th>课次</th><th>标题</th><th>" + opts.hd + "</th><th></th>" +
+      "</tr></thead><tbody>" + body + "</tbody></table></div>";
+  }
+
+  function render() {
+    if (!docs.length) { $("out").innerHTML = '<div class="empty" style="margin-top:16px">还没有读入任何档案。</div>'; return; }
+    var VS = window.VisitStats;
+    if (!VS) { $("out").innerHTML = '<div class="empty">统计模块 assets/js/visit-stats.js 未加载。</div>'; return; }
+    var r = VS.aggregate(docs, window.COURSE_MAP);
+    var fmtMs = VS.fmtMs, fmtDate = VS.fmtDate;
+    var R = r.rank;
+
+    var peakPeople = R.people[0], peakDwell = R.dwell[0], peakAvg = R.avg[0], peakOpens = R.opens[0];
+    var spanTxt = "—";
+    if (r.students.length) {
+      var solved = r.students.filter(function (s) { return s.firstVisitAt; })
+        .sort(function (a, b) { return a.firstVisitAt - b.firstVisitAt; });
+      var last = r.students.filter(function (s) { return s.lastVisitAt; })
+        .sort(function (a, b) { return b.lastVisitAt - a.lastVisitAt; })[0];
+      if (solved.length && last) spanTxt = fmtDate(solved[0].firstVisitAt).split(" ")[0] + " → " + fmtDate(last.lastVisitAt).split(" ")[0];
+    }
+
+    var stuRows = r.students.map(function (s) {
+      return "<tr><td>" + esc(s.name || "(未填)") + "</td>" +
+        '<td class="n">' + s.sessions + "</td>" +
+        '<td class="n">' + s.visits + "</td>" +
+        '<td class="n">' + fmtMs(s.dwell) + "</td>" +
+        '<td class="n">' + s.lessons + "</td></tr>";
+    }).join("");
+
+    $("out").innerHTML =
+      '<div class="kpis">' +
+        '<div class="kpi"><b>' + r.people + "</b><span>访客（交档案人数）</span></div>" +
+        '<div class="kpi"><b>' + r.totalVisits + "</b><span>总访问次数</span></div>" +
+        '<div class="kpi"><b>' + r.avgVisits + "</b><span>人均访问次数</span></div>" +
+        '<div class="kpi"><b>' + fmtMs(r.avgDwellMs) + "</b><span>人均停留</span></div>" +
+        '<div class="kpi"><b>' + r.lessonsTouched + "</b><span>被访问过的课次</span></div>" +
+      "</div>" +
+      '<div class="hint" style="margin:0 0 18px">统计区间：' + esc(spanTxt) + "</div>" +
+
+      '<div class="two">' +
+        '<div class="card"><h2>哪次课人最多</h2>' +
+          '<div class="q">按「学过这课的人数」排——最能看出大家扎堆在哪几课</div>' +
+          rankTable(R.people, { hd: "人数", value: function (x) { return x.people; }, fmt: function (x) { return x.people + " 人"; } }) +
+        "</div>" +
+
+        '<div class="card"><h2>哪次课停留最久（累计）</h2>' +
+          '<div class="q">按「全班在这课的总停留时长」排——最花时间的课</div>' +
+          rankTable(R.dwell, { hd: "累计停留", value: function (x) { return x.dwell; }, fmt: function (x) { return fmtMs(x.dwell); } }) +
+        "</div>" +
+      "</div>" +
+
+      '<div class="two">' +
+        '<div class="card"><h2>哪次课单次看得最久（人均）</h2>' +
+          '<div class="q">按「人均停留」排——排除人数影响，看哪课真正留住了人</div>' +
+          rankTable(R.avg, { hd: "人均停留", value: function (x) { return x.avgDwell; }, fmt: function (x) { return fmtMs(x.avgDwell); } }) +
+        "</div>" +
+
+        '<div class="card"><h2>哪次课被打开次数最多</h2>' +
+          '<div class="q">按「页面被打开的次数」排——反复回看的课</div>' +
+          rankTable(R.opens, { hd: "打开次数", value: function (x) { return x.opens; }, fmt: function (x) { return x.opens + " 次"; } }) +
+        "</div>" +
+      "</div>" +
+
+      '<div class="card"><h2>学生明细</h2>' +
+        '<div class="q">按停留时长降序</div>' +
+        '<div style="overflow-x:auto"><table><thead><tr>' +
+        "<th>姓名/学号</th><th>来访次数</th><th>打开页面</th><th>累计停留</th><th>学过课时</th>" +
+        "</tr></thead><tbody>" + (stuRows || '<tr><td colspan="5" class="empty">暂无。</td></tr>') + "</tbody></table></div></div>" +
+
+      '<div class="card"><h2>课次总表</h2>' +
+        '<div class="q">全部课次一行一课，四个维度并排看</div>' +
+        '<div style="overflow-x:auto"><table><thead><tr>' +
+        "<th>课次</th><th>标题</th><th>人数</th><th>打开次数</th><th>累计停留</th><th>人均停留</th><th>演示</th><th>看视频</th>" +
+        "</tr></thead><tbody>" +
+        (r.byLesson.slice().sort(function (a, b) { return b.people - a.people || a.lesson - b.lesson; }).map(function (x) {
+          return "<tr><td>第 " + x.lesson + " 次课</td>" +
+            '<td class="titlecell">' + esc(x.title || "") + "</td>" +
+            '<td class="n">' + x.people + "</td>" +
+            '<td class="n">' + x.opens + "</td>" +
+            '<td class="n">' + fmtMs(x.dwell) + "</td>" +
+            '<td class="n">' + fmtMs(x.avgDwell) + "</td>" +
+            '<td class="n">' + x.demo + "</td>" +
+            '<td class="n">' + x.video + "</td></tr>";
+        }).join("") || '<tr><td colspan="8" class="empty">暂无。</td></tr>') +
+        "</tbody></table></div></div>" +
+
+      '<div class="card"><h2>一眼看懂</h2>' +
+        '<div class="hint" style="margin:0">' +
+        (peakPeople ? "· 人最多：<b>第 " + peakPeople.lesson + " 次课</b>（" + peakPeople.people + " 人，标题：" + esc(peakPeople.title || "—") + "）<br>" : "") +
+        (peakDwell ? "· 累计停留最久：<b>第 " + peakDwell.lesson + " 次课</b>（" + fmtMs(peakDwell.dwell) + "）<br>" : "") +
+        (peakAvg ? "· 人均停留最久：<b>第 " + peakAvg.lesson + " 次课</b>（" + fmtMs(peakAvg.avgDwell) + "）<br>" : "") +
+        (peakOpens ? "· 被打开最多：<b>第 " + peakOpens.lesson + " 次课</b>（" + peakOpens.opens + " 次）" : "") +
+        "</div></div>" +
+
+      '<button class="ghost" id="csv">导出统计 CSV</button> ' +
+      '<button class="ghost" id="clr">清空重来</button>';
+
+    $("csv").addEventListener("click", function () {
+      var head = ["课次", "标题", "人数", "打开次数", "累计停留秒", "人均停留秒", "演示次数", "看视频次数"];
+      var lines = [head.join(",")];
+      r.byLesson.slice().sort(function (a, b) { return a.lesson - b.lesson; }).forEach(function (x) {
+        lines.push([x.lesson, '"' + String(x.title || "").replace(/"/g, '""') + '"', x.people, x.opens,
+          Math.round(x.dwell / 1000), Math.round(x.avgDwell / 1000), x.demo, x.video].join(","));
+      });
+      var blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "访问统计_" + new Date().toISOString().slice(0, 10) + ".csv";
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    $("clr").addEventListener("click", function () { docs = []; $("file").value = ""; render(); });
+  }
+
+  var drop = $("drop"), file = $("file");
+  drop.addEventListener("click", function () { file.click(); });
+  file.addEventListener("change", function () { if (file.files.length) readFiles(file.files); });
+  ["dragenter", "dragover"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("on"); });
+  });
+  ["dragleave", "drop"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("on"); });
+  });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files.length) readFiles(e.dataTransfer.files);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

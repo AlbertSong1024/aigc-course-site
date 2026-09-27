@@ -30,3 +30,6 @@ desktop.ini
 *.bak
 *.orig
 *.rej
+
+# ── 本地工具 / 助手工作区（不入库） ────────────────────
+.workbuddy-ai/

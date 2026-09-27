@@ -16,6 +16,7 @@
      F. 冒烟   —— jsdom 真跑：侧栏/目录/复制按钮/图表渲染；遍历点击所有 button、
                   拖动所有 range，全程不出现 JS 运行时错误
      G. 版式   —— 代码块必须有 data-lang；表格必须包在 .tablewrap 里
+     H. 外壳   —— index.html、页面模板与 tools/ 下的工具页同样过语法与冒烟
    ========================================================================== */
 
 const fs = require("fs");
@@ -36,6 +37,23 @@ const BLOCK_EXTERNAL = requestInterceptor((request) => {
 const ROOT = path.resolve(__dirname, "..");
 const QUIET = process.argv.includes("--quiet");
 const ONLY = parseInt(process.argv.filter((a) => /^\d+$/.test(a))[0] || "0", 10);
+
+/* 站点 JS 清单：全站 JS 都必须过语法检查（新增 JS 记得加进来） */
+const JS_FILES = [
+  "assets/js/course-map.js",
+  "assets/js/site.js",
+  "assets/js/search-index.js",
+  "assets/js/learning-tracker.js",
+  "assets/js/ai-tutor.js",
+  "assets/js/visit-stats.js"
+];
+/* 站点外壳页：首页、模板、工具页，同样过语法与冒烟 */
+const SHELL_PAGES = [
+  { file: "index.html", opts: { minToc: 1, minLinks: 20 } },
+  { file: "templates/lesson-template.html", opts: { minToc: 1, minLinks: 20 } },
+  { file: "tools/visit-report.html", opts: { noShell: true, expectId: "drop" } },
+  { file: "tools/teacher-dashboard.html", opts: { noShell: true, expectId: "drop" } }
+];
 
 let fails = 0, warns = 0, oks = 0;
 const log = (...a) => { if (!QUIET) console.log(...a); };
@@ -169,7 +187,7 @@ function syntaxCheck(html, file) {
     catch (e) { bad++; fail(`内联脚本 #${i + 1} 语法错误：${e.message}`); }
   });
   if (!bad) ok(`内联脚本 ${scripts.length} 段语法通过`);
-  for (const f of ["assets/js/course-map.js", "assets/js/site.js", "assets/js/search-index.js"]) {
+  for (const f of JS_FILES) {
     try { new vm.Script(fs.readFileSync(path.join(ROOT, f), "utf8"), { filename: f }); }
     catch (e) { fail(`${f} 语法错误：${e.message}`); }
   }
@@ -187,6 +205,11 @@ function indexCheck(doc, lesson, SECTIONS) {
   const secIds = [...doc.querySelectorAll("main section.sec[id]")].map((n) => n.id);
   const unindexed = secIds.filter((id) => !idx.some((s) => s.id === id));
   if (unindexed.length) warn(`有 ${unindexed.length} 个小节未进搜索索引：${unindexed.join(", ")}`);
+
+  /* hint 是搜索的关键词载体；若 hint 原样复读 title，这条索引就只剩标题可搜，
+     离线助教与顶部搜索都搜不到正文里的术语。这里守住这条线。（2026-09-27） */
+  const echo = idx.filter((s) => (s.hint || "").trim() === (s.title || "").trim());
+  if (echo.length) warn(`search-index 有 ${echo.length} 条 hint 复读 title（搜不到正文术语）：${echo.map((s) => s.id).join(", ")}`);
 }
 
 /* ---------- F. jsdom 冒烟 ---------- */
@@ -217,6 +240,14 @@ async function smokeCheck(file, opts) {
 
   // 真正崩溃的判定：脚本没执行完（容器仍为空）
   const sb = d.getElementById("site-sidebar");
+  if (o.noShell) {
+    /* 工具页（如 tools/visit-report.html）不是课时页，没有侧栏/目录/上下课导航，
+       不能用课时页的骨架指标去卡它。只确认「脚本跑起来了、没抛错」。 */
+    if (o.expectId && !d.getElementById(o.expectId)) fail(`未找到预期容器 #${o.expectId}`);
+    if (errors.length) { fail(`冒烟期出现 ${errors.length} 个运行时错误`); errors.slice(0, 3).forEach((e) => console.log("      " + e.split("\n")[0])); }
+    else ok("冒烟期无运行时错误");
+    return;
+  }
   if (!sb || sb.children.length === 0) {
     fail("侧边栏未渲染 —— 页面脚本可能抛错中断");
     errors.slice(0, 4).forEach((e) => console.log("      " + e.split("\n")[0]));
@@ -310,7 +341,7 @@ async function smokeCheck(file, opts) {
   else ok("课次号无重复");
   const hours = FLAT.reduce((s, l) => s + l.theory + l.practice, 0);
   if (hours !== 64) warn(`学时合计 ${hours}，全 32 课应为 64`);
-  else ok("学时合计 54");
+  else ok("学时合计 64");
 
   const targets = FLAT.filter((l) => l.status === "ready" && (!ONLY || l.no === ONLY));
   if (!targets.length) { fail("没有 status=ready 的课时可校验"); return summary(); }
@@ -328,12 +359,14 @@ async function smokeCheck(file, opts) {
     await smokeCheck(file, { minQuiz: 4 });
   }
 
-  head("【H】站点外壳页（首页 / 页面模板）");
-  for (const f of ["index.html", "templates/lesson-template.html"]) {
+  head("【H】站点外壳页（首页 / 模板 / 工具页）");
+  for (const { file: f, opts } of SHELL_PAGES) {
     head(`  ${f}`);
-    const html = fs.readFileSync(path.join(ROOT, f), "utf8");
+    const fp = path.join(ROOT, f);
+    if (!fs.existsSync(fp)) { fail(`文件不存在：${f}`); continue; }
+    const html = fs.readFileSync(fp, "utf8");
     syntaxCheck(html, f);
-    await smokeCheck(path.join(ROOT, f), { minToc: 1, minLinks: 20 });
+    await smokeCheck(fp, opts);
   }
 
   head("【B】未上线课时占位检查");
