@@ -483,14 +483,188 @@
   /* ======================================================================
      8. 交互：小测 / 折叠 / 选项卡
      ====================================================================== */
+  /* ======================================================================
+     随堂自测：把「列选项 + 点按钮看答案」升级为「点选项即时判分」
+     ----------------------------------------------------------------------
+     设计约束：
+       · 课时页正文**不改**——题干、选项、解析都保持原来的 HTML；
+         交互全部由本函数在运行时接管，避免批量改写 163 道题的正文出错。
+       · 正确答案从 `.quiz__ans` 里的「答案：X」解析出来（支持单选 A、
+         多选 ABC、判断「正确/错误」、以及「A（正确）」这种带备注的写法）。
+       · 题型判定：选项数 >= 3 视为多选候选（答案多字母即多选），
+         选项恰为「正确/错误」两项则视为判断题。
+       · 判分只在本页当场显示，不写 localStorage、不进学情档案。
+     ====================================================================== */
+
+  /* 把选项文字里的「A. 」前缀剥掉，返回 {letter, text} */
+  function splitOpt(raw) {
+    var s = String(raw).replace(/\s+/g, " ").trim();
+    var m = s.match(/^([A-Da-d])\s*[.、．)）:：]\s*(.+)$/);
+    if (m) return { letter: m[1].toUpperCase(), text: m[2].trim() };
+    return { letter: "", text: s };
+  }
+
+  /* 从解析区文本里解析正确答案：返回 {letters:[], judge:boolean, isMulti:boolean} */
+  function parseAnswer(ansEl) {
+    if (!ansEl) return null;
+    var txt = (ansEl.textContent || "").replace(/\s+/g, " ");
+    var m = txt.match(/答案\s*[:：]\s*([A-Da-d]{1,4}|正确|错误)/);
+    if (!m) {
+      // 「答案：A（正确）」这类：先抓字母，再抓括号里的备注
+      m = txt.match(/答案\s*[:：]\s*([A-Da-d])\s*[（(]\s*(正确|错误)\s*[)）]/);
+      if (m) return { letters: [m[1].toUpperCase()], judge: true, isMulti: false, note: m[2] };
+      return null;
+    }
+    var v = m[1];
+    if (v === "正确" || v === "错误") return { letters: [], judge: true, judgeVal: v, isMulti: false };
+    var letters = v.toUpperCase().split("");
+    return { letters: letters, judge: false, isMulti: letters.length > 1 };
+  }
+
   function bindQuiz() {
-    document.querySelectorAll(".quiz__reveal").forEach(function (b) {
-      b.addEventListener("click", function () {
-        var ans = b.parentNode.querySelector(".quiz__ans");
-        if (!ans) return;
-        var on = ans.classList.toggle("on");
-        b.textContent = on ? "收起答案" : "查看答案";
+    document.querySelectorAll(".quiz").forEach(function (quiz) {
+      var items = quiz.querySelectorAll(".quiz__item");
+      var scored = 0, total = 0;
+
+      items.forEach(function (item) {
+        var optsBox = item.querySelector(".quiz__opts");
+        var ansBox = item.querySelector(".quiz__ans");
+        var btn = item.querySelector(".quiz__reveal");
+        if (!optsBox || !ansBox) return;                 // 无解析的题不接管
+
+        var answer = parseAnswer(ansBox);
+        if (!answer) return;                             // 解析里没有「答案：X」→ 退回「看答案」模式
+
+        /* 收集选项：li 或 p，两种方言都要吃 */
+        var nodes = optsBox.querySelectorAll("li");
+        if (!nodes.length) nodes = optsBox.querySelectorAll("p");
+        if (!nodes.length) return;
+
+        var opts = [];
+        var LETTERS = "ABCDEFGH";
+        nodes.forEach(function (n, i) {
+          var parsed = splitOpt(n.textContent);
+          // 选项没写「A. 」前缀时（如 <p>正确</p>），按出现顺序补字母，
+          // 否则后续判分拿不到稳定的 key。
+          if (!parsed.letter) parsed.letter = LETTERS.charAt(i) || ("#" + i);
+          opts.push(parsed);
+          // 一律换成按钮，保留原文字（去掉「A. 」前缀，字母由 CSS 画）
+          n.innerHTML = '<button class="quiz__opt" type="button" data-letter="' +
+            parsed.letter + '">' + esc(parsed.text) + "</button>";
+        });
+        optsBox.classList.add("quiz__opts--interactive");
+
+        /* 判断题：答案只写了「正确/错误」，把它映射到对应选项的字母 */
+        var correctSet = {};
+        if (answer.judge && answer.judgeVal) {
+          opts.forEach(function (o) {
+            if (o.text.replace(/^[A-D][.、．)）]\s*/, "").trim() === answer.judgeVal) correctSet[o.letter] = 1;
+          });
+          // 兜底：选项文字里含「正确」/「错误」二字的也算
+          if (!Object.keys(correctSet).length) {
+            opts.forEach(function (o) {
+              if (o.text.indexOf(answer.judgeVal) === 0) correctSet[o.letter] = 1;
+            });
+          }
+        } else {
+          answer.letters.forEach(function (L) { correctSet[L] = 1; });
+        }
+        var isMulti = answer.isMulti;
+
+        /* 多选需要「提交」按钮 */
+        var submit = null;
+        if (isMulti) {
+          submit = document.createElement("button");
+          submit.type = "button";
+          submit.className = "quiz__submit";
+          submit.textContent = "提交答案";
+          submit.disabled = true;
+          optsBox.parentNode.insertBefore(submit, optsBox.nextSibling);
+        }
+
+        var picked = {}, locked = false;
+        var tip = document.createElement("div");
+        tip.className = "quiz__tip";
+        (submit || btn).parentNode.insertBefore(tip, (submit || btn).nextSibling);
+
+        var btns = optsBox.querySelectorAll(".quiz__opt");
+
+        function markPicked() {
+          btns.forEach(function (b) {
+            b.classList.toggle("on", !!picked[b.getAttribute("data-letter")]);
+          });
+          if (submit) {
+            var n = Object.keys(picked).filter(function (k) { return picked[k]; }).length;
+            submit.disabled = n === 0;
+            submit.textContent = n ? ("提交答案（已选 " + n + " 项）") : "提交答案";
+          }
+        }
+
+        function judge() {
+          if (locked) return;
+          var keys = Object.keys(picked).filter(function (k) { return picked[k]; });
+          if (!keys.length) return;
+          locked = true;
+
+          var allRight = keys.length === Object.keys(correctSet).length &&
+            keys.every(function (k) { return correctSet[k]; });
+
+          btns.forEach(function (b) {
+            var L = b.getAttribute("data-letter");
+            b.disabled = true;
+            b.classList.remove("on");
+            if (correctSet[L]) b.classList.add("right");
+            else if (picked[L]) b.classList.add("wrong");
+          });
+
+          total++; if (allRight) scored++;
+
+          var wantTxt = answer.judgeVal || answer.letters.join("");
+          // 判断题：同时给出「正确/错误」与对应字母，避免选项没印字母时看不懂
+          if (answer.judgeVal) {
+            var L2 = Object.keys(correctSet)[0] || "";
+            wantTxt = answer.judgeVal + (L2 && /^[A-D]$/.test(L2) ? "（" + L2 + "）" : "");
+          }
+          tip.className = "quiz__tip " + (allRight ? "ok" : "no");
+          tip.textContent = (allRight ? "✓ 答对了。" : "✗ 答错了。") +
+            "正确答案：" + wantTxt + "。" +
+            (isMulti && !allRight ? "本题为多选。" : "");
+          tip.hidden = false;
+
+          ansBox.classList.add("on");
+          if (submit) { submit.disabled = true; submit.textContent = "已提交"; }
+          if (btn) { btn.hidden = true; }
+          updateBar();
+        }
+
+        btns.forEach(function (b) {
+          b.addEventListener("click", function () {
+            if (locked) return;
+            var L = b.getAttribute("data-letter");
+            if (isMulti) {
+              picked[L] = !picked[L];
+              markPicked();
+            } else {
+              picked = {}; picked[L] = 1;
+              markPicked();
+              judge();
+            }
+          });
+        });
+        if (submit) submit.addEventListener("click", judge);
       });
+
+      /* 顶部进度条：答对 N / 已答 M */
+      var bar = quiz.querySelector(".quiz__bar");
+      function updateBar() {
+        if (!bar) return;
+        var span = bar.querySelector(".quiz__score") || (function () {
+          var s = document.createElement("span");
+          s.className = "quiz__score";
+          bar.appendChild(s); return s;
+        })();
+        span.textContent = "已答 " + total + " 题 · 答对 " + scored + " 题";
+      }
     });
   }
   function bindFold() {
