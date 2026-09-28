@@ -46,7 +46,7 @@
         本课<strong>不教怎么写简历</strong>（那是<a class="xref" data-lesson="25">第 25 次课</a>的事），
         <strong>也不教怎么面试</strong>（那是<a class="xref" data-lesson="26">第 26 次课</a>的事）。
         今天只做四件事：<strong>看清自己（SWOT）→ 看清外面（行业调研）→ 看清岗位要什么（JD 拆解）→ 列出补齐计划（能力地图 + SMART）</strong>。<br>
-        四个实操<strong>前后相接、共用一套设定</strong>：同一个虚拟角色（小林）、同一个目标岗位
+        三个实操<strong>前后相接、共用一套设定</strong>：同一个虚拟角色（小林）、同一个目标岗位
         （人工智能训练师 / AI 应用开发助理）。① 的背景卡是 ②③④ 的判断依据，
         ③ 拆出来的差距清单是 ④ 的原料。四步走完，你手上是一套能一直改的规划，不是四份互不相干的练习。
       </div>
@@ -72,10 +72,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-swot"><b>01</b>SWOT：四格填证据，不填形容词 <em>＋实操①</em></a>
-        <a href="#s-research"><b>02</b>行业调研：结论必须带来源 <em>＋实操②</em></a>
-        <a href="#s-jd"><b>03</b>JD 拆解：找出自己缺什么 <em>＋实操③</em></a>
-        <a href="#s-plan"><b>04</b>能力地图与 SMART 行动计划 <em>＋实操④</em></a>
+        <a href="#s-swot"><b>01</b>SWOT：四格填证据，不填形容词</a>
+        <a href="#s-research"><b>02</b>行业调研：结论必须带来源 <em>＋实操①</em></a>
+        <a href="#s-jd"><b>03</b>JD 拆解：找出自己缺什么 <em>＋实操②</em></a>
+        <a href="#s-plan"><b>04</b>能力地图与 SMART 行动计划 <em>＋实操③</em></a>
         <a href="#s-quiz"><b>05</b>随堂自测</a>
       </div>
       <div class="callout callout--quote">
@@ -163,8 +163,85 @@
         </div>
       </div>
 
+    </section>
+
+    <section class="sec" id="s-research">
+      <h2>二、行业调研：结论后面必须跟着来源<span class="sec__tag">方法</span></h2>
+      <p>
+        SWOT 看清了自己，下一步是看清外面。这一步最容易掉进的坑很具体：
+        你问 AI「人工智能训练师前景怎么样」，它会回给你一大段<strong>听起来很对的话</strong>——
+        结构完整、语气笃定，而且你一点办法都没有去验证。
+      </p>
+      <p>
+        问题不在它会不会编，而在于<strong>你分不清哪句是查来的、哪句是它顺着话头补的</strong>。
+        所以调研这一步唯一重要的规矩就是：<strong>每一条结论后面都挂着来源</strong>。
+        没有来源的结论，等于没有。
+      </p>
+
+      <h3>来源也有三六九等</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>等级</th><th>长什么样</th><th>能不能自己去核</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge--ok">可核对</span></td>
+              <td>有名有姓有出处：某公司招聘页、某政府部门发文、某平台统计（带时间）</td>
+              <td><strong>能</strong>，照着名字和链接点过去就能看到</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge--todo">半可核对</span></td>
+              <td>行业媒体文章、招聘平台聚合页——有来源但没标时间、没标统计范围</td>
+              <td>勉强能，但要看清<strong>是什么时候、什么范围</strong>的数据</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge--a">不可核对</span></td>
+              <td>「业内普遍认为」「据统计」「一般来说」「众所周知」</td>
+              <td><strong>不能</strong>——没有主体、没有时间，谁说的都不知道</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">薪资和数量，是最容易被编出来的两类数字</span>
+        「这个岗位月薪大概 8k–12k」「广州相关岗位有 3000 个」——
+        这类句子 AI 写得最顺，也最不可信，因为它没有随手可查的实时数据源。<br>
+        规矩只有一句：<strong>查不到就写【不确定 · 以我查到的为准】</strong>，
+        宁可留一个不确定，也不要拿一个编出来的数字去做人生决定。
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 三份简报摆在一起，哪一份才拿得出手</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--ghost" type="button" id="d2-a">无来源版</button>
+            <button class="btn btn--ghost" type="button" id="d2-b">来源模糊版</button>
+            <button class="btn btn--ghost" type="button" id="d2-c">带来源版</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><b id="d2-k1">—</b><span>结论条数</span></div>
+            <div class="kpi"><b id="d2-k2">—</b><span>可核对来源条数</span></div>
+            <div class="kpi"><b class="acc" id="d2-k3">—</b><span>能不能拿去做决定</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意，非实测数值。</strong>三份简报均为本课编写的示例文本，
+            其中的行业信息不代表真实情况，仅用于演示「来源写到什么程度才算可核对」。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--quote">
+        <span class="callout__t">调研的目的不是得到一个结论</span>
+        是得到一张<strong>你能自己去核的清单</strong>。
+        简报写完之后最值钱的部分不是正文，是末尾那张来源核对表——
+        哪条能核、哪条要再查、哪条干脆查不到，一目了然。
+      </div>
+
       <div class="task">
-        <div class="task__hd">动手做 ①·让 AI 做出一份每格都带依据的 SWOT <em>约 12 分钟</em></div>
+        <div class="task__hd">动手做 ①·做出每格带依据的 SWOT，再完成一次岗位调研 <em>约 24 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份 <code>01-SWOT.md</code>——
           四格齐全，每格不少于 3 条，每条都带「结论 + 依据 + 依据来源」，末尾还有一段清洗说明。</p>
 
@@ -277,91 +354,12 @@
             <em>它一条都没删</em>：补一句「逐条按『能不能定位到具体一件事』判断，一条一条报，不许整段跳过」，让它重查。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：<code>01-SWOT.md</code>。第 4 节画能力地图时要直接引用它的「劣势」格。</p>
-      </div>
-    </section>
-
-    <section class="sec" id="s-research">
-      <h2>二、行业调研：结论后面必须跟着来源<span class="sec__tag">方法</span></h2>
-      <p>
-        SWOT 看清了自己，下一步是看清外面。这一步最容易掉进的坑很具体：
-        你问 AI「人工智能训练师前景怎么样」，它会回给你一大段<strong>听起来很对的话</strong>——
-        结构完整、语气笃定，而且你一点办法都没有去验证。
-      </p>
-      <p>
-        问题不在它会不会编，而在于<strong>你分不清哪句是查来的、哪句是它顺着话头补的</strong>。
-        所以调研这一步唯一重要的规矩就是：<strong>每一条结论后面都挂着来源</strong>。
-        没有来源的结论，等于没有。
-      </p>
-
-      <h3>来源也有三六九等</h3>
-      <div class="tablewrap">
-        <table class="data">
-          <thead><tr><th>等级</th><th>长什么样</th><th>能不能自己去核</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><span class="badge badge--ok">可核对</span></td>
-              <td>有名有姓有出处：某公司招聘页、某政府部门发文、某平台统计（带时间）</td>
-              <td><strong>能</strong>，照着名字和链接点过去就能看到</td>
-            </tr>
-            <tr>
-              <td><span class="badge badge--todo">半可核对</span></td>
-              <td>行业媒体文章、招聘平台聚合页——有来源但没标时间、没标统计范围</td>
-              <td>勉强能，但要看清<strong>是什么时候、什么范围</strong>的数据</td>
-            </tr>
-            <tr>
-              <td><span class="badge badge--a">不可核对</span></td>
-              <td>「业内普遍认为」「据统计」「一般来说」「众所周知」</td>
-              <td><strong>不能</strong>——没有主体、没有时间，谁说的都不知道</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout callout--danger">
-        <span class="callout__t">薪资和数量，是最容易被编出来的两类数字</span>
-        「这个岗位月薪大概 8k–12k」「广州相关岗位有 3000 个」——
-        这类句子 AI 写得最顺，也最不可信，因为它没有随手可查的实时数据源。<br>
-        规矩只有一句：<strong>查不到就写【不确定 · 以我查到的为准】</strong>，
-        宁可留一个不确定，也不要拿一个编出来的数字去做人生决定。
-      </div>
-
-      <div class="demo" id="demo2">
-        <div class="demo__bar">
-          <span class="demo__tag">可运行演示</span>
-          <span class="demo__title">② 三份简报摆在一起，哪一份才拿得出手</span>
-        </div>
-        <div class="demo__body">
-          <div class="demo__ctrl">
-            <button class="btn btn--ghost" type="button" id="d2-a">无来源版</button>
-            <button class="btn btn--ghost" type="button" id="d2-b">来源模糊版</button>
-            <button class="btn btn--ghost" type="button" id="d2-c">带来源版</button>
-          </div>
-          <div class="kpis">
-            <div class="kpi"><b id="d2-k1">—</b><span>结论条数</span></div>
-            <div class="kpi"><b id="d2-k2">—</b><span>可核对来源条数</span></div>
-            <div class="kpi"><b class="acc" id="d2-k3">—</b><span>能不能拿去做决定</span></div>
-          </div>
-          <div class="demo__out log" id="d2-out"></div>
-          <div class="demo__note">
-            <strong>教学示意，非实测数值。</strong>三份简报均为本课编写的示例文本，
-            其中的行业信息不代表真实情况，仅用于演示「来源写到什么程度才算可核对」。
-          </div>
-        </div>
-      </div>
-
-      <div class="callout callout--quote">
-        <span class="callout__t">调研的目的不是得到一个结论</span>
-        是得到一张<strong>你能自己去核的清单</strong>。
-        简报写完之后最值钱的部分不是正文，是末尾那张来源核对表——
-        哪条能核、哪条要再查、哪条干脆查不到，一目了然。
-      </div>
-
-      <div class="task">
-        <div class="task__hd">动手做 ②·让 AI 做一次目标岗位调研，产出带来源的简报 <em>约 12 分钟</em></div>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一份 <code>02-行业调研简报.md</code>——
           三段正文（岗位在干什么 / 想要什么样的人 / 入行门槛与路径），
           外加末尾一张四列来源核对表。</p>
 
-        <p><strong>第 1 步 · 复制这次的调研目标（1 分钟）</strong></p>
+        <p><strong>第 4 步 · 复制这次的调研目标（1 分钟）</strong></p>
         <ol class="steps">
           <li><b>点下面这块右上角「复制」</b><span>调研目标写死，它才不会把话题扯到「人工智能行业整体趋势」上去。</span></li>
         </ol>
@@ -377,7 +375,7 @@
 </code></pre>
         </div>
 
-        <p><strong>第 2 步 · 让它带着来源规矩去查（5 分钟）</strong></p>
+        <p><strong>第 5 步 · 让它带着来源规矩去查（5 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令，跟第 1 步的调研目标一起发出去</b><span>
             目标在前、指令在后。<span class="task__warn">里面的「来源规矩」四条一句都不要删</span>——
@@ -412,7 +410,7 @@
 </code></pre>
         </div>
 
-        <p><strong>第 3 步 · 让它把说不清的来源重查一遍（4 分钟）</strong></p>
+        <p><strong>第 6 步 · 让它把说不清的来源重查一遍（4 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令紧接着发出去</b><span>
             第一遍一定会冒出「招聘网站」「行业报告」这种说了等于没说的来源，这一步就是治它的。</span></li>
@@ -528,7 +526,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ③·拆一份招聘启事的关键词，列出差距清单 <em>约 12 分钟</em></div>
+        <div class="task__hd">动手做 ②·拆一份招聘启事的关键词，列出差距清单 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份 <code>03-JD关键词拆解.md</code>——
           四类关键词表（含原文出处与频次），外加一份按「补起来从快到慢」排好序的差距清单。</p>
 
@@ -764,7 +762,7 @@ Python 能写脚本、不熟虚拟环境；Git 只会 add/commit/push 三条命�
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ④·产出能力地图 + 一份过五关的 SMART 行动计划 <em>约 12 分钟</em></div>
+        <div class="task__hd">动手做 ③·产出能力地图 + 一份过五关的 SMART 行动计划 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：两份文件——<code>04-能力地图.md</code>（会 / 半会 / 不会 + 差距说明）
           和 <code>05-行动计划.md</code>（每条过 SMART 五关，末尾带自检表）。</p>
 

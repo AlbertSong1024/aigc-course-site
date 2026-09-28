@@ -72,15 +72,15 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-key"><b>01</b>API Key 配置 <em>＋实操①</em></a>
-        <a href="#s-bind"><b>02</b>绑定知识库 <em>＋实操②</em></a>
-        <a href="#s-ask"><b>03</b>带引用问答 <em>＋实操③</em></a>
-        <a href="#s-edge"><b>04</b>权限边界与拒答 <em>＋实操④</em></a>
+        <a href="#s-key"><b>01</b>API Key 配置</a>
+        <a href="#s-bind"><b>02</b>绑定知识库 <em>＋实操①</em></a>
+        <a href="#s-ask"><b>03</b>带引用问答 <em>＋实操②</em></a>
+        <a href="#s-edge"><b>04</b>权限边界与拒答 <em>＋实操③</em></a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
         <strong>先修</strong>：<a class="xref" data-lesson="15">第 15 次课</a>建的 ima 主题知识库
-        （本课的四个实操全靠它，没建库的先回去建）、
+        （本课的三个实操全靠它，没建库的先回去建）、
         <a class="xref" data-lesson="7">第 7 次课</a>的任务说明六要素（本课所有指令都按它写）。<br>
         <strong>后续</strong>：本课讲的是「一个连接器怎么接、边界在哪」。
         <a class="xref" data-lesson="18">第 18 次课</a>把这件事推广到 MCP 与自动化任务上。
@@ -187,74 +187,6 @@
         请审慎评估后再启用。」</strong>
       </div>
 
-      <div class="task">
-        <div class="task__hd">实操 ①·领出凭证，放到只有你能读的地方 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：本地 <code>~/.config/ima/</code> 下两个凭证文件，
-          ＋ WorkBuddy 读出你的 ima 知识库列表的一段回答（全程密钥<strong>没有出现在对话里</strong>）。</p>
-
-        <p><strong>第 1 步 · 到 ima 官方凭证页领钥匙（2 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>浏览器打开 <code>ima.qq.com/agent-interface</code> 并登录</b><span>
-            用你建库时那个 ima 账号。</span></li>
-          <li><b>点页面上的「获取 API Key」</b><span>页面会给出一串密钥；
-            如果同时显示了 Client ID，两个都要留着——<strong>以页面实际显示为准</strong>。</span></li>
-          <li><b>先复制下来，暂时别发给任何人、也别发进任何对话</b><span>
-            <span class="task__warn">这一步最容易做错</span>：看到「配置」两个字就顺手贴给 AI。先忍住。</span></li>
-        </ol>
-
-        <p><strong>第 2 步 · 用下面这组命令把它写进本地文件（2 分钟）</strong></p>
-        <p>打开 <strong>PowerShell</strong>，把下面这段整段复制进去执行。
-          先把 <code>你的ClientID</code> 和 <code>你的APIKey</code> 换成第 1 步拿到的真实值：</p>
-        <div class="codeblock" data-lang="powershell" data-name="写入凭证 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.config\ima" | Out-Null
-Set-Content -Path "$env:USERPROFILE\.config\ima\client_id" -Value "你的ClientID" -Encoding utf8 -NoNewline
-Set-Content -Path "$env:USERPROFILE\.config\ima\api_key"   -Value "你的APIKey"   -Encoding utf8 -NoNewline
-Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
-        </div>
-
-        <p><strong>第 3 步 · 让 WorkBuddy 自己去读，不要把内容贴给它（2 分钟）</strong></p>
-        <p>在 WorkBuddy 里<strong>新建一个对话</strong>，把下面这段指令整段发出去——
-          注意里面<strong>一个密钥字符都没有</strong>：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="配置指令 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>我已经把 ima 的开放接口凭证写在这两个本地文件里：
-%USERPROFILE%\.config\ima\client_id
-%USERPROFILE%\.config\ima\api_key
-
-请读取这两个文件完成 ima 连接配置，然后做两件事：
-1. 列出我 ima 账号下的知识库名称；
-2. 告诉我你现在能对这个知识库做什么、不能做什么。
-
-要求：不要在回复里回显这两个文件的完整内容，只回显前 4 个字符用于我确认读对了文件。
-读不到就直说"读不到"，不要猜、不要编造知识库名称。</code></pre>
-        </div>
-
-        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
-        <ol class="steps">
-          <li><b>它列出了你真实的知识库名称</b><span>至少能说出你在
-            <a class="xref" data-lesson="15">第 15 次课</a>建的那个库。<br>
-            <em>它说读不到</em>：先确认第 2 步命令没报错、文件真的存在
-            （用第 2 步最后那条 <code>Get-ChildItem</code> 再看一眼），
-            再把「读不到就直说」这句挪到指令最前面重发一次。</span></li>
-          <li><b>回复里没有出现完整密钥</b><span>最多只有你让它回显的前 4 个字符。<br>
-            <em>它整段吐出来了</em>：⚠️ 说明「不要回显」那句没生效。
-            这段对话别再转发给任何人，并回到 <code>ima.qq.com/agent-interface</code>
-            重新获取一次，让这串字符串作废。</span></li>
-          <li><b>两个凭证文件在 <code>.config\ima\</code> 下，不在你的工作目录里</b><span>
-            工作目录里的文件随时可能被 AI 读走、被打包、被同步。<br>
-            <em>放错位置了</em>：把文件移走，再执行第 2 步的命令重新生成一次。</span></li>
-        </ol>
-        <p><strong>要交的成果</strong>：它列出知识库那段回答的截图
-          ＋ 一句「我的凭证放在哪、为什么放那儿」。
-          <strong>截图里不要出现完整密钥</strong>——出现的话打码再交。</p>
-        <p class="note">
-          如果你手上的版本没有「让 AI 读本地文件完成配置」这条路，
-          那就<strong>不要勉强</strong>：直接用第二节的扫码授权即可，
-          日常在 WorkBuddy 里调知识库走那条路就够了。本节的凭证只在你确实要把 ima
-          接给脚本或其他智能体时才需要。
-        </p>
-      </div>
     </section>
 
     <!-- 二、绑定知识库 -->
@@ -380,11 +312,77 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
       </p>
 
       <div class="task">
-        <div class="task__hd">实操 ②·绑定 ima 知识库，逐条核对三项权限 <em>约 10 分钟</em></div>
+        <div class="task__hd">实操 ①·领出凭证放到只有你能读的地方，并绑定 ima 知识库 <em>约 18 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：本地 <code>~/.config/ima/</code> 下两个凭证文件，
+          ＋ WorkBuddy 读出你的 ima 知识库列表的一段回答（全程密钥<strong>没有出现在对话里</strong>）。</p>
+
+        <p><strong>第 1 步 · 到 ima 官方凭证页领钥匙（2 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>浏览器打开 <code>ima.qq.com/agent-interface</code> 并登录</b><span>
+            用你建库时那个 ima 账号。</span></li>
+          <li><b>点页面上的「获取 API Key」</b><span>页面会给出一串密钥；
+            如果同时显示了 Client ID，两个都要留着——<strong>以页面实际显示为准</strong>。</span></li>
+          <li><b>先复制下来，暂时别发给任何人、也别发进任何对话</b><span>
+            <span class="task__warn">这一步最容易做错</span>：看到「配置」两个字就顺手贴给 AI。先忍住。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 用下面这组命令把它写进本地文件（2 分钟）</strong></p>
+        <p>打开 <strong>PowerShell</strong>，把下面这段整段复制进去执行。
+          先把 <code>你的ClientID</code> 和 <code>你的APIKey</code> 换成第 1 步拿到的真实值：</p>
+        <div class="codeblock" data-lang="powershell" data-name="写入凭证 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.config\ima" | Out-Null
+Set-Content -Path "$env:USERPROFILE\.config\ima\client_id" -Value "你的ClientID" -Encoding utf8 -NoNewline
+Set-Content -Path "$env:USERPROFILE\.config\ima\api_key"   -Value "你的APIKey"   -Encoding utf8 -NoNewline
+Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 让 WorkBuddy 自己去读，不要把内容贴给它（2 分钟）</strong></p>
+        <p>在 WorkBuddy 里<strong>新建一个对话</strong>，把下面这段指令整段发出去——
+          注意里面<strong>一个密钥字符都没有</strong>：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="配置指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>我已经把 ima 的开放接口凭证写在这两个本地文件里：
+%USERPROFILE%\.config\ima\client_id
+%USERPROFILE%\.config\ima\api_key
+
+请读取这两个文件完成 ima 连接配置，然后做两件事：
+1. 列出我 ima 账号下的知识库名称；
+2. 告诉我你现在能对这个知识库做什么、不能做什么。
+
+要求：不要在回复里回显这两个文件的完整内容，只回显前 4 个字符用于我确认读对了文件。
+读不到就直说"读不到"，不要猜、不要编造知识库名称。</code></pre>
+        </div>
+
+        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它列出了你真实的知识库名称</b><span>至少能说出你在
+            <a class="xref" data-lesson="15">第 15 次课</a>建的那个库。<br>
+            <em>它说读不到</em>：先确认第 2 步命令没报错、文件真的存在
+            （用第 2 步最后那条 <code>Get-ChildItem</code> 再看一眼），
+            再把「读不到就直说」这句挪到指令最前面重发一次。</span></li>
+          <li><b>回复里没有出现完整密钥</b><span>最多只有你让它回显的前 4 个字符。<br>
+            <em>它整段吐出来了</em>：⚠️ 说明「不要回显」那句没生效。
+            这段对话别再转发给任何人，并回到 <code>ima.qq.com/agent-interface</code>
+            重新获取一次，让这串字符串作废。</span></li>
+          <li><b>两个凭证文件在 <code>.config\ima\</code> 下，不在你的工作目录里</b><span>
+            工作目录里的文件随时可能被 AI 读走、被打包、被同步。<br>
+            <em>放错位置了</em>：把文件移走，再执行第 2 步的命令重新生成一次。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：它列出知识库那段回答的截图
+          ＋ 一句「我的凭证放在哪、为什么放那儿」。
+          <strong>截图里不要出现完整密钥</strong>——出现的话打码再交。</p>
+        <p class="note">
+          如果你手上的版本没有「让 AI 读本地文件完成配置」这条路，
+          那就<strong>不要勉强</strong>：直接用第二节的扫码授权即可，
+          日常在 WorkBuddy 里调知识库走那条路就够了。本节的凭证只在你确实要把 ima
+          接给脚本或其他智能体时才需要。
+        </p>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一个已连接的 ima 知识库，
           ＋ 一份「它现在能做什么、不能做什么」的核对结论。</p>
 
-        <p><strong>第 1 步 · 走完绑定（3 分钟）</strong></p>
+        <p><strong>第 5 步 · 走完绑定（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>在 WorkBuddy 左侧边栏点「资料库」，选「ima 知识库」</b><span>
             官方路径就是这一条，不是「连接器」那一个入口。</span></li>
@@ -397,7 +395,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
             没出现就刷新一次连接状态（官方说授权完成后状态即时刷新）。</span></li>
         </ol>
 
-        <p><strong>第 2 步 · 让它报一遍自己有什么（3 分钟）</strong></p>
+        <p><strong>第 6 步 · 让它报一遍自己有什么（3 分钟）</strong></p>
         <p>新建一个对话，把下面这段指令整段发出去：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="权限核对指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -411,7 +409,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
 不确定的地方直接写"不确定"。</code></pre>
         </div>
 
-        <p><strong>第 3 步 · 再让它从库里取出一份文件（2 分钟）</strong></p>
+        <p><strong>第 7 步 · 再让它从库里取出一份文件（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>在输入框上方的「添加文件」图标处打开 ima 知识库</b><span>
             勾选整个库（不是单个文件）——这一节要验证的是「整个库能不能被引用」。</span></li>
@@ -424,7 +422,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
 只允许列出库里真实存在的内容；库里没有的不要补，读不到就写"读不到"。</code></pre>
         </div>
 
-        <p><strong>第 4 步 · 做到这四条，就算做完了</strong></p>
+        <p><strong>第 8 步 · 做到这四条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>列表里出现了你在上一课建的那个主题库</b><span>
             名字应该和你建库时一致。<br>
@@ -443,7 +441,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         </ol>
         <p><strong>要交的成果</strong>：绑定成功的界面截图
           ＋ 第 2 步那份「能做什么 / 不能做什么」的回答。
-          这个库<strong>留着别动</strong>，实操③ 要在里面问答。</p>
+          这个库<strong>留着别动</strong>，实操② 要在里面问答。</p>
       </div>
 
       <figure class="figure video-embed">
@@ -518,14 +516,14 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ③·问两组问题，把引用逐条核回去 <em>约 12 分钟</em></div>
+        <div class="task__hd">实操 ②·问两组问题，把引用逐条核回去 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：两份带引用的回答，
           ＋ 一张「引用核对表」（每条结论 → 出处 → 核没核过 → 核的结果）。</p>
 
         <p><strong>第 1 步 · 问第一组：答案确实在库里（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>新建一个对话</b><span><span class="task__warn">必须新建</span>，
-            别接着实操② 的对话问——它的上下文里已经有库的内容了，这次实验就不准了。</span></li>
+            别接着实操① 的对话问——它的上下文里已经有库的内容了，这次实验就不准了。</span></li>
           <li><b>用输入框上方的「添加文件」打开 ima 知识库，勾选你那个主题库</b><span>
             勾选整个库，不要勾单份文件。</span></li>
           <li><b>把下面这段指令整段发出去</b><span>三组约束一句都不能少。</span></li>
@@ -588,7 +586,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
             这是最难的一条，也是最有价值的一条。<br>
             <em>它说「这条不是来自库里」</em>：恭喜，实验成功了——
             这正是你要的结果：<strong>它自己承认了这条没有依据</strong>。把这轮对话留着，
-            实操④ 要接着用。</span></li>
+            实操③ 要接着用。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：Q1、Q2 两份回答截图 ＋ 引用核对表 ＋ 一句「我核了哪一条、结果对不对」。</p>
       </div>
@@ -616,7 +614,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
             <tr>
               <td><strong>不主动定时抓取</strong></td>
               <td>你不发指令，它不会自己去翻你的库</td>
-              <td>实操② 第 2 步已经让它亲口确认过一次</td>
+              <td>实操① 第 2 步已经让它亲口确认过一次</td>
             </tr>
             <tr>
               <td><strong>不超出您已有权限范围</strong></td>
@@ -681,7 +679,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ④·撞一次边界，看它会不会明确拒答 <em>约 10 分钟</em></div>
+        <div class="task__hd">实操 ③·撞一次边界，看它会不会明确拒答 <em>约 10 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一组「库里根本没有」的问答，
           ＋ 一份边界检查报告（哪些能做、哪些不做、依据哪条权限）。</p>
 

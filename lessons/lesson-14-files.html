@@ -53,10 +53,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-bound"><b>01</b>先划边界：工作空间与权限 <em>＋实操①</em></a>
-        <a href="#s-naming"><b>02</b>命名规则：让文件名会说话 <em>＋实操②</em></a>
-        <a href="#s-archive"><b>03</b>批量归档：确认后才动手 <em>＋实操③</em></a>
-        <a href="#s-minutes"><b>04</b>会议记录转纪要与待办 <em>＋实操④</em></a>
+        <a href="#s-bound"><b>01</b>先划边界：工作空间与权限</a>
+        <a href="#s-naming"><b>02</b>命名规则：让文件名会说话 <em>＋实操①</em></a>
+        <a href="#s-archive"><b>03</b>批量归档：确认后才动手 <em>＋实操②</em></a>
+        <a href="#s-minutes"><b>04</b>会议记录转纪要与待办 <em>＋实操③</em></a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
@@ -177,69 +177,6 @@
         「默认权限与安全沙箱」「实践一：文件内容识别与处理」（<code>www.workbuddy.cn</code>）。
       </p>
 
-      <div class="task">
-        <div class="task__hd">实操 ①·建一个只放副本的工作目录 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一个叫 <code>wb-文件整理</code> 的文件夹，
-          里面 <code>input</code> 子目录放着 12 个故意命名混乱的示例文件，
-          并且权限档位确认是「默认权限」。</p>
-
-        <p><strong>第 1 步 · 建专用文件夹（唯一一处需要你动手的准备工作）</strong></p>
-        <ol class="steps">
-          <li><b>在 D 盘根目录新建一个文件夹，命名 <code>wb-文件整理</code></b><span>
-            <span class="task__warn">不要在桌面建</span>——桌面上文件杂，越界风险高；
-            也不要用「新建文件夹」这种默认名。</span></li>
-          <li><b>在里面建一个 <code>input</code> 子文件夹</b><span>路径是 <code>D:/wb-文件整理/input</code>。
-            后面所有素材只放这里，AI 也只许动这里。</span></li>
-        </ol>
-
-        <p><strong>第 2 步 · 让 AI 生成 12 个示例文件</strong>：新建任务，工作目录选 <code>wb-文件整理</code>，
-          <span class="task__warn">选完看对话区左下角显示的目录名对不对</span>，然后把下面这段指令发出去：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="造素材指令 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>在 input 目录里新建 12 个空文件，文件名严格照下面这份清单，一个字都不要改：
-
-IMG_20260312_143022.jpg
-IMG_20260312_145001.jpg
-DSC00128.jpg
-微信图片_20260315102233.jpg
-实训报告（最终版）.docx
-实训报告 最终版2.docx
-新建 Microsoft Word 文档.docx
-人工智能导论-第三章课件.pdf
-课件.pdf
-成绩表.xlsx
-新建 XLSX 工作表.xlsx
-说明.txt
-
-要求：
-1. 只在这一个目录里操作，不要碰 input 以外的任何地方；
-2. 不要建子目录，12 个文件平铺在 input 里；
-3. 不要修改、删除任何已存在的文件；
-4. 建完告诉我建了几个、跳过几个。</code></pre>
-        </div>
-
-        <p><strong>第 3 步 · 校对权限档位</strong>：看输入框底部那个常驻按钮写的是不是「默认权限」。</p>
-        <ol class="steps">
-          <li><b>显示「默认权限」</b><span>正是我们这一课要的档位，继续。</span></li>
-          <li><b>显示「完全访问权限」</b><span>点开面板，关掉「允许完全访问」开关，回到默认权限再继续。
-            <br><em>不知道开关在哪</em>：官方说明它在输入框底部的权限状态按钮里，点一下会弹出面板。</span></li>
-        </ol>
-
-        <p><strong>做到这四条，就算做完了</strong></p>
-        <ol class="steps">
-          <li><b><code>input</code> 里正好 12 个文件</b><span>打开目录数一遍，名字和上面清单一致（含空格和括号）。<br>
-            <em>少了或多了</em>：把实际数量告诉它，补一句「按清单补齐到 12 个，不要动已建好的」。</span></li>
-          <li><b>文件是平铺的，没有子目录</b><span>出现子目录说明它自作主张分了类。<br>
-            <em>有子目录</em>：补一句「不要建子目录，12 个文件全部平铺在 input 里」，删掉重来。</span></li>
-          <li><b>对话区左下角显示的工作目录是 <code>wb-文件整理</code></b><span>
-            <span class="task__warn">目录选错，后面三步全白做</span>。<br>
-            <em>选错了</em>：停，新建任务重选目录，不要在当前任务里补救。</span></li>
-          <li><b>权限档位是「默认权限」</b><span>这一步是后面所有操作的安全前提。<br>
-            <em>是「完全访问权限」</em>：先在输入框底部切回默认权限，再做第 4 步之后的内容。</span></li>
-        </ol>
-        <p><strong>要交的成果</strong>：这个 <code>wb-文件整理</code> 文件夹（含 12 个示例文件）。
-          它是本课后面三次实操的共同素材，<strong>不要删、不要挪</strong>。</p>
-      </div>
     </section>
 
     <!-- ══════════════ 二、命名 ══════════════ -->
@@ -306,11 +243,72 @@ DSC00128.jpg
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ②·让 AI 出一份重命名对照表 <em>约 8 分钟</em></div>
+        <div class="task__hd">实操 ①·建一个只放副本的工作目录，并出一份重命名对照表 <em>约 16 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个叫 <code>wb-文件整理</code> 的文件夹，
+          里面 <code>input</code> 子目录放着 12 个故意命名混乱的示例文件，
+          并且权限档位确认是「默认权限」。</p>
+
+        <p><strong>第 1 步 · 建专用文件夹（唯一一处需要你动手的准备工作）</strong></p>
+        <ol class="steps">
+          <li><b>在 D 盘根目录新建一个文件夹，命名 <code>wb-文件整理</code></b><span>
+            <span class="task__warn">不要在桌面建</span>——桌面上文件杂，越界风险高；
+            也不要用「新建文件夹」这种默认名。</span></li>
+          <li><b>在里面建一个 <code>input</code> 子文件夹</b><span>路径是 <code>D:/wb-文件整理/input</code>。
+            后面所有素材只放这里，AI 也只许动这里。</span></li>
+        </ol>
+
+        <p><strong>第 2 步 · 让 AI 生成 12 个示例文件</strong>：新建任务，工作目录选 <code>wb-文件整理</code>，
+          <span class="task__warn">选完看对话区左下角显示的目录名对不对</span>，然后把下面这段指令发出去：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="造素材指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 input 目录里新建 12 个空文件，文件名严格照下面这份清单，一个字都不要改：
+
+IMG_20260312_143022.jpg
+IMG_20260312_145001.jpg
+DSC00128.jpg
+微信图片_20260315102233.jpg
+实训报告（最终版）.docx
+实训报告 最终版2.docx
+新建 Microsoft Word 文档.docx
+人工智能导论-第三章课件.pdf
+课件.pdf
+成绩表.xlsx
+新建 XLSX 工作表.xlsx
+说明.txt
+
+要求：
+1. 只在这一个目录里操作，不要碰 input 以外的任何地方；
+2. 不要建子目录，12 个文件平铺在 input 里；
+3. 不要修改、删除任何已存在的文件；
+4. 建完告诉我建了几个、跳过几个。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 校对权限档位</strong>：看输入框底部那个常驻按钮写的是不是「默认权限」。</p>
+        <ol class="steps">
+          <li><b>显示「默认权限」</b><span>正是我们这一课要的档位，继续。</span></li>
+          <li><b>显示「完全访问权限」</b><span>点开面板，关掉「允许完全访问」开关，回到默认权限再继续。
+            <br><em>不知道开关在哪</em>：官方说明它在输入框底部的权限状态按钮里，点一下会弹出面板。</span></li>
+        </ol>
+
+        <p><strong>做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>input</code> 里正好 12 个文件</b><span>打开目录数一遍，名字和上面清单一致（含空格和括号）。<br>
+            <em>少了或多了</em>：把实际数量告诉它，补一句「按清单补齐到 12 个，不要动已建好的」。</span></li>
+          <li><b>文件是平铺的，没有子目录</b><span>出现子目录说明它自作主张分了类。<br>
+            <em>有子目录</em>：补一句「不要建子目录，12 个文件全部平铺在 input 里」，删掉重来。</span></li>
+          <li><b>对话区左下角显示的工作目录是 <code>wb-文件整理</code></b><span>
+            <span class="task__warn">目录选错，后面三步全白做</span>。<br>
+            <em>选错了</em>：停，新建任务重选目录，不要在当前任务里补救。</span></li>
+          <li><b>权限档位是「默认权限」</b><span>这一步是后面所有操作的安全前提。<br>
+            <em>是「完全访问权限」</em>：先在输入框底部切回默认权限，再做第 4 步之后的内容。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这个 <code>wb-文件整理</code> 文件夹（含 12 个示例文件）。
+          它是本课后面三次实操的共同素材，<strong>不要删、不要挪</strong>。</p>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：<code>rename-plan.md</code>——一张 12 行的新旧文件名对照表，
           此刻 <code>input</code> 里的文件一个都没被改动。</p>
 
-        <p><strong>第 1 步 · 确认工作目录还是 <code>wb-文件整理</code></strong>，
+        <p><strong>第 4 步 · 确认工作目录还是 <code>wb-文件整理</code></strong>，
           然后把下面这段指令发出去：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="出对照表指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -330,7 +328,7 @@ DSC00128.jpg
 5. 只生成这张表，不要重命名、不要移动、不要删除任何文件。</code></pre>
         </div>
 
-        <p><strong>第 2 步 · 打开 <code>rename-plan.md</code>，对着下面三条核</strong></p>
+        <p><strong>第 5 步 · 打开 <code>rename-plan.md</code>，对着下面三条核</strong></p>
         <ol class="steps">
           <li><b>是不是正好 12 行</b><span>和 <code>input</code> 里的文件数对上，少了就是漏了文件。</span></li>
           <li><b>每一行都有「依据」</b><span>依据列空着，等于它随手起的名字，不可信。</span></li>
@@ -397,7 +395,7 @@ DSC00128.jpg
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ③·按对照表执行归档，并验收 <em>约 12 分钟</em></div>
+        <div class="task__hd">实操 ②·按对照表执行归档，并验收 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：按类型分好的 <code>input</code> 目录、一份
           <code>inventory.xlsx</code> 清单，以及结果区里可追溯的「变更」记录——
           每个文件去了哪，你都能说清。</p>
@@ -540,7 +538,7 @@ DSC00128.jpg
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ④·把社团会议转写稿变成纪要 + 待办 <em>约 12 分钟</em></div>
+        <div class="task__hd">实操 ③·把社团会议转写稿变成纪要 + 待办 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：<code>会议纪要.md</code> 和 <code>待办清单.md</code> 两个文件，
           原文 <code>meeting.txt</code> 一个字都没被改动。</p>
 

@@ -41,7 +41,7 @@
         <span class="callout__t">提前说清楚</span>
         本课<strong>不再重复</strong>第 8 次课「怎么装、怎么造技能」的操作步骤，也<strong>不再重复</strong>第 18 次课
         「怎么接连接器、怎么建定时任务」的操作步骤——需要用到时只给一句入口提示和一个 <code>xref</code> 链接。<br>
-        另外，四个实操<strong>前后相接、共用一个岗位</strong>：电商运营专员。
+        另外，三个实操<strong>前后相接、共用一个岗位</strong>：电商运营专员。
         ① 列的清单是 ② 的选料，② 画的工作流是 ③ 的图纸，③ 沉淀的技能是 ④ 自动化的零件。
         四步走完，你手上是一套能一直用的岗位小系统，不是四份互不相干的练习。
       </div>
@@ -67,10 +67,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-list"><b>01</b>岗位高频任务清单怎么列 <em>＋实操①</em></a>
-        <a href="#s-flow"><b>02</b>典型行业工作流长什么样 <em>＋实操②</em></a>
-        <a href="#s-split"><b>03</b>哪些沉淀成 Skill、哪些做成自动化 <em>＋实操③</em></a>
-        <a href="#s-keep"><b>04</b>沉淀之后怎么维护 <em>＋实操④</em></a>
+        <a href="#s-list"><b>01</b>岗位高频任务清单怎么列</a>
+        <a href="#s-flow"><b>02</b>典型行业工作流长什么样 <em>＋实操①</em></a>
+        <a href="#s-split"><b>03</b>哪些沉淀成 Skill、哪些做成自动化 <em>＋实操②</em></a>
+        <a href="#s-keep"><b>04</b>沉淀之后怎么维护 <em>＋实操③</em></a>
         <a href="#s-quiz"><b>05</b>随堂自测</a>
       </div>
       <div class="callout callout--quote">
@@ -148,8 +148,84 @@
         </div>
       </div>
 
+    </section>
+
+    <section class="sec" id="s-flow">
+      <h2>二、典型行业工作流：把一件活写成四段<span class="sec__tag">方法</span></h2>
+      <p>
+        清单有了，下一步最容易卡住：<strong>一条任务到底是怎么走完的，说不清</strong>。
+        你心里知道「上新要写文案」，但说不出这件事从哪开始、到哪结束、做成什么样算好。
+      </p>
+      <p>
+        说不清的后果很直接——你把活丢给 AI，它这次做成这样、下次做成那样，
+        你只能每次都重新解释一遍。<strong>不是 AI 不稳定，是你没给它一张稳定的图纸。</strong>
+      </p>
+      <p>这张图纸就叫<strong>工作流</strong>。它只有四段，一段都不能少：</p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>回答什么</th><th>常见错误</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>① 输入</strong></td>
+              <td>开工前必须拿到什么（文件名、字段、谁给的）</td>
+              <td>写「商品资料」——它不知道去哪拿、也不知道里面有哪些字段</td>
+            </tr>
+            <tr>
+              <td><strong>② 处理</strong></td>
+              <td>按什么步骤做，一二三步写清楚</td>
+              <td>写「分析并优化」——这不是步骤，是愿望</td>
+            </tr>
+            <tr>
+              <td><strong>③ 输出</strong></td>
+              <td>落到哪个文件、什么格式、有哪些字段</td>
+              <td>写「给一份文案」——没有文件名，就没有交接，也没有复用</td>
+            </tr>
+            <tr>
+              <td><strong>④ 验收</strong></td>
+              <td>做到什么算做完，写成能判断的陈述句</td>
+              <td><strong>这一栏空着</strong>——空着就等于每次结果好坏全靠运气</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② 一条工作流的四段：点「下一步」看它怎么走完</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>①</b>输入<br><span class="dim">商品参数表</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>②</b>处理<br><span class="dim">提炼卖点 → 写三段</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>③</b>输出<br><span class="dim">内容包 md</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>④</b>验收<br><span class="dim">人逐条核</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意。</strong>四段内容取自本课模拟的「新品上架内容包」工作流，
+            用来演示一段一段走的顺序，不是真实后台的执行记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">四段里最容易被省掉的是「验收」</span>
+        验收不是「检查一下」这种话，而是<strong>能一句判断对错的标准</strong>：
+        「三条卖点都对应参数表里的一行，多出来的删掉」「价格、材质、尺寸不得与参数表不一致，不一致标【待核】」。<br>
+        写成这样，AI 才知道做到哪一步算完；也只有这样，你才有资格把这件事交给它自己跑。
+      </div>
+
       <div class="task">
-        <div class="task__hd">动手做 ①·让 AI 列出电商运营专员一周的高频任务清单 <em>约 10 分钟</em></div>
+        <div class="task__hd">动手做 ①·列出岗位高频任务清单，再写成四段工作流 <em>约 18 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份 <code>01-岗位高频任务清单.md</code>——
           12 条以上任务，每条带频率、单次耗时、步骤是否固定，末尾标出 3 条最值得沉淀的。</p>
 
@@ -259,89 +335,11 @@
             <em>它一条都没补</em>：把流水账再贴一次，让它「按周一到周六逐天对，每天单独报一遍」。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：这份 <code>01-岗位高频任务清单.md</code>。下一节要直接从里面挑一条来画工作流。</p>
-      </div>
-    </section>
-
-    <section class="sec" id="s-flow">
-      <h2>二、典型行业工作流：把一件活写成四段<span class="sec__tag">方法</span></h2>
-      <p>
-        清单有了，下一步最容易卡住：<strong>一条任务到底是怎么走完的，说不清</strong>。
-        你心里知道「上新要写文案」，但说不出这件事从哪开始、到哪结束、做成什么样算好。
-      </p>
-      <p>
-        说不清的后果很直接——你把活丢给 AI，它这次做成这样、下次做成那样，
-        你只能每次都重新解释一遍。<strong>不是 AI 不稳定，是你没给它一张稳定的图纸。</strong>
-      </p>
-      <p>这张图纸就叫<strong>工作流</strong>。它只有四段，一段都不能少：</p>
-
-      <div class="tablewrap">
-        <table class="data">
-          <thead><tr><th>段</th><th>回答什么</th><th>常见错误</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><strong>① 输入</strong></td>
-              <td>开工前必须拿到什么（文件名、字段、谁给的）</td>
-              <td>写「商品资料」——它不知道去哪拿、也不知道里面有哪些字段</td>
-            </tr>
-            <tr>
-              <td><strong>② 处理</strong></td>
-              <td>按什么步骤做，一二三步写清楚</td>
-              <td>写「分析并优化」——这不是步骤，是愿望</td>
-            </tr>
-            <tr>
-              <td><strong>③ 输出</strong></td>
-              <td>落到哪个文件、什么格式、有哪些字段</td>
-              <td>写「给一份文案」——没有文件名，就没有交接，也没有复用</td>
-            </tr>
-            <tr>
-              <td><strong>④ 验收</strong></td>
-              <td>做到什么算做完，写成能判断的陈述句</td>
-              <td><strong>这一栏空着</strong>——空着就等于每次结果好坏全靠运气</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="demo" id="demo2">
-        <div class="demo__bar">
-          <span class="demo__tag">可运行演示</span>
-          <span class="demo__title">② 一条工作流的四段：点「下一步」看它怎么走完</span>
-        </div>
-        <div class="demo__body">
-          <div class="demo__ctrl">
-            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
-            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
-          </div>
-          <div class="flow">
-            <div class="flow__node dim" id="d2-n1"><b>①</b>输入<br><span class="dim">商品参数表</span></div>
-            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
-            <div class="flow__node dim" id="d2-n2"><b>②</b>处理<br><span class="dim">提炼卖点 → 写三段</span></div>
-            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
-            <div class="flow__node dim" id="d2-n3"><b>③</b>输出<br><span class="dim">内容包 md</span></div>
-            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
-            <div class="flow__node dim" id="d2-n4"><b>④</b>验收<br><span class="dim">人逐条核</span></div>
-          </div>
-          <div class="demo__out log" id="d2-out"></div>
-          <div class="demo__note">
-            <strong>教学示意。</strong>四段内容取自本课模拟的「新品上架内容包」工作流，
-            用来演示一段一段走的顺序，不是真实后台的执行记录。
-          </div>
-        </div>
-      </div>
-
-      <div class="callout callout--warn">
-        <span class="callout__t">四段里最容易被省掉的是「验收」</span>
-        验收不是「检查一下」这种话，而是<strong>能一句判断对错的标准</strong>：
-        「三条卖点都对应参数表里的一行，多出来的删掉」「价格、材质、尺寸不得与参数表不一致，不一致标【待核】」。<br>
-        写成这样，AI 才知道做到哪一步算完；也只有这样，你才有资格把这件事交给它自己跑。
-      </div>
-
-      <div class="task">
-        <div class="task__hd">动手做 ②·把「新品上架内容包」写成四段工作流 <em>约 8 分钟</em></div>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一份 <code>02-工作流-新品上架内容包.md</code>——
           输入、处理、输出、验收四段齐全，并标出哪一步最重复、哪一步必须由人拍板。</p>
 
-        <p><strong>第 1 步 · 复制这次要用的素材（2 分钟）</strong></p>
+        <p><strong>第 4 步 · 复制这次要用的素材（2 分钟）</strong></p>
         <p>从清单里挑<strong>「上新写标题、卖点、详情」</strong>这一条来画。它的原料是下面两份：
           一份新品参数，一份往期写得不错的文案（当范本）。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 新品参数 + 往期范本（模拟）· 点右上角复制">
@@ -375,7 +373,7 @@
 </code></pre>
         </div>
 
-        <p><strong>第 2 步 · 让它按四段写出工作流（3 分钟）</strong></p>
+        <p><strong>第 5 步 · 让它按四段写出工作流（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令，跟上面两份素材一起发出去</b><span>素材在前、指令在后。</span></li>
         </ol>
@@ -402,7 +400,7 @@
 </code></pre>
         </div>
 
-        <p><strong>第 3 步 · 让它把工作流真跑一遍，用产出验图纸（2 分钟）</strong></p>
+        <p><strong>第 6 步 · 让它把工作流真跑一遍，用产出验图纸（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这句紧接着发出去</b><span>图纸画得对不对，跑一遍就知道——
             跑不通的地方正是图纸写得含糊的地方。</span></li>
@@ -484,7 +482,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ③·把「按参数写三段卖点」沉淀成技能，并换一款商品验它稳不稳 <em>约 10 分钟</em></div>
+        <div class="task__hd">动手做 ②·把「按参数写三段卖点」沉淀成技能，并换一款商品验它稳不稳 <em>约 10 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一个名为 <code>ec-selling-points</code> 的技能，
           外加它跑出来的两份产出——同一套规则用在两款不同商品上，格式一致。</p>
 
@@ -620,7 +618,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ④·把每日内容包做成定时自动化，并配一张维护卡 <em>约 10 分钟</em></div>
+        <div class="task__hd">动手做 ③·把每日内容包做成定时自动化，并配一张维护卡 <em>约 10 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一个每天 09:00 自动跑的定时任务（只出草稿、不发布），
           外加一份 <code>04-沉淀维护卡.md</code>——版本记录、回归样例、停用条件三样齐全。</p>
 

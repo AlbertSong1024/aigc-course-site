@@ -71,9 +71,9 @@
       <h3>知识点导航</h3>
       <div class="knav">
         <a href="#s-what"><b>01</b>MCP 是什么</a>
-        <a href="#s-flow"><b>02</b>连接器工作流程 <em>＋实操①②</em></a>
-        <a href="#s-perm"><b>03</b>最小权限原则 <em>＋实操③</em></a>
-        <a href="#s-auto"><b>04</b>定时自动化任务 <em>＋实操④</em></a>
+        <a href="#s-flow"><b>02</b>连接器工作流程 <em>＋实操①</em></a>
+        <a href="#s-perm"><b>03</b>最小权限原则 <em>＋实操②</em></a>
+        <a href="#s-auto"><b>04</b>定时自动化任务 <em>＋实操③</em></a>
         <a href="#s-quiz"><b>05</b>随堂自测</a>
       </div>
       <div class="callout callout--quote">
@@ -131,8 +131,9 @@
         ③ <strong>凭证放在哪</strong>——API Key 不能写进对话、不能硬编码进代码，只能放在它指定的配置处。
       </div>
 
+
       <div class="task">
-        <div class="task__hd">动手做 ①·在连接器市场完成一次「权限侦察」 <em>约 8 分钟</em></div>
+        <div class="task__hd">动手做 ①·完成一次权限侦察，再接入一个连接器并调用 <em>约 18 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份连接器权限侦察记录——不安装也能完成，练的是看的能力。</p>
         <p><strong>第 1 步 · 打开连接器列表，挑一个你用得上的（2 分钟）</strong></p>
         <ol class="steps">
@@ -160,17 +161,14 @@
           <li><b>结论有理由</b><span>装或不装都要一句话理由，不许「感觉还行」。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：权限侦察记录。</p>
-      </div>
-
-      <div class="task">
-        <div class="task__hd">动手做 ②·接入一个连接器并完成一次调用 <em>约 10 分钟</em></div>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一个已接入的连接器 + 它完成的一次真实调用 + 执行过程的截图。</p>
-        <p><strong>第 1 步 · 按侦察结论接入（4 分钟）</strong></p>
+        <p><strong>第 4 步 · 按侦察结论接入（4 分钟）</strong></p>
         <ol class="steps">
           <li><b>按流程三步走：装 → 授权 → 确认</b><span>授权时对照侦察记录：<strong>只授权刚才标了「真正需要」的那部分</strong>。
             凭证只放在官方指定的配置位置，<span class="task__warn">绝不写进对话，也绝不硬编码进任何文件</span>。</span></li>
         </ol>
-        <p><strong>第 2 步 · 完成一次真实调用（4 分钟）</strong></p>
+        <p><strong>第 5 步 · 完成一次真实调用（4 分钟）</strong></p>
         <p>用一个具体的任务去调它，指令说清「要它用连接器干什么、产出什么、什么情况下停下问你」：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="调用指令模板 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -185,7 +183,7 @@
 
 完成后告诉我：调用了什么、拿到了什么、什么没做到。</code></pre>
         </div>
-        <p><strong>第 3 步 · 复盘执行过程（2 分钟）</strong></p>
+        <p><strong>第 6 步 · 复盘执行过程（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>执行过程里能看到它调用了连接器</b><span>如果它没用连接器、而是用自己的知识回答了——这不算完成，让它明确用连接器重做。</span></li>
           <li><b>信息都带了来源</b><span>没标来源的条目让它补。<br>
@@ -214,7 +212,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ③·权限对比实验：同一个任务，两种权限 <em>约 8 分钟</em></div>
+        <div class="task__hd">动手做 ②·权限对比实验：同一个任务，两种权限 <em>约 8 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一组对比记录——同一指令在不同权限范围下的行为差异。</p>
         <p><strong>第 1 步 · 设计一个「越界任务」（2 分钟）</strong></p>
         <ol class="steps">
@@ -267,7 +265,7 @@
       <p>所以自动化任务的指令必须比手动任务<strong>多写两样东西</strong>：明确的产出位置，和明确的失败处理。</p>
 
       <div class="task">
-        <div class="task__hd">动手做 ④·创建并验证一个定时自动化任务 <em>约 10 分钟</em></div>
+        <div class="task__hd">动手做 ③·创建并验证一个定时自动化任务 <em>约 10 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一个定时自动任务 + 它的一次（或一次模拟的）执行记录。</p>
         <p><strong>第 1 步 · 选一个「真的值得定时」的小任务（2 分钟）</strong></p>
         <ol class="steps">

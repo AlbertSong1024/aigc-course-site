@@ -43,7 +43,7 @@
         AI 能把「整理了一下数据」写成「主导数据中台建设」，写得很漂亮，
         但面试第一句追问就是「你具体做了哪一步」——<strong>答不上来的简历，比写得差的简历更糟</strong>：
         写得差只是没机会，答不上来是直接出局。<br>
-        四个实操<strong>前后相接、共用一份素材</strong>：模拟学生陈晓雯的简历草稿 + 她的事实底稿。
+        三个实操<strong>前后相接、共用一份素材</strong>：模拟学生陈晓雯的简历草稿 + 她的事实底稿。
         ① 存下这两份文件，② ③ ④ 全部在它们上面改，改到能交出去为止。
       </div>
       <p class="note">
@@ -69,15 +69,15 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-six"><b>01</b>HR 6 秒法则：简历被怎么看 <em>＋实操①</em></a>
-        <a href="#s-star"><b>02</b>STAR 法则：把经历改写清楚 <em>＋实操②</em></a>
-        <a href="#s-ats"><b>03</b>ATS 关键词：让机器先看见你 <em>＋实操③</em></a>
-        <a href="#s-truth"><b>04</b>真实性原则：一句假话毁全篇 <em>＋实操④</em></a>
+        <a href="#s-six"><b>01</b>HR 6 秒法则：简历被怎么看</a>
+        <a href="#s-star"><b>02</b>STAR 法则：把经历改写清楚 <em>＋实操①</em></a>
+        <a href="#s-ats"><b>03</b>ATS 关键词：让机器先看见你 <em>＋实操②</em></a>
+        <a href="#s-truth"><b>04</b>真实性原则：一句假话毁全篇 <em>＋实操③</em></a>
         <a href="#s-quiz"><b>05</b>随堂自测</a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
-        <strong>先修</strong>：<a class="xref" data-lesson="24">第 24 次课</a>的 JD 关键词拆解（本课实操③要用同一份 JD）；
+        <strong>先修</strong>：<a class="xref" data-lesson="24">第 24 次课</a>的 JD 关键词拆解（本课实操②要用同一份 JD）；
         <a class="xref" data-lesson="6">第 6 次课</a>的 Ollama 本地部署（素材里的课程项目就出自那里）；
         <a class="xref" data-lesson="15">第 15 次课</a>的知识库与检索（素材里的检索环节出自那里）。<br>
         <strong>后续</strong>：<a class="xref" data-lesson="26">第 26 次课</a>要模拟面试——
@@ -159,8 +159,86 @@
         判断标准只有一个：这句话删掉，会不会有人发现？
       </div>
 
+    </section>
+
+    <section class="sec" id="s-star">
+      <h2>二、STAR 法则：把「我做过」写成「我做成了什么」<span class="sec__tag">本课核心</span></h2>
+      <p>
+        扫读的问题解决了，接下来是更根本的问题：<strong>你写的是职责，不是经历。</strong>
+        「负责搭建本地问答工具」这句话，换任何一个人、任何一个项目都能用——
+        它就等于什么都没说。
+      </p>
+      <p>
+        STAR 是一套把职责翻译成结果的写法。四个字母对应四件事，
+        <strong>缺一段都不成立</strong>：
+      </p>
+
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>段</th><th>回答什么</th><th>这段最常见的毛病</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>S 情境</strong><br>Situation</td>
+              <td>当时是什么情况、麻烦在哪</td>
+              <td>写一大段项目背景，把「这项目多重要」讲半天</td>
+            </tr>
+            <tr>
+              <td><strong>T 任务</strong><br>Task</td>
+              <td>你要解决的具体问题、你的角色</td>
+              <td>角色写虚：「参与项目」——到底是你做还是旁边看</td>
+            </tr>
+            <tr>
+              <td><strong>A 行动</strong><br>Action</td>
+              <td>你具体做了哪几步，用了什么</td>
+              <td>写「学习并使用了相关技术」，一个动作都没有</td>
+            </tr>
+            <tr>
+              <td><strong>R 结果</strong><br>Result</td>
+              <td>做成了什么样，数字是多少</td>
+              <td><strong>这一段最常空着</strong>，或用「显著提高了效率」糊过去</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo" id="demo2">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">② STAR 四段怎么装配：点「下一步」看一句空话怎么变成一句有结果的经历</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl">
+            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
+            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
+          </div>
+          <div class="flow">
+            <div class="flow__node dim" id="d2-n1"><b>①</b>S 情境<br><span class="dim">麻烦在哪</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
+            <div class="flow__node dim" id="d2-n2"><b>②</b>T 任务<br><span class="dim">我负责哪块</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
+            <div class="flow__node dim" id="d2-n3"><b>③</b>A 行动<br><span class="dim">做了哪几步</span></div>
+            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
+            <div class="flow__node dim" id="d2-n4"><b>④</b>R 结果<br><span class="dim">数字是多少</span></div>
+          </div>
+          <div class="demo__out log" id="d2-out"></div>
+          <div class="demo__note">
+            <strong>教学示意。</strong>四段内容取自本课模拟素材里的「本地课程资料问答工具」，
+            数字全部来自事实底稿，用来演示装配顺序，不是真实项目记录。
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">R 这一段：数字必须是你自己数得出来的</span>
+        「提高了问答效率 30%」这种数字，如果没人测过，就是你给面试官递的一把刀——
+        他只要问一句「30% 是怎么算的」，你就得现编。<br>
+        能写的是这类：<strong>48 份资料里 41 份能一次检索到</strong>（我一份份对过）、
+        <strong>12 条测试问题里 9 条被判可用</strong>（我记了表）。
+        <strong>没测过的就写「未做系统评测」</strong>，这句话不丢人，编一个数才丢人。
+      </div>
+
       <div class="task">
-        <div class="task__hd">动手做 ①·让 AI 扮演 HR，6 秒扫一遍简历，说出记住了什么 <em>约 8 分钟</em></div>
+        <div class="task__hd">动手做 ①·让 AI 扮演 HR 扫一遍简历，再用 STAR 改写一段经历 <em>约 18 分钟</em></div>
         <p><strong>做完你手上会有</strong>：工作目录里两份底料 <code>00-简历草稿.md</code>、<code>00-事实底稿.md</code>，
           外加一份 <code>01-六秒自测报告.md</code>——HR 视角下「记住了什么 / 记不住什么 / 上半页该删什么」。</p>
 
@@ -306,91 +384,11 @@ Python、Office 办公软件、沟通能力、学习能力、团队合作、抗�
             <em>没点全</em>：补一句「按『删掉会不会有人发现』逐行判断个人信息块，一行都不要跳过」。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：<code>01-六秒自测报告.md</code>。下一节要用它定位「哪条经历最该重写」。</p>
-      </div>
-    </section>
-
-    <section class="sec" id="s-star">
-      <h2>二、STAR 法则：把「我做过」写成「我做成了什么」<span class="sec__tag">本课核心</span></h2>
-      <p>
-        扫读的问题解决了，接下来是更根本的问题：<strong>你写的是职责，不是经历。</strong>
-        「负责搭建本地问答工具」这句话，换任何一个人、任何一个项目都能用——
-        它就等于什么都没说。
-      </p>
-      <p>
-        STAR 是一套把职责翻译成结果的写法。四个字母对应四件事，
-        <strong>缺一段都不成立</strong>：
-      </p>
-
-      <div class="tablewrap">
-        <table class="data">
-          <thead><tr><th>段</th><th>回答什么</th><th>这段最常见的毛病</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><strong>S 情境</strong><br>Situation</td>
-              <td>当时是什么情况、麻烦在哪</td>
-              <td>写一大段项目背景，把「这项目多重要」讲半天</td>
-            </tr>
-            <tr>
-              <td><strong>T 任务</strong><br>Task</td>
-              <td>你要解决的具体问题、你的角色</td>
-              <td>角色写虚：「参与项目」——到底是你做还是旁边看</td>
-            </tr>
-            <tr>
-              <td><strong>A 行动</strong><br>Action</td>
-              <td>你具体做了哪几步，用了什么</td>
-              <td>写「学习并使用了相关技术」，一个动作都没有</td>
-            </tr>
-            <tr>
-              <td><strong>R 结果</strong><br>Result</td>
-              <td>做成了什么样，数字是多少</td>
-              <td><strong>这一段最常空着</strong>，或用「显著提高了效率」糊过去</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="demo" id="demo2">
-        <div class="demo__bar">
-          <span class="demo__tag">可运行演示</span>
-          <span class="demo__title">② STAR 四段怎么装配：点「下一步」看一句空话怎么变成一句有结果的经历</span>
-        </div>
-        <div class="demo__body">
-          <div class="demo__ctrl">
-            <button class="btn btn--main" type="button" id="d2-next">下一步</button>
-            <button class="btn btn--ghost" type="button" id="d2-reset">重置</button>
-          </div>
-          <div class="flow">
-            <div class="flow__node dim" id="d2-n1"><b>①</b>S 情境<br><span class="dim">麻烦在哪</span></div>
-            <div class="flow__path"><span class="flow__dot" id="d2-d1"></span></div>
-            <div class="flow__node dim" id="d2-n2"><b>②</b>T 任务<br><span class="dim">我负责哪块</span></div>
-            <div class="flow__path"><span class="flow__dot" id="d2-d2"></span></div>
-            <div class="flow__node dim" id="d2-n3"><b>③</b>A 行动<br><span class="dim">做了哪几步</span></div>
-            <div class="flow__path"><span class="flow__dot" id="d2-d3"></span></div>
-            <div class="flow__node dim" id="d2-n4"><b>④</b>R 结果<br><span class="dim">数字是多少</span></div>
-          </div>
-          <div class="demo__out log" id="d2-out"></div>
-          <div class="demo__note">
-            <strong>教学示意。</strong>四段内容取自本课模拟素材里的「本地课程资料问答工具」，
-            数字全部来自事实底稿，用来演示装配顺序，不是真实项目记录。
-          </div>
-        </div>
-      </div>
-
-      <div class="callout callout--warn">
-        <span class="callout__t">R 这一段：数字必须是你自己数得出来的</span>
-        「提高了问答效率 30%」这种数字，如果没人测过，就是你给面试官递的一把刀——
-        他只要问一句「30% 是怎么算的」，你就得现编。<br>
-        能写的是这类：<strong>48 份资料里 41 份能一次检索到</strong>（我一份份对过）、
-        <strong>12 条测试问题里 9 条被判可用</strong>（我记了表）。
-        <strong>没测过的就写「未做系统评测」</strong>，这句话不丢人，编一个数才丢人。
-      </div>
-
-      <div class="task">
-        <div class="task__hd">动手做 ②·用 STAR 改写「本地课程资料问答工具」这段经历 <em>约 10 分钟</em></div>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一份 <code>02-STAR改写对照.md</code>——
           改前原文、S/T/A/R 四段拆解、改后能直接贴回简历的三条要点（每条带数字）。</p>
 
-        <p><strong>第 1 步 · 让它把要改的那段原文取出来（2 分钟）</strong></p>
+        <p><strong>第 4 步 · 让它把要改的那段原文取出来（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>新建一个对话，把下面这段指令发出去</b><span>
             改之前先钉住原文——不然改完没法对照，也不知道它有没有偷偷加料。</span></li>
@@ -403,7 +401,7 @@ Python、Office 办公软件、沟通能力、学习能力、团队合作、抗�
 </code></pre>
         </div>
 
-        <p><strong>第 2 步 · 按 STAR 四段改写，数字只许来自事实底稿（4 分钟）</strong></p>
+        <p><strong>第 5 步 · 按 STAR 四段改写，数字只许来自事实底稿（4 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令整段复制，紧接着发出去</b><span>
             <span class="task__warn">「数字只许来自事实底稿」这句不许删</span>——
@@ -431,7 +429,7 @@ Python、Office 办公软件、沟通能力、学习能力、团队合作、抗�
 </code></pre>
         </div>
 
-        <p><strong>第 3 步 · 让它回头查一遍有没有偷偷加料（4 分钟）</strong></p>
+        <p><strong>第 6 步 · 让它回头查一遍有没有偷偷加料（4 分钟）</strong></p>
         <ol class="steps">
           <li><b>把下面这句紧接着发出去</b><span>
             这一步是查它，不是查你——它会不会为了「好看」多写一个词，一查就知道。</span></li>
@@ -536,7 +534,7 @@ Python、Office 办公软件、沟通能力、学习能力、团队合作、抗�
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ③·拿目标 JD 的关键词逐条查覆盖，只补真实拥有的 <em>约 8 分钟</em></div>
+        <div class="task__hd">动手做 ②·拿目标 JD 的关键词逐条查覆盖，只补真实拥有的 <em>约 8 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份 <code>03-ATS关键词对照.md</code>——
           11 个关键词逐条判定，分成「已覆盖 / 真实拥有待补 / 没做过不补」三类，
           外加一份 <code>05-简历终稿.md</code>——该补的词改写进去了，没做过的一个都没加。</p>
@@ -710,7 +708,7 @@ Python、Office 办公软件、沟通能力、学习能力、团队合作、抗�
       </div>
 
       <div class="task">
-        <div class="task__hd">动手做 ④·让 AI 当面试官，挑出经不起追问的表述，逐条改到能自圆其说 <em>约 9 分钟</em></div>
+        <div class="task__hd">动手做 ③·让 AI 当面试官，挑出经不起追问的表述，逐条改到能自圆其说 <em>约 9 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份 <code>04-真实性审查表.md</code>（逐条列出原表述、追问、改法、证据出处），
           以及一份改干净的 <code>05-简历终稿.md</code>——里面每一句你都能讲三分钟。</p>
 
@@ -979,7 +977,7 @@ D. 实际只参加过一次需求讨论，却在简历里写"主导方案设计"
         <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
       </p>
       <p class="note">
-        五个实操产出物（六秒自测报告、STAR 改写对照、ATS 关键词对照、真实性审查表、简历终稿）按正文要求提交，作业只需完成上面 6 题。
+        三个实操的产出物（六秒自测报告、STAR 改写对照、ATS 关键词对照、真实性审查表、简历终稿）按正文要求提交，作业只需完成上面 6 题。
       </p>
     </section>
 

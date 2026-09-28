@@ -59,10 +59,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-flow"><b>01</b>多模态视频生产流程 <em>＋实操①</em></a>
-        <a href="#s-source"><b>02</b>资讯搜集与画面素材 <em>＋实操②</em></a>
-        <a href="#s-brief"><b>03</b>简报整合与剪辑合成 <em>＋实操③</em></a>
-        <a href="#s-apply"><b>04</b>视频场景应用与合规 <em>＋实操④</em></a>
+        <a href="#s-flow"><b>01</b>多模态视频生产流程</a>
+        <a href="#s-source"><b>02</b>资讯搜集与画面素材 <em>＋实操①</em></a>
+        <a href="#s-brief"><b>03</b>简报整合与剪辑合成 <em>＋实操②</em></a>
+        <a href="#s-apply"><b>04</b>视频场景应用与合规 <em>＋实操③</em></a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
@@ -142,7 +142,7 @@
             <tr>
               <td><strong>更新日志 5.5.1（2026-09-02）</strong></td>
               <td>「视频生成支持选择画面比例、是否带声音，并可描述不希望出现的内容」</td>
-              <td>实操④ 里据此写场景参数，但仍注明以实际版本为准</td>
+              <td>实操③ 里据此写场景参数，但仍注明以实际版本为准</td>
             </tr>
             <tr>
               <td><strong>更新日志 5.5.3（2026-09-04）</strong></td>
@@ -167,8 +167,46 @@
         「做不到就明确告诉我做不到，并给出替代方案，不要假装成功」。
       </div>
 
+    </section>
+
+    <section class="sec" id="s-source">
+      <h2>二、资讯搜集与画面素材<span class="sec__tag">素材</span></h2>
+      <p>
+        视频和简报最常见的打架方式是：片子里说「三场讲座」，简报里写「两场讲座」，两边都挺像真的。
+        根源在于它们其实<strong>共用同一批事实素材</strong>，却被当成两件事分开做了一遍。
+      </p>
+      <p>
+        正确的顺序是先有<strong>一份带来源的资讯清单</strong>，再由它同时派生出画面素材和简报。
+        清单里每一条都要能回答四个问题：来源是谁、什么时候的、能不能复核、和其他条冲突时怎么办。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>资料状态</th><th>清单里怎么写</th><th>能不能进成片</th></tr></thead>
+          <tbody>
+            <tr><td><strong>单来源、可复核</strong></td><td>写内容 + 来源名称 + 日期</td><td>可以</td></tr>
+            <tr><td><strong>两个来源冲突</strong></td><td>两个都列，标【待确认】</td><td>不进成片，改用不涉及该数字的说法</td></tr>
+            <tr><td><strong>官方未公布</strong></td><td>写【未公布】，不补数字</td><td>不进成片</td></tr>
+            <tr><td><strong>查不到</strong></td><td>写【待补】，并进「缺口」小节</td><td>不进成片，等补到再改</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>官方口径：资讯简报能查到什么</h3>
+      <p>
+        官方「实践五：每日自动推送资讯简报」给出的流程是：<strong>先手动触发第一条简报，确认内容与发送链路正常，
+        再创建定时推送任务</strong>；个性化调整可以从四个方向改（新增数据源、调整资讯范围、调整写作风格、限制发送日期）；
+        使用建议是「先验证发送链路」「控制内容长度」「逐步细化规则」。
+      </p>
+      <div class="callout callout--tip">
+        <span class="callout__t">一个版本差异，正好当教学点</span>
+        官方「实践五」页里用的是「自动化任务」，但更新日志 <strong>5.5.4（2026-09-08）</strong>写明：
+        客户端已将「自动化」统一更名为<strong>「定时任务」</strong>。
+        文档更新慢于客户端是常态——<strong>遇到名称对不上，以你客户端上实际看到的为准</strong>，
+        并在作业里写明你看到的是哪一个。
+      </div>
+
       <div class="task">
-        <div class="task__hd">实操 ①·生成 30 秒读书节短片的分镜脚本 <em>约 8 分钟</em></div>
+        <div class="task__hd">实操 ①·生成分镜脚本，并逐格锁定画面素材与信息来源 <em>约 15 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份 5 镜头、合计 30 秒的分镜脚本表，每个镜头都写明时长、画面、口播、字幕和信息来源。</p>
 
         <p><strong>第 1 步 · 复制下面这张活动信息卡</strong></p>
@@ -221,50 +259,10 @@
           <li><b>【待补】还在，没有被编成事实</b><span>信息卡里没有的场次、人数、奖品一律是【待补】。<br><em>出现编造的数字</em>：把「不许自己补一个数字」提到指令第一行再发一次。</span></li>
           <li><b>第 5 镜头有行动引导</b><span>写清去哪、什么时候、怎么报名，且只用作信息卡里的方式。<br><em>结尾是口号</em>：点名第 5 镜头要求改成具体动作，口号不能替代行动引导。</span></li>
         </ol>
-      </div>
-    </section>
-
-    <section class="sec" id="s-source">
-      <h2>二、资讯搜集与画面素材<span class="sec__tag">素材</span></h2>
-      <p>
-        视频和简报最常见的打架方式是：片子里说「三场讲座」，简报里写「两场讲座」，两边都挺像真的。
-        根源在于它们其实<strong>共用同一批事实素材</strong>，却被当成两件事分开做了一遍。
-      </p>
-      <p>
-        正确的顺序是先有<strong>一份带来源的资讯清单</strong>，再由它同时派生出画面素材和简报。
-        清单里每一条都要能回答四个问题：来源是谁、什么时候的、能不能复核、和其他条冲突时怎么办。
-      </p>
-      <div class="tablewrap">
-        <table class="data">
-          <thead><tr><th>资料状态</th><th>清单里怎么写</th><th>能不能进成片</th></tr></thead>
-          <tbody>
-            <tr><td><strong>单来源、可复核</strong></td><td>写内容 + 来源名称 + 日期</td><td>可以</td></tr>
-            <tr><td><strong>两个来源冲突</strong></td><td>两个都列，标【待确认】</td><td>不进成片，改用不涉及该数字的说法</td></tr>
-            <tr><td><strong>官方未公布</strong></td><td>写【未公布】，不补数字</td><td>不进成片</td></tr>
-            <tr><td><strong>查不到</strong></td><td>写【待补】，并进「缺口」小节</td><td>不进成片，等补到再改</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>官方口径：资讯简报能查到什么</h3>
-      <p>
-        官方「实践五：每日自动推送资讯简报」给出的流程是：<strong>先手动触发第一条简报，确认内容与发送链路正常，
-        再创建定时推送任务</strong>；个性化调整可以从四个方向改（新增数据源、调整资讯范围、调整写作风格、限制发送日期）；
-        使用建议是「先验证发送链路」「控制内容长度」「逐步细化规则」。
-      </p>
-      <div class="callout callout--tip">
-        <span class="callout__t">一个版本差异，正好当教学点</span>
-        官方「实践五」页里用的是「自动化任务」，但更新日志 <strong>5.5.4（2026-09-08）</strong>写明：
-        客户端已将「自动化」统一更名为<strong>「定时任务」</strong>。
-        文档更新慢于客户端是常态——<strong>遇到名称对不上，以你客户端上实际看到的为准</strong>，
-        并在作业里写明你看到的是哪一个。
-      </div>
-
-      <div class="task">
-        <div class="task__hd">实操 ②·按脚本逐格锁定画面素材与信息来源 <em>约 7 分钟</em></div>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一张 5 行的「镜头—画面素材—信息来源」对照表，外加每个镜头的画面文件（当前版本能生成时）或画面描述卡（不能生成时）。</p>
 
-        <p><strong>第 1 步 · 复制下面这份素材准备规则</strong></p>
+        <p><strong>第 5 步 · 复制下面这份素材准备规则</strong></p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 画面素材规则（课堂统一口径）">
           <div class="codeblock__bar"></div>
 <pre><code>【画面素材规则 · 课堂统一口径】
@@ -274,7 +272,7 @@
 每格画面必须能对回一条资讯来源；画面里出现的文字（书名、时间、地点）必须与活动信息卡完全一致。</code></pre>
         </div>
 
-        <p><strong>第 2 步 · 把下面这段指令连同素材规则、实操① 的脚本一起发给 WorkBuddy</strong></p>
+        <p><strong>第 6 步 · 把下面这段指令连同素材规则、实操① 的脚本一起发给 WorkBuddy</strong></p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 逐格备画面">
           <div class="codeblock__bar"></div>
 <pre><code>请按实操① 确认的 5 个镜头，逐格生成画面素材，并输出一张对照表。
@@ -289,7 +287,7 @@
    不要假装已经生成成功，不要编造文件名。</code></pre>
         </div>
 
-        <p><strong>第 3 步 · 让 AI 逐格复核这张对照表</strong></p>
+        <p><strong>第 7 步 · 让 AI 逐格复核这张对照表</strong></p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="复核指令 · 直接复制发送">
           <div class="codeblock__bar"></div>
 <pre><code>请逐格复核刚才的对照表并直接修正，输出修正后的完整表格：
@@ -301,7 +299,7 @@
 不得新增镜头，不得新增素材类型。</code></pre>
         </div>
 
-        <p><strong>第 4 步 · 做到下面四条，就算做完了</strong></p>
+        <p><strong>第 8 步 · 做到下面四条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>5 行都在，每行都有信息来源</b><span>来源空白的一律是【待补】，不是留空。<br><em>整行来源为空</em>：让它补【待补】并写进缺口清单，不允许用「校园常见做法」搪塞。</span></li>
           <li><b>没有一格含真人面孔</b><span>「是否含真人面孔」列全部是「否」。<br><em>出现「是」</em>：点名该格要求改写画面，这是红线不是偏好。</span></li>
@@ -339,7 +337,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ③·整合一页式简报并压成 30 秒成片 <em>约 13 分钟</em></div>
+        <div class="task__hd">实操 ②·整合一页式简报并压成 30 秒成片 <em>约 13 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一页式《校园读书节资讯简报》+ 一支 30 秒成片 <code>校园读书节宣传短片_v1.mp4</code>；当前版本无法合成时，则是一份可直接执行的合成说明单。</p>
 
         <p><strong>第 1 步 · 复制下面这份资讯清单</strong></p>
@@ -390,7 +388,7 @@
         <p><strong>第 4 步 · 按时间轴合成成片</strong></p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 C · 合成成片">
           <div class="codeblock__bar"></div>
-<pre><code>请按上面的镜头时间轴，把实操② 的画面素材、口播文案和字幕合成 30 秒成片，
+<pre><code>请按上面的镜头时间轴，把实操① 的画面素材、口播文案和字幕合成 30 秒成片，
 输出 mp4 文件，文件名「校园读书节宣传短片_v1.mp4」。
 要求：
 1. 画幅 16:9，片长 30 秒；字幕全程可见，字号在手机上可读；
@@ -479,7 +477,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ④·四查成片并给出两个场景的版本说明 <em>约 8 分钟</em></div>
+        <div class="task__hd">实操 ③·四查成片并给出两个场景的版本说明 <em>约 8 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一份成片检查报告（四查逐项结果）+ 校内大屏与手机竖屏两个场景的版本说明。</p>
 
         <p><strong>第 1 步 · 复制下面这份发布前四查清单</strong></p>

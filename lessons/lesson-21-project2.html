@@ -66,10 +66,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-need"><b>01</b>需求分析：问成任务说明 <em>＋实操①</em></a>
-        <a href="#s-plan"><b>02</b>方案设计：这一步该用什么 <em>＋实操②</em></a>
-        <a href="#s-build"><b>03</b>实现：做出三份真文件 <em>＋实操③</em></a>
-        <a href="#s-accept"><b>04</b>测试、文档与展示 <em>＋实操④</em></a>
+        <a href="#s-need"><b>01</b>需求分析：问成任务说明</a>
+        <a href="#s-plan"><b>02</b>方案设计：这一步该用什么 <em>＋实操①</em></a>
+        <a href="#s-build"><b>03</b>实现：做出三份真文件 <em>＋实操②</em></a>
+        <a href="#s-accept"><b>04</b>测试、文档与展示 <em>＋实操③</em></a>
         <a href="#s-quiz"><b>05</b>随堂自测</a>
       </div>
       <div class="callout callout--quote">
@@ -127,89 +127,6 @@
         所以第一步的指令里必须写死一句：<strong>「缺的信息写『缺』，不许替我猜一个答案」</strong>。
       </div>
 
-      <div class="task">
-        <div class="task__hd">实操 ①·把一句话问成一份《任务说明.md》 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一份六要素齐全的任务说明 Markdown 文件，存在工作目录的 <code>input/</code> 下。</p>
-        <p><strong>准备</strong>：在工作目录里建一个 <code>input</code> 文件夹（后面四段实操都用它当输入区）。</p>
-
-        <p><strong>第 1 步 · 先不许它动手，只让它列出缺什么（3 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>复制下面这段指令</b><span>整段粘贴，<span class="task__warn">不要自己改写措辞</span>——
-            「先不要动手」这句是这段指令的关键，删了就白做。</span></li>
-        </ol>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令①·只问缺口 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>下面这段话是学生会副主席在群里提的需求：
-
-「月底把报销那些票整一下，再出个简报，顺便给李老师一页汇报。」
-
-请你先不要动手做任何一个文件，只做一件事：
-按「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六要素，
-逐条列出这段话里缺哪些信息。
-
-输出一张三列表：
-| 要素 | 缺什么 | 不补上会有什么后果 |
-
-要求：
-1. 六个要素一个都不能跳过，连你觉得不重要的也要列出后果；
-2. 缺的东西写「缺」，不要替我猜一个答案，不要给建议口径；
-3. 「不补上会有什么后果」要具体到某一件会做错的事，不许写「影响效率」这类空话。</code></pre>
-        </div>
-
-        <p><strong>第 2 步 · 把已知信息发过去，让它据此定稿（3 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>先复制下面这份已知信息</b><span>这是模拟数据，照抄即可，不要改成你自己的真实班团数据。</span></li>
-        </ol>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 已知信息（模拟数据） · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>【已知信息 · 模拟数据，用于课堂练习】
-1. 输入：本月报销流水，9 条记录，文件为 input/2026-09-报销流水.csv
-2. 时间范围：2026-09-01 至 2026-09-30
-3. 涉及部门：文艺部、体育部、宣传部、外联部，共 4 个
-4. 最终要交付三份文件：
-   - output/2026-09-报销汇总.xlsx（含「明细」「部门汇总」「待核实」三个工作表）
-   - output/2026-09-月度简报.docx（发给全会同学，800 字以内）
-   - output/2026-09-指导老师汇报.docx（给指导老师，控制在一页）
-5. 约束：
-   - 没有发票的那条标【待核实】，不许自己补数字
-   - 重复票据号只保留一条，并在「待核实」表里写明被删的那条
-   - 金额保留两位小数，不许四舍五入到整元
-   - 不许改动 input 目录里的原始文件
-6. 验收：
-   - 明细表 8 行（去重后），合计数与流水逐笔对得上
-   - 三份文件都在 output/ 下，文件名与上面对齐</code></pre>
-        </div>
-        <ol class="steps" start="2">
-          <li><b>紧接着把下面这段指令发过去</b><span>已知信息在前、指令在后，同一条消息里发。</span></li>
-        </ol>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令②·产出任务说明文件 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>根据上面这份已知信息，把群里的那段需求写成一份任务说明，
-按「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六要素逐条写清楚，
-每条一句话，写成 Markdown 文件，存到 input/任务说明.md。
-
-要求：
-1. 每条都以「目标：」「输入：」这类要素名开头，方便我一眼扫；
-2. 「约束」和「验收」两条必须写具体数字和文件路径，不许出现「规范」「适当」「尽量」这类词；
-3. 已知信息没提到的内容一律写【待补】，不要自己发明；
-4. 全文不超过 400 字。</code></pre>
-        </div>
-
-        <p><strong>第 3 步 · 做到这四条，就算做完了</strong></p>
-        <ol class="steps">
-          <li><b><code>input/任务说明.md</code> 生成了，六要素一条不少</b><span>逐个要素数一遍。<br>
-            <em>少了某一要素</em>：直接点名——「缺了『约束』，补上」，不要重发整段指令。</span></li>
-          <li><b>「约束」和「验收」写的是数字和路径</b><span>「验收」那条应该能读出「8 行」「3951.50」
-            这类内容；读出「符合要求」就是没写。<br>
-            <em>写成了形容词</em>：补一句「『约束』和『验收』两条必须写具体数字和文件路径，不许写形容词」。</span></li>
-          <li><b>所有路径与已知信息完全一致</b><span>是 <code>input/</code> 和 <code>output/</code>，四个部门的写法也一致。<br>
-            <em>路径被它改了</em>：以已知信息为准，让它把路径改回来——后面三步都要靠这个路径找文件。</span></li>
-          <li><b>它没替你编</b><span>文件里出现【待补】才是对的；一处【待补】都没有，
-            多半是它自己把责任人和日期编上了。<br>
-            <em>没有【待补】</em>：补一句「我不知道的事写【待补】，不要编」，重新生成。</span></li>
-        </ol>
-        <p><strong>要交的成果</strong>：<code>input/任务说明.md</code>。<span class="task__warn">这个文件后面三段全程要用，别删</span></p>
-      </div>
     </section>
 
     <section class="sec" id="s-plan">
@@ -330,9 +247,90 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ②·产出一张《方案设计.md》选型表 <em>约 8 分钟</em></div>
+        <div class="task__hd">实操 ①·把一句话问成《任务说明》，再产出方案设计选型表 <em>约 16 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一份六要素齐全的任务说明 Markdown 文件，存在工作目录的 <code>input/</code> 下。</p>
+        <p><strong>准备</strong>：在工作目录里建一个 <code>input</code> 文件夹（后面四段实操都用它当输入区）。</p>
+
+        <p><strong>第 1 步 · 先不许它动手，只让它列出缺什么（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>复制下面这段指令</b><span>整段粘贴，<span class="task__warn">不要自己改写措辞</span>——
+            「先不要动手」这句是这段指令的关键，删了就白做。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令①·只问缺口 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>下面这段话是学生会副主席在群里提的需求：
+
+「月底把报销那些票整一下，再出个简报，顺便给李老师一页汇报。」
+
+请你先不要动手做任何一个文件，只做一件事：
+按「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六要素，
+逐条列出这段话里缺哪些信息。
+
+输出一张三列表：
+| 要素 | 缺什么 | 不补上会有什么后果 |
+
+要求：
+1. 六个要素一个都不能跳过，连你觉得不重要的也要列出后果；
+2. 缺的东西写「缺」，不要替我猜一个答案，不要给建议口径；
+3. 「不补上会有什么后果」要具体到某一件会做错的事，不许写「影响效率」这类空话。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 把已知信息发过去，让它据此定稿（3 分钟）</strong></p>
+        <ol class="steps">
+          <li><b>先复制下面这份已知信息</b><span>这是模拟数据，照抄即可，不要改成你自己的真实班团数据。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 已知信息（模拟数据） · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>【已知信息 · 模拟数据，用于课堂练习】
+1. 输入：本月报销流水，9 条记录，文件为 input/2026-09-报销流水.csv
+2. 时间范围：2026-09-01 至 2026-09-30
+3. 涉及部门：文艺部、体育部、宣传部、外联部，共 4 个
+4. 最终要交付三份文件：
+   - output/2026-09-报销汇总.xlsx（含「明细」「部门汇总」「待核实」三个工作表）
+   - output/2026-09-月度简报.docx（发给全会同学，800 字以内）
+   - output/2026-09-指导老师汇报.docx（给指导老师，控制在一页）
+5. 约束：
+   - 没有发票的那条标【待核实】，不许自己补数字
+   - 重复票据号只保留一条，并在「待核实」表里写明被删的那条
+   - 金额保留两位小数，不许四舍五入到整元
+   - 不许改动 input 目录里的原始文件
+6. 验收：
+   - 明细表 8 行（去重后），合计数与流水逐笔对得上
+   - 三份文件都在 output/ 下，文件名与上面对齐</code></pre>
+        </div>
+        <ol class="steps" start="2">
+          <li><b>紧接着把下面这段指令发过去</b><span>已知信息在前、指令在后，同一条消息里发。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="指令②·产出任务说明文件 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>根据上面这份已知信息，把群里的那段需求写成一份任务说明，
+按「目标 / 输入 / 动作 / 约束 / 输出 / 验收」六要素逐条写清楚，
+每条一句话，写成 Markdown 文件，存到 input/任务说明.md。
+
+要求：
+1. 每条都以「目标：」「输入：」这类要素名开头，方便我一眼扫；
+2. 「约束」和「验收」两条必须写具体数字和文件路径，不许出现「规范」「适当」「尽量」这类词；
+3. 已知信息没提到的内容一律写【待补】，不要自己发明；
+4. 全文不超过 400 字。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这四条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b><code>input/任务说明.md</code> 生成了，六要素一条不少</b><span>逐个要素数一遍。<br>
+            <em>少了某一要素</em>：直接点名——「缺了『约束』，补上」，不要重发整段指令。</span></li>
+          <li><b>「约束」和「验收」写的是数字和路径</b><span>「验收」那条应该能读出「8 行」「3951.50」
+            这类内容；读出「符合要求」就是没写。<br>
+            <em>写成了形容词</em>：补一句「『约束』和『验收』两条必须写具体数字和文件路径，不许写形容词」。</span></li>
+          <li><b>所有路径与已知信息完全一致</b><span>是 <code>input/</code> 和 <code>output/</code>，四个部门的写法也一致。<br>
+            <em>路径被它改了</em>：以已知信息为准，让它把路径改回来——后面三步都要靠这个路径找文件。</span></li>
+          <li><b>它没替你编</b><span>文件里出现【待补】才是对的；一处【待补】都没有，
+            多半是它自己把责任人和日期编上了。<br>
+            <em>没有【待补】</em>：补一句「我不知道的事写【待补】，不要编」，重新生成。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：<code>input/任务说明.md</code>。<span class="task__warn">这个文件后面三段全程要用，别删</span></p>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：一份四步走 + 六形态取舍的《方案设计.md》，存在 <code>input/</code> 下。</p>
-        <p><strong>第 1 步 · 让它先出方案，不许碰文件（3 分钟）</strong></p>
+        <p><strong>第 4 步 · 让它先出方案，不许碰文件（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>确认 <code>input/任务说明.md</code> 还在</b><span>实操① 的成果，本段要基于它做。</span></li>
           <li><b>复制下面这段指令发出去</b><span><span class="task__warn">「先不要生成任何文件」这句别删</span>——
@@ -360,7 +358,7 @@
 确认方案之后我才会让你动手，先把方案写成 input/方案设计.md。</code></pre>
         </div>
 
-        <p><strong>第 2 步 · 做到这四条，就算做完了</strong></p>
+        <p><strong>第 5 步 · 做到这四条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>四件事一行不少</b><span>含第 ④ 件「下个月怎么办」——漏掉这项，就等于每月重来。<br>
             <em>只写了三件事</em>：补一句「再加一条：下个月这套活怎么用自动化或知识库省力」。</span></li>
@@ -403,7 +401,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ③·做出「汇总表 + 简报 + 一页汇报」三件套 <em>约 15 分钟</em></div>
+        <div class="task__hd">实操 ②·做出「汇总表 + 简报 + 一页汇报」三件套 <em>约 15 分钟</em></div>
         <p><strong>做完你手上会有</strong>：<code>output/</code> 目录下三份能直接打开的文件，外加一份产出清单。</p>
 
         <p><strong>第 1 步 · 备好输入：把流水存成 CSV（2 分钟）</strong></p>
@@ -532,7 +530,7 @@
       </p>
 
       <div class="task">
-        <div class="task__hd">实操 ④·自测 + 项目文档 + 90 秒讲稿 <em>约 12 分钟</em></div>
+        <div class="task__hd">实操 ③·自测 + 项目文档 + 90 秒讲稿 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一张自测表、一份《项目文档.md》、一段能直接念的讲稿。</p>
 
         <p><strong>第 1 步 · 让它先自测，不许给及格结论（4 分钟）</strong></p>

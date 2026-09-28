@@ -383,6 +383,36 @@ async function smokeCheck(file, opts) {
     const { doc } = staticCheck(html, l);
     syntaxCheck(html, l.file);
     indexCheck(doc, l, SECTIONS);
+
+    /* 第 11 次课之后每课实操块 ≤3（2026-09-28 教师定的口径：太多学生做不完）。
+       合并块用 .task__sep 分段、块内步骤整体重编号，这里一并卡住。 */
+    if (l.no >= 11) {
+      const tc = (html.match(/<div class="task">/g) || []).length;
+      if (tc > 3) fail(`实操块 ${tc} 个，超过上限 3（第 11 次课之后每课最多 3 个）`);
+      else ok(`实操块 ${tc} 个（≤3）`);
+    }
+
+    /* 每个实操块内的步骤编号必须连续 1..K。
+       合并两个实操后最常见的漏改就是块里出现两个「第 1 步」，所以全站都查。 */
+    const tParts = html.split('<div class="task">');
+    for (let i = 1; i < tParts.length; i++) {
+      const seg = tParts[i];
+      let depth = 1, cut = seg.length;
+      const re = /<\/?div\b[^>]*>/g;
+      let m;
+      while ((m = re.exec(seg))) {
+        depth += m[0].startsWith("</") ? -1 : 1;
+        if (depth === 0) { cut = m.index; break; }
+      }
+      const body = seg.slice(0, cut);
+      const steps = (body.match(/<strong>第 \d+ 步 ·/g) || [])
+        .map((x) => parseInt(x.replace(/\D+/g, ""), 10));
+      const want = steps.map((_, j) => j + 1);
+      if (steps.join(",") !== want.join(",")) {
+        fail(`第 ${i} 个实操块步骤编号不连续：${steps.join("→") || "无"}`);
+      }
+    }
+
     await smokeCheck(file, { minQuiz: 4 });
   }
 

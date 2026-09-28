@@ -64,10 +64,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-hallu"><b>01</b>AI 为什么会瞎编 <em>＋实操①</em></a>
-        <a href="#s-rag"><b>02</b>RAG：闭卷改开卷 <em>＋实操②</em></a>
-        <a href="#s-chunk"><b>03</b>切片与向量化 <em>＋实操③</em></a>
-        <a href="#s-ima"><b>04</b>IMA 知识库入门 <em>＋实操④</em></a>
+        <a href="#s-hallu"><b>01</b>AI 为什么会瞎编</a>
+        <a href="#s-rag"><b>02</b>RAG：闭卷改开卷 <em>＋实操①</em></a>
+        <a href="#s-chunk"><b>03</b>切片与向量化 <em>＋实操②</em></a>
+        <a href="#s-ima"><b>04</b>IMA 知识库入门 <em>＋实操③</em></a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
@@ -147,49 +147,6 @@
         真正有效的做法是——<strong>换掉它回答的依据</strong>，这就是下一节的 RAG。
       </div>
 
-      <div class="task">
-        <div class="task__hd">实操 ①·亲手造一次幻觉 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一段 AI 编造的回答，外加它自己给出的「出处」——
-          两样放在一起，你就能看清它凭的是什么。</p>
-
-        <p><strong>第 1 步 · 新建一个对话（<span class="task__warn">必须新建</span>）</strong></p>
-        <ol class="steps">
-          <li><b>在 WorkBuddy 里开一个全新的对话</b><span>不要接着前面的任务聊——
-            旧上下文里如果有资料，这次实验就不准了。</span></li>
-          <li><b>把下面这段指令复制进去，直接发送</b><span>问的是它<strong>不可能知道</strong>的两件事，
-            看它会不会照样给答案。</span></li>
-        </ol>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 段指令 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>请直接回答下面两个问题，不要说"建议咨询学校"这类话：
-1. 《AIGC应用与实践》这门课的实训室，工作日开放到几点？周末开放到几点？
-2. 这门课期末补考申请，需要提交几份材料、交给哪个部门？
-请给出具体的时间和份数。</code></pre>
-        </div>
-
-        <p><strong>第 2 步 · 追问它的依据（2 分钟）</strong></p>
-        <p>把下面这段追问，<strong>紧接着</strong>发在同一个对话里：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 段指令 · 点右上角复制">
-          <div class="codeblock__bar"></div>
-<pre><code>你上面给的时间和份数，依据是什么？请给出具体出处（文件名、网页或文件条款）。
-如果是你自己推测的，请明说"这是我推测的"。</code></pre>
-        </div>
-
-        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
-        <ol class="steps">
-          <li><b>它给了具体的时间和份数</b><span>比如「工作日 18:30」「3 份材料」——
-            这门课的真实规定它不可能知道，<strong>给了具体数字就是它在编</strong>。<br>
-            <em>它一上来就说不知道</em>：换一个更冷门的问题再试，
-            比如「我们班上周三的课在哪间教室上的」。</span></li>
-          <li><b>追问出处后，露馅了</b><span>两种结果都算成功：
-            它编了一个听起来很像的出处，或者它承认「这是我推测的」——<strong>两种都说明凭记忆不可靠</strong>。<br>
-            <em>它坚持给了出处</em>：把它给的出处名字拿去搜一下，搜不到就是编的。</span></li>
-          <li><b>你能说出它编在哪</b><span>指着它答的那句话，说出「这一条它没有依据」。<br>
-            <em>说不出来</em>：说明它编得太像了——这正是幻觉最危险的地方，把它记下来。</span></li>
-        </ol>
-        <p><strong>要交的成果</strong>：这两段回答（含追问出处那一段）的截图，
-          外加一句你判断「它是编的」的依据。</p>
-      </div>
     </section>
 
     <!-- 二、RAG -->
@@ -271,13 +228,54 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ②·同一个问题问两遍，看差别 <em>约 10 分钟</em></div>
+        <div class="task__hd">实操 ①·亲手造一次幻觉，再对比开卷问答的差别 <em>约 18 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一段 AI 编造的回答，外加它自己给出的「出处」——
+          两样放在一起，你就能看清它凭的是什么。</p>
+
+        <p><strong>第 1 步 · 新建一个对话（<span class="task__warn">必须新建</span>）</strong></p>
+        <ol class="steps">
+          <li><b>在 WorkBuddy 里开一个全新的对话</b><span>不要接着前面的任务聊——
+            旧上下文里如果有资料，这次实验就不准了。</span></li>
+          <li><b>把下面这段指令复制进去，直接发送</b><span>问的是它<strong>不可能知道</strong>的两件事，
+            看它会不会照样给答案。</span></li>
+        </ol>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 1 段指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>请直接回答下面两个问题，不要说"建议咨询学校"这类话：
+1. 《AIGC应用与实践》这门课的实训室，工作日开放到几点？周末开放到几点？
+2. 这门课期末补考申请，需要提交几份材料、交给哪个部门？
+请给出具体的时间和份数。</code></pre>
+        </div>
+
+        <p><strong>第 2 步 · 追问它的依据（2 分钟）</strong></p>
+        <p>把下面这段追问，<strong>紧接着</strong>发在同一个对话里：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="第 2 段指令 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>你上面给的时间和份数，依据是什么？请给出具体出处（文件名、网页或文件条款）。
+如果是你自己推测的，请明说"这是我推测的"。</code></pre>
+        </div>
+
+        <p><strong>第 3 步 · 做到这三条，就算做完了</strong></p>
+        <ol class="steps">
+          <li><b>它给了具体的时间和份数</b><span>比如「工作日 18:30」「3 份材料」——
+            这门课的真实规定它不可能知道，<strong>给了具体数字就是它在编</strong>。<br>
+            <em>它一上来就说不知道</em>：换一个更冷门的问题再试，
+            比如「我们班上周三的课在哪间教室上的」。</span></li>
+          <li><b>追问出处后，露馅了</b><span>两种结果都算成功：
+            它编了一个听起来很像的出处，或者它承认「这是我推测的」——<strong>两种都说明凭记忆不可靠</strong>。<br>
+            <em>它坚持给了出处</em>：把它给的出处名字拿去搜一下，搜不到就是编的。</span></li>
+          <li><b>你能说出它编在哪</b><span>指着它答的那句话，说出「这一条它没有依据」。<br>
+            <em>说不出来</em>：说明它编得太像了——这正是幻觉最危险的地方，把它记下来。</span></li>
+        </ol>
+        <p><strong>要交的成果</strong>：这两段回答（含追问出处那一段）的截图，
+          外加一句你判断「它是编的」的依据。</p>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：两份回答——一份凭记忆、一份照着你的资料，
           外加一句「差在哪」的判断。</p>
         <p><strong>场景</strong>：假定你的《AIGC应用与实践》课程笔记里有这么一段，
           我们把它做成一份真实文件：</p>
 
-        <p><strong>第 1 步 · 把这份素材存成文件（2 分钟）</strong></p>
+        <p><strong>第 4 步 · 把这份素材存成文件（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>在 <code>wb-试验</code> 下新建目录 <code>RAG-试验</code></b><span>
             本课后面几个实操都在这个目录里做。</span></li>
@@ -307,7 +305,7 @@
 这两条是期末实操考核的评分点。</code></pre>
         </div>
 
-        <p><strong>第 2 步 · 先问一遍「闭卷」的（2 分钟）</strong></p>
+        <p><strong>第 5 步 · 先问一遍「闭卷」的（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>在 WorkBuddy 里新建一个对话</b><span><span class="task__warn">必须新建</span>，
             而且<strong>不要</strong>上传任何文件。</span></li>
@@ -319,7 +317,7 @@
 请直接给答案，不要说"这需要看你的笔记"。</code></pre>
         </div>
 
-        <p><strong>第 3 步 · 再问一遍「开卷」的（3 分钟）</strong></p>
+        <p><strong>第 6 步 · 再问一遍「开卷」的（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>再新建一个对话</b><span><span class="task__warn">又是新建</span>，
             两遍必须分开，否则第二遍会看到第一遍的上下文。</span></li>
@@ -335,7 +333,7 @@
 答完请注明这个说法出自文件的哪一小节。</code></pre>
         </div>
 
-        <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
+        <p><strong>第 7 步 · 做到这三条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>第 1 遍答不出【标题锚定法】【一库一任务】这两个词</b><span>
             这两个词是这份笔记里<strong>独有的</strong>，它没读过就绝不可能说对——
@@ -350,7 +348,7 @@
             把它挪到指令最前面再发一次。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：两份回答的截图 + 一句「差在哪」。
-          <code>课程笔记-切片.md</code> <strong>留着别删</strong>，实操③ 还要用它。</p>
+          <code>课程笔记-切片.md</code> <strong>留着别删</strong>，实操② 还要用它。</p>
         <p class="note">
           这一遍是<strong>手动版 RAG</strong>——资料是你亲手塞进对话的。
           知识库做的事，是把「你手动塞」换成「系统自动去检索」。原理一样，只是省了你的手。
@@ -454,7 +452,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ③·备好第一批资料，并让它自查一遍 <em>约 8 分钟</em></div>
+        <div class="task__hd">实操 ②·备好第一批资料，并让它自查一遍 <em>约 8 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一个整理好的 <code>material/</code> 目录
           ＋ 一份 <code>资料清单.md</code>（每条带文件名、一句话说明、来源）
           ＋ 一份「哪几刀会把知识点切两半」的自查结果。</p>
@@ -462,7 +460,7 @@
         <p><strong>第 1 步 · 把三份真实资料放进目录（2 分钟）</strong></p>
         <p>就这三样，<strong>照指定来，不要换</strong>：</p>
         <ol class="steps">
-          <li><b>实操② 那份 <code>课程笔记-切片.md</code></b><span>已经有现成的，直接拿来用。</span></li>
+          <li><b>实操① 那份 <code>课程笔记-切片.md</code></b><span>已经有现成的，直接拿来用。</span></li>
           <li><b>一份本课程的课程大纲或授课计划类文件</b><span>PDF、Word、图片都行。</span></li>
           <li><b>一份你交过的实验报告</b><span>自己真实写过的那份，Word / PDF / 图片都行。</span></li>
         </ol>
@@ -505,7 +503,7 @@
             把它提到指令最前面重发一次。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：<code>material/</code> 目录截图 + <code>资料清单.md</code>
-          + 切片自查那段回答。这三样<strong>原样留着</strong>，实操④ 要整批投喂进知识库。</p>
+          + 切片自查那段回答。这三样<strong>原样留着</strong>，实操③ 要整批投喂进知识库。</p>
       </div>
     </section>
 
@@ -569,7 +567,7 @@
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ④·建库、提问、核溯源 <em>约 12 分钟</em></div>
+        <div class="task__hd">实操 ③·建库、提问、核溯源 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一个你亲手建的主题知识库 ＋ 三组问答
           （其中一组是「资料里根本没有」的问题）＋ 一张溯源核对结果。</p>
 
@@ -578,7 +576,7 @@
           <li><b>打开 ima（ima.qq.com 或已安装的客户端），登录</b><span>没有账号就先注册一个。</span></li>
           <li><b>新建知识库，名字就叫 <code>AIGC课程-第15次课试验</code></b><span>
             <span class="task__warn">名字照抄</span>，讲评时好对上号。</span></li>
-          <li><b>把实操③ 那个 <code>material/</code> 目录里的 3 份资料传进去</b><span>
+          <li><b>把实操② 那个 <code>material/</code> 目录里的 3 份资料传进去</b><span>
             用「上传文件」；顺手把 <code>资料清单.md</code> 也传进去。</span></li>
         </ol>
 

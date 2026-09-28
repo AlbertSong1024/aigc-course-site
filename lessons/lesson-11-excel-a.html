@@ -85,10 +85,10 @@
       </div>
       <h3>知识点导航</h3>
       <div class="knav">
-        <a href="#s-read"><b>01</b>票据交出去之前，先让它认字段、报家底 <em>＋实操①</em></a>
-        <a href="#s-clean"><b>02</b>脏数据的六张面孔与清洗规则 <em>＋实操②</em></a>
-        <a href="#s-stat"><b>03</b>汇总：口径你定，对账它做 <em>＋实操③</em></a>
-        <a href="#s-check"><b>04</b>一条龙 + 效率对比：省在哪、还得核什么 <em>＋实操④</em></a>
+        <a href="#s-read"><b>01</b>票据交出去之前，先让它认字段、报家底</a>
+        <a href="#s-clean"><b>02</b>脏数据的六张面孔与清洗规则 <em>＋实操①</em></a>
+        <a href="#s-stat"><b>03</b>汇总：口径你定，对账它做 <em>＋实操②</em></a>
+        <a href="#s-check"><b>04</b>一条龙 + 效率对比：省在哪、还得核什么 <em>＋实操③</em></a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
@@ -181,7 +181,7 @@
         </table>
       </div>
       <p>
-        本课四个实操<strong>统一用第二种</strong>——把素材存成文件放进工作目录，
+        本课三个实操<strong>统一用第二种</strong>——把素材存成文件放进工作目录，
         指令里写清文件名。这样它能自己另存、你能自己打开核对，
         不会因为「文件只在对话里」而没法验收。
         <strong>重要资料只放副本</strong>：素材统一放在工作目录里的 <code>input</code> 下，
@@ -197,8 +197,96 @@
         本课所有素材都要求存成 <code>input/</code> 下的新文件，就是这个原因。
       </div>
 
+
+      <figure class="figure video-embed">
+        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV15QULYPE8W&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
+        <figcaption><b>【延伸视频】在线发票收集·自动识别归档</b><span class="vnote">时长 15 分钟</span>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：AI 是怎么从一堆发票图片里自动提取金额、日期并归档的？</figcaption>
+      </figure>
+    </section>
+
+    <section class="sec" id="s-clean">
+      <h2>二、脏数据的六张面孔与清洗规则<span class="sec__tag">本课核心</span></h2>
+      <p>
+        票据变成表之后，问题才刚开始。<strong>报销清单是最容易脏的一类表</strong>——
+        因为它是很多人、很多次、从很多张票上敲出来的。
+        脏数据不是「数据错了」，而是<strong>「数据长得不规矩」</strong>：
+        规矩一破，后面的求和就全跟着错，而且错得很隐蔽。
+      </p>
+      <p>
+        下面六张面孔是报销清单里最常见的。点按钮看每一张长什么样、清洗后该变成什么：
+      </p>
+
+      <div class="demo" id="demo1">
+        <div class="demo__bar">
+          <span class="demo__tag">可运行演示</span>
+          <span class="demo__title">① 脏数据六张面孔：同一个格子，处理前后差在哪</span>
+        </div>
+        <div class="demo__body">
+          <div class="demo__ctrl" id="d1-faces">
+            <button class="btn btn--ghost" type="button" data-face="0">① 重复票据号</button>
+            <button class="btn btn--ghost" type="button" data-face="1">② 空行</button>
+            <button class="btn btn--ghost" type="button" data-face="2">③ 金额带符号</button>
+            <button class="btn btn--ghost" type="button" data-face="3">④ 金额写中文</button>
+            <button class="btn btn--ghost" type="button" data-face="4">⑤ 日期三种写法</button>
+            <button class="btn btn--ghost" type="button" data-face="5">⑥ 一物多名</button>
+            <button class="btn btn--main" type="button" id="d1-all">六张一次看完</button>
+          </div>
+          <div class="demo__stage">
+            <div class="kpis">
+              <div class="kpi"><b id="d1-raw">点上面的按钮</b><span>它长什么样（原始值）</span></div>
+              <div class="kpi"><b class="acc" id="d1-fix">—</b><span>清洗后应该变成</span></div>
+            </div>
+          </div>
+          <div class="demo__out log" id="d1-out"></div>
+          <div class="demo__note">
+            六张面孔与清洗后的写法均为<strong>教学示意</strong>，取自本课素材里真实存在的脏数据类型，
+            非某个具体文件的实测输出。
+          </div>
+        </div>
+      </div>
+
+      <h3>清洗指令的三要素，一条都不能少</h3>
+      <p>
+        很多人清洗只说一句「帮我清洗一下这张表」。<strong>这就等于让它替你做主</strong>——
+        金额写中文的怎么转？重复票据号留哪条？它自己定，事后你对不上账，
+        而且财务问起来你答不出「这个数是怎么来的」。
+      </p>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>要素</th><th>要写清什么</th><th>本课素材里的写法</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>数据源</strong></td>
+              <td>哪个文件、哪些列、哪几行</td>
+              <td><code>input/报销清单.csv</code> 的「票据号 / 开票日期 / 消费类型 / 金额 / 报销人 / 部门」六列</td>
+            </tr>
+            <tr>
+              <td><strong>规则</strong></td>
+              <td>每张面孔怎么处理，<strong>逐条点名</strong></td>
+              <td>日期统一成 <code>YYYY-MM-DD</code>；金额去掉 ￥ 和千分位、中文转阿拉伯、统一 2 位小数；
+                消费类型归并到五类；<strong>完全相同的行删到只剩 1 条；
+                票据号相同但金额不同的保留并标【待核】</strong></td>
+            </tr>
+            <tr>
+              <td><strong>输出</strong></td>
+              <td>新文件叫什么、放哪、<strong>原文件不许动</strong></td>
+              <td><code>output/报销清单_清洗后.xlsx</code>，禁止覆盖原文件</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--danger">
+        <span class="callout__t">报销场景里最该写死的是「不许猜」</span>
+        遇到它判不了的值（比如金额被遮、日期模糊、消费类型读不出），
+        正确做法是<strong>标成【待核实】留给你判断</strong>，
+        而不是自己补一个看起来合理的数——那等于替你做了一笔你不知情的账。
+        <strong>更危险的是「票据号相同但金额不同」：这两条可能是同一张票录错了，
+        也可能是两张不同的票，只有人能判断，AI 不许自动删掉其中一条。</strong>
+        这两条规则要显式写进指令。
+      </div>
+
       <div class="task">
-        <div class="task__hd">实操 ①·让 AI 从票据里提取字段，读不清的标【待核实】 <em>约 10 分钟</em></div>
+        <div class="task__hd">实操 ①·从票据里提取字段，再洗成一份规范清单 <em>约 23 分钟</em></div>
         <p><strong>做完你手上会有</strong>：<code>output/票据明细_初稿.csv</code>——
           6 张票一行一条，字段认全了；看不清的格子写着【待核实】，
           <strong>一处都没有被它自己编个数填进去</strong>。</p>
@@ -303,103 +391,13 @@
           <strong>这一步的核心就一句话：缺信息就标出来，不许它猜。</strong>
           报销单上一个被猜出来的金额，到了财务那里就是一笔对不上的账。
         </p>
-      </div>
-
-      <figure class="figure video-embed">
-        <iframe data-src="https://player.bilibili.com/player.html?bvid=BV15QULYPE8W&autoplay=0" scrolling="no" frameborder="no" allowfullscreen="true" loading="lazy"></iframe>
-        <figcaption><b>【延伸视频】在线发票收集·自动识别归档</b><span class="vnote">时长 15 分钟</span>　需联网观看；滚动到这一屏才会自动加载播放器。带着这个问题看：AI 是怎么从一堆发票图片里自动提取金额、日期并归档的？</figcaption>
-      </figure>
-    </section>
-
-    <section class="sec" id="s-clean">
-      <h2>二、脏数据的六张面孔与清洗规则<span class="sec__tag">本课核心</span></h2>
-      <p>
-        票据变成表之后，问题才刚开始。<strong>报销清单是最容易脏的一类表</strong>——
-        因为它是很多人、很多次、从很多张票上敲出来的。
-        脏数据不是「数据错了」，而是<strong>「数据长得不规矩」</strong>：
-        规矩一破，后面的求和就全跟着错，而且错得很隐蔽。
-      </p>
-      <p>
-        下面六张面孔是报销清单里最常见的。点按钮看每一张长什么样、清洗后该变成什么：
-      </p>
-
-      <div class="demo" id="demo1">
-        <div class="demo__bar">
-          <span class="demo__tag">可运行演示</span>
-          <span class="demo__title">① 脏数据六张面孔：同一个格子，处理前后差在哪</span>
-        </div>
-        <div class="demo__body">
-          <div class="demo__ctrl" id="d1-faces">
-            <button class="btn btn--ghost" type="button" data-face="0">① 重复票据号</button>
-            <button class="btn btn--ghost" type="button" data-face="1">② 空行</button>
-            <button class="btn btn--ghost" type="button" data-face="2">③ 金额带符号</button>
-            <button class="btn btn--ghost" type="button" data-face="3">④ 金额写中文</button>
-            <button class="btn btn--ghost" type="button" data-face="4">⑤ 日期三种写法</button>
-            <button class="btn btn--ghost" type="button" data-face="5">⑥ 一物多名</button>
-            <button class="btn btn--main" type="button" id="d1-all">六张一次看完</button>
-          </div>
-          <div class="demo__stage">
-            <div class="kpis">
-              <div class="kpi"><b id="d1-raw">点上面的按钮</b><span>它长什么样（原始值）</span></div>
-              <div class="kpi"><b class="acc" id="d1-fix">—</b><span>清洗后应该变成</span></div>
-            </div>
-          </div>
-          <div class="demo__out log" id="d1-out"></div>
-          <div class="demo__note">
-            六张面孔与清洗后的写法均为<strong>教学示意</strong>，取自本课素材里真实存在的脏数据类型，
-            非某个具体文件的实测输出。
-          </div>
-        </div>
-      </div>
-
-      <h3>清洗指令的三要素，一条都不能少</h3>
-      <p>
-        很多人清洗只说一句「帮我清洗一下这张表」。<strong>这就等于让它替你做主</strong>——
-        金额写中文的怎么转？重复票据号留哪条？它自己定，事后你对不上账，
-        而且财务问起来你答不出「这个数是怎么来的」。
-      </p>
-      <div class="tablewrap">
-        <table class="data">
-          <thead><tr><th>要素</th><th>要写清什么</th><th>本课素材里的写法</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><strong>数据源</strong></td>
-              <td>哪个文件、哪些列、哪几行</td>
-              <td><code>input/报销清单.csv</code> 的「票据号 / 开票日期 / 消费类型 / 金额 / 报销人 / 部门」六列</td>
-            </tr>
-            <tr>
-              <td><strong>规则</strong></td>
-              <td>每张面孔怎么处理，<strong>逐条点名</strong></td>
-              <td>日期统一成 <code>YYYY-MM-DD</code>；金额去掉 ￥ 和千分位、中文转阿拉伯、统一 2 位小数；
-                消费类型归并到五类；<strong>完全相同的行删到只剩 1 条；
-                票据号相同但金额不同的保留并标【待核】</strong></td>
-            </tr>
-            <tr>
-              <td><strong>输出</strong></td>
-              <td>新文件叫什么、放哪、<strong>原文件不许动</strong></td>
-              <td><code>output/报销清单_清洗后.xlsx</code>，禁止覆盖原文件</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout callout--danger">
-        <span class="callout__t">报销场景里最该写死的是「不许猜」</span>
-        遇到它判不了的值（比如金额被遮、日期模糊、消费类型读不出），
-        正确做法是<strong>标成【待核实】留给你判断</strong>，
-        而不是自己补一个看起来合理的数——那等于替你做了一笔你不知情的账。
-        <strong>更危险的是「票据号相同但金额不同」：这两条可能是同一张票录错了，
-        也可能是两张不同的票，只有人能判断，AI 不许自动删掉其中一条。</strong>
-        这两条规则要显式写进指令。
-      </div>
-
-      <div class="task">
-        <div class="task__hd">实操 ②·把一份脏报销清单洗干净 <em>约 13 分钟</em></div>
+        <p class="task__sep">第一部分完 · 接着做第二部分</p>
         <p><strong>做完你手上会有</strong>：<code>output/报销清单_清洗后.xlsx</code>——
           <strong>13 行</strong>（去掉 1 个空行、合并 1 条完全重复），
           日期全部统一、金额列能直接求和、多出一列「是否待核」，
           其中 2 行标着【待核】等你处理。</p>
 
-        <p><strong>第 1 步 · 建素材文件</strong>：在 <code>wb-试验/input</code> 里新建
+        <p><strong>第 4 步 · 建素材文件</strong>：在 <code>wb-试验/input</code> 里新建
           <code>报销清单.csv</code>，把下面这段<strong>原样存进去</strong>。
           <span class="task__warn">模拟数据。空行、「一百二」、「¥1,280.00」这些是故意留的，不要顺手改掉</span>。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 报销清单.csv（模拟数据，照抄，含 6 类脏数据）">
@@ -422,7 +420,7 @@ FP260925012,9/25,餐饮,五百,李婷,技术部
 FP260922011,2026/9/22,办公用品,960,张明,市场部</code></pre>
         </div>
 
-        <p><strong>第 2 步 · 把下面这段指令复制发送</strong>
+        <p><strong>第 5 步 · 把下面这段指令复制发送</strong>
           <span class="task__warn">整句粘贴，不要自己改写</span>——
           里面每一条规则都是对着上面这张表的具体问题写的。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="清洗指令 · 点右上角复制">
@@ -452,7 +450,7 @@ FP260922011,2026/9/22,办公用品,960,张明,市场部</code></pre>
   有几条被标成【待核】分别是哪几条。</code></pre>
         </div>
 
-        <p><strong>第 3 步 · 打开新文件，核这五条</strong>
+        <p><strong>第 6 步 · 打开新文件，核这五条</strong>
           <span class="task__warn">这一步你要亲自打开文件看，不能只看它说的话</span>。</p>
         <ol class="steps">
           <li><b>行数变成 13 行</b><span>原始 15 行 → 删 1 个空行、合并 1 条完全重复 → 13 行。
@@ -476,7 +474,7 @@ FP260922011,2026/9/22,办公用品,960,张明,市场部</code></pre>
             让它只改这一列。</span></li>
         </ol>
 
-        <p><strong>第 4 步 · 让它顺便报一个数，用来验证清洗没洗歪</strong>：
+        <p><strong>第 7 步 · 让它顺便报一个数，用来验证清洗没洗歪</strong>：
           把下面这句接着发过去。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="追问 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -569,13 +567,13 @@ FP260922011,2026/9/22,办公用品,960,张明,市场部</code></pre>
       </div>
 
       <div class="task">
-        <div class="task__hd">实操 ③·按部门、按月份汇总，并让总额与明细逐笔对上 <em>约 12 分钟</em></div>
+        <div class="task__hd">实操 ②·按部门、按月份汇总，并让总额与明细逐笔对上 <em>约 12 分钟</em></div>
         <p><strong>做完你手上会有</strong>：<code>output/报销汇总.xlsx</code>——
           一个工作簿里三张分组表（按部门 / 按月份 / 按消费类型），
           <strong>三个分组的合计数都等于 10601.50</strong>，外加一份它用的口径说明。</p>
 
         <p><strong>第 1 步 · 把下面这段指令复制发送</strong>——
-          素材用的是实操② 产出的 <code>output/报销清单_清洗后.xlsx</code>——
+          素材用的是实操① 产出的 <code>output/报销清单_清洗后.xlsx</code>——
           <strong>确认它还在原位没被动过</strong>。
           <span class="task__warn">口径全部写在指令里了，照抄即可，不要精简</span>。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="汇总指令 · 点右上角复制">
@@ -632,7 +630,7 @@ FP260922011,2026/9/22,办公用品,960,张明,市场部</code></pre>
 依赖：  pip install openpyxl
 运行前提：
   1. 本脚本放在 wb-试验 目录下，与 output/ 同级；
-  2. 实操② 已经生成 output/报销清单_清洗后.xlsx；
+  2. 实操① 已经生成 output/报销清单_清洗后.xlsx；
   3. 该表第 4 列是"金额"、第 6 列是"部门"（第 1 行是表头）。
 运行：  python check_total.py
 """
@@ -747,18 +745,18 @@ if bad:
     <section class="sec" id="s-check">
       <h2>四、一条龙 + 效率对比：省在哪、还得核什么<span class="sec__tag">收口</span></h2>
       <p>
-        前面三个实操是一步步来的，为的是让你看清每一步在核什么。
+        前面两个实操是一步步来的，为的是让你看清每一步在核什么。
         真干活的时候不用分三步——<strong>把读取、清洗、汇总、出结论串成一条指令</strong>，
         一次跑完。但串起来之后，<strong>验收一步都不能省</strong>。
       </p>
 
       <div class="task">
-        <div class="task__hd">实操 ④·一条龙：从原始票据清单到汇总表一次跑完 <em>约 15 分钟</em></div>
+        <div class="task__hd">实操 ③·一条龙：从原始票据清单到汇总表一次跑完 <em>约 15 分钟</em></div>
         <p><strong>做完你手上会有</strong>：<code>output/报销一条龙.xlsx</code>，
           里面<strong>两个工作表</strong>——「明细-清洗后」和「汇总」，
           外加一句它给的数据结论，和一份<strong>「仍需人工核对」清单</strong>。</p>
 
-        <p><strong>第 1 步 · 确认素材还在原位</strong>：用的是实操② 建的
+        <p><strong>第 1 步 · 确认素材还在原位</strong>：用的是实操① 建的
           <code>input/报销清单.csv</code>——<strong>原文件，确认它没被动过</strong>
           （行数还是 15 行、里面还有「一百二」和空行）。
           <span class="task__warn">如果已经被改了，按第 1 步的素材重建一次</span>。</p>
@@ -891,7 +889,7 @@ if bad:
       <h3>省掉的是时间，没省掉的是责任</h3>
       <p>
         下面这五件事<strong>AI 一件都替不了你</strong>，
-        做完实操④ 之后<strong>必须亲自过一遍</strong>：
+        做完实操③ 之后<strong>必须亲自过一遍</strong>：
       </p>
       <div class="tablewrap">
         <table class="data">
@@ -1102,7 +1100,7 @@ D. 让它同时给出三种结果，到时候再挑一个
 A. 正确，省一个文件，磁盘也干净
 B. 错误，应输出为新文件，原文件保留以便回溯
 【答案】B（错误）
-【解析】原文件是唯一能证明「改之前是什么样」的证据。清洗规则一旦定错，覆盖之后既没法对比也没法回退。指令里要写明输出的新文件名，并加上「不要覆盖原文件」这句——本课四个实操都写了。
+【解析】原文件是唯一能证明「改之前是什么样」的证据。清洗规则一旦定错，覆盖之后既没法对比也没法回退。指令里要写明输出的新文件名，并加上「不要覆盖原文件」这句——本课三个实操都写了。
 
 6.（多选）AI 给出报销汇总结果之后，下面哪几项必须由人来核？
 A. 清洗后的笔数与手上的票据数是否一致
@@ -1119,7 +1117,7 @@ D. 它生成的图表颜色好不好看
         <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。
       </p>
       <p class="note">
-        四个实操的产出物（票据明细、清洗后清单、汇总表、一条龙表）按正文实操要求提交，作业只需完成上面 6 题。
+        三个实操的产出物（票据明细、清洗后清单、汇总表、一条龙表）按正文实操要求提交，作业只需完成上面 6 题。
       </p>
     </section>
 
