@@ -185,13 +185,15 @@
     });
   });
 
-  /* 实训卡区：8 次实训，不占课次，从实操课抽取 */
+  /* 实训卡区：8 次实训已整合进课程，分别挂在第 14/17/20/21/22/23/31/32 次课 */
   var TR = CM.trainings;
   var host = document.getElementById("home-training");
   if (TR && host) {
     var trCards = TR.list.map(function (t) {
+      /* atLesson = 挂靠课次，卡片上直接标出来，学生点进去就是对应那课的「课后实训」 */
+      var at = t.atLesson ? "挂在第 " + t.atLesson + " 次课" : esc(t.from);
       return '<a class="lcard" href="' + t.file + '">' +
-        '<span class="lcard__no">实训' + t.no + " · " + esc(t.from) + "</span>" +
+        '<span class="lcard__no">实训' + t.no + " · " + at + "</span>" +
         "<h3>" + esc(t.title) + "</h3>" +
         "<p>" + esc(t.summary) + "</p>" +
         '<div class="lcard__foot">' +

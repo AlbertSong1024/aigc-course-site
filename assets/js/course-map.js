@@ -410,7 +410,7 @@ window.COURSE_MAP = {
   trainings: {
     count: 8,
     hoursEach: 2,
-    note: "第 11 次课之后另设 8 次实训，不占课次；内容从现有实操课抽取，学生交实训报告（学习通）。",
+    note: "8 次实训已整合进课程内容，分别挂在第 14/17/20/21/22/23/31/32 次课的「课后实训」小节；不占课次，学生做完交一份实训报告（学习通）。atLesson 即挂靠课次。",
     list: [
       {
         no: 1,
@@ -419,6 +419,7 @@ window.COURSE_MAP = {
         module: "模块二 · 办公自动化",
         out: "报销一条龙.xlsx",
         file: "training/training-01.html",
+        atLesson: 23,
         summary: "把一堆脏票据整理成一份能交财务的报销一条龙表。",
       },
       {
@@ -428,6 +429,7 @@ window.COURSE_MAP = {
         module: "模块二 · 办公自动化",
         out: "周报 3 份 + 套用说明.md",
         file: "training/training-02.html",
+        atLesson: 22,
         summary: "用「模板 + 变量」批量生成 3 份周报。",
       },
       {
@@ -437,6 +439,7 @@ window.COURSE_MAP = {
         module: "模块二 · 办公自动化",
         out: "归档对照表.xlsx + 纪要.md",
         file: "training/training-03.html",
+        atLesson: 14,
         summary: "把杂乱文件夹归档，把会议录音转成纪要 + 待办。",
       },
       {
@@ -446,6 +449,7 @@ window.COURSE_MAP = {
         module: "模块二 · 办公自动化",
         out: "知识库问答记录.md",
         file: "training/training-04.html",
+        atLesson: 17,
         summary: "搭一个自己的知识库，问 5 个问题、每条都要有出处。",
       },
       {
@@ -455,6 +459,7 @@ window.COURSE_MAP = {
         module: "模块三 · 职场赋能与前沿工具",
         out: "竞品分析.pptx + 大纲.md",
         file: "training/training-05.html",
+        atLesson: 21,
         summary: "从联网调研到生成一份能讲的竞品分析 PPT。",
       },
       {
@@ -464,6 +469,7 @@ window.COURSE_MAP = {
         module: "模块三 · 职场赋能与前沿工具",
         out: "推文.md + 3 条标题备选",
         file: "training/training-06.html",
+        atLesson: 20,
         summary: "选一个主题，写一篇能发的公众号推文，配 3 条备选标题。",
       },
       {
@@ -473,6 +479,7 @@ window.COURSE_MAP = {
         module: "模块三 · 职场赋能与前沿工具",
         out: "简历一页 + 面试问答 5 条",
         file: "training/training-07.html",
+        atLesson: 31,
         summary: "做一页简历 + 5 条面试问答。",
       },
       {
@@ -482,6 +489,7 @@ window.COURSE_MAP = {
         module: "模块三 · 职场赋能与前沿工具",
         out: "展示大纲 5 页 + 2 分钟讲稿",
         file: "training/training-08.html",
+        atLesson: 32,
         summary: "把前面成果串成 5 页展示大纲 + 2 分钟讲稿。",
       },
     ],

@@ -380,4 +380,15 @@ window.SITE_SECTION_INDEX = [
   { lesson: 32, id: "s-next", title: "五、人机协作与持续关注前沿",          hint: "人机协作 AI职场生存法则 持续关注前沿 下一步" },
   { lesson: 32, id: "s-quiz", title: "随堂自测",                   hint: "自测题 答案 自检" },
   { lesson: 32, id: "s-recap", title: "本课要点回顾",                 hint: "小结 链条 回到主线" },
+
+
+  /* ── 课后实训（整合进 8 个课次） ── */
+  { lesson: 14, id: "s-training", title: "课后实训《实训三 文件整理与会议纪要》", hint: "文件归档 会议纪要 待办 对照表 实训报告" },
+  { lesson: 17, id: "s-training", title: "课后实训《实训四 知识库搭建与带引用问答》", hint: "知识库 带引用问答 出处 切片 实训报告" },
+  { lesson: 20, id: "s-training", title: "课后实训《实训六 公众号内容生产》", hint: "公众号 内容生产 选题 排版 实训报告" },
+  { lesson: 21, id: "s-training", title: "课后实训《实训五 竞品分析 PPT 全链路》", hint: "竞品分析 PPT 全链路 演示文稿 实训报告" },
+  { lesson: 22, id: "s-training", title: "课后实训《实训二 长文档生成与批量处理》", hint: "长文档 批量生成 周报 模板变量 实训报告" },
+  { lesson: 23, id: "s-training", title: "课后实训《实训一 票据清洗与报销汇总》", hint: "票据清洗 报销汇总 脏数据 口径 实训报告" },
+  { lesson: 31, id: "s-training", title: "课后实训《实训七 AI 求职包制作》", hint: "求职包 简历 作品集 材料一致性 实训报告" },
+  { lesson: 32, id: "s-training", title: "课后实训《实训八 综合项目答辩包》", hint: "答辩包 展示卡 答辩稿 证据 实训报告" },
 ];

@@ -8,10 +8,21 @@
 
    启用办法（两步，老师自己做）：
      1. 去 https://umami.is 注册（官方云免费版够用），或自托管 Umami
-     2. 在站点根目录 index.html 之前、或本文件顶部 CONFIG 里填：
+     2. 在下面 CONFIG 里填两个值（第 30 行附近）：
           scriptUrl : 你的 umami.js 地址，如 https://cloud.umami.is/script.js
           websiteId : Umami 后台「网站」里那串 UUID
      填完刷新即生效。**留空 = 完全静默，不联网。**
+
+   不想改代码也能临时启用/关闭（控制台执行，立即生效）：
+       localStorage.setItem('an_cfg_v1', JSON.stringify({
+         scriptUrl:"https://cloud.umami.is/script.js",
+         websiteId:"你的-UUID"
+       }))
+     清除： localStorage.removeItem('an_cfg_v1')
+
+   怎么看数据：登录 Umami 后台看真实 PV / UV（独立访客数）/ 各课热度 / 来源 / 设备。
+     注意「UV」就是你要的「多少人访问过」——Umami 按匿名访客去重，不是按设备计数。
+     本页面只负责上报，不负责展示；展示请到 Umami 后台。
 
    与 learning-tracker.js 的区别（两套口径，别混算）：
      · 本文件（外部统计）：全站真实访客 —— 含没交档案的匿名访问者，
