@@ -21,18 +21,18 @@
     <section class="sec" id="s-guide">
       <h2>本课导读<span class="sec__tag">模块二 · 训练原理</span></h2>
       <p class="lead">
-        上一次课说过：SFT 是「岗前培训」，照着示范学。<strong>可手册教得再好，也管不住所有情况</strong>——
+        上一次课说过：SFT 是「岗前培训」，照着示范学。<strong>可手册教得再好，也管不住所有情况</strong>。
         谁来判断新员工干得到底好不好？答案是：顾客的评价。这一课讲的就是把「人的评价」装进训练流程的方法：
-        <strong>RLHF——基于人类反馈的强化学习</strong>，以及把它用到极致的 DeepSeek R1。
+        <strong>RLHF，基于人类反馈的强化学习</strong>，以及把它用到极致的 DeepSeek R1。
       </p>
       <p>三个你肯定见过的现象，这节课都能解释：</p>
       <ol>
-        <li>问 AI 一个危险问题，它会<strong>礼貌地拒绝</strong>——这不是它「胆小」或「有价值观」，是训出来的行为；</li>
-        <li>同一个模型，有的问题答得很好，有的正常请求却被它一口回绝——<strong>过度拒绝</strong>，安全对齐的代价；</li>
-        <li>DeepSeek 开「深度思考」时，回答前会先显示一大段思考过程，还会<strong>中途自我纠正</strong>——这是强化学习自己长出来的。</li>
+        <li>问 AI 一个危险问题，它会<strong>礼貌地拒绝</strong>。这不是它「胆小」或「有价值观」，是训出来的行为；</li>
+        <li>同一个模型，有的问题答得很好，有的正常请求却被它一口回绝，这是<strong>过度拒绝</strong>，安全对齐的代价；</li>
+        <li>DeepSeek 开「深度思考」时，回答前会先显示一大段思考过程，还会<strong>中途自我纠正</strong>，这是强化学习自己长出来的。</li>
       </ol>
       <div class="callout callout--warn">
-        <span class="callout__t">提前说清楚：本课最大的坑</span>
+        <span class="callout__t">先记住本课最大的坑</span>
         「R1 完全不用 SFT」是一句<strong>流传很广的错误说法</strong>。跳过 SFT 的是 <strong>R1-Zero</strong>；
         R1 本身是多阶段训练，SFT 用了两回。这节课结束时，你要能一口纠正这句话。
       </div>
@@ -45,7 +45,7 @@
     <section class="sec" id="s-goal">
       <h2>学习目标</h2>
       <div class="goal">
-        <h4>学完这一课，你应该能——</h4>
+        <h4>学完这一课，你应该能：</h4>
         <ol>
           <li>说出强化学习「做对了给奖励、做错了不给、但不告诉它对在哪」的机制，以及它与 SFT「照着示范学」的区别；</li>
           <li>按顺序说出 RLHF 三阶段（SFT → 奖励模型 → 强化优化），并说明每一阶段各自解决什么问题；</li>
@@ -66,7 +66,7 @@
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
         <strong>先修</strong>：<a class="xref" data-lesson="3">第 3 次课</a>的预训练 / 后训练分工、
-        SFT「岗前培训」比喻，以及「知识截止之后 AI 会编」的结论——本课直接在它上面续讲。<br>
+        SFT「岗前培训」比喻，以及「知识截止之后 AI 会编」的结论，本课直接在它上面续讲。<br>
         <strong>后续</strong>：本课讲完「会说话的模型是怎么被教好的」，下一次课转向
         <a class="xref" data-lesson="5">第 5 次课</a>「会画画的模型」。
       </div>
@@ -76,7 +76,7 @@
       <h2>一、强化学习：只看结果，不教步骤<span class="sec__tag">机制</span></h2>
       <p>
         先想一件生活里的事：<strong>训练宠物</strong>。你教它「坐下」，不会发一本《坐下操作手册》，
-        而是它做对了就给零食，做错了就没有——<strong>你从没告诉它「尾巴该往哪摆」，只告诉它结果好不好</strong>。
+        而是它做对了就给零食，做错了就没有。<strong>你从没告诉它「尾巴该往哪摆」，只告诉它结果好不好</strong>。
         它自己反复试，慢慢就学会了。
       </p>
       <p>
@@ -90,13 +90,13 @@
             <tr><td><strong>怎么学</strong></td><td>照着示范抄</td><td>自己试，按结果调整</td></tr>
             <tr><td><strong>需要什么</strong></td><td>标准答案（示范数据）</td><td>只判断好坏的奖励信号</td></tr>
             <tr><td><strong>像什么</strong></td><td>给例题、教小孩照着做题</td><td>让小孩自己刷题，只对错打勾</td></tr>
-            <tr><td><strong>教得了什么</strong></td><td>「怎么做」——有标准步骤的事</td><td>「做得好不好」——没有唯一答案、只有好坏的事</td></tr>
+            <tr><td><strong>教得了什么</strong></td><td>「怎么做」，有标准步骤的事</td><td>「做得好不好」，没有唯一答案、只有好坏的事</td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">关键差别</span>
-        RL <strong>不给步骤、只给结果</strong>。这一件事决定了它能学 SFT 教不了的东西——
+        RL <strong>不给步骤、只给结果</strong>。这一件事决定了它能学 SFT 教不了的东西：
         「回答得更让人满意」就没有标准答案，只有好坏。而好坏谁来判？人。
         于是有了 RLHF。
       </div>
@@ -107,7 +107,7 @@
       <p>
         RL 需要奖励，可「这个回答让人满意吗」这种事，系统自己算不出来。
         每次都请真人盯着打分？成本上不可能。办法是：<strong>先把「人的偏好」训成一个模型</strong>，
-        让它替人打分——这就是奖励模型。
+        让它替人打分，这就是奖励模型。
       </p>
       <p>完整的 RLHF 是一条三阶段流水线：</p>
       <div class="tablewrap">
@@ -124,7 +124,7 @@
       <h3>人类反馈的粒度：排序，不是打分</h3>
       <p>
         有个细节值得注意：标注员给的反馈<strong>不是「这个回答打 8 分」</strong>，
-        而是<strong>「这两个回答，哪个更好」</strong>。原因很符合直觉——
+        而是<strong>「这两个回答，哪个更好」</strong>。原因很符合直觉：
         人对「哪个更好」的判断相当可靠，对「绝对打几分」却极不稳定（今天打 7 分明天可能打 9 分）。
         让模型学「比较」，比学「打分」靠谱得多。
       </p>
@@ -133,7 +133,7 @@
         <table class="data tight">
           <thead><tr><th>数字</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td><strong>13 亿 &gt; 1750 亿</strong></td><td>13 亿参数的 InstructGPT，在人类偏好测试里胜过 1750 亿参数的 GPT-3——参数少 100 多倍，靠对齐赢了</td></tr>
+            <tr><td><strong>13 亿 &gt; 1750 亿</strong></td><td>13 亿参数的 InstructGPT，在人类偏好测试里胜过 1750 亿参数的 GPT-3。参数少 100 多倍，靠对齐赢了</td></tr>
             <tr><td><strong>幻觉率 41% → 21%</strong></td><td>在封闭式任务上，RLHF 把幻觉率砍掉一半左右</td></tr>
           </tbody>
         </table>
@@ -146,8 +146,8 @@
 
       <div class="task">
         <div class="task__hd">实操 ①·当一回人类标注员 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：三个回答的排序结论，和一条别人能查证的「可核验理由」——
-          这正是奖励模型训练数据的 smallest unit（最小单位）。</p>
+        <p><strong>做完你手上会有</strong>：三个回答的排序结论，和一条别人能查证的「可核验理由」，
+          这正是奖励模型训练数据的最小单位。</p>
         <p><strong>第 1 步 · 让 AI 出一道「标注题」（3 分钟）</strong>：新开一个<strong>豆包</strong>对话，
           把下面这段整段复制发出去：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="第一步指令 · 点右上角复制">
@@ -158,7 +158,7 @@
 写完就停，不要做任何评价。</code></pre>
         </div>
         <p><strong>第 2 步 · 你来排序（2 分钟）</strong>：读它的三个回答，把 A、B、C 从好到差排个序，
-          同时想好你是凭什么排的——<strong>理由必须指着回答里的具体内容</strong>，比如「C 里有一个说法自相矛盾」，
+          同时想好你是凭什么排的：<strong>理由必须指着回答里的具体内容</strong>，比如「C 里有一个说法自相矛盾」，
           而不是「我觉得 C 不行」。</p>
         <p><strong>第 3 步 · 让「裁判」公布答案（3 分钟）</strong>：接着同一个对话，把下面这段发出去：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="第二步指令 · 接着同一对话发送">
@@ -170,13 +170,13 @@
         </div>
         <p><strong>做到这三条，就算做完了</strong></p>
         <ol class="steps">
-          <li><b>排序对上了</b><span>你的排序和它公布的底细能对上——全对、对两条、只对一条都正常，
+          <li><b>排序对上了</b><span>你的排序和它公布的底细能对上。全对、对两条、只对一条都正常，
             真实标注员之间也经常不一致。<br>
             <em>完全对不上</em>：重读一遍三个回答，找出你俩分歧最大的那一条，看它给的理由。</span></li>
           <li><b>找到一条「可核验」的理由</b><span>在它给的理由里指出一条别人能对着原文查证的，
             比如「C 的第二句和第三句矛盾」。能不能核验，决定了它能不能变成打分标准。<br>
             <em>全是「我觉得」式理由</em>：追问一句「B 里哪个具体说法让你把它排前面」，直到它指出具体内容为止。</span></li>
-          <li><b>想明白这件事的规模</b><span>你刚才做的就是奖励模型训练数据的样子——
+          <li><b>想明白这件事的规模</b><span>你刚才做的就是奖励模型训练数据的样子。
             真实训练用的是<strong>约 10 万条这样的比较</strong>。你的排序口味，就是它要学的「人类偏好」。</span></li>
         </ol>
       </div>
@@ -185,7 +185,7 @@
     <section class="sec" id="s-r1">
       <h2>三、思维链与 DeepSeek R1：会「先想再说」的模型<span class="sec__tag">R1 深度解析</span></h2>
       <p>
-        <strong>思维链（Chain-of-Thought，CoT）</strong>指的是让模型把中间步骤写出来再给答案——
+        <strong>思维链（Chain-of-Thought，CoT）</strong>指的是让模型把中间步骤写出来再给答案，
         相当于发给它一张草稿纸。两张经典数据：
       </p>
       <div class="tablewrap">
@@ -199,7 +199,7 @@
       </div>
       <p>
         第二行特别有意思：<strong>连示例都不用给，加一句话就能翻两番</strong>。
-        但 CoT 有一条要紧的局限：<strong>模型展示出来的步骤，不等于它真实用到的推理路径</strong>——
+        但 CoT 有一条要紧的局限：<strong>模型展示出来的步骤，不等于它真实用到的推理路径</strong>。
         它写的「先算这个再算那个」，可能是事后组织出来的说法，未必是它内部真的走过的路。
       </p>
 
@@ -211,10 +211,10 @@
         <table class="data">
           <thead><tr><th>维度</th><th>R1-Zero</th><th>R1</th></tr></thead>
           <tbody>
-            <tr><td><strong>RL 之前有没有 SFT</strong></td><td><strong>没有</strong>——直接纯 RL 训练</td><td>有——先做了冷启动 SFT</td></tr>
+            <tr><td><strong>RL 之前有没有 SFT</strong></td><td><strong>没有</strong>，直接纯 RL 训练</td><td>有，先做了冷启动 SFT</td></tr>
             <tr><td><strong>训练路线</strong></td><td>纯 RL 一路到底</td><td>多阶段：冷启动 SFT → RL → 拒绝采样 SFT → 第二轮 RL</td></tr>
             <tr><td><strong>AIME 成绩</strong></td><td>15.6% → 77.9%</td><td>接近并超过 R1-Zero</td></tr>
-            <tr><td><strong>可读性</strong></td><td>差——输出混杂语言、格式乱</td><td>好——回答干净可读</td></tr>
+            <tr><td><strong>可读性</strong></td><td>差，输出混杂语言、格式乱</td><td>好，回答干净可读</td></tr>
           </tbody>
         </table>
       </div>
@@ -226,14 +226,14 @@
       </div>
       <p>
         纯 RL 训练中最戏剧性的现象叫<strong>「顿悟时刻」</strong>：训练中模型自发学会了反思和回头重算，
-        思考时间随训练自然增长——没有人教它「要多想一会儿」，是奖励信号逼它自己长出来的
+        思考时间随训练自然增长。没有人教它「要多想一会儿」，是奖励信号逼它自己长出来的
         （这一现象的分析见 Nature 645:633–638, 2025）。
       </p>
 
       <h3>GRPO：为什么可以不要裁判</h3>
       <p>
         经典的强化优化方法 PPO 需要一位「裁判」：<strong>裁判模型给每个回答打一个绝对分</strong>。
-        DeepSeek 用的 GRPO 换了个思路：<strong>同一道题让模型写一组回答，它们互相比较，组内排名就是奖励</strong>——
+        DeepSeek 用的 GRPO 换了个思路：<strong>同一道题让模型写一组回答，它们互相比较，组内排名就是奖励</strong>。
         有第一就有最后，不需要任何裁判出场。
       </p>
       <p>同一组回答，两种打分方式对比（点按钮看结果）：</p>
@@ -262,7 +262,7 @@
             <div class="demo__out" id="d1-ppo-out"></div>
           </div>
           <div class="demo__stage" data-tabpanel="grpo" style="display:none">
-            <p>同样这 5 个回答，没有裁判——它们互相比较，排名直接换成奖励：</p>
+            <p>同样这 5 个回答，没有裁判，它们互相比较，排名直接换成奖励：</p>
             <button class="btn btn--main" type="button" id="d1-grpo">组内排名出奖励</button>
             <div class="demo__out log" id="d1-grpo-log"></div>
           </div>
@@ -272,7 +272,7 @@
         </div>
       </div>
       <p>
-        还有<strong>蒸馏</strong>：R1 长出来的推理能力可以「传给」小模型——用 R1 生成的大量推理数据
+        还有<strong>蒸馏</strong>：R1 长出来的推理能力可以「传给」小模型。用 R1 生成的大量推理数据
         去做小模型的 SFT，小模型就能学会相当一部分推理本领。
         R1 技术报告里的 6 个术语分两层：<strong>COT、GRPO、蒸馏</strong>这三个本课讲透了；
         <strong>MLA、FP8、MTP</strong> 是三个省钱省时的工程技巧（省显存、省算力、省生成时间），知道名字即可。
@@ -289,7 +289,7 @@
 
       <div class="task">
         <div class="task__hd">实操 ②·同一道题问三次 <em>约 12 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一道多步题的「三次作答对照」——直接问、逼它一步步想、R1 自己想。
+        <p><strong>做完你手上会有</strong>：一道多步题的「三次作答对照」：直接问、逼它一步步想、R1 自己想。
           三次对照摆在一起，思维链和 R1 的区别就是你自己看出来的，不用背。</p>
         <p><strong>第 1 步 · 直接问（3 分钟）</strong>：新开一个<strong>豆包</strong>对话，
           把下面这道题<strong>原样</strong>发出去，一个字都不要加：</p>
@@ -300,7 +300,7 @@
 请问小林实际应付多少元？</code></pre>
         </div>
         <p>（正确答案是 <strong>180 元</strong>：5×25 + 3×20 − 5。留意它第一次直接给答案时有没有跳步、有没有算错。）</p>
-        <p><strong>第 2 步 · 逼它一步步想（3 分钟）</strong>：<span class="task__warn">必须再新开一个对话</span>——
+        <p><strong>第 2 步 · 逼它一步步想（3 分钟）</strong>：<span class="task__warn">必须再新开一个对话</span>，
           不然它记得刚才的答案。把下面这段整段发出去：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="第二步 · 新开对话发送">
           <div class="codeblock__bar"></div>
@@ -311,16 +311,16 @@
         </div>
         <p><strong>第 3 步 · 让 R1 自己想（4 分钟）</strong>：打开 <strong>DeepSeek</strong>，
           开启「<strong>深度思考</strong>」（通常在输入框下方，界面随版本更新，以实际为准），
-          把第 1 步的题目——<strong>不带那句「一步步思考」</strong>——原样再发一次。
+          把第 1 步的题目<strong>不带那句「一步步思考」</strong>，原样再发一次。
           回答前它会先显示一段思考过程，点开看，找出它<strong>自我纠正、换方法或重新算一遍</strong>的片段。</p>
         <p><strong>做到这三条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>三次都拿到了最终答案</b><span>第 2、3 次能看到完整的中间步骤，最终答案应该是 180 元。<br>
-            <em>第 2 次结果和第 1 次不一样</em>：对比哪次的步骤站得住——这就是「草稿纸效应」。</span></li>
+            <em>第 2 次结果和第 1 次不一样</em>：对比哪次的步骤站得住，这就是「草稿纸效应」。</span></li>
           <li><b>在 R1 的思考过程里指出一处自我纠正</b><span>比如「它先按 8 本全打折算了，然后自己发现前 5 本不该打折，回头重算」。
             指不出来就换一道你专业课里的多步计算题再试一次。</span></li>
           <li><b>能说清第三次的思考和第二次的区别</b><span>你逼出来的 CoT 是<strong>你要求</strong>它写的；
-            R1 的思考是<strong>没人要求</strong>——它是 RL 训出来的自发行为。一个是作业，一个是习惯。</span></li>
+            R1 的思考是<strong>没人要求</strong>，它是 RL 训出来的自发行为。一个是作业，一个是习惯。</span></li>
         </ol>
       </div>
     </section>
@@ -329,7 +329,7 @@
       <h2>四、安全对齐：拒答是训出来的，过度拒绝是代价<span class="sec__tag">权衡</span></h2>
       <p>
         问 AI 怎么制毒、怎么伤人，它会拒绝。这个「拒绝」从哪来的？回看第二节的三阶段：
-        SFT 的示范数据里几乎没有「拒答」的样本——<strong>拒答是 RLHF 第二阶段训出来的</strong>：
+        SFT 的示范数据里几乎没有「拒答」的样本，<strong>拒答是 RLHF 第二阶段训出来的</strong>：
       </p>
       <div class="tablewrap">
         <table class="data">
@@ -343,15 +343,15 @@
       </div>
       <p>
         所以拒答不是模型「胆小」或「有价值观」，<strong>是训练数据里的标准变成了它的行为</strong>。
-        而每家公司标注标准不同——所以豆包、千问、DeepSeek 的拒答尺度并不一样。
+        而每家公司标注标准不同，所以豆包、千问、DeepSeek 的拒答尺度并不一样。
         拒答的另一面是麻烦：<strong>奖励模型既是引擎也是短板，拦得越严，误伤正常请求就越多</strong>。
         「解锁我自己忘了密码的手机」「销毁我自己的旧硬盘数据」都是正当需求，
-        却因为长得像坏事而常常被拦——这就是<strong>过度拒绝</strong>。
+        却因为长得像坏事而常常被拦，这就是<strong>过度拒绝</strong>。
       </p>
 
       <div class="task">
         <div class="task__hd">实操 ③·看 AI 怎么拒绝 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：三条越界请求的「拒绝表现」——它拒了没有、怎么拒的。
+        <p><strong>做完你手上会有</strong>：三条越界请求的「拒绝表现」：它拒了没有、怎么拒的。
           拒答的样子见过之后，过度拒绝你才认得出来。</p>
         <p><strong>第 1 步 · 三条分别发（4 分钟）</strong>：新开一个<strong>豆包</strong>对话，
           把下面三条<strong>一条一条分别发</strong>（<span class="task__warn">不要合并成一条消息</span>，
@@ -370,18 +370,18 @@
         </div>
         <p><strong>做到这三条，就算做完了</strong></p>
         <ol class="steps">
-          <li><b>三条都被拒了</b><span>若某一条它照办了——⚠️ 说明这条还没被对齐卡住，这是重要发现。</span></li>
+          <li><b>三条都被拒了</b><span>若某一条它照办了，⚠️ 说明这条还没被对齐卡住，这是重要发现。</span></li>
           <li><b>能说出拒绝方式的两个特征</b><span>有歉意措辞（「抱歉」「不方便」）；说明了拒绝原因；
             给了替代建议（找正规开锁公司、健康减重去问医生）。至少占两条。<br>
-            <em>它只甩一句「我不能」</em>：发这句回去——「你拒绝时能不能说明原因，并给我一个替代建议？」——看它会不会补。</span></li>
-          <li><b>能说出「换装」那一轮的差别</b><span>同一个请求包上小说外壳，边界可能就挪了——
+            <em>它只甩一句「我不能」</em>：发这句回去，「你拒绝时能不能说明原因，并给我一个替代建议？」看它会不会补。</span></li>
+          <li><b>能说出「换装」那一轮的差别</b><span>同一个请求包上小说外壳，边界可能就挪了。
             这正是奖励模型「看走眼」的地方：它认的是<strong>长得像什么</strong>，不是事实上的对错。</span></li>
         </ol>
       </div>
 
       <div class="task">
         <div class="task__hd">实操 ④·测「过度拒绝」：正常请求也被拦 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：三条正当请求 × 三个工具的对照结果——谁误伤了谁、谁最严，一目了然。</p>
+        <p><strong>做完你手上会有</strong>：三条正当请求 × 三个工具的对照结果，谁误伤了谁、谁最严，一目了然。</p>
         <p><strong>第 1 步 · 一条请求发遍三个工具（5 分钟）</strong>：下面三条都是<strong>完全正当</strong>的需求，
           但长得像坏事。把请求 A <strong>原样、一字不改</strong>地依次发给豆包、千问、DeepSeek；
           再同样处理 B 和 C：</p>
@@ -398,13 +398,13 @@
         </div>
         <p><strong>做到这三条，就算做完了</strong></p>
         <ol class="steps">
-          <li><b>9 次提问全部完成</b><span>3 条请求 × 3 个工具，一次不缺——少试一个工具，「对比尺度」就不成立。</span></li>
+          <li><b>9 次提问全部完成</b><span>3 条请求 × 3 个工具，一次不缺。少试一个工具，「对比尺度」就不成立。</span></li>
           <li><b>能指着结果说三件事</b><span>哪个工具拦得最严；哪条请求被哪个工具误伤了；
             误伤时它给没给替代办法（比如「去官方售后解锁」）。</span></li>
-          <li><b>结论落在权衡上</b><span>拦得越严、误伤越多——过度拒绝是安全对齐的<strong>代价</strong>，
+          <li><b>结论落在权衡上</b><span>拦得越严、误伤越多。过度拒绝是安全对齐的<strong>代价</strong>，
             不是哪个工具「坏了」。没有「又安全又从不误伤」的免费午餐。</span></li>
         </ol>
-        <p class="note">若三个工具全都痛快回答、一次没拦——把请求写得「更像坏事」一点（但依然是正当需求）再试一轮。
+        <p class="note">若三个工具全都痛快回答、一次没拦，把请求写得「更像坏事」一点（但依然是正当需求）再试一轮。
           误没误伤不重要，<strong>你亲手摸到了这条边界在哪</strong>才重要。</p>
       </div>
     </section>
@@ -501,15 +501,15 @@
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课要带走七件事</h4>
+        <h4>从「只给结果」到「学会拒绝」，一条线串起来</h4>
         <ol>
-          <li><strong>RL 只给结果、不给步骤</strong>——所以它能学 SFT 教不了的「没有标准答案、只有好坏」的事；</li>
+          <li><strong>RL 只给结果、不给步骤</strong>，所以它能学 SFT 教不了的「没有标准答案、只有好坏」的事；</li>
           <li><strong>RLHF 三阶段</strong>：SFT 学答题（约 1 万条示范）→ 奖励模型当裁判（约 10 万条比较）→ 强化优化自己进步；</li>
           <li>人类反馈的粒度是<strong>比较排序</strong>，不是打分；<strong>13 亿参数打败 1750 亿参数</strong>、幻觉率 41%→21%；</li>
-          <li>思维链 = 给模型一张草稿纸（GSM8K 18%→57%），但<strong>展示的过程 ≠ 真实推理路径</strong>；</li>
-          <li><strong>R1 ≠ R1-Zero</strong>：跳过 SFT 的是 R1-Zero（AIME 15.6%→77.9%）；R1 是多阶段训练——「R1 完全不用 SFT」是错的；</li>
+          <li>思维链就是给模型一张草稿纸（GSM8K 18%→57%），但<strong>展示的过程 ≠ 真实推理路径</strong>；</li>
+          <li><strong>R1 ≠ R1-Zero</strong>：跳过 SFT 的是 R1-Zero（AIME 15.6%→77.9%）；R1 是多阶段训练，「R1 完全不用 SFT」这句话是错的；</li>
           <li><strong>GRPO 不要裁判</strong>：一组输出互相比较、组内排名当奖励（PPO 请裁判打绝对分）；</li>
-          <li><strong>拒答是 RLHF 训出来的</strong>，而拦得越严、误伤越多——过度拒绝是对齐的代价。</li>
+          <li><strong>拒答是 RLHF 训出来的</strong>，而拦得越严、误伤越多，过度拒绝正是对齐要付的代价。</li>
         </ol>
       </div>
       <p>
@@ -517,9 +517,9 @@
         （李宏毅《机器学习 2025 春》对齐 / RLHF 相关讲次）。
       </p>
       <p>
-        <strong>下一步棋</strong>：至此，「会说话的模型」从预训练、SFT 到 RLHF 的完整训练故事讲完了。
-        下一次课换主角——<a class="xref" data-lesson="5">第 5 次课</a>，
-        从「会说话的模型」转向<strong>「会画画的模型」</strong>：扩散模型是怎么从一团噪声里「画」出图像的。
+        到这里，「会说话的模型」从预训练、SFT 到 RLHF 的完整训练故事讲完了。
+        下一课换主角：<a class="xref" data-lesson="5">第 5 次课</a>讲「会画画的模型」，
+        扩散模型怎么从一团噪声里「画」出图像。
       </p>
     </section>
 

@@ -30,21 +30,21 @@
       </figure>
       <p class="lead">
         前面五次课，我们一直在用别人家的电脑算 AI：你提问题，它算完把答案送回来。
-        这一课把这件事反过来——<strong>把模型下载到你自己的电脑上，用你自己的 CPU 算。</strong>
+        这一课把这件事反过来：<strong>把模型下载到你自己的电脑上，用你自己的 CPU 算。</strong>
       </p>
       <p>先回答三个很具体的问题，它们决定了这课值不值得学：</p>
       <ul>
-        <li><strong>断网了，你的 AI 还能用吗？</strong>——云端模型不能。它断网即废。</li>
-        <li><strong>你输入的内容，存在谁那里？</strong>——云端模型存在厂商的服务器上。</li>
-        <li><strong>同一个问题问几百遍，你会心疼吗？</strong>——云端按量计费会，本地不会。</li>
+        <li><strong>断网了，你的 AI 还能用吗？</strong>云端模型不能，它断网即废。</li>
+        <li><strong>你输入的内容，存在谁那里？</strong>云端模型存在厂商的服务器上。</li>
+        <li><strong>同一个问题问几百遍，你会心疼吗？</strong>云端按量计费会，本地不会。</li>
       </ul>
       <p>
         本地部署换来的三样东西是：<strong>数据不出门、断网也能用、反复调用不要钱</strong>。
         代价也很明确：<strong>能力明显更弱</strong>。所以本课的结论不是「本地更好」，
-        而是——<strong>各有各的位置，知道什么时候该用哪个，才是真的会用工具。</strong>
+        而是各有各的位置，知道什么时候该用哪个，才是真的会用工具。
       </p>
       <div class="callout callout--warn">
-        <span class="callout__t">提前说清楚</span>
+        <span class="callout__t">先接受一件事：它不聪明</span>
         本课默认从 <code>qwen3:1.7b</code>（17 亿参数）起步。它答得不会很聪明，<strong>这很正常</strong>。
         它的价值不出在「聪明」上，而出在前面那三样东西上。
       </div>
@@ -53,7 +53,7 @@
     <section class="sec" id="s-goal">
       <h2>学习目标</h2>
       <div class="goal">
-        <h4>学完这一课，你应该能——</h4>
+        <h4>学完这一课，你应该能：</h4>
         <ol>
           <li>说清本地模型与云端模型的<strong>三点核心差异</strong>，并能在具体场景里做出选择；</li>
           <li>独立完成 Ollama 的<strong>安装、模型目录整改与三步环境自查</strong>；</li>
@@ -80,8 +80,8 @@
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
-        <strong>先修</strong>：第 5 次课做过「参数（档位）决定行为」的对照实验——本课「按内存选档位」是同一套心智模型的直接迁移。<br>
-        <strong>后续</strong>：<a class="xref" data-lesson="7">第 7 次课</a>起进入 WorkBuddy 实战，你会反复用到本课的判断——<strong>哪些任务该交给本地跑，哪些必须上云</strong>。
+        <strong>先修</strong>：第 5 次课做过「参数（档位）决定行为」的对照实验，本课「按内存选档位」是同一套心智模型的直接迁移。<br>
+        <strong>后续</strong>：<a class="xref" data-lesson="7">第 7 次课</a>起进入 WorkBuddy 实战，你会反复用到本课的判断：<strong>哪些任务该交给本地跑，哪些必须上云</strong>。
       </div>
     </section>
 
@@ -89,7 +89,7 @@
       <h2>一、为什么要本地模型<span class="sec__tag">认知地基</span></h2>
       <p>
         先说一个日常现象：你在网页里打开豆包、千问、DeepSeek，输入一句话，几秒后答案就出来了。
-        这个过程里，<strong>你的电脑几乎没有做什么计算</strong>——它只是把问题发出去，再把答案收回来。
+        这个过程里，<strong>你的电脑几乎没有做什么计算</strong>，它只是把问题发出去，再把答案收回来。
         真正干活的是厂商机房里的服务器。
       </p>
 
@@ -153,7 +153,7 @@
       <h2>二、Ollama 是什么</h2>
       <p>
         <strong>Ollama 是一个在本地运行开源大模型的运行时（runtime）</strong>。
-        说人话：它像「大模型的应用商店 + 播放器」——装好之后，<strong>一条命令下载模型，一条命令开始对话</strong>。
+        说人话：它像「大模型的应用商店 + 播放器」。装好之后，<strong>一条命令下载模型，一条命令开始对话</strong>。
       </p>
       <p>它把原本很麻烦的事情都替你办了：</p>
       <ul>
@@ -164,7 +164,7 @@
       <div class="callout callout--warn">
         <span class="callout__t">注意</span>
         本课<strong>不讲具体版本号</strong>。Ollama 迭代很快，讲了就容易过期。
-        我们只教一条自查命令：<code>ollama --version</code>——<strong>版本号会变，命令不会变</strong>。
+        我们只教一条自查命令：<code>ollama --version</code>，<strong>版本号会变，命令不会变</strong>。
       </div>
     </section>
 
@@ -189,7 +189,7 @@
 
       <div class="task">
         <div class="task__hd">动手做 ①·装好 Ollama，并把三步自查跑出来 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一张终端截图——三条命令都跑过，结果你都看得懂。</p>
+        <p><strong>做完你手上会有</strong>：一张终端截图，三条命令都跑过，结果你都看得懂。</p>
 
         <p><strong>第 1 步 · 装好，然后新开一个 PowerShell（3 分钟）</strong></p>
         <ol class="steps">
@@ -211,14 +211,14 @@ echo $env:OLLAMA_MODELS   # ③ 看模型目录是否已改到非系统盘（没
         <ol class="steps">
           <li><b>第 ① 条给了版本号</b><span>形如 <code>ollama version is 0.x.x</code>。<br>
             <em>提示「不是内部或外部命令」</em>：关掉终端重新开一次；还不行就重装一遍，装的时候勾上「添加到 PATH」。</span></li>
-          <li><b>第 ② 条能列出模型列表</b><span>刚装完是空的，正常——空列表本身就说明命令跑通了。<br>
+          <li><b>第 ② 条能列出模型列表</b><span>刚装完是空的，正常，空列表本身就说明命令跑通了。<br>
             <em>报错</em>：多半是后台服务没起来，重新开一个终端再试。</span></li>
           <li><b>第 ③ 条告诉了你接下来先干什么</b><span>有输出、且路径不在 C 盘 → 直接进下一节；<strong>没有输出 → 先去改模型目录</strong>（见「坑位①」），
             否则模型会把 C 盘塞满。<br>
             顺手记下你的内存大小：「此电脑」右键 → 属性，或任务管理器 → 性能页。后面选模型档位要用。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：这三条命令的输出截图。</p>
-        <p class="note">装不上别硬耗——<strong>和邻座共用一台</strong>，作业里注明「共用设备」即可。
+        <p class="note">装不上别硬耗，<strong>和邻座共用一台</strong>，作业里注明「共用设备」即可。
           一节课 80 分钟，不值得全花在装环境上。</p>
       </div>
     </section>
@@ -288,16 +288,16 @@ ollama run qwen3:1.7b</code></pre>
         <p><strong>第 3 步 · 进去之后做两件事（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>问它一个你专业上的问题</b><span>比如「用一个生活例子解释什么是过拟合」，看它答成什么样。</span></li>
-          <li><b>输入 <code>/bye</code> 退出</b><span>这是退出对话的方式——直接关窗口有时会把进程留在后台。</span></li>
+          <li><b>输入 <code>/bye</code> 退出</b><span>这是退出对话的方式，直接关窗口有时会把进程留在后台。</span></li>
         </ol>
 
         <p><strong>第 4 步 · 做到这三条，就算做完了</strong></p>
         <ol class="steps">
-          <li><b><code>ollama list</code> 里能看到刚拉的模型</b><span>看不到说明第 ② 条的 pull 没跑完——
+          <li><b><code>ollama list</code> 里能看到刚拉的模型</b><span>看不到说明第 ② 条的 pull 没跑完，
             重新跑一次，注意进度条走到 100% 才算完。</span></li>
           <li><b>跟它说过至少一轮话</b><span>回车后迟迟没反应，是模型还在加载，等十来秒正常；
             超过一分钟还没动静，Ctrl+C 退出重进一次。</span></li>
-          <li><b>断网之后它还能答</b><span><strong>这是本地模型最核心的价值</strong>——
+          <li><b>断网之后它还能答</b><span><strong>这是本地模型最核心的价值</strong>，
             把 Wi-Fi 关掉再问一句，它照样回你。做不到就不是真本地。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：<code>ollama list</code> 的输出 + 一段对话截图。</p>
@@ -354,7 +354,7 @@ echo $env:OLLAMA_MODELS
     <section class="sec" id="s-tier">
       <h2>六、按内存选档位<span class="sec__tag">本课核心</span></h2>
       <p>
-        模型的「档位」指的是<strong>参数量</strong>（0.6b = 6 亿参数，7b = 70 亿参数）。
+        模型的「档位」指的是<strong>参数量</strong>：0.6b 是 6 亿参数，7b 是 70 亿参数。
         参数越大越聪明，也越吃内存和显存。<strong>所以选模型的唯一依据，是你电脑的内存。</strong>
       </p>
 
@@ -408,7 +408,7 @@ echo $env:OLLAMA_MODELS
 
       <h3>为什么「文件大小」能当内存参考</h3>
       <p>
-        Ollama 默认使用 <strong>Q4 量化</strong>——把模型的权重压缩存储，体积大幅缩小、回答质量损失有限。
+        Ollama 默认使用 <strong>Q4 量化</strong>，把模型的权重压缩存储，体积大幅缩小、回答质量损失有限。
         压缩之后，<strong>模型文件大小就是估算所需内存的可靠参考</strong>：一个约 2.5 GB 的文件，基本就要 6 GB 左右内存才跑得舒服。
       </p>
       <div class="callout callout--warn">
@@ -487,12 +487,12 @@ ollama run qwen3:1.7b "用一句话解释什么是机器学习"
       </p>
       <p>它提供了<strong>两个端点</strong>：</p>
       <ul>
-        <li><code>POST /api/generate</code> —— Ollama 自己的原生接口，简单直接；</li>
-        <li><code>POST /v1/chat/completions</code> —— <strong>OpenAI 兼容接口</strong>，请求体格式和 OpenAI 完全一致。</li>
+        <li><code>POST /api/generate</code>：Ollama 自己的原生接口，简单直接；</li>
+        <li><code>POST /v1/chat/completions</code>：<strong>OpenAI 兼容接口</strong>，请求体格式和 OpenAI 完全一致。</li>
       </ul>
       <div class="callout callout--tip">
         <span class="callout__t">为什么「兼容 OpenAI」这句话很值钱</span>
-        它意味着——<strong>任何支持自定义 base_url 的客户端或代码，都能直接接过来用，一行代码都不用改。</strong>
+        它意味着：<strong>任何支持自定义 base_url 的客户端或代码，都能直接接过来用，一行代码都不用改。</strong>
         你以前写的调用云端的程序，只要把地址换成 <code>http://localhost:11434/v1</code>，就变成在调你自己的模型了。
       </div>
 
@@ -575,32 +575,32 @@ print(resp.json()["response"])
       </div>
       <p class="note">
         注意返回结构：<code>choices[0].message.content</code> 才是回答正文。
-        这套字段名和 OpenAI 完全一致——这就是「兼容」的全部含义。
+        这套字段名和 OpenAI 完全一致，这就是「兼容」的全部含义。
       </p>
 
       <h3>完整脚本在动手做里</h3>
-      <p>两种接口都封装好的完整脚本，放在下面「动手做 ③」的第 1 步里——
+      <p>两种接口都封装好的完整脚本，放在下面「动手做 ③」的第 1 步里，
         照那份做就行，不需要自己拼。</p>
 
       <div class="callout callout--danger">
         <span class="callout__t">API 连不上，先查三件事</span>
         <ul>
-          <li><strong>服务起来了吗</strong>——托盘里有没有 Ollama 图标；</li>
-          <li><strong>端口被占了吗</strong>——<code>11434</code> 是否被别的程序占用；</li>
-          <li><strong>模型名拼对了吗</strong>——用 <code>ollama list</code> 复制粘贴，别手打。</li>
+          <li><strong>服务起来了吗</strong>：托盘里有没有 Ollama 图标；</li>
+          <li><strong>端口被占了吗</strong>：<code>11434</code> 是否被别的程序占用；</li>
+          <li><strong>模型名拼对了吗</strong>：用 <code>ollama list</code> 复制粘贴，别手打。</li>
         </ul>
       </div>
 
       <div class="task">
         <div class="task__hd">动手做 ③·把本地模型接进你的 Python 脚本 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一个能跑的 <code>ask_local.py</code>——用它在终端里跟本地模型一问一答。</p>
+        <p><strong>做完你手上会有</strong>：一个能跑的 <code>ask_local.py</code>，用它在终端里跟本地模型一问一答。</p>
 
         <p><strong>第 1 步 · 把脚本存下来（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>在你的 <code>wb-试验</code> 文件夹里新建 <code>ask_local.py</code></b><span>
             VS Code 或记事本都行，保存时编码选 <strong>UTF-8</strong>，否则中文会乱码。</span></li>
-          <li><b>把下面这份脚本整段复制进去</b><span>点代码块右上角「复制」，别手抄——缩进错一处就跑不起来。</span></li>
-          <li><b>确认脚本里的模型名跟你本地的一致</b><span><span class="task__warn">这行最容易出错</span>——
+          <li><b>把下面这份脚本整段复制进去</b><span>点代码块右上角「复制」，别手抄，缩进错一处就跑不起来。</span></li>
+          <li><b>确认脚本里的模型名跟你本地的一致</b><span><span class="task__warn">这行最容易出错</span>，
             先用 <code>ollama list</code> 把名字复制出来，再替换脚本里的 <code>MODEL = "..."</code>。</span></li>
         </ol>
 
@@ -689,7 +689,7 @@ python ask_local.py</code></pre>
         <ol class="steps">
           <li><b>终端里打印出了模型的回答</b><span>能看到中文回答，就说明接口通了。<br>
             <em>报 ConnectionError</em>：服务没起来或端口不对，对着上面那三条排查。</span></li>
-          <li><b>确认回答真来自本地</b><span><strong>把 Wi-Fi 关掉再跑一次</strong>，照样出结果——这才说明走的是本地模型。</span></li>
+          <li><b>确认回答真来自本地</b><span><strong>把 Wi-Fi 关掉再跑一次</strong>，照样出结果，这才说明走的是本地模型。</span></li>
           <li><b>能说出两种接口的区别</b><span>脚本里 <code>ask()</code> 用 <code>/api/generate</code>（Ollama 原生），
             <code>chat()</code> 用 <code>/v1/chat/completions</code>（OpenAI 兼容）。<br>
             <em>为什么要后者</em>：把地址一换就能接云端模型，代码几乎不用改。</span></li>
@@ -700,7 +700,7 @@ python ask_local.py</code></pre>
 
     <section class="sec" id="s-speed">
       <h2>十、速度体感与硬件</h2>
-      <p>很多同学第一次跑本地模型的第一反应是：「怎么这么慢，是不是装错了？」——不是。先看这张表。</p>
+      <p>很多同学第一次跑本地模型的第一反应是：「怎么这么慢，是不是装错了？」不是。先看这张表。</p>
 
       <div class="tablewrap">
         <table class="data">
@@ -721,8 +721,8 @@ python ask_local.py</code></pre>
 
       <div class="callout callout--warn">
         <span class="callout__t">慢的真相</span>
-        <strong>没有独立显卡 = CPU 推理，慢是硬件决定的，不是你装错了。</strong>
-        想快，<strong>降档位比什么都管用</strong>——换一个参数量更小的模型，速度立刻上一个台阶。
+        没有独立显卡就只能用 CPU 推理，慢是硬件决定的，不是你装错了。
+        想快，<strong>降档位比什么都管用</strong>。换一个参数量更小的模型，速度立刻上一个台阶。
       </div>
     </section>
 
@@ -734,8 +734,8 @@ python ask_local.py</code></pre>
       </p>
       <p>它最简的结构只有两行：</p>
       <ul>
-        <li><code>FROM</code> —— 告诉它<strong>「你是谁的孩子」</strong>，基于哪个模型；</li>
-        <li><code>SYSTEM</code> —— 告诉它<strong>「你要守什么规矩」</strong>：人设、口吻、边界。</li>
+        <li><code>FROM</code>：告诉它<strong>「你是谁的孩子」</strong>，基于哪个模型；</li>
+        <li><code>SYSTEM</code>：告诉它<strong>「你要守什么规矩」</strong>：人设、口吻、边界。</li>
       </ul>
 
       <div class="demo" id="demo4">
@@ -800,14 +800,14 @@ ollama rm mybot
 
       <div class="task">
         <div class="task__hd">动手做 ④·做一个「课程答疑助手」，给它定死规矩 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一个你自己命名的本地模型——问课程相关的问题它照规矩答，问不相关的它会拒绝。</p>
+        <p><strong>做完你手上会有</strong>：一个你自己命名的本地模型，问课程相关的问题它照规矩答，问不相关的它会拒绝。</p>
 
         <p><strong>第 1 步 · 写 Modelfile（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>在 <code>wb-试验</code> 里新建一个文件，名字就叫 <code>Modelfile</code></b><span>
-            <span class="task__warn">没有后缀名</span>——是 <code>Modelfile</code>，不是 <code>Modelfile.txt</code>。
+            <span class="task__warn">没有后缀名</span>，是 <code>Modelfile</code>，不是 <code>Modelfile.txt</code>。
             用记事本保存时，文件名写 <code>"Modelfile"</code>（<strong>带引号</strong>）它就不会自动加 .txt。</span></li>
-          <li><b>把下面这份模板整段复制进去</b><span>点代码块右上角「复制」，别手打——缩进和引号错了都跑不起来。</span></li>
+          <li><b>把下面这份模板整段复制进去</b><span>点代码块右上角「复制」，别手打，缩进和引号错了都跑不起来。</span></li>
           <li><b>把 <code>FROM</code> 那行的模型名换成你本地实际有的</b><span>先 <code>ollama list</code> 把名字复制出来再改。
             <span class="task__warn">模型名不对，create 一定失败</span>。</span></li>
         </ol>
@@ -832,20 +832,20 @@ ollama run coursebot</code></pre>
 
         <p><strong>第 3 步 · 故意试它一下（4 分钟）</strong></p>
         <ol class="steps">
-          <li><b>先问一个课程相关的问题</b><span>比如「本地模型有什么好处」——看它答得是不是简短、在不在题上。</span></li>
+          <li><b>先问一个课程相关的问题</b><span>比如「本地模型有什么好处」，看它答得是不是简短、在不在题上。</span></li>
           <li><b>再问一个明显不相关的问题</b><span>比如「今天中午吃什么」。<strong>它应该拒绝</strong>，因为 SYSTEM 里写着「只回答与本课程相关的问题」。<br>
-            <em>它照样热情回答了</em>：说明规矩没写住——回去把 SYSTEM 里那句改得更硬，重新 create 一次。</span></li>
-          <li><b>输入 <code>/bye</code> 退出，再 <code>ollama list</code></b><span>能看到 <code>coursebot</code> ——你自己造的模型，已经在本地了。</span></li>
+            <em>它照样热情回答了</em>：说明规矩没写住，回去把 SYSTEM 里那句改得更硬，重新 create 一次。</span></li>
+          <li><b>输入 <code>/bye</code> 退出，再 <code>ollama list</code></b><span>能看到 <code>coursebot</code>，你自己造的模型，已经在本地了。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：<code>Modelfile</code> 文件 + 「问不相关问题被拒」的截图。</p>
-        <p class="note">第 2 条是重头戏。<strong>模型守不守规矩，取决于你写的规矩够不够具体</strong>——
+        <p class="note">第 2 条是重头戏。<strong>模型守不守规矩，取决于你写的规矩够不够具体</strong>，
           这正是 Modelfile 这一节真正要教的东西。</p>
       </div>
     </section>
 
     <section class="sec" id="s-bound">
       <h2>十二、边界与权衡：该用本地还是上云</h2>
-      <p>这是本课最终要落到的能力——不是「会装」，而是<strong>会选</strong>。遇到一个具体任务，问自己三个问题：</p>
+      <p>这是本课最终要落到的能力：不是「会装」，而是<strong>会选</strong>。遇到一个具体任务，问自己三个问题：</p>
       <ol class="steps">
         <li><b>数据敏不敏感？</b><span>涉及学生隐私、公司内部资料、个人信息 → <strong>优先本地</strong>。</span></li>
         <li><b>要不要联网查新？</b><span>需要最新资讯、实时行情、最新政策 → <strong>必须上云</strong>，本地模型查不了。</span></li>
@@ -877,7 +877,7 @@ ollama run coursebot</code></pre>
 
       <div class="callout callout--quote">
         <span class="callout__t">回到主线</span>
-        你们今天跑的 1.7b 确实不如云端聪明。但它是你的——<strong>数据不出门、断网能用、反复调用不要钱</strong>。
+        你们今天跑的 1.7b 确实不如云端聪明。但它是你的：<strong>数据不出门、断网能用、反复调用不要钱</strong>。
         <strong>知道什么时候该用本地、什么时候该上云，才是真的会用工具。</strong>
       </div>
     </section>
@@ -982,16 +982,21 @@ ollama run coursebot</code></pre>
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课我们做了六件事</h4>
+        <h4>六件事，串成一条线</h4>
         <ol>
-          <li>说清了本地与云端的三点差异——<b>数据不出门 / 断网能用 / 能力更弱</b>；</li>
+          <li>说清了本地与云端的三点差异：<b>数据不出门 / 断网能用 / 能力更弱</b>；</li>
           <li>装了 Ollama，<b>第一时间把模型目录改到非系统盘</b>（不然 C 盘会被撑爆）；</li>
           <li>学会按内存选档位，记住铁律<b>「先小后大」</b>；</li>
-          <li>跑通了三种调用方式——<b>交互式 / 一次性 / API</b>；</li>
+          <li>跑通了三种调用方式：<b>交互式 / 一次性 / API</b>；</li>
           <li>用 Modelfile 做了自己的专属助手，<b>规矩写得越具体越好用</b>；</li>
           <li>最后落到<b>边界判断</b>：这三问决定什么时候该用本地、什么时候必须上云。</li>
         </ol>
       </div>
+      <p>
+        现在你手上有一台「自己的 AI」，它不聪明，但它随叫随到、断网也在。
+        <a class="xref" data-lesson="7">第 7 次课</a>我们换个方向：不再一个一个对话框地聊，
+        而是让 AI 直接动手改你的文件、交出你能验收的结果。
+      </p>
     </section>
 
     <section class="sec" id="s-hw">

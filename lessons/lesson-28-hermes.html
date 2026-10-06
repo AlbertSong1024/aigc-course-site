@@ -23,7 +23,7 @@
       <p class="lead">
         <a class="xref" data-lesson="27">第 27 次课</a>解决的是「让 AI 改代码时，怎么划范围才安全」。
         这一课换个角度：如果一个助手<strong>会记住你</strong>、<strong>会自己攒技能</strong>、
-        <strong>会按时主动找你</strong>——便利是明摆着的，但问题也跟着来了：
+        <strong>会按时主动找你</strong>，便利是明摆着的，但问题也跟着来了：
         <strong>它记住的那些东西，归谁管？</strong>
       </p>
       <p>
@@ -37,18 +37,18 @@
           <tbody>
             <tr><td><strong>每次开新对话，都要重新说一遍「我喜欢分点、别写太长」</strong></td><td>普通对话的上下文关掉就没了，它没有<strong>跨会话记忆</strong></td></tr>
             <tr><td><strong>同一个整理步骤讲了五遍，它每次还是从头想一遍</strong></td><td>重复做的事没被沉淀成<strong>可复用的技能</strong></td></tr>
-            <tr><td><strong>想让它每周五提醒我复盘，但它不会主动开口</strong></td><td>缺两样东西：<strong>按时间触发的 cron</strong> 和<strong>把消息送到你手上的通道</strong></td></tr>
+            <tr><td><strong>想让它每周五提醒我复盘，但它不会主动开口</strong></td><td>缺两样东西：<strong>按时间触发的 cron</strong> 和把消息送到你手上的通道</td></tr>
             <tr><td><strong>装自己电脑上还是云服务器上，一直拿不定主意</strong></td><td>这不是性能问题，是<strong>数据边界与维护责任</strong>的选择</td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout callout--warn">
-        <span class="callout__t">提前说清楚</span>
-        本课是<strong>理论课，不要求安装 Hermes-Agent</strong>——它的版本、开源时间与能力变化很快，
+        <span class="callout__t">本课不装工具，只讲三个概念</span>
+        本课是<strong>理论课，不要求安装 Hermes-Agent</strong>。它的版本、开源时间与能力变化很快，
         课上只用卡片把「<strong>记忆、提醒、人工确认</strong>」三个概念走一遍（替代演示），
         <strong>不接入个人账号</strong>，正式信息一律以官方来源复核。<br>
         动手环节只有一个任务：<strong>让 AI 做出一张记忆卡、一张提醒卡、一条隐私边界</strong>，
-        你负责逐条核对——<strong>操作交给 AI，验收留给人</strong>。
+        你负责逐条核对：<strong>操作交给 AI，验收留给人</strong>。
       </div>
       <p class="note">
         本课涉及的产品口径取自 Hermes Agent 官方文档（hermes-ai.net）与公开资料，
@@ -80,7 +80,7 @@
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
-        <strong>先修</strong>：<a class="xref" data-lesson="27">第 27 次课</a>的「先定范围、再看计划、最后人工验收」——
+        <strong>先修</strong>：<a class="xref" data-lesson="27">第 27 次课</a>的「先定范围、再看计划、最后人工验收」。
         今天把这套动作从「文件夹边界」换成「<strong>隐私边界</strong>」。<br>
         <strong>后续</strong>：<a class="xref" data-lesson="29">第 29 次课</a>看的是另一种 Agent 框架思路
         （一切皆插件），到时候你会发现：<strong>能力越模块化，权限就越要一条条点名</strong>。
@@ -98,7 +98,7 @@
         <table class="data">
           <thead><tr><th>层</th><th>保留多久</th><th>谁来写</th><th>例子</th></tr></thead>
           <tbody>
-            <tr><td><strong>会话内上下文</strong></td><td>关掉对话就没了</td><td>你说一句它记一句</td><td>「刚才那段再改短一点」——换个对话它就不记得了</td></tr>
+            <tr><td><strong>会话内上下文</strong></td><td>关掉对话就没了</td><td>你说一句它记一句</td><td>「刚才那段再改短一点」，换个对话它就不记得了</td></tr>
             <tr><td><strong>跨会话记忆</strong></td><td>下次开新对话还在</td><td>它从对话里抽取后写下来</td><td>「这个用户喜欢分点、每次别超过三条」</td></tr>
             <tr><td><strong>技能（程序性记忆）</strong></td><td>长期，还会被改进</td><td>它把重复做的事总结成步骤</td><td>「整理会议记录：先分结论/待办/负责人，日期缺的写待确认」</td></tr>
           </tbody>
@@ -107,7 +107,7 @@
       <p>
         按 Hermes Agent 官方口径，记忆是<strong>它自己整理的</strong>：
         它会周期性回顾近期对话，把可复用的模式抽出来，<strong>写回成技能或记忆条目</strong>；
-        跨会话的检索由 FTS5 负责。用一句大白话说就是——
+        跨会话的检索由 FTS5 负责。用一句大白话说就是：
         <strong>你不用专门去「教」它，它自己在旁边记笔记。</strong>
       </p>
 
@@ -139,9 +139,9 @@
       <div class="callout callout--warn">
         <span class="callout__t">省下来的重复说明，代价是「它替你记了」</span>
         记忆的好处很实在：<strong>你不用每次从头介绍自己</strong>。
-        但代价同样实在——它记住的东西<strong>是你说过的话</strong>，
+        但代价同样实在，它记住的东西<strong>是你说过的话</strong>，
         所以规矩只有一条：<strong>敏感信息和他人信息，不该被长期保存。</strong><br>
-        密码、身份证号、私人聊天记录、他人的联系方式——这些一旦进了记忆，
+        密码、身份证号、私人聊天记录、他人的联系方式，这些一旦进了记忆，
         就不再是「你说了句什么」，而是<strong>它长期持有的一份数据</strong>。
       </div>
 
@@ -155,13 +155,13 @@
       <h2>二、自动技能创建：把重复做的事沉淀下来<span class="sec__tag">概念</span></h2>
       <p>
         每周五你都要做同一件事：把这周的会议记录整理成「结论 / 待办 / 负责人」三栏。
-        做了五周，你就讲了五遍规则——<strong>第五周讲的和第一周一模一样</strong>。
+        做了五周，你就讲了五遍规则，<strong>第五周讲的和第一周一模一样</strong>。
         这就是「没有技能」的典型样子：<strong>方法每次都从你的脑子里重新走一遍。</strong>
       </p>
       <p>
         <strong>自动技能创建</strong>干的就是这件事：把重复任务的方法沉淀成可复用的步骤。
-        按官方口径，Hermes 的技能是「程序性记忆」——
-        <strong>一个小的 Markdown 文件</strong>，写清这个能力<strong>怎么做、什么时候用、要避开什么</strong>，
+        按官方口径，Hermes 的技能是「程序性记忆」：
+        <strong>一个小的 Markdown 文件</strong>，写清这个能力怎么做、什么时候用、要避开什么，
         而且它在用的过程中还会继续改。
       </p>
       <div class="tablewrap">
@@ -198,8 +198,8 @@
       </div>
       <div class="callout callout--tip">
         <span class="callout__t">形成技能前，先确认两件事</span>
-        <strong>一是方法稳定</strong>——这次这么做，下次还这么做；做一次就换一套规则的事，不配沉淀成技能。<br>
-        <strong>二是输入输出明确</strong>——给它什么、还给什么，说得清；说不清的技能，用起来只会更乱。<br>
+        <strong>一是方法稳定</strong>：这次这么做，下次还这么做；做一次就换一套规则的事，不配沉淀成技能。<br>
+        <strong>二是输入输出明确</strong>：给它什么、还给什么，说得清；说不清的技能，用起来只会更乱。<br>
         还有一条底线：<strong>技能必须允许人工修改或删除。</strong>
         它自己攒的东西，你改不了也删不掉，那就不是你的助手了。
       </div>
@@ -216,7 +216,7 @@
           <thead><tr><th>部件</th><th>管什么</th><th>没有它会怎样</th></tr></thead>
           <tbody>
             <tr><td><strong>消息接入</strong></td><td>任务从哪个聊天渠道进来、结果送到哪里去</td><td>你只能坐在电脑前跟它说话，离开就没了</td></tr>
-            <tr><td><strong>cron（定时）</strong></td><td>什么时候触发——每周五 17:00 就是 cron 的事</td><td>它永远等你先开口，不会主动找你</td></tr>
+            <tr><td><strong>cron（定时）</strong></td><td>什么时候触发。每周五 17:00 就是 cron 的事</td><td>它永远等你先开口，不会主动找你</td></tr>
             <tr><td><strong>工具</strong></td><td>真正去执行的动作：读文件、查资料、发消息、写文档</td><td>它只会说，不会做</td></tr>
           </tbody>
         </table>
@@ -228,7 +228,7 @@
         工具这一侧还能接 MCP 服务器来扩展，并用<strong>允许清单</strong>把可用工具数量压住。
       </p>
       <p>
-        「每周五 17:00」这句话落到机器上，就是一行 cron 表达式——五位，从左往右分别是
+        「每周五 17:00」这句话落到机器上，就是一行 cron 表达式。五位，从左往右分别是
         <strong>分 / 时 / 日 / 月 / 周</strong>：
       </p>
       <div class="codeblock" data-lang="bash" data-name="cron 表达式 · 五位各管什么">
@@ -303,14 +303,14 @@
       </div>
       <p>
         官方给的选项比这两个更多：本地、Docker、SSH、Daytona、Singularity、Modal 共六种运行后端，
-        其中 serverless 那一类<strong>空闲时会休眠</strong>——
+        其中 serverless 那一类<strong>空闲时会休眠</strong>。
         说白了就是：<strong>隔离程度和运行成本是可以按任务挑的</strong>。
       </p>
       <div class="callout callout--danger">
         <span class="callout__t">本课的三条底线</span>
-        <strong>① 不要求安装</strong>——本课只做概念替代演示，能不能跑起来不影响你学这一课；<br>
-        <strong>② 不接入个人账号</strong>——一旦接了聊天账号，它读到的就不只是你发给它的那几句话；<br>
-        <strong>③ 事实以官方为准</strong>——这个工具的版本、开源时间与能力变化很快，
+        <strong>① 不要求安装</strong>。本课只做概念替代演示，能不能跑起来不影响你学这一课；<br>
+        <strong>② 不接入个人账号</strong>。一旦接了聊天账号，它读到的就不只是你发给它的那几句话；<br>
+        <strong>③ 事实以官方为准</strong>。这个工具的版本、开源时间与能力变化很快，
         课上讲的和你现在看到的不一样很正常，<strong>正式使用前的第一件事是去官方仓库复核</strong>。
       </div>
     </section>
@@ -319,13 +319,13 @@
       <h2>五、动手做：三张卡验证三个概念<span class="sec__tag">替代演示</span></h2>
       <p>
         本课不安装 Hermes-Agent。你用已经装好的 WorkBuddy，
-        把「<strong>偏好记忆、定期提醒、人工确认</strong>」这三件事做成卡片走一遍——
+        把「偏好记忆、定期提醒、人工确认」这三件事做成卡片走一遍。
         <strong>工具换了，概念一个没少</strong>。
       </p>
 
       <div class="task">
         <div class="task__hd">动手做 ①·让它做出记忆卡、提醒卡和一条隐私边界 <em>本课主体</em></div>
-        <p><strong>做完你手上会有</strong>：一份 <code>28-记忆与提醒.md</code>——
+        <p><strong>做完你手上会有</strong>：一份 <code>28-记忆与提醒.md</code>，
           一张「主题—偏好—适用场景」记忆卡、一张每周五 17:00 的提醒卡草稿、
           一条「可以记住 / 不能记住 / 什么时候必须人工确认」的隐私边界，
           末尾一段三行比较（记忆卡 vs 提醒卡 vs 普通对话）。</p>
@@ -333,7 +333,7 @@
         <p><strong>第 1 步 · 把这次要用的素材取出来</strong></p>
         <p>
           下面这份是本次练习的唯一素材，后面四条指令都围着它转。
-          <span class="task__warn">偏好这一行不要改</span>——改动会让四条指令对不上。
+            <span class="task__warn">偏好这一行不要改</span>。改动会让四条指令对不上。
         </p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="素材 · 本周待排任务与一条学习偏好（教学示意）· 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -350,7 +350,7 @@
         <p><strong>第 2 步 · 打开 WorkBuddy，让它做记忆卡</strong></p>
         <ol class="steps">
           <li><b>新建任务，工作目录选 <code>wb-试验</code></b><span>
-            沿用前几课那个目录即可。<span class="task__warn">必须新建任务</span>——
+            沿用前几课那个目录即可。<span class="task__warn">必须新建任务</span>。
             旧任务里它带着上一课的上下文，卡片会被写成别的东西。</span></li>
           <li><b>把上面那份素材整段贴进对话，空一行，再把下面这段指令贴进去，一起发送</b><span>
             素材在前、指令在后。</span></li>
@@ -363,7 +363,7 @@
         <p><strong>第 3 步 · 让它设计提醒卡（只出草稿）</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令紧接着发出去</b><span>
-            <span class="task__warn">「只生成草稿，发送前必须让我确认」这句不许删</span>——
+            <span class="task__warn">「只生成草稿，发送前必须让我确认」这句不许删</span>。
             删了这一步就变成「它替你发」，本课要练的恰恰是被卡住的这一下。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="指令② 提醒卡 · 点右上角复制">
@@ -557,20 +557,19 @@
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课要带走五件事</h4>
+        <h4>三件事，三句问话</h4>
         <ol>
           <li>三层要分清：<strong>会话内上下文（关掉就没）</strong>、<strong>跨会话记忆</strong>、<strong>技能（程序性记忆）</strong>；</li>
-          <li>跨会话记忆省的是<strong>重复说明</strong>，代价是它长期持有你的数据——<strong>敏感信息与他人信息不进记忆</strong>；</li>
-          <li>自动技能创建 = 把重复做的事沉淀成可复用步骤；形成前确认<strong>方法稳定、输入输出明确</strong>，并且<strong>人能改、能删</strong>；</li>
+          <li>跨会话记忆省的是<strong>重复说明</strong>，代价是它长期持有你的数据：<strong>敏感信息与他人信息不进记忆</strong>；</li>
+          <li>自动技能创建，是把重复做的事沉淀成可复用步骤；形成前确认<strong>方法稳定、输入输出明确</strong>，并且<strong>人能改、能删</strong>；</li>
           <li>消息接入管入口与去向、<strong>cron 管什么时候触发</strong>、工具管真正执行；三样接一起更需要权限与确认，指令里要写死<strong>「只生成草稿，发送前必须让我确认」</strong>；</li>
-          <li>本地 vs VPS 比的是责任：<strong>本地数据更可控但要自己维护，VPS 便于持续运行却多了网络与安全责任</strong>。</li>
+          <li>本地跟 VPS 比的是责任：<strong>本地数据更可控但要自己维护，VPS 便于持续运行却多了网络与安全责任</strong>。</li>
         </ol>
       </div>
       <p>
-        <strong>下一步棋</strong>：今天我们把「记忆 / 提醒 / 确认」做成了三张卡，
-        看的是<strong>一个助手怎么越用越懂你</strong>。
-        下一课 <a class="xref" data-lesson="29">DeepSeek-Harness</a> 换到工程视角：
-        一个「一切皆插件」的 Agent 框架，怎么把能力拆成一个个可插拔的模块——
+        今天我们把「记忆 / 提醒 / 确认」做成了三张卡，看的是<strong>一个助手怎么越用越懂你</strong>。
+        <a class="xref" data-lesson="29">DeepSeek-Harness</a> 换到工程视角，
+        看一个「一切皆插件」的 Agent 框架怎么把能力拆成一个个可插拔的模块。
         到那时你会发现，<strong>拆得越细，权限就越要一条一条点名</strong>，
         和今天划隐私边界是同一件事的另一面。
       </p>
@@ -641,7 +640,7 @@ D. "我喜欢分点、每次别超过三条"这类格式偏好
       <p class="note">
         本课要提交的实操成果：<strong>记忆卡 + 提醒卡 + 一条隐私边界</strong>，
         建议按「第28次_Hermes-Agent_姓名」命名保存。<br>
-        课后延伸：若你课后自己部署或试用了这类带记忆的助手，写一段跨会话记忆体验——
+        课后延伸：若你课后自己部署或试用了这类带记忆的助手，写一段跨会话记忆体验，
         重点写「它记住的哪一条让你省了事、哪一条让你后怕」。<br>
         共 6 题，加上上面的随堂自测 6 题，本课合计 12 题。
         <strong>随堂自测供你课后自查，这 6 题是提交用的</strong>，两套题不重复。

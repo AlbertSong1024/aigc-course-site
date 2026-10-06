@@ -27,14 +27,14 @@
       </p>
       <p>
         它和普通聊天的区别只有一句：<strong>聊天给你一段代码，Codex 直接动你的文件。</strong>
-        它能读你的项目、提出修改、运行检查——方便是真的方便，但你得先在心里划一条线：
+        它能读你的项目、提出修改、运行检查，方便是真的方便，但你得先在心里划一条线：
         <strong>它能碰哪些文件、这次只改哪一处、改完你拿什么验收。</strong>
       </p>
       <div class="tablewrap">
         <table class="data">
           <thead><tr><th>现象</th><th>卡在哪</th></tr></thead>
           <tbody>
-            <tr><td><strong>它给的代码很漂亮，复制过去跑不起来</strong></td><td>它没看过你的项目——不知道你有什么文件、用的什么写法</td></tr>
+            <tr><td><strong>它给的代码很漂亮，复制过去跑不起来</strong></td><td>它没看过你的项目，不知道你有什么文件、用的什么写法</td></tr>
             <tr><td><strong>它说「已完成」，页面上却什么都没变</strong></td><td>没有人真的打开页面去看；「它说做完了」和「它做对了」是两件事</td></tr>
             <tr><td><strong>改了标题，顺手把样式也换了一遍</strong></td><td>指令里没写「不要改其他文字和样式」，它就按自己的审美发挥了</td></tr>
             <tr><td><strong>不敢用，怕它动坏别的文件夹</strong></td><td>没给它划范围。先在<strong>副本</strong>里练一次，比在心里担心一百次有用</td></tr>
@@ -42,8 +42,8 @@
         </table>
       </div>
       <div class="callout callout--warn">
-        <span class="callout__t">提前说清楚</span>
-        本课只有一个任务，全程只在一处动手：<strong>用 Codex 打开课堂安全副本
+        <span class="callout__t">本课的任务只有这一个</span>
+        全程只在一处动手：<strong>用 Codex 打开课堂安全副本
         <code>lesson27-demo</code>，把首页标题「我的课程作品」改成「我的AIGC课程作品」。</strong><br>
         三条红线先立住：<strong>不装依赖、不删文件、不联网发布</strong>；
         四类东西不提交：<strong>密钥、Cookie、个人路径、未经核验的代码</strong>。<br>
@@ -66,7 +66,7 @@
           <li>按「<strong>先报结构、再定目标文件</strong>」的顺序，让它在动手前先把仓库结构说清楚；</li>
           <li>按<strong>四要素</strong>（改哪个文件 / 改哪一处的什么 / 不许碰什么 / 怎么验收）写出一条小任务指令；</li>
           <li>看懂它给出的修改计划，判断这份计划是不是<strong>只碰了你要改的那一处</strong>，不对就立刻叫停；</li>
-          <li>在安全副本里走完「<strong>提出 → 看计划 → 执行 → 打开页面验收</strong>」四步，交出截图与一句验收结论；</li>
+          <li>在安全副本里走完「提出、看计划、执行、打开页面验收」这四步，交出截图与一句验收结论；</li>
           <li>说出三条红线和四类不能提交的东西，并说清<strong>为什么测试通过了还要自己打开页面看一眼</strong>。</li>
         </ol>
       </div>
@@ -81,9 +81,9 @@
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
-        <strong>先修</strong>：<a class="xref" data-lesson="26">第 26 次课</a>的「说细节、说量化、不编内容」——
+        <strong>先修</strong>：<a class="xref" data-lesson="26">第 26 次课</a>的「说细节、说量化、不编内容」。
         给 AI 下任务和给面试官讲故事是同一套本事：<strong>说清输入、说清步骤、说清做到什么算完</strong>。<br>
-        <strong>后续</strong>：<a class="xref" data-lesson="28">第 28 次课</a>看的是另一种「把活交给 AI」——
+        <strong>后续</strong>：<a class="xref" data-lesson="28">第 28 次课</a>看的是另一种「把活交给 AI」，
         一个会记住你、会自己攒技能的个人助手。今天练的<strong>划范围、看计划、人工验收</strong>，
         在那儿会变成<strong>划隐私边界</strong>。
       </div>
@@ -98,7 +98,7 @@
       </p>
       <p>
         按 OpenAI 官方口径，Codex 有 CLI（终端）、桌面应用、云端、IDE 扩展四种形态；
-        本课只用前两种。<strong>CLI 靠文字命令工作，桌面端提供可视界面</strong>——
+        本课只用前两种。<strong>CLI 靠文字命令工作，桌面端提供可视界面</strong>，
         换的是「你怎么说」，不是「它能干什么」。
       </p>
       <div class="tablewrap">
@@ -117,7 +117,7 @@
       <h3>装上、登录、进到项目目录</h3>
       <p>
         CLI 需要先装 Node.js，再用 npm 全局安装；第一次运行会让你登录，
-        常见是<strong>ChatGPT 账号登录</strong>或 <strong>API 密钥登录</strong>两种（新手优先用账号登录）。
+        常见的<strong>ChatGPT 账号登录</strong>和 <strong>API 密钥登录</strong>两种（新手优先用账号登录）。
       </p>
       <div class="codeblock" data-lang="bash" data-name="终端 · PowerShell / macOS 终端通用">
         <div class="codeblock__bar"></div>
@@ -184,7 +184,7 @@ codex-cli 0.145.0
 
       <div class="callout callout--tip">
         <span class="callout__t">界面是壳，四步不变</span>
-        <strong>读项目 → 提修改 → 跑检查 → 交给你复核</strong>，CLI 和桌面端都是这四步，
+        读项目、提修改、跑检查、交给你复核，CLI 和桌面端都是这四步，
         区别只在第一步是敲 <code>codex</code> 还是点「打开项目」。<br>
         本课后面的实操<strong>统一按 CLI 演示</strong>；你若用的是桌面端，把「敲命令」换成「点按钮」，
         指令内容一个字都不用改。
@@ -200,14 +200,14 @@ codex-cli 0.145.0
       <h2>二、仓库—结构—小任务：先看清再开口<span class="sec__tag">方法</span></h2>
       <p>
         最常见的翻车方式是这个：你把一段代码贴给它，问「这段怎么改」。
-        它给出了非常专业的答案——<strong>但改的文件你项目里根本没有</strong>，
+        它给出了非常专业的答案，<strong>但改的文件你项目里根本没有</strong>，
         因为从头到尾没人告诉它你的项目长什么样。
       </p>
       <div class="tablewrap">
         <table class="data">
           <thead><tr><th>词</th><th>是什么</th><th>你要先确认什么</th></tr></thead>
           <tbody>
-            <tr><td><strong>仓库</strong></td><td>一个项目的文件集合——就是那个文件夹</td><td>它打开的<strong>是不是这一个文件夹</strong>（CLI 里看命令行路径，桌面端看左下角）</td></tr>
+            <tr><td><strong>仓库</strong></td><td>一个项目的文件集合，也就是那个文件夹</td><td>它打开的<strong>是不是这一个文件夹</strong>（CLI 里看命令行路径，桌面端看左下角）</td></tr>
             <tr><td><strong>目录结构</strong></td><td>这个文件夹里有什么、在哪个子目录</td><td>让它<strong>先报一遍结构</strong>，别让它猜</td></tr>
             <tr><td><strong>目标文件</strong></td><td>这次要动的那个文件</td><td>说清<strong>文件名</strong>，不要说「首页」这类它得猜的词</td></tr>
             <tr><td><strong>小任务</strong></td><td>只改一个明确位置的任务</td><td>你能一句话说清<strong>改了哪个文件的哪一处</strong></td></tr>
@@ -234,7 +234,7 @@ codex-cli 0.145.0
         <span class="callout__t">小任务的判据只有一句</span>
         问自己：<strong>我能不能一句话说清「改了哪个文件的哪一处、为什么要改、可能影响什么」？</strong>
         能说清，就是小任务，可以放手让它做；说不清，说明范围还没定，先缩小再说。<br>
-        小任务的好处不是快，是<strong>好回滚</strong>——只改一处，改坏了退回去也是一秒钟的事。
+        小任务的好处不是快，是<strong>好回滚</strong>：只改一处，改坏了退回去也是一秒钟的事。
       </div>
     </section>
 
@@ -291,7 +291,7 @@ codex-cli 0.145.0
         <p><strong>第 1 步 · 建好课堂安全副本（照下面两份素材建）</strong></p>
         <p>
           在 <code>D:\课堂练习\</code> 下新建文件夹 <code>lesson27-demo</code>，
-          把下面两个文件原样存进去。<span class="task__warn">文件名必须一模一样</span>——
+          把下面两个文件原样存进去。<span class="task__warn">文件名必须一模一样</span>，
           指令里点名的是 <code>index.html</code>，名字不对它就得自己找。
         </p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="素材① · 改动前的 index.html（教学示意）· 点右上角复制">
@@ -343,7 +343,7 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
         <p><strong>第 2 步 · 用 Codex 打开这个目录</strong></p>
         <ol class="steps">
           <li><b>在终端里进到副本目录，启动 Codex</b><span>
-            <span class="task__warn">目录一定要进对</span>——进去之后先看一眼命令行前面显示的路径是不是
+            <span class="task__warn">目录一定要进对</span>。进去之后先看一眼命令行前面显示的路径是不是
             <code>lesson27-demo</code>，进错了它改的就是别的文件夹。</span></li>
         </ol>
         <div class="codeblock" data-lang="bash" data-name="终端 · 进目录并启动">
@@ -367,7 +367,7 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
         <p><strong>第 4 步 · 提出这一处小改动</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令整段发进去</b><span>
-            <span class="task__warn">整段粘贴，不要自己改写</span>——四要素是一套的，
+            <span class="task__warn">整段粘贴，不要自己改写</span>。四要素是一套的，
             删掉「不要改其他文字和样式」，它就会顺手改样式。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="本次改动指令 · 点右上角复制">
@@ -407,7 +407,7 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
         <span class="callout__t">「先说明要改哪个文件」不是客套</span>
         这句是在给它一个<strong>定位锚</strong>：它先说文件名，就等于先承认了「我要动的是这个文件」。
         后面它要是越界改了 <code>styles.css</code>，你就有据可依地叫停。<br>
-        少了这一句，它很可能顺手「优化一下样式」——你没要求，但它觉得更好。
+        少了这一句，它很可能顺手「优化一下样式」。你没要求，但它觉得更好。
       </div>
     </section>
 
@@ -415,7 +415,7 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
       <h2>四、跑测试与复核：它说做完了不算<span class="sec__tag">收口</span></h2>
       <p>
         「它说已完成」「测试全绿」，这两件事都不能代替最后一步：<strong>你自己打开页面看一眼。</strong>
-        测试只能证明「代码没写错」，证明不了「你要的效果实现了」——
+        测试只能证明「代码没写错」，证明不了「你要的效果实现了」。
         标题改在了另一个文件里，测试一样会绿。
       </p>
       <div class="tablewrap">
@@ -478,7 +478,7 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
         <p><strong>第 1 步 · 同意执行，只让它做这一处</strong></p>
         <ol class="steps">
           <li><b>把下面这段原样发进去</b><span>
-            <span class="task__warn">注意最后那句「不运行任何其他命令」</span>——
+            <span class="task__warn">注意最后那句「不运行任何其他命令」</span>，
             这是防止它为了「顺手检查一下」去装东西。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="执行指令 · 点右上角复制">
@@ -532,9 +532,9 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
 
       <div class="callout callout--danger">
         <span class="callout__t">红线：三件事一旦出现，立刻停止</span>
-        <strong>① 要删除文件</strong>——你让它改标题，它为什么要删东西？<br>
-        <strong>② 要安装依赖</strong>——一个文字替换不需要装任何东西；<br>
-        <strong>③ 要联网发布</strong>——练习副本不属于任何线上站点。<br>
+        <strong>① 要删除文件</strong>。你让它改标题，它为什么要删东西？<br>
+        <strong>② 要安装依赖</strong>。一个文字替换不需要装任何东西；<br>
+        <strong>③ 要联网发布</strong>。练习副本不属于任何线上站点。<br>
         这三类动作出现在计划里，<strong>不同意、不继续</strong>，重新交代约束后再来一次。
       </div>
     </section>
@@ -677,21 +677,21 @@ body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #f5f7f
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课要带走六件事</h4>
+        <h4>六条，留在这页就能查</h4>
         <ol>
-          <li>Codex 是<strong>面向软件开发任务的编程智能体</strong>；CLI 敲命令、桌面端有界面，<strong>外壳不同、四步相同</strong>；</li>
-          <li>开口前先看结构：<strong>仓库 → 目录结构 → 目标文件 → 小任务</strong>，先让它报结构再提要求；</li>
+          <li>Codex 是<strong>面向软件开发任务的编程智能体</strong>；CLI 敲命令、桌面端有界面，外壳不同、四步相同；</li>
+          <li>开口前先看结构：先弄清仓库、目录结构、目标文件，再把范围收到一个小任务上，然后才提要求；</li>
           <li>指令四要素：<strong>改哪个文件 / 改哪一处的什么 / 不许碰什么 / 怎么验收</strong>，后两条最容易漏；</li>
           <li>计划阶段是<strong>唯一能在文件被改之前叫停</strong>的机会：只认一处，越界就停；</li>
-          <li>测试通过≠做对了。最后一环永远是<strong>人工复核：打开页面看 + 让它列出全部改动</strong>；</li>
+          <li>测试通过不等于做对了。最后一环永远是<strong>人工复核：打开页面看 + 让它列出全部改动</strong>；</li>
           <li>三条红线 <strong>不装依赖、不删文件、不联网发布</strong>；四类东西不提交：<strong>密钥、Cookie、个人路径、未核验代码</strong>。</li>
         </ol>
       </div>
       <p>
-        <strong>下一步棋</strong>：今天我们靠<strong>划范围</strong>来保证安全——只给它一个副本目录、只让它改一处。
-        下一课 <a class="xref" data-lesson="28">Hermes-Agent</a> 换个角度：
-        一个会<strong>记住你</strong>、会自己攒技能的助手，带来的是另一种便利和另一种风险。
-        今天练的「先定范围、再看计划、最后人工验收」，在那儿会变成一句更关键的话——
+        今天我们靠<strong>划范围</strong>来保证安全：只给它一个副本目录、只让它改一处。
+        <a class="xref" data-lesson="28">Hermes-Agent</a> 换个角度，
+        它是一个会<strong>记住你</strong>、会自己攒技能的助手，带来的是另一种便利和另一种风险。
+        今天练的「先定范围、再看计划、最后人工验收」，在那儿会变成一句更关键的话：
         <strong>哪些事它可以记住，哪些事它绝对不能记住。</strong>
       </p>
       <p class="note">

@@ -26,11 +26,11 @@
       </figure>
       <p class="lead">
         上一课你学会了给 WorkBuddy 下任务。但同一件事说第二遍、第三遍，就是在浪费时间。
-        这一课学<strong>技能（Skill）</strong>——把一套做法写成文件，以后一句话就能调用。
+        这一课学<strong>技能（Skill）</strong>：把一套做法写成文件，以后一句话就能调用。
       </p>
       <div class="callout callout--warn">
         <span class="callout__t">本课上法：讲一段，练一段</span>
-        页面里凡是<strong>橙色边框的方块</strong>，都是要你在 WorkBuddy 里实际动手的任务——
+        页面里凡是<strong>橙色边框的方块</strong>，都是要你在 WorkBuddy 里实际动手的任务，
         <strong>不是填表，是真的把事情做出来</strong>。四个任务穿插在知识点中间，一共约 35 分钟。
       </div>
     </section>
@@ -38,7 +38,7 @@
     <section class="sec" id="s-goal">
       <h2>学习目标</h2>
       <div class="goal">
-        <h4>学完这一课，你应该能——</h4>
+        <h4>学完这一课，你应该能：</h4>
         <ol>
           <li>说出 Skill 是什么，以及它和一个「说明文件」的关系；</li>
           <li>说出在 WorkBuddy 里找到并安装 Skill 的四种方式；</li>
@@ -82,7 +82,7 @@
       </div>
       <p>
         四个里面<strong>只有 <code>SKILL.md</code> 是必须的</strong>。它开头那一小段里，
-        <code>description</code> 最关键——决定了 AI 什么时候会想起用它：
+        <code>description</code> 最关键，它决定了 AI 什么时候会想起用它：
       </p>
       <div class="codeblock" data-lang="md" data-name="SKILL.md 的开头">
         <div class="codeblock__bar"></div>
@@ -113,7 +113,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <span class="callout__t">一句话分清它俩</span>
         <strong>Prompt 是「这次要做什么」，Skill 是「这类事该怎么做」。</strong><br>
         你每次都在重复交代的那些要求（「别写太 AI」「按我们学校格式来」），
-        就该从提示词里搬出来，做成技能——以后不用再重复说。
+        就该从提示词里搬出来，做成技能，以后不用再重复说。
       </div>
 
     </section>
@@ -123,7 +123,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       <p>
         你可能担心：装了几十个技能，AI 每次开工前要把它们的说明全部读一遍吗？那得多慢。
       </p>
-      <p>不会。它用的是<strong>渐进式披露</strong>——像查手册一样，用到哪一层才翻哪一层：</p>
+      <p>不会。它用的是<strong>渐进式披露</strong>，像查手册一样，用到哪一层才翻哪一层：</p>
       <div class="tablewrap">
         <table class="data">
           <thead><tr><th>层级</th><th>什么时候加载</th><th>加载什么</th></tr></thead>
@@ -148,16 +148,16 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       </div>
       <div class="callout callout--tip">
         <span class="callout__t">所以 description 一定要写具体</span>
-        它是<strong>唯一「永远在场」</strong>的信息——AI 判断要不要用这个技能，能看到的就只有这一行。
+        它是<strong>唯一「永远在场」</strong>的信息，AI 判断要不要用这个技能，能看到的就只有这一行。
         把你平时会说的词写进去（比如「生图」「转格式」「查文献」），它才认得出你。
       </div>
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-08.webp" alt="技能执行轨迹：加载技能、读取禁用词库、再动手改" loading="lazy">
         <figcaption><b>第三层的真凭实据：执行到那一步，它才去读技能自带的资料</b>　
-          这是「文章去 AI 味」技能跑起来的样子。看它的执行轨迹——
+          这是「文章去 AI 味」技能跑起来的样子。看它的执行轨迹：
           先加载技能本身，跑到中途才出现「<strong>已读取 banned-words.md</strong>」（这个技能自带的禁用词库），
           然后才动手改。这正是渐进式披露的第三层：<strong>用到哪一层，才翻哪一层</strong>。<br>
-          下面它汇报的抓取点也值得看：「不是 A，而是 B」句式、装饰性双引号、教科书式开头——
+          下面它汇报的抓取点也值得看：「不是 A，而是 B」句式、装饰性双引号、教科书式开头，
           都是<strong>能一条条核对的</strong>，不是「我感觉有点 AI 味」。<br>
           截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
@@ -175,9 +175,9 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-10.webp" alt="技能页三个入口：左侧栏、顶部技能标签、右上角我安装的" loading="lazy">
         <figcaption><b>三条路都从这里进</b>　图中三处红箭头就是你要记的三个位置：<br>
-          ① 左侧边栏「<strong>专家·技能·连接器</strong>」——总入口；<br>
-          ② 顶部的「<strong>技能</strong>」标签——专家、技能、连接器三选一，点它；<br>
-          ③ 右上角「<strong>我安装的</strong>」——你已经装过的技能都在这儿，旁边就是「添加技能」。<br>
+          ① 左侧边栏「<strong>专家·技能·连接器</strong>」：总入口；<br>
+          ② 顶部的「<strong>技能</strong>」标签：专家、技能、连接器三选一，点它；<br>
+          ③ 右上角「<strong>我安装的</strong>」：你已经装过的技能都在这儿，旁边就是「添加技能」。<br>
           截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
 
@@ -195,15 +195,15 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
 
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-03.webp" alt="添加技能按钮" loading="lazy">
-        <figcaption><b>「添加技能」在技能页右上角</b>　上传、查找、创建——三个入口都收在这个按钮里。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+        <figcaption><b>「添加技能」在技能页右上角</b>　上传、查找、创建，三个入口都收在这个按钮里。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
 
-      <p>点开「添加技能」里的「<strong>上传技能</strong>」，会看到下面这个弹窗——注意它对文件的要求写得很明确：</p>
+      <p>点开「添加技能」里的「<strong>上传技能</strong>」，会看到下面这个弹窗，注意它对文件的要求写得很明确：</p>
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-04.webp" alt="导入技能弹窗：拖拽文件或点击上传，文件需包含 SKILL.md" loading="lazy">
         <figcaption><b>「导入技能」弹窗，重点在下面那两行文件要求</b>　文件可以用拖的、也可以点一下选。<br>
           但它要求：压缩包（zip）里<strong>必须包含 <code>SKILL.md</code></strong>；
-          如果只给一个 <code>.md</code> 文件，里面必须有 <strong>YAML 格式</strong>的名称和描述——
+          如果只给一个 <code>.md</code> 文件，里面必须有 <strong>YAML 格式</strong>的名称和描述，
           就是前面那个用 <code>---</code> 包起来的头部。<br>
           所以别人发给你一个技能包，<strong>先解开看一眼有没有 <code>SKILL.md</code></strong>，
           没有就装不上，别急着问「为什么装了没反应」。<br>
@@ -213,9 +213,9 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       <p>除了平台自己的市场，社区里还有别的技能市场可以逛，例如下面这个：</p>
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-02.webp" alt="SkillHub 技能市场列表，其中包含「文章去AI味工具」" loading="lazy">
-        <figcaption><b>社区技能市场，可以按场景分类逛</b>　左栏能按「场景分类」筛——办公效率、内容创作、教育学习……
+        <figcaption><b>社区技能市场，可以按场景分类逛</b>　左栏能按「场景分类」筛：办公效率、内容创作、教育学习……
           列表里每个技能都标了分类、收藏数和下载量。<br>
-          留意列表第 5 行：<strong>「文章去 AI 味工具」</strong>——就是本课动手做 ② 要用的那个技能。<br>
+          留意列表第 5 行：<strong>「文章去 AI 味工具」</strong>，就是本课动手做 ② 要用的那个技能。<br>
           ⚠️ 这是<strong>第三方社区市场，不是 WorkBuddy 自带的</strong>。从这类站点拿技能，
           装之前更要看清来源和权限，下面那条提醒请务必读一遍。<br>
           截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；蓝皮书为社区非官方读物，产品口径以官方文档为准。</figcaption>
@@ -224,7 +224,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       <div class="callout callout--danger">
         <span class="callout__t">装之前看一眼来源</span>
         <strong>优先用官方推荐的技能。</strong>从第三方市场、别人分享的技能包拿到的技能，
-        更要看清它的<strong>权限申请</strong>和<strong>来源</strong>——
+        更要看清它的<strong>权限申请</strong>和<strong>来源</strong>：
         技能能读写你的文件、能把内容发到外部，出事时账记在你头上。<br>
         装之前问三句：<strong>谁发布的？它要什么权限？描述里说的跟它实际干的事对得上吗？</strong>
         拿不准的，先别装。
@@ -232,13 +232,13 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
 
       <div class="task">
         <div class="task__hd">动手做 ①·装一个技能，并用它真的干完一件活 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一份整理好的会议纪要——含「谁要做什么、什么时候交」的待办清单。
+        <p><strong>做完你手上会有</strong>：一份整理好的会议纪要，含「谁要做什么、什么时候交」的待办清单。
           <span class="task__warn">只装不用 = 没做完。</span></p>
 
         <p><strong>第 1 步 · 把素材复制下来（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>这次要做的活：把一段杂乱的会议记录，整理成带待办清单的纪要</b><span>
-            典型办公场景——记录里有口语、有省略、信息还不全，正好拿来试技能。</span></li>
+            典型办公场景：记录里有口语、有省略、信息还不全，正好拿来试技能。</span></li>
           <li><b>点下面代码块右上角「复制」，粘进记事本暂存</b><span>这就是你这次要处理的原料。</span></li>
         </ol>
 
@@ -267,7 +267,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <ol class="steps">
           <li><b>左侧边栏点「技能」</b><span>进入技能页。</span></li>
           <li><b>点右上角「添加技能」→ 选「查找技能」</b><span>会弹出一个输入框。</span></li>
-          <li><b>把下面这句整句粘进去，回车</b><span>⚠️ 用<strong>原句</strong>，不要自己改写——
+          <li><b>把下面这句整句粘进去，回车</b><span>⚠️ 用<strong>原句</strong>，不要自己改写，
             它匹配靠的是关键词，你换说法就可能搜不到。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="搜索用的句子 · 点右上角复制">
@@ -279,19 +279,19 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <p><strong>第 3 步 · 按顺序挑第一个符合条件的，装上（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>从结果第一条开始往下看，按这三条筛</b><span>
-            ① <strong>有没有官方 / 推荐标记</strong>——没有就跳过，看下一条；<br>
-            ② <strong>描述跟你那件活对得上吗</strong>——你要「整理成纪要」，它写「音视频转写」就不对路，跳过；<br>
-            ③ <strong>它申请什么权限</strong>——只要读文件最稳；要联网、要登录账号的先放一放。<br>
+            ① <strong>有没有官方 / 推荐标记</strong>：没有就跳过，看下一条；<br>
+            ② <strong>描述跟你那件活对得上吗</strong>：你要「整理成纪要」，它写「音视频转写」就不对路，跳过；<br>
+            ③ <strong>它申请什么权限</strong>：只要读文件最稳；要联网、要登录账号的先放一放。<br>
             <span class="task__warn">三条都过的第一个，就是它</span>，别在列表里反复比较。</span></li>
           <li><b>点「安装」</b><span>装完会进「已安装」列表。</span></li>
         </ol>
 
         <p><strong>第 4 步 · 用它把活干完（3 分钟）</strong></p>
         <ol class="steps">
-          <li><b>新建一个对话</b><span>⚠️ 必须新开——刚装好的技能在旧对话里常常不生效，
+          <li><b>新建一个对话</b><span>⚠️ 必须新开，刚装好的技能在旧对话里常常不生效，
             这是新手最常卡住的地方。</span></li>
           <li><b>先贴素材，空一行，再贴下面这句指令，一起发送</b><span>
-            没自动调用也没关系——在指令开头加上「用刚装的技能」点名它就行。</span></li>
+            没自动调用也没关系，在指令开头加上「用刚装的技能」点名它就行。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 WorkBuddy 的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -302,7 +302,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <p><strong>做到这三条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>手上多了一份成形的结果</b><span>不是「我装好了」，而是真的有一份纪要 / 发言稿 / 表格。<br>
-            <em>还没做到</em>：检查你有没有把<strong>素材和指令一起</strong>发出去——只发指令不给素材，它做不出来。</span></li>
+            <em>还没做到</em>：检查你有没有把<strong>素材和指令一起</strong>发出去。只发指令不给素材，它做不出来。</span></li>
           <li><b>没有凭空出现的信息</b><span>对照素材原句查一遍：人名、时间、地点有没有它自己加上去的。<br>
             <em>发现它编了</em>：把那段删掉，在指令末尾补一句「素材里没有的信息一律写『待定』，不许自己编」，再发一次。</span></li>
           <li><b>格式能直接用</b><span>待办清单能直接照着派活，表格能直接看清哪科有作业。<br>
@@ -322,13 +322,13 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <li><b>装技能</b><span>在上一步已经装好了。</span></li>
         <li><b>唤起它</b><span>在输入框打一个 <kbd>/</kbd>，弹出技能列表，选中目标技能。</span></li>
         <li><b>把稿子给它</b><span>引用技能内容，把文章贴进去，直接发。</span></li>
-        <li><b>看它执行</b><span>它会先读技能里的规则，再照着规则改——不是凭感觉润色。</span></li>
+        <li><b>看它执行</b><span>它会先读技能里的规则，再照着规则改，不是凭感觉润色。</span></li>
         <li><b>对比结果</b><span>拿改后的版本和原文比一遍，看它去掉了什么。</span></li>
       </ol>
 
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-05.gif" alt="用斜杠唤起技能" loading="lazy">
-        <figcaption><b>第 2 步：打一个 <kbd>/</kbd> 唤起技能</b>　输入斜杠就会弹出技能列表，选中即用——这是最不容易认错技能的方式。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+        <figcaption><b>第 2 步：打一个 <kbd>/</kbd> 唤起技能</b>　输入斜杠就会弹出技能列表，选中即用，这是最不容易认错技能的方式。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
 
       <figure class="figure">
@@ -341,7 +341,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <p><strong>做完你手上会有</strong>：一版能直接发出去的通知正文，外加一份「删了哪些词」的清单。</p>
 
         <p><strong>第 1 步 · 复制素材（1 分钟）</strong></p>
-        <p>下面是一份典型的「AI 味」通知——全是套话、关键信息一个没有。点右上角「复制」拿走。</p>
+        <p>下面是一份典型的「AI 味」通知，全是套话、关键信息一个没有。点右上角「复制」拿走。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="待改的 AI 味稿子 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>校园读书节系列活动通知
@@ -382,10 +382,10 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
 
         <p><strong>第 2 步 · 用技能改一遍（5 分钟）</strong></p>
         <ol class="steps">
-          <li><b>新建一个对话</b><span>⚠️ 不要在刚才那个对话里做——新对话技能才会生效。</span></li>
+          <li><b>新建一个对话</b><span>⚠️ 不要在刚才那个对话里做，新对话技能才会生效。</span></li>
           <li><b>在输入框敲一个 <kbd>/</kbd></b><span>弹出技能列表后，选「<strong>文章去 AI 味</strong>」这一类技能
             （你在动手做 ① 里已经装过一个，用那个也行）。</span></li>
-          <li><b>把下面这段指令粘进去</b><span>指令在前，素材在后——如上，中间空一行。</span></li>
+          <li><b>把下面这段指令粘进去</b><span>指令在前，素材在后，如上，中间空一行。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="发给 WorkBuddy 的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -407,7 +407,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
           <img src="../assets/img/bluebook/bb-ch05-06.webp" alt="输入框上方挂着技能引用与文件引用的标签" loading="lazy">
           <figcaption><b>敲 <kbd>/</kbd> 选好技能之后、把指令和素材发出去，长这样</b>　看输入框上方那两个标签：
             <code>/文章去AI味工具</code> 是<strong>技能引用</strong>，<code>#…</code> 是<strong>文件引用</strong>。
-            输入框里的提示文字也写着「<strong>@ 引用对话文件，/ 调用技能与指令</strong>」——
+            输入框里的提示文字也写着「<strong>@ 引用对话文件，/ 调用技能与指令</strong>」，
             记住这两个符号就够了。<br>
             下方「深度思考 / humanizer / 深度思考」是它的执行过程，
             <code>humanizer</code> 就是「去 AI 味」这个技能的内部名。<br>
@@ -415,7 +415,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         </figure>
 
         <p><strong>第 3 步 · 改前改后并排看，逐条对（4 分钟）</strong></p>
-        <p>把原稿和改后的稿放一起——<strong>开两个窗口左右对照</strong>最好，别凭印象。先把要搜的词备好：</p>
+        <p>把原稿和改后的稿放一起，<strong>开两个窗口左右对照</strong>最好，别凭印象。先把要搜的词备好：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="空话词清单 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>进一步　切实　有效　积极　深入贯彻落实　相关精神　营造氛围　紧紧围绕
@@ -428,7 +428,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
             <em>还有漏网的</em>：把那几个词点名写出来（「这几个词一律删」），让它<strong>只改这几个</strong>，别整篇重写。</span></li>
           <li><b>该留的信息必须还在</b><span>「活动对象」「主办单位」这类内容如果也被删了，就是删过头。<br>
             <em>被删过头</em>：在指令里加一句「保留活动对象、主办单位等事实性信息」，再发一次。</span></li>
-          <li><b>不允许出现素材里没有的信息</b><span>时间、地点、联系人——素材里本来就没写，它却给了具体答案，那就是它编的。<br>
+          <li><b>不允许出现素材里没有的信息</b><span>时间、地点、联系人：素材里本来就没写，它却给了具体答案，那就是它编的。<br>
             <em>发现它编了</em>：把那段删掉，补一句「没有的信息标【待补】，绝不许自己编」，再发一次。
             ⚠️ 这一条最重要。</span></li>
           <li><b>别人读一遍就能懂</b><span>随便找个人读你改完的版本，能立刻答出「什么时候、在哪、怎么参加」。<br>
@@ -449,7 +449,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         </div>
 
         <p class="note">第 3 步那条「有没有编造」是重点。技能照着规则改文字没问题，
-          但<strong>时间、地点这些它不知道的事，它不该自己编</strong>——如果编了，
+          但<strong>时间、地点这些它不知道的事，它不该自己编</strong>。如果编了，
           说明你指令里那句「不要自己编」没写，或者这个技能的规则还不够严。补上那句话再发一次。</p>
         <figure class="figure">
           <img src="../assets/img/bluebook/bb-ch05-09.webp" alt="修改前后对比" loading="lazy">
@@ -513,7 +513,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
       <p>
         技能装多了会互相干扰，也更容易被误调用。官方的建议是：<strong>只启用当前任务需要的技能</strong>。
       </p>
-      <p>好消息是不必为了「少点干扰」而卸载——<strong>关掉就行，随时能开回来</strong>。</p>
+      <p>好消息是不必为了「少点干扰」而卸载<strong>关掉就行，随时能开回来</strong>。</p>
 
       <div class="tablewrap">
         <table class="data tight">
@@ -533,11 +533,11 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
 
       <div class="task">
         <div class="task__hd">动手做 ③·亲手验证「关闭 ≠ 卸载」 <em>约 5 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：同一句指令在「关 / 开」两种状态下的两份回答——
+        <p><strong>做完你手上会有</strong>：同一句指令在「关 / 开」两种状态下的两份回答：
           差别摆在那里，不用凭印象。</p>
 
         <p><strong>第 1 步 · 准备一句固定的测试指令（1 分钟）</strong></p>
-        <p>复制下面这句备着。<span class="task__warn">四次都用这一句</span>——只有变量被控制住了，结果才有可比性。</p>
+        <p>复制下面这句备着。<span class="task__warn">四次都用这一句</span>，只有变量被控制住了，结果才有可比性。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="测试指令（四次都用这句）· 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>用「文章去 AI 味」技能，把下面这句话改一遍，并列出你删掉了哪些词：
@@ -559,28 +559,28 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
           <li><b>不用关掉对话，直接回技能页</b><span>点左侧边栏「技能」→「已安装」，找到它。</span></li>
         </ol>
         <p><strong>✅ 你应该看到</strong>：它<strong>还好好地躺在列表里</strong>，只是开关变成了灰色。
-          <span class="task__warn">这一步最容易被想错——很多人以为关了就是没了。</span></p>
+          <span class="task__warn">这一步最容易被想错，很多人以为关了就是没了。</span></p>
 
         <p><strong>第 4 步 · 开回来，再试一次（1.5 分钟）</strong></p>
         <ol class="steps">
           <li><b>把开关拨回「开启」</b><span>什么都不用重新装。</span></li>
           <li><b>再新建一个对话，贴同一句测试指令，发送</b><span>跟你第 2 步做的完全一样。</span></li>
         </ol>
-        <p><strong>✅ 你应该看到</strong>：它又<strong>照着技能规则干活</strong>了——会先读规则，
+        <p><strong>✅ 你应该看到</strong>：它又<strong>照着技能规则干活</strong>了，会先读规则，
           再逐条删词，这通常比第 2 步的回答明显更「有章法」。</p>
 
         <div class="callout callout--tip">
           <span class="callout__t">把三次看到的现象串起来，就是结论</span>
           关掉以后 → 它<strong>不再被自动调用</strong>，但技能文件、配置、开关全都还在，
           所以你拨回来它就能立刻开工。<br>
-          <strong>「关闭」只是停用一次马甲，「卸载」才是把人开除</strong>——卸载会删掉技能文件，要用得重新装。
+          <strong>「关闭」只是停用一次马甲，「卸载」才是把人开除</strong>：卸载会删掉技能文件，要用得重新装。
           所以平时嫌技能太多互相干扰，关掉就够了，不必卸载。
         </div>
       </div>
 
       <figure class="figure">
         <img src="../assets/img/bluebook/bb-ch05-12.webp" alt="批量卸载技能" loading="lazy">
-        <figcaption><b>批量卸载</b>　勾选多个技能一次性卸载。<strong>注意卸载会删掉技能文件</strong>——自己写的或别人分享的独一份技能，先备份再卸。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
+        <figcaption><b>批量卸载</b>　勾选多个技能一次性卸载。<strong>注意卸载会删掉技能文件</strong>，自己写的或别人分享的独一份技能，先备份再卸。截图整理自 WorkBuddy 实战蓝皮书，仅作课堂讲解用；界面随版本更新，以你实际使用的版本为准。</figcaption>
       </figure>
 
       <div class="task">
@@ -592,16 +592,16 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <p>这次就拿这件事来练手：<strong>把一周的作业要求汇总成一张待办表</strong>。</p>
         <ol class="steps">
           <li><b>它值得做成技能，因为两个条件都占</b><span>
-            <strong>每周都要做</strong>——周一翻上周遗留的、周三补新布置的、周日理一遍下周的；
-            <strong>步骤基本固定</strong>——找齐各科作业 → 排截止时间 → 标完成状态。</span></li>
+            <strong>每周都要做</strong>：周一翻上周遗留的、周三补新布置的、周日理一遍下周的；
+            <strong>步骤基本固定</strong>：找齐各科作业 → 排截止时间 → 标完成状态。</span></li>
           <li><b>反过来看，什么不值得做</b><span>「帮我写一篇实训报告」这种一次性的活，
-            直接下指令就行——<strong>做成技能也很少再打开</strong>。</span></li>
+            直接下指令就行，<strong>做成技能也很少再打开</strong>。</span></li>
         </ol>
 
         <p><strong>第 2 步 · 复制这条指令，整段发给它（1 分钟）</strong></p>
         <p>入口在技能页右上角「<strong>添加技能</strong>」→「<strong>创建技能</strong>」，
           把下面整段贴进去。<span class="task__warn">技能名称按你自己的习惯改</span>，
-          其余保持原样——尤其最后那句「什么时候用」，它决定 AI 以后认不认得出该不该召唤这个技能。</p>
+          其余保持原样，尤其最后那句「什么时候用」，它决定 AI 以后认不认得出该不该召唤这个技能。</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="指令 · 作业待办汇总 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>帮我创建一个技能，要求如下。
@@ -636,7 +636,7 @@ description: 用于撰写 AI 产品、模型评测和科技行业相关文章。
         <p><strong>第 4 步 · 用它真跑一次（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>新建一个对话</b><span>同上，新对话技能才生效。</span></li>
-          <li><b>先把下面这段作业记录贴进去</b><span>这就是你这一周零散的作业信息——有定了截止时间的，也有没定的。</span></li>
+          <li><b>先把下面这段作业记录贴进去</b><span>这就是你这一周零散的作业信息：有定了截止时间的，也有没定的。</span></li>
           <li><b>再贴一行「汇总一下」，一起发送</b><span>看它有没有按你定的规矩来。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="测试素材 · 点右上角复制">
@@ -653,28 +653,28 @@ Python 课讲列表推导式，没留作业
         </div>
 
         <p><strong>第 5 步 · 给它挑一个毛病（2 分钟）</strong></p>
-        <p>照这三条去找，命中率最高——找到<strong>任意一条</strong>就算过关：</p>
+        <p>照这三条去找，命中率最高，找到<strong>任意一条</strong>就算过关：</p>
         <ol class="steps">
           <li><b>「它是做什么的」那一栏太空泛</b><span>是不是只有「汇总作业」四个字？只写这个，
-            以后 AI 认不出什么时候该叫它——<strong>必须把触发词写进去</strong>。<br>
+            以后 AI 认不出什么时候该叫它，<strong>必须把触发词写进去</strong>。<br>
             <em>怎么改</em>：让它重写成「把一周各科作业汇总成待办表，当我说『汇总作业』时使用」。</span></li>
           <li><b>规则里没写「不许做什么」</b><span>有没有「不许修改原文件」「不许编造」这类红线？没有就是缺陷。<br>
             <em>怎么改</em>：补一条「只读不写，不许改动或删除我的原始文件」。</span></li>
-          <li><b>没写出错时怎么办</b><span>比如素材里没有日期时该怎么办——没写，它就会自己编一个。<br>
+          <li><b>没写出错时怎么办</b><span>比如素材里没有日期时该怎么办。没写，它就会自己编一个。<br>
             <em>怎么改</em>：补一条「读不到日期就标【无日期】，不要拿今天的日期充数」。</span></li>
         </ol>
         <p><strong>合格的说法长这样</strong>（把这三句话读完，你就知道该怎么说了）：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="挑毛病的合格表达 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>它把 description 写成了"整理笔记"，太笼统。
-应该写成："把课程笔记按科目整理成表格，当我说『整理笔记』时使用"——
+应该写成："把课程笔记按科目整理成表格，当我说『整理笔记』时使用"，
 把触发词写进去，AI 才认得出我什么时候需要它。
 
 另外规则里没写"不许修改原文件"，这条是红线，必须补上。
 </code></pre>
         </div>
         <p class="note">这个任务不看你的技能做得多漂亮，只看你<strong>能不能指出它一个毛病，并说出该怎么改</strong>。
-          能挑出毛病，说明你真读懂了技能在干什么——这比造出十个技能都值钱。</p>
+          能挑出毛病，说明你真读懂了技能在干什么，这比造出十个技能都值钱。</p>
       </div>
     </section>
 
@@ -695,7 +695,7 @@ Python 课讲列表推导式，没留作业
           <button class="quiz__reveal" type="button">查看答案</button>
           <div class="quiz__ans">
             <b>答案：B。</b>Skill 是一组可复用的说明和资源，写一次就能反复调用。
-            D 正好说反了——技能的一切动作都在授权范围内，这也正是为什么要看清权限。
+            D 正好说反了，技能的一切动作都在授权范围内，这也正是为什么要看清权限。
           </div>
         </div>
 
@@ -739,7 +739,7 @@ Python 课讲列表推导式，没留作业
           <button class="quiz__reveal" type="button">查看答案</button>
           <div class="quiz__ans">
             <b>答案：B（错误）。</b>没被触发的技能，只有名称和描述在场，开销很小。
-            不过官方仍建议<strong>只启用当前任务需要的技能</strong>——不是为了速度，
+            不过官方仍建议<strong>只启用当前任务需要的技能</strong>，不是为了速度，
             而是减少功能重叠导致的误调用。
           </div>
         </div>
@@ -749,19 +749,18 @@ Python 课讲列表推导式，没留作业
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课要带走五件事</h4>
+        <h4>装技能这件事，记住三处</h4>
         <ol>
-          <li>Skill = <strong>一组可复用的说明和资源</strong>，其中只有 <code>SKILL.md</code> 是必需的；</li>
-          <li><strong><code>description</code> 决定它什么时候被用上</strong>——写得具体，才认得出你的需求；</li>
+          <li>Skill 是一组可复用的说明和资源，其中只有 <code>SKILL.md</code> 是必需的；</li>
+          <li><strong><code>description</code> 决定它什么时候被用上</strong>：写得具体，才认得出你的需求；</li>
           <li>拿到技能的四种方式：<strong>市场安装 / 查找 / 上传 / 创建</strong>；</li>
           <li>调用三步：<strong>装好 → <kbd>/</kbd> 唤起或直接说 → 把材料交给它</strong>；</li>
           <li><strong>关闭 ≠ 卸载</strong>：关掉不删文件、随时开回来。</li>
         </ol>
       </div>
       <p>
-        <strong>下一步棋</strong>：今天你让 AI 会了一门手艺。
-        但真实工作里，一件复杂的事往往要几种人配合——下一课 <a class="xref" data-lesson="9">专家与专家团</a>
-        讲的就是这件事。
+        至此，重复的活你已经不用再重复交代了。可真实工作里，一件复杂的事往往要几种角色配合。
+        <a class="xref" data-lesson="9">专家与专家团</a> 讲的就是这件事。
       </p>
     </section>
 

@@ -27,7 +27,7 @@
         加到现在，该换个方向问了：<strong>这些东西是谁拼起来的，各自拿了多少权力，干完之后怎么查。</strong>
       </p>
       <p>
-        DeepSeek-Harness 给出的答案是「<strong>一切皆插件</strong>」——
+        DeepSeek-Harness 给出的答案是「<strong>一切皆插件</strong>」：
         模型、工具、技能、会话、沙箱、存储、循环、调度、界面，全都是可以单独换掉的插件。
         拆开看的好处是自由组合，代价是<strong>每一块你都得单独查一遍</strong>：它从哪来、要什么权限、出问题换掉它行不行。
       </p>
@@ -43,10 +43,10 @@
         </table>
       </div>
       <div class="callout callout--warn">
-        <span class="callout__t">提前说清楚</span>
+        <span class="callout__t">本课不部署，用别人的例子讲结构</span>
         <strong>本课不部署 DeepSeek-Harness。</strong>它是 2026 年 8 月才开放的开发者预览版，
         要自备开发环境、模型 API Key，课堂不要求你装。我们用你已经装好的 WorkBuddy
-        的「<strong>专家·技能·连接器</strong>」来看同一套插件化思路——
+        的「<strong>专家·技能·连接器</strong>」来看同一套插件化思路。
         看明白了结构，换任何一款 Agent 框架你都能自己上手。<br>
         本课三条主线，三个实操全挂在上面：<strong>① 能力是拼出来的，每个插件单独查来源和权限；
         ② 权限按任务给最低那一档，Full Access 不是默认项；③ 跑完必须留下一条能回放的记录。</strong>
@@ -84,7 +84,7 @@
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
         <strong>先修</strong>：<a class="xref" data-lesson="8">第 8 次课</a>的技能（Skill）、
-        <a class="xref" data-lesson="18">第 18 次课</a>的连接器（MCP）——本课要观察的正是这两类插件，
+        <a class="xref" data-lesson="18">第 18 次课</a>的连接器（MCP）。本课要观察的正是这两类插件，
         以及它们各自拿到了什么权限。<br>
         <strong>后续</strong>：<a class="xref" data-lesson="30">第 30 次课</a>要把 AI 用在「学知识」上，
         那时同样适用今天这条规矩：<strong>先划清它能碰什么，再让它动手</strong>。
@@ -94,7 +94,7 @@
     <section class="sec" id="s-plugin">
       <h2>一、插件化内核：能力是拼出来的<span class="sec__tag">开局</span></h2>
       <p>
-        「Harness」这个词原本指马车的<strong>挽具</strong>——把马和车连起来的那套皮带。
+        「Harness」这个词原本指马车的<strong>挽具</strong>，也就是把马和车连起来的那套皮带。
         用在 AI 上，指的是<strong>围绕大模型搭起来的那一整套运行系统</strong>：
         模型负责「想」，Harness 负责让它<strong>看得见环境、拿得到工具、能一步步把事做完</strong>。
       </p>
@@ -154,7 +154,7 @@
 
       <h3>在 WorkBuddy 里对照着看</h3>
       <p>
-        课堂不部署 DeepSeek-Harness，但插件化这件事在 WorkBuddy 里<strong>看得见</strong>——
+        课堂不部署 DeepSeek-Harness，但插件化这件事在 WorkBuddy 里<strong>看得见</strong>。
         左侧边栏那个入口就叫「<strong>专家·技能·连接器</strong>」，三个词，三类可插拔的东西。
       </p>
       <div class="tablewrap">
@@ -177,8 +177,8 @@
       <div class="callout callout--warn">
         <span class="callout__t">插件化是方便，不是免责</span>
         能自由组合，意味着<strong>能力边界由你装的东西决定</strong>。
-        而插件不是说明书，是<strong>可执行代码</strong>——装上就能跑，跑起来就有权限。
-        所以规矩只有一条：<strong>每个插件单独查三件事——谁做的、多久没更新了、它要什么权限。</strong>
+        而插件不是说明书，是<strong>可执行代码</strong>：装上就能跑，跑起来就有权限。
+        所以规矩只有一条：<strong>每个插件单独查三件事：谁做的、多久没更新了、它要什么权限。</strong>
       </div>
 
     </section>
@@ -186,8 +186,7 @@
     <section class="sec" id="s-perm">
       <h2>二、三档权限：按任务给最低那一档<span class="sec__tag">本课核心</span></h2>
       <p>
-        装完新工具的人最容易做的一件事，是<strong>把确认框关掉</strong>——
-        每写一次文件弹一次窗，太烦了，索性给它最高权限，让它自己跑。
+        装完新工具的人最容易做的一件事，是<strong>把确认框关掉</strong>：每写一次文件弹一次窗，太烦了，索性给它最高权限，让它自己跑。
         问题是，那个弹窗不是啰嗦，它是<strong>唯一一次让你在动作发生前看见它的机会</strong>。
       </p>
       <p>
@@ -201,19 +200,19 @@
             <tr>
               <td><strong>Read Only</strong><br><span class="note">只读</span></td>
               <td>只能读文件、取信息，<strong>不能改任何东西、不能执行写操作</strong></td>
-              <td>根本不会走到那一步——写操作不在它的能力里</td>
+              <td>根本不会走到那一步，写操作不在它的能力里</td>
               <td>看代码、看资料、问问题、让它给方案；<strong>最安全，也最适合第一次跑</strong></td>
             </tr>
             <tr>
               <td><strong>Workspace Write</strong><br><span class="note">工作区写入</span></td>
               <td>可以在<strong>指定工作目录内</strong>读写文件、跑受限命令</td>
               <td>碰到工作区之外的地方，<strong>弹窗要你确认，或者直接被沙箱拒绝</strong></td>
-              <td>日常干活：<strong>写功能、改文件、整理材料——默认就用这一档</strong></td>
+              <td>日常干活：<strong>写功能、改文件、整理材料，默认就用这一档</strong></td>
             </tr>
             <tr>
               <td><strong>Full Access</strong><br><span class="note">完全访问</span></td>
               <td>可执行范围更广的操作，包括工作区之外的系统级动作</td>
-              <td><strong>没有边界可越</strong>——它做的事你只能在事后看记录</td>
+              <td><strong>没有边界可越</strong>。它做的事你只能在事后看记录</td>
               <td>明确需要且<strong>环境可回滚</strong>时才用：可信环境下的自动化流水线</td>
             </tr>
           </tbody>
@@ -246,15 +245,15 @@
 
       <div class="callout callout--danger">
         <span class="callout__t">红线：权限按任务需要给，不按省事程度给</span>
-        判断顺序是<strong>先看这件事要不要写东西 → 再决定给哪一档</strong>，
+        判断顺序是<strong>先看这件事要不要写东西，再决定给哪一档</strong>，
         不是「先给最高，出问题再说」。<br>
-        一句「用 Full Access 跑得更快」听起来有理，实际是把<strong>事前确认换成了事后挽回</strong>——
+        一句「用 Full Access 跑得更快」听起来有理，实际是把<strong>事前确认换成了事后挽回</strong>，
         而文件删掉之后，事后是挽回不回来的。
       </div>
 
       <div class="task">
         <div class="task__hd">动手做 ①·列出手上的插件清单，并生成一张三层权限卡</div>
-        <p><strong>做完你手上会有</strong>：一份 <code>01-插件清单.md</code>——
+        <p><strong>做完你手上会有</strong>：一份 <code>01-插件清单.md</code>，
           三类各一张表（专家 / 技能 / 连接器），每行写清「名称 → 属于哪一类 → 它拿到什么权限 → 换掉会怎样 → 来源」，
           末尾一段「最该复查的一个」。</p>
 
@@ -264,7 +263,7 @@
             只用眼睛看，先建立印象：专家是「带身份干活」，技能是「一类事的固定做法」，连接器是「连外部服务」。</span></li>
           <li><b>新建一个任务，工作目录选 <code>wb-试验</code></b><span>沿用前几课那个目录即可。</span></li>
           <li><b>把下面这段指令整段贴进对话发送</b><span>
-            <span class="task__warn">整段粘贴，不要自己改写</span>——五行属性是一套的，少一列这份清单就没法用来复查。</span></li>
+            <span class="task__warn">整段粘贴，不要自己改写</span>。五行属性是一套的，少一列这份清单就没法用来复查。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="生成插件清单的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -324,14 +323,14 @@
         </ol>
         <p><strong>要交的成果</strong>：<code>01-插件清单.md</code>。下一节要拿它当底子，判断每一块该给多少权限。</p>
         <p class="task__sep">第一部分完 · 接着做第二部分</p>
-        <p><strong>做完你手上会有</strong>：一份 <code>02-三层权限卡.md</code>——
+        <p><strong>做完你手上会有</strong>：一份 <code>02-三层权限卡.md</code>，
           只读 / 可修改 / 需确认三层，每层一条「这一层允许的动作」清单，
           末尾一段「本卡的四条判据」。</p>
 
         <p><strong>第 3 步 · 把权限卡模板交给它，让它按模板填</strong></p>
         <ol class="steps">
           <li><b>新建对话，把下面这段模板整段贴进去</b><span>
-            <span class="task__warn">必须新建对话</span>——上一个对话里它还在「盘点插件」的状态，填卡会带着上一轮的口径。</span></li>
+            <span class="task__warn">必须新建对话</span>。上一个对话里它还在「盘点插件」的状态，填卡会带着上一轮的口径。</span></li>
           <li><b>空一行，把下面这段指令贴在模板后面，一起发送</b><span>素材在前、指令在后。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="权限卡模板 · 点右上角复制">
@@ -412,7 +411,7 @@
       <h2>三、四种模式：按任务换组合<span class="sec__tag">方法</span></h2>
       <p>
         技术群里最常看到的一句话是「开 XX 模式效果更好」。这句话的问题在于，
-        它把<strong>模式当成了质量等级</strong>——好像档位越高，活就干得越好。
+        它把<strong>模式当成了质量等级</strong>，好像档位越高，活就干得越好。
       </p>
       <p>
         实际不是。模式是<strong>执行策略的组合</strong>：这一趟给它哪些工具、允不允许它自己写程序串步骤、
@@ -426,7 +425,7 @@
               <td><strong>标准</strong></td>
               <td>完整编码与通用智能体能力：编辑文件、跑命令、用技能、做计划、派子任务</td>
               <td>工具多，步数也多，出错时要看的记录更长</td>
-              <td><strong>默认用它</strong>——日常任务先从这里起步</td>
+              <td><strong>默认用它</strong>，日常任务先从这里起步</td>
             </tr>
             <tr>
               <td><strong>PTC</strong></td>
@@ -477,7 +476,7 @@
 
       <div class="callout callout--tip">
         <span class="callout__t">选模式的顺序：先用标准跑通，再考虑要不要换</span>
-        跑不通，先看是<strong>任务说得不清</strong>还是<strong>工具不够</strong>——
+        跑不通，先看是<strong>任务说得不清</strong>还是<strong>工具不够</strong>，
         十次里有八次是前者，换模式解决不了。<br>
         真要换，记住两句话：<strong>步骤要反复跑 → 试 PTC；只想干一件小事 → 试极简。</strong>
         创造模式是给写插件的人的，日常别碰。
@@ -485,13 +484,13 @@
 
       <div class="task">
         <div class="task__hd">动手做 ②·给五件事各配一档权限，再给指定的事选定一种模式</div>
-        <p><strong>做完你手上会有</strong>：一份 <code>03-五项配对.md</code>——
+        <p><strong>做完你手上会有</strong>：一份 <code>03-五项配对.md</code>，
           五件事各配<strong>唯一一档</strong>权限并写理由，末尾「四个高风险动作」清单（各带一句执行前确认语）。</p>
 
         <p><strong>第 1 步 · 让它给这五件事逐项配对</strong></p>
         <ol class="steps">
           <li><b>沿用上一个对话，把下面这段素材贴进去</b><span>
-            五件事是固定名单，<span class="task__warn">不要增减、不要换成别的</span>——
+            五件事是固定名单，<span class="task__warn">不要增减、不要换成别的</span>。
             五件凑齐才覆盖「读 / 改 / 发 / 删 / 授权」五种动作类型。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="五项动作清单 · 点右上角复制">
@@ -506,7 +505,7 @@
         </div>
         <ol class="steps" start="2">
           <li><b>空一行，把下面这段指令贴在清单后面，一起发送</b><span>
-            「唯一一档」是关键——不许写「也可以给更高一档」。</span></li>
+            「唯一一档」是关键，不许写「也可以给更高一档」。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="配对指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -558,7 +557,7 @@
         </ol>
         <p><strong>要交的成果</strong>：<code>03-五项配对.md</code>。</p>
         <p class="task__sep">第一部分完 · 接着做第二部分</p>
-        <p><strong>做完你手上会有</strong>：一份 <code>04-模式选择卡.md</code>——
+        <p><strong>做完你手上会有</strong>：一份 <code>04-模式选择卡.md</code>，
           指定任务描述、<strong>唯一一种</strong>选定模式、该模式保留的工具清单、
           另外三种各一句「为什么不选」，末尾「什么信号出现就该换模式」。</p>
 
@@ -566,7 +565,7 @@
         <ol class="steps">
           <li><b>新建对话，把下面这段任务描述整段贴进去</b><span>
             任务是<strong>指定好的那一件</strong>：把 <code>wb-试验</code> 目录里的文件按类型归类并生成一份清单。
-            <span class="task__warn">必须新建对话</span>——上一轮它是「填权限卡」的身份。</span></li>
+            <span class="task__warn">必须新建对话</span>，上一轮它是「填权限卡」的身份。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="指定任务 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -578,7 +577,7 @@
         </div>
         <ol class="steps" start="2">
           <li><b>空一行，把下面这段指令贴在任务后面，一起发送</b><span>
-            要求它<strong>只选一种</strong>，并逐个排除另外三种——四个都讲了，才是真判断。</span></li>
+            要求它<strong>只选一种</strong>，并逐个排除另外三种。四个都讲了，才是真判断。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="选模式的指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -600,7 +599,7 @@
         <p><strong>第 4 步 · 让它按选定模式真的把这件事做出来</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令紧接着发出去，让它执行</b><span>
-            选完就做——做完你才有东西可以回放（下一节要用）。</span></li>
+            选完就做，做完你才有东西可以回放（下一节要用）。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="执行指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -634,7 +633,7 @@
     <section class="sec" id="s-trace">
       <h2>四、事件流与轨迹回放：查错不查功<span class="sec__tag">收口</span></h2>
       <p>
-        任务跑完，结果不对。大多数人的第一反应是「它不行」或者「再跑一遍」——
+        任务跑完，结果不对。大多数人的第一反应是「它不行」或者「再跑一遍」，
         两种都没用，因为你<strong>不知道错在第几步</strong>。再跑一遍，只是再赌一次。
       </p>
       <p>
@@ -689,7 +688,7 @@
 
       <div class="callout callout--quote">
         <span class="callout__t">回放的价值是发现错误，不是证明正确</span>
-        一条记录从头放到尾、每一步都规规矩矩，也不能说明结果天然正确——
+        一条记录从头放到尾、每一步都规规矩矩，也不能说明结果天然正确，
         它只能说明<strong>过程里没查出问题</strong>。<br>
         所以别把「我看了回放，没问题」当成验收结论。验收看的还是产出物：
         <strong>文件对不对、有没有多删东西、原先的约束有没有被遵守。</strong>
@@ -697,14 +696,14 @@
 
       <div class="task">
         <div class="task__hd">动手做 ③·回放一次执行经过，找出一处问题，收口成权限安全卡</div>
-        <p><strong>做完你手上会有</strong>：一份 <code>05-权限安全卡.md</code>——
+        <p><strong>做完你手上会有</strong>：一份 <code>05-权限安全卡.md</code>，
           ① 一段规范化事件流；② 你指出的一处越界 / 错误 / 空转，含改法；
           ③ 三层权限图（文字版）；④ 五项配对结论；⑤ 四个高风险动词与确认语。这是本课的收口件。</p>
 
         <p><strong>第 1 步 · 让它把上一轮的执行经过改写成规范事件流</strong></p>
         <ol class="steps">
           <li><b>新建对话，把 <code>04-模式选择卡.md</code> 里「本次执行经过」那一段贴进去</b><span>
-            要回放的就是你上一轮真跑的那件事。<span class="task__warn">必须新建对话</span>——
+            要回放的就是你上一轮真跑的那件事。<span class="task__warn">必须新建对话</span>。
             这一步要它换身份当「记录员」，跟在上一轮对话里它会忍不住接着改文件。</span></li>
           <li><b>空一行，把下面这段指令贴在后面，一起发送</b><span>
             没有这一步，事件流就只是流水账，看不出问题。</span></li>
@@ -728,7 +727,7 @@
         <p><strong>第 2 步 · 让它自己先挑问题，你核对它挑得对不对</strong></p>
         <ol class="steps">
           <li><b>把下面这段指令紧接着发出去</b><span>
-            先让它自查，你再核——这一步是「<strong>操作交给 AI，验收留给人</strong>」。</span></li>
+            先让它自查，你再核。这一步是「<strong>操作交给 AI，验收留给人</strong>」。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="回放自查指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -745,7 +744,7 @@
         </div>
         <ol class="steps" start="3">
           <li><b>你核对：它点出的那一处，是不是真在事件流里对得上步号</b><span>
-            它说「第 4 步越界」，你就去看第 4 步——对不上就是它编的，打回重查。</span></li>
+            它说「第 4 步越界」，你就去看第 4 步；对不上就是它编的，打回重查。</span></li>
         </ol>
 
         <p><strong>第 3 步 · 让它把本课三张卡收口成一张权限安全卡</strong></p>
@@ -790,9 +789,9 @@
 
       <div class="callout callout--quote">
         <span class="callout__t">把四步串起来看</span>
-        看插件化，是<strong>知道它由什么拼成</strong>；分三档权限，是<strong>决定它能碰什么</strong>；
-        选模式，是<strong>决定它怎么干</strong>；回放事件流，是<strong>事后查得清</strong>。<br>
-        四步走到最后，你要带走的不是「DeepSeek-Harness 怎么用」——这个框架半年后可能就变了——
+        看插件化，是<strong>知道它由什么拼成</strong>；分三档权限，是决定它能碰什么；
+        选模式，是决定它怎么干；回放事件流，是<strong>事后查得清</strong>。<br>
+        四步走到最后，你要带走的不是「DeepSeek-Harness 怎么用」（这个框架半年后可能就变了），
         而是这一句：<strong>能自由组合的能力，必须配上按任务给的最小权限和一条查得清的记录。</strong>
       </div>
     </section>
@@ -907,19 +906,19 @@
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课要带走五件事</h4>
+        <h4>本课的骨架就是那三问</h4>
         <ol>
           <li>主线只有一句：<strong>能力是拼出来的，权限按任务给，跑完要能查</strong>；本课不部署 DeepSeek-Harness，用它讲结构；</li>
           <li>插件化内核：模型、工具、技能、会话、沙箱、存储、循环、调度、UI 都是可换的插件，<strong>每个插件单独查来源与权限</strong>；</li>
           <li>三档权限：<strong>Read Only 只读 / Workspace Write 工作区内读写 / Full Access 完全访问</strong>；默认用中间那档，<strong>Full Access 不是默认项</strong>；</li>
           <li>四种模式是<strong>执行策略的组合，不是质量等级</strong>：标准起步，步骤要反复跑试 PTC，小事用极简，创造模式留给写插件的人；</li>
-          <li>事件流与轨迹回放盯三类问题：<strong>越界 / 错误 / 空转</strong>；回放能发现错误，<strong>但不能证明正确</strong>——验收看的还是产出物。</li>
+          <li>事件流与轨迹回放盯三类问题：<strong>越界 / 错误 / 空转</strong>；回放能发现错误，<strong>但不能证明正确</strong>，验收看的还是产出物。</li>
         </ol>
       </div>
       <p>
-        <strong>下一步棋</strong>：今天你一直在给 AI 划边界——能碰什么、怎么干、干完怎么查。
-        下一课 <a class="xref" data-lesson="30">AI 学习助手与知识管理</a> 换一个场景：
-        把 AI 用在「学知识」上。那时同样适用今天这条规矩，只是边界换成了另一种——
+        今天你一直在给 AI 划边界：能碰什么、怎么干、干完怎么查。
+        <a class="xref" data-lesson="30">AI 学习助手与知识管理</a> 换一个场景，把 AI 用在「学知识」上。
+        那时同样适用今天这条规矩，只是边界换成了另一种：
         <strong>它可以替你讲，但不能替你懂。</strong>
       </p>
       <p class="note">

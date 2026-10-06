@@ -22,36 +22,35 @@
       <h2>本课导读<span class="sec__tag">模块二 · 接上你的资料</span></h2>
       <p class="lead">
         上一课你在 ima 里亲手建了一个知识库，也在 ima 里问过问题。
-        那一课的方向是<strong>「你走进 ima 的房间去翻资料」</strong>。
-        这一课换方向——<strong>让 WorkBuddy 这只手伸进你的库里，替你翻、替你答、替你把产物存回去</strong>。
+        那一课的方向是「你走进 ima 的房间去翻资料」。
+        这一课换方向：让 WorkBuddy 这只手伸进你的库里，替你翻、替你答、替你把产物存回去。
       </p>
       <p>先确认三件你大概率会遇到的事：</p>
       <ul>
-        <li><strong>知识库建好了，WorkBuddy 却说「没找到你的资料」</strong>——两边根本没打通，
-          它手上没有进门的凭证。</li>
-        <li><strong>打通之后，它答得很顺，但你不知道哪句来自你的资料、哪句是它自己补的</strong>——
+        <li>知识库建好了，WorkBuddy 却说「没找到你的资料」。两边根本没打通，它手上没有进门的凭证。</li>
+        <li>打通之后，它答得很顺，但你不知道哪句来自你的资料、哪句是它自己补的。
           没有引用，等于回到了凭记忆回答。</li>
-        <li><strong>把一串密钥贴进对话让它配置</strong>——省事了，但那串字符串从此躺在对话记录里。</li>
+        <li>把一串密钥贴进对话让它配置。省事了，但那串字符串从此躺在对话记录里。</li>
       </ul>
       <p>
-        这一课按四步走：<strong>① 把凭证领出来、放对地方 → ② 绑定知识库、看清授权了哪三项 →
-        ③ 在任务里带引用地问答 → ④ 划清权限边界，资料里没有时让它明确拒答。</strong>
+        这一课按四步走：把凭证领出来、放对地方；绑定知识库、看清授权了哪三项；
+        在任务里带引用地问答；划清权限边界，资料里没有时让它明确拒答。
         RAG 的原理不再重复讲，需要回顾时翻
         <a class="xref" data-lesson="15">第 15 次课</a>。
       </p>
       <div class="callout callout--warn">
-        <span class="callout__t">提前说清楚</span>
-        本课最容易理解错的一点：<strong>「连上」和「答得对」是两件事。</strong>
-        连上只解决了「它能碰到你的资料」，不解决「它会照着你的资料说」。
-        所以本课一半的篇幅放在<strong>引用和拒答</strong>上——那是让知识库真正有用的部分。
+        <span class="callout__t">一句话先说透：连上 ≠ 答得对</span>
+        「连上」和「答得对」是两件事。连上只解决了「它能碰到你的资料」，
+        不解决「它会照着你的资料说」。
+        所以本课一半的篇幅放在引用和拒答上，那是让知识库真正有用的部分。
       </div>
       <p class="note">
-        本页涉及 WorkBuddy 与 ima 的产品事实，核对日期 <strong>2026-09-25</strong>，
+        本页涉及 WorkBuddy 与 ima 的产品事实，核对日期 2026-09-25，
         依据为 <strong>www.workbuddy.cn</strong> 官方文档《WorkBuddy × ima 功能指引》
         《如何用 WorkBuddy 把 ima 知识库越用越厚》《连接器》三篇，
         以及 ima 官方凭证页 <strong>ima.qq.com/agent-interface</strong>。
-        客户端文档与开放平台文档能力不同，本页不混用；
-        <strong>查不到官方口径的地方一律写「不确定」，并以你实际使用的版本为准。</strong>
+        客户端文档与开放平台文档能力不同，本页不混用。
+        查不到官方口径的地方一律写「不确定」，并以你实际使用的版本为准。
       </p>
     </section>
 
@@ -65,7 +64,7 @@
           <li>在 WorkBuddy 里<strong>独立完成 ima 知识库的绑定</strong>，
             并逐条说出它拿到的<strong>三项权限</strong>分别是什么；</li>
           <li>发起一次<strong>带引用的问答</strong>，拿到答案后按「文件名 / 位置 / 原句」三要素核完溯源；</li>
-          <li>写出一条<strong>能让它拒答的指令</strong>——限定依据范围、写死红线、说清缺信息怎么办；</li>
+          <li>写出一条<strong>能让它拒答的指令</strong>：限定依据范围、写死红线、说清缺信息怎么办；</li>
           <li>判断一件事<strong>该不该交给它做</strong>（权限边界三条 + 积分口径），
             并说清什么时候该解绑。</li>
         </ol>
@@ -91,10 +90,10 @@
     <section class="sec" id="s-key">
       <h2>一、API Key 配置：把钥匙领出来，放对地方<span class="sec__tag">凭证</span></h2>
       <p>
-        先讲个比方。<strong>扫码授权像去前台登记领一张临时工牌</strong>：
+        先讲个比方。扫码授权像去前台登记领一张临时工牌：
         登记一次，工牌由系统管着，你随时能注销，注销完它就进不了门。
-        <strong>API Key 像配了一把你家的钥匙给别人</strong>：谁拿到这串字符串，谁就能开门，
-        而且<strong>它不会自己失效</strong>。
+        API Key 像配了一把你家的钥匙给别人：谁拿到这串字符串，谁就能开门，
+        而且它不会自己失效。
       </p>
       <p>
         所以要分清你现在走的是哪条路。
@@ -117,7 +116,7 @@
             <tr>
               <td><strong>存在哪</strong></td>
               <td>不用你管</td>
-              <td><strong>要你自己保存，并填给调用方</strong>——这一步是本课的重点</td>
+              <td><strong>要你自己保存，并填给调用方</strong>，这一步是本课的重点</td>
             </tr>
             <tr>
               <td><strong>撤销方式</strong></td>
@@ -134,9 +133,9 @@
       </div>
       <p class="note">
         按 WorkBuddy 官方《连接器》一节的口径，授权凭据包括
-        <strong>OAuth Access/Refresh Token，或您手动填写的 API 密钥</strong>——
-        也就是说「填密钥」这回事本身是被产品支持的能力，只是<strong>ima 这一路的具体填写入口，
-        官方客户端文档里没有写明</strong>。本页因此只讲通用的安全做法，不编造入口名。
+        <strong>OAuth Access/Refresh Token，或您手动填写的 API 密钥</strong>。
+        也就是说「填密钥」这回事本身是被产品支持的能力，只是 ima 这一路的具体填写入口，
+        官方客户端文档里没有写明。本页因此只讲通用的安全做法，不编造入口名。
       </p>
 
       <div class="demo" id="demo1">
@@ -174,7 +173,7 @@
         <li><b>不硬编码进代码</b><span>写死在脚本里，代码一分享、一提交，密钥跟着走。
           要用环境变量或本地配置文件读取。</span></li>
         <li><b>不整段贴进对话</b><span>对话记录可能被同步、导出、截图、转给他人。
-          真要配置，让它去<strong>读你本地的那个文件</strong>，而不是你把内容复述给它。</span></li>
+          真要配置，让它去读你本地的那个文件，而不是你把内容复述给它。</span></li>
         <li><b>不交给第三方工具</b><span>来源不明的「一键配置脚本」「帮你接入的小工具」，
           接过你的密钥就等于接过你的账号。</span></li>
       </ol>
@@ -194,11 +193,11 @@
       <h2>二、绑定知识库：让它看见你有几个库<span class="sec__tag">本课核心</span></h2>
       <p>
         上一节解决的是「凭证」，这一节解决的是「关系」。
-        凭证是钥匙，绑定是<strong>拿这把钥匙去开哪一扇门、开到什么程度</strong>。
+        凭证是钥匙，绑定是拿这把钥匙去开哪一扇门、开到什么程度。
       </p>
       <p>
         按 WorkBuddy 官方《WorkBuddy × ima 功能指引》，
-        ima 知识库连接器<strong>按账号所在环境分两种</strong>：
+        ima 知识库连接器按账号所在环境分两种：
       </p>
       <div class="tablewrap">
         <table class="data">
@@ -256,7 +255,7 @@
 
       <h3>授权页上那三项权限，逐条看清楚</h3>
       <p>
-        扫码之后还会弹一次确认页。官方写明的三项是原文照抄的，<strong>逐条读一遍再点同意</strong>：
+        扫码之后还会弹一次确认页。官方写明的三项是原文照抄的，逐条读一遍再点同意：
       </p>
       <div class="tablewrap">
         <table class="data">
@@ -275,7 +274,7 @@
             <tr>
               <td><strong>将知识库文件添加到任务或者将文件保存到 ima 知识库</strong></td>
               <td>它能把文件拉进任务，也能往你的库里写东西</td>
-              <td><strong>这是写权限</strong>——产物存回时用得到，也意味着它可能往里放东西</td>
+              <td><strong>这是写权限</strong>。产物存回时用得到，也意味着它可能往里放东西</td>
             </tr>
           </tbody>
         </table>
@@ -283,8 +282,8 @@
       <div class="callout callout--tip">
         <span class="callout__t">官方还有一句 TIP</span>
         <strong>「WorkBuddy 连接资料库的 ima 知识库后将获得登录用户的 ima 知识库的权限。」</strong>
-        换句话说：<strong>它能看的范围 = 你这个账号本来就有的范围</strong>，不会因为你授权给它而变大。
-        但反过来也成立——<strong>你账号能看到的共享库内容，它一样能看到。</strong>
+        换句话说：它能看的范围 = 你这个账号本来就有的范围，不会因为你授权给它而变大。
+        但反过来也成立，你账号能看到的共享库内容，它一样能看到。
       </div>
 
       <h3>引到任务里的两种方式</h3>
@@ -308,7 +307,7 @@
       <p>
         产物也能存回去：在右侧产物里找到文件，点<strong>「上传到云端」→ 选 ima 知识库</strong>，
         按<strong>个人 / 共享 / 订阅</strong>三类库选一个存。
-        这就是官方说的「让知识库持续增值」——生成的正式内容回传进去，下次还能被调用。
+        这就是官方说的「让知识库持续增值」：生成的正式内容回传进去，下次还能被调用。
       </p>
 
       <div class="task">
@@ -321,7 +320,7 @@
           <li><b>浏览器打开 <code>ima.qq.com/agent-interface</code> 并登录</b><span>
             用你建库时那个 ima 账号。</span></li>
           <li><b>点页面上的「获取 API Key」</b><span>页面会给出一串密钥；
-            如果同时显示了 Client ID，两个都要留着——<strong>以页面实际显示为准</strong>。</span></li>
+            如果同时显示了 Client ID，两个都要留着，<strong>以页面实际显示为准</strong>。</span></li>
           <li><b>先复制下来，暂时别发给任何人、也别发进任何对话</b><span>
             <span class="task__warn">这一步最容易做错</span>：看到「配置」两个字就顺手贴给 AI。先忍住。</span></li>
         </ol>
@@ -338,8 +337,8 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         </div>
 
         <p><strong>第 3 步 · 让 WorkBuddy 自己去读，不要把内容贴给它（2 分钟）</strong></p>
-        <p>在 WorkBuddy 里<strong>新建一个对话</strong>，把下面这段指令整段发出去——
-          注意里面<strong>一个密钥字符都没有</strong>：</p>
+        <p>在 WorkBuddy 里<strong>新建一个对话</strong>，把下面这段指令整段发出去。
+          注意里面一个密钥字符都没有：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="配置指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
 <pre><code>我已经把 ima 的开放接口凭证写在这两个本地文件里：
@@ -371,7 +370,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         </ol>
         <p><strong>要交的成果</strong>：它列出知识库那段回答的截图
           ＋ 一句「我的凭证放在哪、为什么放那儿」。
-          <strong>截图里不要出现完整密钥</strong>——出现的话打码再交。</p>
+          <strong>截图里不要出现完整密钥</strong>，出现的话打码再交。</p>
         <p class="note">
           如果你手上的版本没有「让 AI 读本地文件完成配置」这条路，
           那就<strong>不要勉强</strong>：直接用第二节的扫码授权即可，
@@ -412,7 +411,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         <p><strong>第 7 步 · 再让它从库里取出一份文件（2 分钟）</strong></p>
         <ol class="steps">
           <li><b>在输入框上方的「添加文件」图标处打开 ima 知识库</b><span>
-            勾选整个库（不是单个文件）——这一节要验证的是「整个库能不能被引用」。</span></li>
+            勾选整个库（不是单个文件），这一节要验证的是「整个库能不能被引用」。</span></li>
           <li><b>把下面这段指令发出去</b><span>整段复制，一个字别改。</span></li>
         </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="取出指令 · 点右上角复制">
@@ -429,14 +428,14 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
             <em>列表是空的</em>：先确认扫码的是同一个账号；还不行就点「解除绑定」重新绑一次
             （个人版连接器支持解绑）。</span></li>
           <li><b>它说出的能力范围，和三项权限对得上</b><span>
-            看列表 / 搜索读内容 / 添加和保存文件——三条都在，而且<strong>没有多出别的</strong>。<br>
+            看列表 / 搜索读内容 / 添加和保存文件，三条都在，而且<strong>没有多出别的</strong>。<br>
             <em>它自称还能做别的</em>：让它说清是哪一项权限允许的；说不清就按「不确定」处理，别信。</span></li>
           <li><b>它明确说了「没有你的指令不会主动去读或改」</b><span>
             这对应官方的权限边界「不主动定时抓取」。<br>
             <em>它含糊其辞</em>：补一句「请只回答是或否，并说明理由」，再问一次。</span></li>
           <li><b>第 3 步拿到的资料清单和库里的实际内容对得上</b><span>
             你传了 3 份，它就该列出 3 份左右，不该多出你没传过的东西。<br>
-            <em>多出了没见过的资料名</em>：⚠️ 两种可能——它读了别的库，或者它在编。
+            <em>多出了没见过的资料名</em>：⚠️ 两种可能，它读了别的库，或者它在编。
             让它逐条标出「这条出自哪个库」，标不出来的就是编的。</span></li>
         </ol>
         <p><strong>要交的成果</strong>：绑定成功的界面截图
@@ -511,7 +510,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         按官方《连接器》一节的说明：<strong>连接器自身的读写不消耗积分；
         WorkBuddy 对外部数据进行理解、汇总时会消耗积分。</strong>
         翻库、列清单这类动作本身不贵，<strong>让它读完再总结、再成文才花钱</strong>。
-        所以「每次都让它把整个库读一遍」是既慢又费的做法——
+        所以「每次都让它把整个库读一遍」是既慢又费的做法。
         先锁定库或文件，再提问。
       </div>
 
@@ -523,7 +522,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         <p><strong>第 1 步 · 问第一组：答案确实在库里（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>新建一个对话</b><span><span class="task__warn">必须新建</span>，
-            别接着实操① 的对话问——它的上下文里已经有库的内容了，这次实验就不准了。</span></li>
+            别接着实操① 的对话问。它的上下文里已经有库的内容了，这次实验就不准了。</span></li>
           <li><b>用输入框上方的「添加文件」打开 ima 知识库，勾选你那个主题库</b><span>
             勾选整个库，不要勾单份文件。</span></li>
           <li><b>把下面这段指令整段发出去</b><span>三组约束一句都不能少。</span></li>
@@ -543,7 +542,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         </div>
 
         <p><strong>第 2 步 · 问第二组：跨两份资料才能答（3 分钟）</strong></p>
-        <p>这一组的目的，是看它能不能把<strong>两份资料里的内容拼起来</strong>——
+        <p>这一组的目的，是看它能不能把<strong>两份资料里的内容拼起来</strong>。
           这是知识库问答比单文件问答强的地方：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="Q2 · 点右上角复制">
           <div class="codeblock__bar"></div>
@@ -572,7 +571,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         <p><strong>第 4 步 · 做到这四条，就算做完了</strong></p>
         <ol class="steps">
           <li><b>Q1 的每条结论后面都有【引用】，而且三样齐全</b><span>
-            文件名、位置、原句——缺一样就不算合格。<br>
+            文件名、位置、原句，缺一样就不算合格。<br>
             <em>只给了文件名</em>：把「文件名 · 位置 · 原句（原样摘抄，不要改写）」
             这句单独再发一次，让它按格式重出。</span></li>
           <li><b>你点开核过至少一条</b><span>
@@ -584,7 +583,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
             <em>它只讲了一边</em>：补一句「必须同时引用课程笔记和作业两份资料，逐条对照」。</span></li>
           <li><b>追问后，它能说清那条结论出自哪里</b><span>
             这是最难的一条，也是最有价值的一条。<br>
-            <em>它说「这条不是来自库里」</em>：恭喜，实验成功了——
+            <em>它说「这条不是来自库里」</em>：恭喜，实验成功了。
             这正是你要的结果：<strong>它自己承认了这条没有依据</strong>。把这轮对话留着，
             实操③ 要接着用。</span></li>
         </ol>
@@ -596,8 +595,8 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
     <section class="sec" id="s-edge">
       <h2>四、权限边界与拒答策略<span class="sec__tag">红线</span></h2>
       <p>
-        前面三节都在让它「多做一点」。这一节反过来——<strong>让它在该停的地方停下来。</strong>
-        两件事：<strong>它不该碰的东西有哪些</strong>，以及<strong>资料里没有时它该怎么答</strong>。
+        前面三节都在让它「多做一点」，这一节反过来，让它在该停的地方停下来。
+        两件事：它不该碰的东西有哪些，以及资料里没有时它该怎么答。
       </p>
 
       <h3>官方写的三条权限边界</h3>
@@ -627,8 +626,8 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
       <div class="callout callout--danger">
         <span class="callout__t">反过来想这一条</span>
         「不超出你已有权限」意味着：<strong>共享知识库里，同库成员能看到的东西，它也能看到。</strong>
-        所以<strong>不要把别人的个人信息、没公开的成绩、身份证号之类放进共享库</strong>
-        ——放进去等于同时给了它。这一条不是它的问题，是<strong>你放什么进去</strong>的问题。
+        所以<strong>不要把别人的个人信息、没公开的成绩、身份证号之类放进共享库</strong>，
+        放进去等于同时给了它。这一条不是它的问题，是你放什么进去的问题。
       </div>
 
       <h3>资料里没有时，它该怎么答</h3>
@@ -639,9 +638,9 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         有效的是<strong>把三件事同时写进指令</strong>：
       </p>
       <ol class="steps">
-        <li><b>限定依据范围</b><span>「只依据 XX 知识库」——先圈住它能在哪儿找。</span></li>
-        <li><b>写死红线</b><span>「不允许使用库外的任何知识」——不许它拿常识补。</span></li>
-        <li><b>说清缺信息怎么办</b><span>「库里没有就直接回答『库里没有这项信息』」——给它一个体面的退路，
+        <li><b>限定依据范围</b><span>「只依据 XX 知识库」，先圈住它能在哪儿找。</span></li>
+        <li><b>写死红线</b><span>「不允许使用库外的任何知识」，不许它拿常识补。</span></li>
+        <li><b>说清缺信息怎么办</b><span>「库里没有就直接回答『库里没有这项信息』」，给它一个体面的退路，
           它才不用靠编来交差。</span></li>
       </ol>
       <p class="note">
@@ -685,7 +684,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
 
         <p><strong>第 1 步 · 问一个库里绝对没有的问题（3 分钟）</strong></p>
         <ol class="steps">
-          <li><b>新建一个对话</b><span><span class="task__warn">又是新建</span>——
+          <li><b>新建一个对话</b><span><span class="task__warn">又是新建</span>。
             上一节的对话里已经问过库里的内容，接着问它就能猜到「还是那个库」。</span></li>
           <li><b>还是勾选同一个 ima 知识库</b><span>库要在，问题要超出这个库。
             这样才测得出「它会不会越界去补」。</span></li>
@@ -726,7 +725,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
           <li><b>Q3 明确说了「库里没有」，而不是给了日期和题数</b><span>
             这是本组最关键的一条。<br>
             <em>它照样给了具体时间</em>：⚠️ 说明「不允许使用库外的任何知识」这句没写住。
-            把这句<strong>挪到指令第一句</strong>再问一次；还是编，就说明这次问答没真正走知识库——
+            把这句<strong>挪到指令第一句</strong>再问一次；还是编，就说明这次问答没真正走知识库，
             回头检查第 1 步的库是不是真的勾选上了。</span></li>
           <li><b>它说清了检索了哪些片段</b><span>
             能说出「检索了哪几段、结果是什么」，说明它真的查了，而不是凭空答。<br>
@@ -745,7 +744,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
         <p class="note">
           收尾动作：如果你用的是<strong>个人版连接器</strong>，
           可以在「资料库 → ima 知识库」右上角点<strong>「解除绑定」</strong>随时断开。
-          <strong>企业版连接器由企业统一管理，端内不支持解绑</strong>——
+          <strong>企业版连接器由企业统一管理，端内不支持解绑</strong>。
           这一点官方写得很清楚，别在实训机上反复试。
         </p>
       </div>
@@ -753,7 +752,7 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
       <div class="callout callout--tip">
         <span class="callout__t">一句话收口</span>
         <strong>连接的价值不是「它能碰到多少资料」，而是「它碰到的每一样，你都知道、都能收回来。」</strong>
-        所以每次授权之前看一眼权限项，每次拿到答案之后点一次引用——
+        所以每次授权之前看一眼权限项，每次拿到答案之后点一次引用。
         这两下手动，AI 替不了你。
       </div>
     </section>
@@ -853,26 +852,25 @@ Get-ChildItem "$env:USERPROFILE\.config\ima"</code></pre>
     <section class="sec" id="s-recap">
       <h2>本课要点回顾</h2>
       <div class="recap">
-        <h4>这一课要带走五件事</h4>
+        <h4>连上了，然后呢</h4>
         <ol>
           <li><strong>两条凭证路，风险完全不同</strong>：扫码授权像临时工牌（可解绑、凭据由系统管）；
             API Key 像家门钥匙（<b>不硬编码、不贴对话、不交第三方</b>）；</li>
-          <li><strong>绑定走「资料库 → ima 知识库」，不是「连接器」</strong>——
-            微信扫码后逐条核对<b>三项权限</b>：看列表 / 搜索读内容 / 添加与保存文件；</li>
-          <li><strong>引用要三样齐全</strong>：<b>文件名 · 位置 · 原句</b>，
-            然后按三查走一遍——查引用、查原文、查边界；</li>
+          <li><strong>绑定走「资料库 → ima 知识库」，不是「连接器」</strong>。
+            微信扫码后逐条核对三项权限：看列表 / 搜索读内容 / 添加与保存文件；</li>
+          <li><strong>引用要三样齐全</strong>：文件名、位置、原句。
+            然后按三查走一遍，查引用、查原文、查边界；</li>
           <li><strong>拒答指令三件事</strong>：限定范围 + 写死红线 + 给退路，
-            限定范围放<b>第一句</b>最稳；</li>
-          <li><strong>权限边界三条</strong>：独立授权 / 不主动定时抓取 / 不超出你已有权限——
-            反过来就是<b>共享库里别放别人的个人信息</b>。</li>
+            限定范围放第一句最稳；</li>
+          <li><strong>权限边界三条</strong>：独立授权 / 不主动定时抓取 / 不超出你已有权限。
+            反过来就是共享库里别放别人的个人信息。</li>
         </ol>
       </div>
       <p>
-        <strong>下一步棋</strong>：这一课你打通的是「一个连接器」。
-        它的价值已经能看见了——<strong>沉淀 → 调用 → 输出 → 回存</strong>这条闭环跑得通，
-        知识库才会越用越厚。
-        下一课换个位置：<a class="xref" data-lesson="17">第 17 次课</a>把同样的资料
-        <strong>换成本地结构化知识库</strong>，看看云端和本地两套方案各自适合什么。
+        这一课你打通的是「一个连接器」，它的价值已经能看见了：沉淀、调用、输出、回存，
+        这条闭环跑得通，知识库才会越用越厚。
+        <a class="xref" data-lesson="17">第 17 次课</a>把同样的资料换成本地结构化知识库，
+        你会看到云端和本地两套方案各自适合什么。
       </p>
     </section>
 
