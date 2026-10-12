@@ -33,6 +33,20 @@
       model: "qwen-plus",
       doc: "https://help.aliyun.com/zh/model-studio/"
     },
+    /* Agnes 2.5 Flash（老师 2026-10 接入）
+       注意两件事，改这里前先看：
+       1) 端点分区域：老师的 key 属「中国服务」，只有 api.agnes-ai.cn 有效，
+          apihub.agnes-ai.com / .cn 都会返回 401（已实测）。换账号区域要同步改 URL。
+       2) 该服务【未开放 CORS】：实测请求不返回任何 Access-Control-Allow-* 头，
+          浏览器直连会被拦。所以要么经一层代理（推荐，还能藏住 key），
+          要么只能用于本地/服务端调用。详见 tools/agnes-proxy-worker.js。 */
+    agnes: {
+      name: "Agnes 2.5 Flash",
+      url: "https://api.agnes-ai.cn/v1/chat/completions",
+      model: "agnes-2.5-flash",
+      doc: "https://platform.agnes-ai.com/",
+      needsProxy: true
+    },
     custom: { name: "自定义 OpenAI 兼容", url: "", model: "", doc: "" }
   };
 
@@ -241,6 +255,7 @@
     setmask.innerHTML =
       '<div class="at-set"><h3>AI 助教设置</h3>' +
       '<label>服务商</label><select id="at-prov">' +
+      '<option value="agnes">Agnes 2.5 Flash（本站推荐）</option>' +
       '<option value="deepseek">DeepSeek</option>' +
       '<option value="qwen">通义千问</option>' +
       '<option value="custom">自定义 OpenAI 兼容</option></select>' +
@@ -478,9 +493,15 @@
     el.cmodel.value = cfg.customModel || "";
     el.customBox.style.display = el.prov.value === "custom" ? "block" : "none";
     var p = PROVIDERS[el.prov.value];
-    el.sethint.innerHTML = "填你自己的 Key 即可开启联网解答（基于当前课时正文）。" +
-      (p && p.doc ? ' 申请入口：<a href="' + p.doc + '" target="_blank" rel="noopener">' + p.name + " 官网</a>。" : "") +
-      " Key 只存在你本机浏览器，不会上传给任何中间服务器。";
+    var hint = "填你自己的 Key 即可开启联网解答（基于当前课时正文）。";
+    if (p && p.doc) hint += ' 申请入口：<a href="' + p.doc + '" target="_blank" rel="noopener">' + p.name + " 官网</a>。";
+    /* Agnes 未开放跨域，直连必失败——先把话说清，免得学生填了 Key 却只看到 CORS 报错 */
+    if (p && p.needsProxy) {
+      hint += "<br><b>注意</b>：该服务未开放浏览器跨域，直接连会被拦。" +
+        "请改用「自定义 OpenAI 兼容」填写代理地址（代理会把请求转发给它，并补上跨域头）。";
+    }
+    hint += " Key 只存在你本机浏览器，不会上传给任何中间服务器。";
+    el.sethint.innerHTML = hint;
     el.setmask.classList.add("show");
   }
   function saveSettings() {
