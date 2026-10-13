@@ -999,6 +999,14 @@
     document.head.appendChild(atScript);
   } catch (e) {}
 
+  // 注入课堂点名互动（在「随堂自测」之前插一节课堂环节；未配提问的课自动跳过）
+  try {
+    var ccScript = document.createElement("script");
+    ccScript.src = ROOT + "assets/js/class-call.js";
+    ccScript.async = true;
+    document.head.appendChild(ccScript);
+  } catch (e) {}
+
   // 注入外部统计（Umami，**未填配置则完全不联网**；详见 analytics.js 顶部说明）。
   // 放在最后加载：主课程功能不依赖它，网络慢也拖不慢页面。
   try {
