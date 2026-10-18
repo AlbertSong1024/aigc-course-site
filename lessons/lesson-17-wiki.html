@@ -137,14 +137,40 @@
       <div class="task">
         <div class="task__hd">动手做 ①·让 AI 帮你定目录结构，并按方案入库归位 <em>约 18 分钟</em></div>
         <p><strong>做完你手上会有</strong>：一套针对你资料的目录方案，以及一个按方案建好的工作目录。</p>
-        <p><strong>第 1 步 · 建工作目录并盘点资料（3 分钟）</strong></p>
+        <p><strong>第 1 步 · 建工作目录，造一批「还没整理的原始资料」（3 分钟）</strong></p>
         <ol class="steps">
           <li><b>在桌面新建文件夹 <code>wb-wiki</code>，里面再建一个 <code>raw</code></b><span>
-            <code>raw</code> 用来堆「还没整理的原始资料」。先不分类，把散落的笔记、模板、文档都丢进去。</span></li>
-          <li><b>把你要整理的资料复制进 <code>raw</code>（5–10 份即可）</b><span>课堂笔记、踩坑记录、提示词模板、项目文档都行。
-            <span class="task__warn">只放副本</span>，原件留在原处。</span></li>
+            <code>raw</code> 用来堆「还没整理的原始资料」。先不分类，什么都往里丢。</span></li>
           <li><b>新建任务，工作目录选 <code>桌面/wb-wiki</code></b><span>确认对话区左下角显示的是它。</span></li>
         </ol>
+        <p>整理的前提是<strong>有一堆乱的东西可整理</strong>。下面这条指令让 AI 替你在 <code>raw</code> 里造一批
+          练习素材——不用自己一个个建文件，也别提前整理好，乱才有得练。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="生成练习素材 · 点右上角复制">
+          <div class="codeblock__bar"></div>
+<pre><code>在 raw 文件夹里帮我生成一批练习用的「原始资料」，
+模拟一个学生一学期攒下来、还没整理的状态。共 8 个文件，
+文件名故意保持乱的真实状态，不要提前分类整理：
+
+1. 新建文档 2026.md —— 课堂笔记，记 Transformer 的注意力机制，有要点也有没想通的疑问；
+2. 笔记-9月14.md —— 踩坑记录，Ollama 装不上，报了什么错、最后怎么解决的；
+3. 提示词模板.txt —— 收了 3 个常用提示词模板（写周报、改文案、总结长文）；
+4. AI工具清单.md —— 列了几个用过的 AI 工具，每个一句评价；
+5. 项目文档-最终版.md —— 课程项目的说明初稿；
+6. 项目文档-最终版2.md —— 上面那份的修订版，内容更新（这两份故意重复）；
+7. 未命名.md —— 几段零散想法，没整理；
+8. 截图说明.txt —— 随手记的几句截图说明。
+
+要求：内容写中文，每份 5–15 行，像真学生写的——有口语、
+有写错和没补完的地方。生成完告诉我一共几个文件、分别叫什么。</code></pre>
+        </div>
+        <div class="callout callout--tip">
+          <span class="callout__t">为什么故意要「乱」的</span>
+          第 2 步 AI 要盘点、第 3 步要它标出重复和过时文件。
+          素材要是本来就整整齐齐，这两步就没东西可练了——
+          特别是 <code>项目文档-最终版</code> 和 <code>最终版2</code> 那对重复文件，是后面专门留的考点。
+        </div>
+        <p class="note">你手上要是有自己一学期攒的真资料，用它替换 <code>raw</code> 里的内容也行，
+          后面的步骤一样走得通。</p>
         <p><strong>第 2 步 · 让 AI 盘点并给目录方案（3 分钟）</strong></p>
         <p>把下面这段指令发出去（<code>raw</code> 里的资料它读得到）：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="目录方案指令 · 点右上角复制">
