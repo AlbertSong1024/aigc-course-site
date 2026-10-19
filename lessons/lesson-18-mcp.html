@@ -75,6 +75,7 @@
         <a href="#s-perm"><b>03</b>最小权限原则 <em>＋实操②</em></a>
         <a href="#s-auto"><b>04</b>定时自动化任务 <em>＋实操③</em></a>
         <a href="#s-quiz"><b>05</b>随堂自测</a>
+        <a href="#s-training"><b>06</b>课后实训</a>
       </div>
       <div class="callout callout--quote">
         <span class="callout__t">先修与衔接</span>
@@ -510,6 +511,142 @@ D. 任务失败后自动删除整个工作目录
 【答案】错误
 【解析】应该立即手动触发（或用测试执行）验证能跑通、产出落位。等到周期到了才发现配置错误，已经错过一轮。
 </code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="s-training">
+      <h2>课后实训<span class="sec__tag">实训二 · 2 学时</span></h2>
+      <p class="lead">
+        <strong>实训二：接一个连接器，并亲手验一次它的权限边界。</strong>
+        这个实训直接接着本课的<strong>三个实操</strong>做——三个实操做完，报告要用的材料就齐了，
+        不用另起炉灶再准备什么。
+      </p>
+
+      <h3>要做什么</h3>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>接哪个实操</th><th>这一步做完，手上多出什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>实操①</strong>接腾讯文档连接器跑一次</td>
+              <td>装好并授权过的腾讯文档连接器+ <code>result.md</code>（3 条带出处的要点）</td></tr>
+            <tr><td><strong>实操②</strong>权限边界实验</td>
+              <td>四步运行的对比记录 + 从审计中心导出的拦截日志</td></tr>
+            <tr><td><strong>实操③</strong>定时自动化任务</td>
+              <td>一个定时任务的配置（频率／产出位置／失败处理／权限要求四项齐全）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>要交什么</h3>
+      <div class="callout callout--tip">
+        <span class="callout__t">只交一份</span>
+        把下面四样东西<strong>都写进报告文档里</strong>，最后只提交这一份 <code>.docx</code>，
+        不用另外传文件，也不用打包。
+      </div>
+      <ol class="steps">
+        <li><b>连接器授权对照</b><span>腾讯文档连接器要的权限里，
+          <strong>哪一条你真用得上、哪一条用不上</strong>，结论是「刚好够」还是「偏宽」。</span></li>
+        <li><b>权限边界实验记录</b><span>四步各写一句它<strong>实际做了什么</strong>：
+          授权内读、越界读、越界写、切「允许完全访问」后重跑。
+          再写清第6 步和第 4 步的差别。</span></li>
+        <li><b>定时任务配置</b><span>频率、产出位置、失败处理、权限要求<strong>四项都要写全</strong>，
+          缺一项这项就不得分。</span></li>
+        <li><b>问题和收获</b><span>遇到的问题 + 怎么解决的（至少 1 条），学到了什么（1–2 句）。</span></li>
+      </ol>
+      <p class="note">实操过程中生成的 <code>result.md</code>、审计日志导出文件
+        是你自己电脑上的产物，留着即可，不作提交要求。</p>
+
+      <h3>报告模板：下载附件填写</h3>
+      <div class="callout callout--tip">
+        <span class="callout__t">第一步：下载报告模板</span>
+        点下面的按钮下载 <code>.docx</code> 文件，封面里的<strong>学期、学院、专业已经填好</strong>，
+        你只需要补班级、姓名、学号、日期，再按六项栏目写正文。
+        <p><a class="btn btn--main" href="../training/实训报告-实训二-连接器与权限边界.docx" download>↓ 下载实训报告模板（.docx）</a></p>
+      </div>
+      <div class="tablewrap">
+        <table class="data">
+          <thead><tr><th>模板里的栏目</th><th>填什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>封面信息</strong></td><td>学期／学院／专业已预填；<strong>班级、姓名、学号、日期自己补</strong></td></tr>
+            <tr><td><strong>实训名称</strong></td><td>已填好：实训二　接一个连接器，并亲手验一次它的权限边界</td></tr>
+            <tr><td><strong>一、我做了什么</strong></td><td>3–5 条，写清用了什么连接器、发了什么指令。
+              示例：装腾讯文档连接器 → 扫码授权并对照权限 → 读自己的一篇腾讯文档并提炼 3 条要点标出处
+              → 跑四步权限边界实验 → 导出审计日志 → 建一个定时资讯汇总任务</td></tr>
+            <tr><td><strong>二、连接器授权对照</strong></td><td>写清两件事：① 它要的权限逐条列出来；
+              ② 你这次任务<strong>真用得上哪几条、用不上哪几条</strong>，结论写「刚好够」或「偏宽（多了……）」</td></tr>
+            <tr><td><strong>三、权限边界实验记录</strong></td><td>四步各一句，写<strong>它实际做了什么</strong>：
+              ① 读工作空间内那份；② 读范围外那份（停下来问 / 说读不到）；
+              ③ 往范围外写（拦住 / 没拦住）；④ 切「允许完全访问」后重跑第②步。
+              最后写清第④步和第②步的差别，并附上从安全中心审计中心导出的拦截日志</td></tr>
+            <tr><td><strong>四、定时自动化任务配置</strong></td><td>四项写全：执行频率、产出位置（明确到文件）、
+              失败处理（失败时留什么痕）、权限要求（用哪一条最小权限）。<span class="task__warn">缺一项本项不得分</span></td></tr>
+            <tr><td><strong>五、遇到的问题 + 怎么解决的</strong></td><td>至少 1 条。比如它没调连接器直接用自己的知识答了、
+              或者它没停下来问就越权写了文档，你是怎么发现的、怎么让它改的</td></tr>
+            <tr><td><strong>六、学到了什么</strong></td><td>1–2 句，写自己的收获，别抄实训说明</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">填完把这份 <code>.docx</code> 直接交到学习通，不用再手抄一遍，也不用转成 PDF。</p>
+
+      <h3>评分看什么</h3>
+      <ol class="steps">
+        <li><b>有没有真的调过连接器</b><span>只交一份 AI 用自己知识编的 <code>result.md</code>，
+          本项不得分——<strong>要点必须能指回你那篇腾讯文档</strong>。</span></li>
+        <li><b>有没有认出多给的权限</b><span>腾讯文档连接器有「读取」和「编辑与管理」两条权限。
+          你这次只让它读，却把两条都留着还写「刚好够」，说明没对照过，本项不得分。
+          <strong>发现多给的，才算真做了授权侦察。</strong></span></li>
+        <li><b>切「允许完全访问」那一步做了没有</b><span>不做这一步，实验只能证明「它会问我」；
+          做完才能证明<strong>拦住它的是权限设置，不是 AI 自己老实</strong>。这一步是本实训的核心。</span></li>
+        <li><b>定时任务四项齐不齐</b><span>频率、产出位置、失败处理、权限要求。
+          <strong>没有失败处理，等于每周可能静默失败一次。</strong></span></li>
+      </ol>
+
+      <div class="callout callout--warn">
+        <span class="callout__t">怎么交</span>
+        <strong>只交一份：下载报告模板填好，作为附件提交就行。</strong>
+        <code>result.md</code>、审计日志都<strong>写在报告里</strong>，不用另外传文件。
+        实操生成的那几个产物你自己留着，不作提交要求。
+        下面这段可以直接复制到学习通的作业说明里。
+      </div>
+      <div class="fold">
+        <button class="fold__hd" type="button">点开查看提交要求 · 一键复制到学习通</button>
+        <div class="fold__bd">
+          <div class="codeblock codeblock--plain" data-lang="text" data-name="实训二 提交要求 · 一键复制">
+            <div class="codeblock__bar"></div>
+<pre><code>【实训二】接一个连接器，并亲手验一次它的权限边界
+
+一、做什么
+接着第 18 次课的三个实操往下做：装腾讯文档连接器并扫码授权，用它真读一篇你自己的
+腾讯文档提炼要点；再跑一遍权限边界实验（同一条指令，范围内外各跑一次）；
+最后建一个定时自动化任务，配置四项写全。
+
+二、交什么
+只交一份：实训报告（下载本页的 .docx 模板，填好后作为附件提交）。
+result.md、审计日志导出文件都写在报告里，不用另外传文件。
+
+三、报告怎么填
+下载模板后：封面补上班级、姓名、学号、日期（学期/学院/专业已填好），
+再写六项：
+① 我做了什么（3–5 条）
+② 连接器授权对照（权限逐条列出 + 哪条用得上哪条用不上 + 结论）
+③ 权限边界实验记录（四步各写它实际做了什么，附审计中心导出的拦截日志）
+④ 定时自动化任务配置（频率、产出位置、失败处理、权限要求，四项写全）
+⑤ 遇到的问题 + 怎么解决的（至少 1 条）
+⑥ 学到了什么（1–2 句）
+填完直接交 .docx 附件，不要转成 PDF。
+
+四、评分看什么
+· 有没有真的调过连接器（要点要能指回你那篇腾讯文档，AI 用自己知识编的不算）
+· 有没有认出多给的权限（只让读却把「编辑与管理」也留着还写刚好够，不得分）
+· 切「允许完全访问」那一步做了没有（不做只能证明它会问，做了才证明拦住它的是权限设置）
+· 定时任务四项齐不齐（缺失败处理等于每周可能静默失败）
+
+五、注意
+· 只交 .docx 报告一份，不用打包，不用另传 md 或日志文件
+· 实验做完把权限档位切回「默认权限」
+· 交 .docx 附件即可，别转 PDF</code></pre>
           </div>
         </div>
       </div>
