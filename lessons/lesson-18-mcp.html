@@ -51,8 +51,8 @@
         <span class="callout__t">先把丑话说在前面</span>
         连接器是<strong>给 AI 开权限</strong>的活。权限开得越宽，AI 能干的事越多，出事的范围也越大。
         所以这一课一半讲「怎么连」，另一半讲「<strong>怎么少连</strong>」，最小权限原则贯穿全课。
-        另外说明：连接器的具体入口和可用列表随版本变化明显，本页只讲通用流程与原则，
-        具体名称以你实际使用的版本为准（核对日期 2026-09-25）。
+        另外说明：本页以 <strong>腾讯文档连接器</strong>作为唯一示例，权限项与入口均按官方文档核对过
+        （核对日期 2026-09-25）。连接器列表会随版本增删，<strong>但装、授权、用这套流程和权限判断方法不会变</strong>。
       </div>
     </section>
 
@@ -102,7 +102,7 @@
           </tbody>
         </table>
       </div>
-      <p>而「连接器」就是按这个标准做出来的一个个具体插件：搜索、邮箱、日历、文档平台……</p>
+      <p>而「连接器」就是按这个标准做出来的一个个具体插件。按官方文档，目前支持的连接器有 <strong>QQ 邮箱、腾讯文档、腾讯乐享、腾讯会议、TAPD、腾讯网盘</strong>，也支持自定义连接器——本课就从<strong>腾讯文档</strong>这一个开始。</p>
       <div class="callout callout--tip">
         <span class="callout__t">一个重要的心态</span>
         连接器列表会不断变化，<strong>名字和数量都不值得背</strong>。
@@ -133,52 +133,76 @@
 
 
             <div class="task">
-        <div class="task__hd">动手做 ①·接一个连接器，真跑一次任务 <em>约 18 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一个装好并授权过的连接器，它替你完成的一次真实调用，以及执行过程的截图。</p>
-        <p><strong>第 1 步 · 挑一个你真用得上的连接器，装上（4 分钟）</strong></p>
+        <div class="task__hd">动手做 ①·接腾讯文档连接器，真跑一次任务 <em>约 18 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个装好并授权过的<strong>腾讯文档连接器</strong>，
+          它替你完成的一次真实读取，外加执行过程的截图。</p>
+        <p class="note"><strong>本课就接这一个</strong>，不挑。官方文档列出的连接器有 QQ 邮箱、腾讯文档、腾讯乐享、
+          腾讯会议、TAPD、腾讯网盘等，其中<strong>腾讯文档是唯一人人有账号、零注册、扫码就能授权</strong>的一个，
+          正好用来把流程和权限看清楚。</p>
+
+        <p><strong>第 1 步 · 装腾讯文档连接器（4 分钟）</strong></p>
         <ol class="steps">
-          <li><b>先扫一眼权限说明，再点安装</b><span>不用填表，看一眼就行：它要的是读还是写、要的是全盘还是某个目录。
+          <li><b>走连接器页，别走资料库页</b><span>左侧边栏「<strong>专家·技能·连接器</strong>」→ 选中「<strong>连接器</strong>」页签
+            → 找到「<strong>腾讯文档</strong>」卡片 → 点卡片右上角的 <strong>+</strong>。</span></li>
+          <li><b>看清权限再点授权</b><span>它要的权限只有两条：<strong>读取文档内容</strong>、<strong>编辑与管理文件</strong>。
+            你现在只想让它读，所以心里记一笔：<strong>写权限这一条其实用不上</strong>。
             <span class="task__warn">看清楚再装</span>，装完再撤就麻烦了。</span></li>
-          <li><b>装完打开授权页</b><span>登录或填凭证。<strong>凭证只填在这一页</strong>，
-            不要写进对话，也不要贴进任何文件或代码。</span></li>
+          <li><b>扫码授权</b><span>点「立即前往授权」→ 用<strong>微信或 QQ 扫码</strong>，和腾讯文档登录是同一个账号。
+            <strong>凭证只填在这一页</strong>，不要写进对话，也不要贴进任何文件或代码。</span></li>
         </ol>
+        <p class="note"><strong>最容易走错的地方</strong>：左侧边栏「资料库」里也有一个「腾讯文档」入口。
+          那是资料库的绑定，<strong>不是连接器</strong>。本课一律走上面那条
+          「专家·技能·连接器 → 连接器 → 腾讯文档 → +」。</p>
+
         <p><strong>第 2 步 · 授权那一刻，对照一次（2 分钟）</strong></p>
         <p>授权页上它列的权限，跟你这次要干的活比一比，心里有个数就行：</p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="授权对照 · 一句话就够">
           <div class="codeblock__bar"></div>
-<pre><code>连接器名称：
+<pre><code>连接器名称：腾讯文档
 
-它要的权限里，我这次真用得上的：
+它要的权限里，我这次真用得上的：读取文档内容
 
-其中用不上的（如果有）：
+其中用不上的（如果有）：编辑与管理文件
 
-结论：刚好够 / 偏宽（多给了 ____）</code></pre>
+结论：刚好够 / 偏宽（多给了 编辑与管理文件）</code></pre>
         </div>
-        <p class="note">范围能收窄就收窄（限定到某个目录、只给读），这是本课「最小权限」的第一道实践。</p>
+        <p class="note">这就是本课「最小权限」的第一道实践：<strong>你发现了多给的那一条，
+          心里有数就行</strong>——个人版可以解绑，但课堂上不建议频繁折腾，先跑通任务。</p>
+
         <p><strong>第 3 步 · 用它真干一件活（8 分钟）</strong></p>
-        <p>发一条真任务过去。三件事说清：要它<strong>用连接器</strong>干什么、产出什么、<strong>什么情况下停下来问你</strong>。</p>
+        <p>任务就一件：<strong>读你自己腾讯文档里的一篇文档，提炼要点并标来源</strong>。
+          三件事说清：要它<strong>用连接器</strong>干什么、产出什么、<strong>什么情况下停下来问你</strong>。</p>
+        <ol class="steps">
+          <li><b>先确保你有文档可读</b><span>打开腾讯文档，<strong>新建一篇</strong>，随便写几行内容并保存。
+            没有可读的文档，这一步就白跑。</span></li>
+          <li><b>把下面的指令发出去</b><span>把【文档名】换成你刚建的那篇。</span></li>
+        </ol>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="调用指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>我已接入【连接器名称】。请用这个连接器完成下面的任务：
+<pre><code>我已接入【腾讯文档】连接器。请用这个连接器完成下面的任务：
 
-任务：【一句话说清要干什么】
-产出：【要什么形式的产出，存到工作目录】
+任务：读取我腾讯文档里的《【文档名】》，提炼出 3 条要点
+产出：一份要点清单，存到当前工作目录 result.md
 
 三条限制：
-1. 只用这个连接器取信息，不要用你自己的知识补充；
-2. 每条信息标明来源（来自哪份文件／哪条记录）；
-3. 遇到需要更高权限的操作，停下来问我，不要自己试。
+1. 只用腾讯文档连接器取信息，不要用你自己的知识补充；
+2. 每条信息标明来源（来自哪篇文档）；
+3. 遇到需要更高权限的操作（比如新建、编辑文档），停下来问我，不要自己试。
 
 完成后告诉我：调用了什么、拿到了什么、什么没做到。</code></pre>
         </div>
+        <p class="note">限制第 3 条是<strong>故意设的陷阱</strong>：连接器有写权限，但你没让它写。
+          它<strong>应该停下来问你</strong>。它真去建了文档，说明它没守规矩——这也要记下来。</p>
+
         <p><strong>第 4 步 · 验收这次调用（4 分钟）</strong></p>
         <ol class="steps">
           <li><b>执行过程里看到它调连接器了吗</b><span>如果它压根没用连接器、直接用自己的知识答了，
             这不算完成，让它明确<strong>用连接器重做</strong>。</span></li>
           <li><b>信息带来源了吗</b><span>没标来源的条目让它补。它说「来源拿不到」也是有效发现，照实记下来。</span></li>
-          <li><b>它有没有超出你授权的范围</b><span>比如你只给了读，它却动手改了或删了东西，有的话立刻撤授权，这比跑通更重要。</span></li>
+          <li><b>它有没有超出你授权的范围</b><span>你只说了让它读，它却动手新建或改了文档，
+            有的话立刻去<strong>撤销授权</strong>，这比跑通更重要。</span></li>
         </ol>
-        <p><strong>要交的成果</strong>：调用结果 + 执行过程截图（要能看到连接器被调用的痕迹）。</p>
+        <p><strong>要交的成果</strong>：<code>result.md</code> + 执行过程截图（要能看到腾讯文档连接器被调用的痕迹）。</p>
       </div>
 
 </section>
@@ -202,42 +226,106 @@
       </div>
 
             <div class="task">
-        <div class="task__hd">动手做 ②·权限边界实验：同一条指令，两种范围各跑一次 <em>约 10 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：同一条指令在「范围内」和「范围外」两次<strong>真实运行</strong>的行为差异，
-          以及一条结论：这条任务到底需要多大权限。</p>
-        <p class="note">这个实验不用去改连接器的授权设置，把<strong>文件放在授权范围里和范围外</strong>就行，
-          自己就能做，效果看得见。</p>
-        <p><strong>第 1 步 · 造两份一样的文件（2 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>在工作目录<strong>内</strong>放一份</b><span>比如 <code>wb-mcp/权限实验.txt</code>，写三行你认得的字。</span></li>
-          <li><b>在工作目录<strong>外</strong>放一份内容完全相同的</b><span>比如桌面另一个文件夹下的同名文件。</span></li>
-        </ol>
-        <p><strong>第 2 步 · 同一句指令，先问里面那份（3 分钟）</strong></p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="实验指令 · 两次都用同一句">
+        <div class="task__hd">动手做 ②·权限边界实验：同一条指令，范围内外各跑一次 <em>约 14 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一条指令在「工作空间内」和「工作空间外」<strong>四次真实运行</strong>的行为差异，
+          一份可导出的拦截记录，以及一条结论：这条任务到底需要多大权限。</p>
+        <p class="note">这个实验<strong>不用装任何连接器</strong>。WorkBuddy 客户端本身就有权限边界：
+          <strong>默认以工作空间为界</strong>，工作空间内的常规文件操作直接执行，超出范围就暂停并问你一句。
+          边界是<strong>目录级</strong>的，肉眼看得见。</p>
+
+        <p><strong>第 1 步 · 建文件夹，把素材放进去（3 分钟）</strong></p>
+        <p>在你自己的电脑上建这两个文件夹，<strong>位置自己定</strong>，只要记住哪个是内、哪个是外：</p>
+        <div class="tablewrap">
+          <table class="data">
+            <thead><tr><th>文件夹</th><th>它在实验里的角色</th></tr></thead>
+            <tbody>
+              <tr><td><code>课堂实验/授权内/</code></td><td><strong>工作空间</strong>，后面每开一个新任务都选它</td></tr>
+              <tr><td><code>课堂实验/范围外/</code></td><td>工作空间<strong>之外</strong>，故意放在够不着的地方</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>两个文件夹里<strong>各放一个 <code>权限实验.txt</code></strong>，内容<strong>一字不差、全部照抄</strong>：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="权限实验.txt · 存成两份">
+          <div class="codeblock__bar"></div>
+<pre><code>姓名：____________
+学号：____________
+日期：2026 年 ____ 月 ____ 日
+
+约定：本文件用于 AIGC 应用与实践第 18 次课的权限边界实验。
+编号：AIGC-18-0001
+状态：仅供课堂实验使用，实验结束后可删除。</code></pre>
+        </div>
+        <p class="note">两个文件内容完全一样，<strong>唯一的变量是位置</strong>——这样后面两次运行的差异才能归因到权限上。
+          你的姓名学号自己填，其余照抄。</p>
+
+        <p><strong>第 2 步 · 确认工作空间选对了（1 分钟）</strong></p>
+        <p>新建任务时<strong>把工作空间选成 <code>课堂实验/授权内</code></strong>（一般在新建任务时选目录，或 WorkBuddy 自动建的任务目录）。
+          选错的话后面全白做，先确认一遍。</p>
+
+        <p><strong>第 3 步 · 基线：读授权内那份（2 分钟）</strong></p>
+        <p>在<strong>默认权限</strong>模式下发这条指令：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实验指令 A · 授权内">
           <div class="codeblock__bar"></div>
 <pre><code>请读取【权限实验.txt】，把里面的内容原样告诉我。</code></pre>
         </div>
-        <p><strong>第 3 步 · 原封不动，再问外面那份（3 分钟）</strong></p>
-        <p>只改文件名里的<strong>路径</strong>，句子其他部分一个字都不动。</p>
-        <p><strong>第 4 步 · 对比两次的实际反应（2 分钟）</strong></p>
+        <p class="note"><strong>预期</strong>：直接读出来，<strong>一次确认都不问你</strong>。这是对照组。</p>
+
+        <p><strong>第 4 步 · 越界读：同一句，只改路径（3 分钟）</strong></p>
+        <p>句子其他部分一个字不动，<strong>只把路径指到范围外那份</strong>：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实验指令 B · 范围外">
+          <div class="codeblock__bar"></div>
+<pre><code>请读取【范围外/权限实验.txt】，把里面的内容原样告诉我。</code></pre>
+        </div>
+        <p><strong>预期</strong>：它会<strong>停下来问你</strong>要不要放权，或直接说读不到。
+          <span class="task__warn">它停下来问的那一刻，就是边界在生效</span>——把它问的原话记下来。</p>
+
+        <p><strong>第 5 步 · 越界写：让它往范围外写一次（3 分钟）</strong></p>
+        <p>写权限的边界和读不一样，这一步单独验：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实验指令 C · 越界写">
+          <div class="codeblock__bar"></div>
+<pre><code>请把刚才读到的内容，写成一个 result.txt，存到【范围外/】里。</code></pre>
+        </div>
+        <p><strong>预期</strong>：同样被拦住。<strong>读和写是两个独立开关</strong>，能读不代表能写。</p>
+
+        <p><strong>第 6 步 · 关掉护栏再重跑第 4 步（3 分钟）</strong></p>
+        <p>把权限模式从<strong>默认权限</strong>切到<strong>允许完全访问</strong>，
+          然后<strong>原封不动</strong>再发一遍实验指令 B。这一步是本实验里最能说明问题的一次：</p>
+        <div class="tablewrap">
+          <table class="data">
+            <thead><tr><th>同一句指令</th><th>默认权限</th><th>允许完全访问</th></tr></thead>
+            <tbody>
+              <tr><td>读 <code>范围外/权限实验.txt</code></td><td>停下来问你 / 读不到</td><td><strong>一次都不问，直接读出来</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>看到没有</strong>：AI 一直有能力，<strong>一直有能力去读那个文件</strong>。
+          拦住它的不是 AI 本身，是那层权限设置。<strong>做完后立刻切回默认权限</strong>。</p>
+
+        <p><strong>第 7 步 · 把证据导出来（2 分钟）</strong></p>
+        <p>安全中心里有<strong>审计中心</strong>，记录了每一次拦截与放行。把这次的日志导出来，
+          这就是你这次实验的<strong>硬证据</strong>——不是你说它拦了，是日志写着它拦了。</p>
+
+        <p><strong>第 8 步 · 记下结论（2 分钟）</strong></p>
         <div class="codeblock codeblock--plain" data-lang="text" data-name="对比记录 · 记它实际做了什么">
           <div class="codeblock__bar"></div>
-<pre><code>① 范围内那份：它读到了吗 / 原样返回了吗？
+<pre><code>① 授权内那份：读到了吗 / 原样返回了吗？
 
-② 范围外那份：它读到了 / 说没有 / 反过来问我要不要放权？
+② 范围外那份（默认权限）：它具体说了什么？
 
-③ 差异说明：同一个动作，仅仅因为文件位置不同就变了什么？
+③ 越界写：它拦住了吗？
 
-④ 我的结论：这条任务到底需要多大权限？</code></pre>
+④ 允许完全访问下重跑：还需要问你吗？
+
+⑤ 差异说明：同一个动作，仅仅因为文件位置和权限档位不同就变了什么？
+
+⑥ 我的结论：这条任务到底需要多大权限？</code></pre>
         </div>
         <ol class="steps">
-          <li><b>两次都如实记</b><span>它反问你要权限时<strong>具体说了什么</strong>，那正是它在划边界，记下来。</span></li>
-          <li><b>结论落到具体权限</b><span>写「这条任务只需要读工作目录内的文件」这种具体话，
+          <li><b>结论要落到具体权限</b><span>写「这条任务只需要读工作空间内的文件、只需要读不需要写」这种具体话，
             不要写「权限越大越好」或「越小心越好」的空话。</span></li>
-          <li><b>做完把范围收回</b><span>如果第 3 步它申请了更宽的权限，别真给。
-            <strong>拒绝一次也是一次实践</strong>。</span></li>
+          <li><b>做完把范围收回</b><span>如果哪一步它申请了更宽的权限，别真给。<strong>拒绝一次也是一次实践</strong>。</span></li>
         </ol>
-        <p><strong>要交的成果</strong>：两次运行的对比记录（截图或文字均可）。</p>
+        <p><strong>要交的成果</strong>：四步运行记录（文字或截图）+ 审计中心导出的拦截日志。</p>
       </div>
 
 </section>
@@ -282,8 +370,8 @@
 产出位置：[明确到文件，例如：输出保存为 自动化/资讯周报.md，覆盖上一份]
 失败处理：如果执行时连不上网络或拿不到结果，
   生成一份「执行失败.md」写明失败时间和原因，不要什么都不留。
-权限要求：只使用 [你授权过的那个连接器] 的最小权限；
-  除写产出文件外，不做任何其他写入操作。
+权限要求：只使用腾讯文档连接器的「读取文档内容」这一条，
+  除写产出文件外，不做任何其他写入操作；
 
 创建完成后，把这个任务的配置读给我听一遍，让我核对。</code></pre>
         </div>
