@@ -132,66 +132,56 @@
       </div>
 
 
-      <div class="task">
-        <div class="task__hd">动手做 ①·完成一次权限侦察，再接入一个连接器并调用 <em>约 18 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一份连接器权限侦察记录。不安装也能完成，练的是看的能力。</p>
-        <p><strong>第 1 步 · 打开连接器列表，挑一个你用得上的（2 分钟）</strong></p>
+            <div class="task">
+        <div class="task__hd">动手做 ①·接一个连接器，真跑一次任务 <em>约 18 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：一个装好并授权过的连接器，它替你完成的一次真实调用，以及执行过程的截图。</p>
+        <p><strong>第 1 步 · 挑一个你真用得上的连接器，装上（4 分钟）</strong></p>
         <ol class="steps">
-          <li><b>找到连接器入口并浏览列表</b><span>入口位置以你实际版本为准。挑一个你<strong>真的会用到</strong>的（比如搜索类或文档类），不要随便挑。</span></li>
+          <li><b>先扫一眼权限说明，再点安装</b><span>不用填表，看一眼就行：它要的是读还是写、要的是全盘还是某个目录。
+            <span class="task__warn">看清楚再装</span>，装完再撤就麻烦了。</span></li>
+          <li><b>装完打开授权页</b><span>登录或填凭证。<strong>凭证只填在这一页</strong>，
+            不要写进对话，也不要贴进任何文件或代码。</span></li>
         </ol>
-        <p><strong>第 2 步 · 只看说明页，回答四个问题（4 分钟）</strong></p>
-        <p>把下面四个问题的答案记下来（记在你自己的知识库里更好）：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="权限侦察四问 · 点右上角复制">
+        <p><strong>第 2 步 · 授权那一刻，对照一次（2 分钟）</strong></p>
+        <p>授权页上它列的权限，跟你这次要干的活比一比，心里有个数就行：</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="授权对照 · 一句话就够">
           <div class="codeblock__bar"></div>
-<pre><code>连接器权限侦察记录（练眼睛，不安装）
+<pre><code>连接器名称：
 
-连接器名称：
-1. 它声称能干什么（用原文）：
-2. 它需要什么权限 / 授权方式（登录？API Key？读写范围？）：
-3. 这些权限里，哪些是我这次任务真正需要的？哪些用不上？
-4. 如果我只给它「最小够用」的权限，够不够完成我想要的事？
+它要的权限里，我这次真用得上的：
 
-结论：装 / 不装（理由一句话）</code></pre>
+其中用不上的（如果有）：
+
+结论：刚好够 / 偏宽（多给了 ____）</code></pre>
         </div>
-        <p><strong>第 3 步 · 做到这三条，就算做完了（2 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>四问都有具体答案</b><span>第 2 问要落到具体权限项（读写、网络、凭证），不能只写「要授权」。</span></li>
-          <li><b>第 3 问里至少指出一项「用不上的权限」</b><span>这题练的就是「默认给的和实际要的往往不一致」这双眼睛。<br>
-            <em>实在找不到</em>：把理由写清楚（这个连接器权限确实最小），也是一种合格答案。</span></li>
-          <li><b>结论有理由</b><span>装或不装都要一句话理由，不许「感觉还行」。</span></li>
-        </ol>
-        <p><strong>要交的成果</strong>：权限侦察记录。</p>
-        <p class="task__sep">第一部分完 · 接着做第二部分</p>
-        <p><strong>做完你手上会有</strong>：一个已接入的连接器 + 它完成的一次真实调用 + 执行过程的截图。</p>
-        <p><strong>第 4 步 · 按侦察结论接入（4 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>按流程三步走：装 → 授权 → 确认</b><span>授权时对照侦察记录：<strong>只授权刚才标了「真正需要」的那部分</strong>。
-            凭证只放在官方指定的配置位置，<span class="task__warn">绝不写进对话，也绝不硬编码进任何文件</span>。</span></li>
-        </ol>
-        <p><strong>第 5 步 · 完成一次真实调用（4 分钟）</strong></p>
-        <p>用一个具体的任务去调它，指令说清「要它用连接器干什么、产出什么、什么情况下停下问你」：</p>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="调用指令模板 · 点右上角复制">
+        <p class="note">范围能收窄就收窄（限定到某个目录、只给读），这是本课「最小权限」的第一道实践。</p>
+        <p><strong>第 3 步 · 用它真干一件活（8 分钟）</strong></p>
+        <p>发一条真任务过去。三件事说清：要它<strong>用连接器</strong>干什么、产出什么、<strong>什么情况下停下来问你</strong>。</p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="调用指令 · 点右上角复制">
           <div class="codeblock__bar"></div>
-<pre><code>我已接入 [连接器名称]。请用它完成下面的任务：
+<pre><code>我已接入【连接器名称】。请用这个连接器完成下面的任务：
 
-任务：[一句话说清要干什么，例如：检索「XXX」的最新资料并整理成 5 条要点]
-产出：[要什么形式的产出，例如：整理成一份 md 文件，存到工作目录]
-限制：
-- 每条信息标注来源；
-- 只使用该连接器获取的内容，不要用你自己的知识补充；
-- 遇到需要更高权限的操作时，停下来问我，不要自行尝试。
+任务：【一句话说清要干什么】
+产出：【要什么形式的产出，存到工作目录】
+
+三条限制：
+1. 只用这个连接器取信息，不要用你自己的知识补充；
+2. 每条信息标明来源（来自哪份文件／哪条记录）；
+3. 遇到需要更高权限的操作，停下来问我，不要自己试。
 
 完成后告诉我：调用了什么、拿到了什么、什么没做到。</code></pre>
         </div>
-        <p><strong>第 6 步 · 复盘执行过程（2 分钟）</strong></p>
+        <p><strong>第 4 步 · 验收这次调用（4 分钟）</strong></p>
         <ol class="steps">
-          <li><b>执行过程里能看到它调用了连接器</b><span>如果它没用连接器、而是用自己的知识回答了，这不算完成，让它明确用连接器重做。</span></li>
-          <li><b>信息都带了来源</b><span>没标来源的条目让它补。<br>
-            <em>它说「来源拿不到」</em>：这本身就是有价值的发现，记录下来。很多连接器返回的内容不带出处。</span></li>
+          <li><b>执行过程里看到它调连接器了吗</b><span>如果它压根没用连接器、直接用自己的知识答了，
+            这不算完成，让它明确<strong>用连接器重做</strong>。</span></li>
+          <li><b>信息带来源了吗</b><span>没标来源的条目让它补。它说「来源拿不到」也是有效发现，照实记下来。</span></li>
+          <li><b>它有没有超出你授权的范围</b><span>比如你只给了读，它却动手改了或删了东西，有的话立刻撤授权，这比跑通更重要。</span></li>
         </ol>
-        <p><strong>要交的成果</strong>：调用结果 + 执行过程截图（能看到连接器被调用的痕迹）。</p>
+        <p><strong>要交的成果</strong>：调用结果 + 执行过程截图（要能看到连接器被调用的痕迹）。</p>
       </div>
-    </section>
+
+</section>
 
     <section class="sec" id="s-perm">
       <h2>三、最小权限原则：能少给就少给</h2>
@@ -211,39 +201,46 @@
         </table>
       </div>
 
-      <div class="task">
-        <div class="task__hd">动手做 ②·权限对比实验：同一个任务，两种权限 <em>约 8 分钟</em></div>
-        <p><strong>做完你手上会有</strong>：一组对比记录，同一条指令在不同权限范围下的行为差异。</p>
-        <p><strong>第 1 步 · 设计一个「越界任务」（2 分钟）</strong></p>
+            <div class="task">
+        <div class="task__hd">动手做 ②·权限边界实验：同一条指令，两种范围各跑一次 <em>约 10 分钟</em></div>
+        <p><strong>做完你手上会有</strong>：同一条指令在「范围内」和「范围外」两次<strong>真实运行</strong>的行为差异，
+          以及一条结论：这条任务到底需要多大权限。</p>
+        <p class="note">这个实验不用去改连接器的授权设置，把<strong>文件放在授权范围里和范围外</strong>就行，
+          自己就能做，效果看得见。</p>
+        <p><strong>第 1 步 · 造两份一样的文件（2 分钟）</strong></p>
         <ol class="steps">
-          <li><b>想一条「正常但超出当前工作目录」的指令</b><span>例如：让 AI 去「读取桌面另一个文件夹里的文件」。
-            这个要求本身合理，<strong>但它不在当前授权范围内</strong>。</span></li>
+          <li><b>在工作目录<strong>内</strong>放一份</b><span>比如 <code>wb-mcp/权限实验.txt</code>，写三行你认得的字。</span></li>
+          <li><b>在工作目录<strong>外</strong>放一份内容完全相同的</b><span>比如桌面另一个文件夹下的同名文件。</span></li>
         </ol>
-        <p><strong>第 2 步 · 两种权限下各跑一次（4 分钟）</strong></p>
-        <ol class="steps">
-          <li><b>最小权限下跑</b><span>当前工作目录限定在 <code>wb-wiki</code>（或你自己的目录），发出指令，<strong>记录它的反应</strong>：
-            拒绝？请求授权？还是绕开？</span></li>
-          <li><b>放宽权限后再跑</b><span>在它明确请求、你判断可以接受的前提下放宽，再跑同一指令，对比结果。</span></li>
-        </ol>
-        <div class="codeblock codeblock--plain" data-lang="text" data-name="对比记录模板 · 点右上角复制">
+        <p><strong>第 2 步 · 同一句指令，先问里面那份（3 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="实验指令 · 两次都用同一句">
           <div class="codeblock__bar"></div>
-<pre><code>权限对比实验记录
-
-指令：[原样贴上你的指令]
-① 最小权限下的行为：[它做了什么/说了什么]
-② 放宽后的行为：[它做了什么/说了什么]
-③ 差异说明：[权限改变了什么]
-④ 我的结论：[这条任务到底需要多大权限？]</code></pre>
+<pre><code>请读取【权限实验.txt】，把里面的内容原样告诉我。</code></pre>
         </div>
-        <p><strong>第 3 步 · 做到这三条，就算做完了（2 分钟）</strong></p>
+        <p><strong>第 3 步 · 原封不动，再问外面那份（3 分钟）</strong></p>
+        <p>只改文件名里的<strong>路径</strong>，句子其他部分一个字都不动。</p>
+        <p><strong>第 4 步 · 对比两次的实际反应（2 分钟）</strong></p>
+        <div class="codeblock codeblock--plain" data-lang="text" data-name="对比记录 · 记它实际做了什么">
+          <div class="codeblock__bar"></div>
+<pre><code>① 范围内那份：它读到了吗 / 原样返回了吗？
+
+② 范围外那份：它读到了 / 说没有 / 反过来问我要不要放权？
+
+③ 差异说明：同一个动作，仅仅因为文件位置不同就变了什么？
+
+④ 我的结论：这条任务到底需要多大权限？</code></pre>
+        </div>
         <ol class="steps">
-          <li><b>两种行为都如实记录</b><span>包括它请求授权时<strong>具体说了什么</strong>，那是它给你的决策信息。</span></li>
-          <li><b>结论落到「这条任务需要多大权限」</b><span>而不是「权限越大越好」或「越小心越好」的空话。</span></li>
-          <li><b>实验后把权限收回来</b><span>实验用的放宽权限，用完立即收回，<strong>这本身就是最小权限的实践</strong>。</span></li>
+          <li><b>两次都如实记</b><span>它反问你要权限时<strong>具体说了什么</strong>，那正是它在划边界，记下来。</span></li>
+          <li><b>结论落到具体权限</b><span>写「这条任务只需要读工作目录内的文件」这种具体话，
+            不要写「权限越大越好」或「越小心越好」的空话。</span></li>
+          <li><b>做完把范围收回</b><span>如果第 3 步它申请了更宽的权限，别真给。
+            <strong>拒绝一次也是一次实践</strong>。</span></li>
         </ol>
-        <p><strong>要交的成果</strong>：对比记录 + 收回权限的截图（或说明）。</p>
+        <p><strong>要交的成果</strong>：两次运行的对比记录（截图或文字均可）。</p>
       </div>
-    </section>
+
+</section>
 
     <section class="sec" id="s-auto">
       <h2>四、定时自动化任务：没人盯着也在干活的 AI</h2>
