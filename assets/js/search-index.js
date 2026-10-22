@@ -225,6 +225,7 @@ window.SITE_SECTION_INDEX = [
 
   /* ---------------- 第 19 次课 ---------------- */
   { lesson: 19, id: "s-chain", title: "四、把它们串成一条流水线",           hint: "流水线 串联 交接物必须是文件 上一站产出等于下一站输入 落盘 人拍板 协同" },
+  { lesson: 19, id: "s-training", title: "课后实训《实训三 搭一条能复用的三人流水线》", hint: "课后实训 实训三 岗位卡 三张岗位卡 知识库隔离 唯一事实 交接说明 复用测试 实训报告" },
   { lesson: 19, id: "s-goal", title: "学习目标",                   hint: "学习目标 先修 后续衔接 专家团区别" },
   { lesson: 19, id: "s-guide", title: "本课导读",                   hint: "本课导读 模块二 三个 AI 员工 自己搭的班底" },
   { lesson: 19, id: "s-hw", title: "课后作业",                   hint: "课后作业 单选 多选 判断 学习通 AI 团队" },
