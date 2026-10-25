@@ -387,7 +387,7 @@ window.SITE_SECTION_INDEX = [
   /* ── 课后实训（整合进 8 个课次） ── */
   { lesson: 14, id: "s-training", title: "课后实训《实训三 文件整理与会议纪要》", hint: "文件归档 会议纪要 待办 对照表 实训报告" },
   { lesson: 17, id: "s-training", title: "课后实训《实训四 知识库搭建与带引用问答》", hint: "知识库 带引用问答 出处 切片 实训报告" },
-  { lesson: 20, id: "s-training", title: "课后实训《实训六 公众号内容生产》", hint: "公众号 内容生产 选题 排版 实训报告" },
+  { lesson: 20, id: "s-training", title: "课后实训《实训四 同一份素材发两个平台，并让下一篇写得更省力》", hint: "课后实训 实训四 公众号 小红书 双平台 事实核对 GEO 改写 改动验收 指令模板 试跑 实训报告" },
   { lesson: 21, id: "s-training", title: "课后实训《实训五 竞品分析 PPT 全链路》", hint: "竞品分析 PPT 全链路 演示文稿 实训报告" },
   { lesson: 22, id: "s-training", title: "课后实训《实训二 长文档生成与批量处理》", hint: "长文档 批量生成 周报 模板变量 实训报告" },
   { lesson: 23, id: "s-training", title: "课后实训《实训一 票据清洗与报销汇总》", hint: "票据清洗 报销汇总 脏数据 口径 实训报告" },
