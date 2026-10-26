@@ -285,6 +285,7 @@ window.SITE_SECTION_INDEX = [
   { lesson: 24, id: "s-hw", title: "课后作业",                   hint: "课后作业 单选 多选 判断 学习通 行动计划" },
   { lesson: 24, id: "s-jd", title: "三、JD 拆解：重点是找出自己缺什么",     hint: "JD 拆解 关键词 岗位描述 能力要求 缺什么 对照 差距" },
   { lesson: 24, id: "s-plan", title: "四、能力地图与 SMART 行动计划",     hint: "能力地图 SMART 行动计划 具体 可衡量 可达成 相关 有时限 补齐路径" },
+  { lesson: 24, id: "s-training", title: "课后实训《实训五 把职业规划做成一条能查证、能执行的链路》", hint: "课后实训 实训五 SWOT 依据来源 行业调研 来源链 JD 拆解 差距清单 能力地图 SMART 行动计划 实训报告" },
   { lesson: 24, id: "s-quiz", title: "随堂自测",                   hint: "随堂自测 自测题 答案 自检 SWOT" },
   { lesson: 24, id: "s-recap", title: "本课要点回顾",                 hint: "小结 要点回顾 回到主线" },
   { lesson: 24, id: "s-research", title: "二、行业调研：结论后面必须跟着来源",      hint: "行业调研 来源 结论后面跟来源 数据 报告 趋势 岗位需求" },
