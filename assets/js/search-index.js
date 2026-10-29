@@ -293,6 +293,7 @@ window.SITE_SECTION_INDEX = [
 
   /* ---------------- 第 25 次课 ---------------- */
   { lesson: 25, id: "s-ats", title: "三、ATS 关键词：先让机器看见你",      hint: "ATS 关键词 机器筛选 岗位匹配 关键词密度 格式 可解析" },
+  { lesson: 25, id: "s-training", title: "课后实训《实训六 交一份经得起 HR 和面试官两面追问的简历》", hint: "课后实训 实训六 简历 六秒自测 STAR 改写 ATS 关键词 真实性审查 证据出处 事实底稿 实训报告" },
   { lesson: 25, id: "s-goal", title: "学习目标",                   hint: "学习目标 先修 后续衔接 模拟面试" },
   { lesson: 25, id: "s-guide", title: "本课导读",                   hint: "本课导读 模块三 简历 一页纸讲清你的价值" },
   { lesson: 25, id: "s-hw", title: "课后作业",                   hint: "课后作业 单选 多选 判断 学习通 简历" },
